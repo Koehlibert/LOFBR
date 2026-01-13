@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: afdce3e10d924c345ba0750f3f569747
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - player: {instanceID: 0}
+  - currentenemy: {instanceID: 0}
+  - bullet: {fileID: 54516044102052640, guid: c67786af924712e4cb7bd1573bb0eeb1, type: 3}
+  - rb: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
