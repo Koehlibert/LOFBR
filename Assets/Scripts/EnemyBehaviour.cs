@@ -4,9 +4,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 using Extensions;
-public class EnemyBehaviour : MonoBehaviour, IMortal
+public class EnemyBehaviour : DamageableEntity
 {
-    public Health hpsys;
     public GameObject enemybase;
     Renderer rend;
     public PlayerController player;
@@ -25,15 +24,15 @@ public class EnemyBehaviour : MonoBehaviour, IMortal
     public string enemytype;
     public GameObject closestCurrentEnemy;
     private ClosestFinder closestFinder;
-    private bool LastHit;
     Animator animator;
     private float animSpeed;
-    private MasterScript master;
     private float reloadtime;
     private bool loaded;
     public Image healthbar;
-    void Start()
+    public Image healthbarbg;
+    protected override void Start()
     {
+        base.Start();
         LastHit = false;
         rend = GetComponent<Renderer>();
         nmAgent = gameObject.GetComponent<NavMeshAgent>();
@@ -45,10 +44,75 @@ public class EnemyBehaviour : MonoBehaviour, IMortal
         animator = GetComponent<Animator>();
         loaded = true;
         reloadtime = 1.5f;
-        hpsys = GetComponent<Health>();
         hpsys.Initialize(100,0,0,0);
         bulletinstance = Instantiate(bullet, animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + offset, transform.rotation);
         bulletrig = bulletinstance.GetComponent<Rigidbody>();
+        healthbar.gameObject.SetActive(false);
+        healthbarbg.gameObject.SetActive(false);
+        hpsys.OnHealthChanged += (healthPercent) =>
+        {
+            healthbar.gameObject.SetActive(true);
+            healthbarbg.gameObject.SetActive(true);
+            healthbar.fillAmount = healthPercent;
+        };
+    }
+    protected override void ConfigureCollisionRules(DamageCollisionHandler handler)
+    {
+        handler.AddRule(new DamageCollisionHandler.CollisionRule
+        {
+            tags = new List<string> { "Bullet", "BulletPlayer", },
+            eventType = DamageCollisionHandler.CollisionEventType.Enter,
+            destroyOnHit = true,
+            setLastHit = true
+        });
+        handler.AddRule(new DamageCollisionHandler.CollisionRule
+        {
+            tags = new List<string> { "MeleePlayer" },
+            eventType = DamageCollisionHandler.CollisionEventType.Enter,
+            destroyOnHit = false,
+            setLastHit = true
+        });
+        handler.AddRule(new DamageCollisionHandler.CollisionRule
+        {
+            tags = new List<string> { "UltBulletFriendly" },
+            eventType = DamageCollisionHandler.CollisionEventType.Stay,
+            destroyOnHit = false,
+            setLastHit = true
+        });
+        handler.AddRule(new DamageCollisionHandler.CollisionRule
+        {
+            tags = new List<string> { "Fire" },
+            eventType = DamageCollisionHandler.CollisionEventType.TriggerStay,
+            destroyOnHit = false,
+            setLastHit = true
+        });
+        handler.AddRule(new DamageCollisionHandler.CollisionRule
+        {
+            tags = new List<string> { "MeleePlayer", "BulletPlayerShockwave"},
+            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
+            destroyOnHit = false,
+            setLastHit = true
+        });
+    }
+    
+    public override void Die()
+    {
+        if ((player != null) && LastHit)
+        {
+            if (player.gameObject.activeSelf)
+            {
+                player.levelsys.gainExp(5);
+            }
+        }
+        if (bulletinstance)
+        {
+            bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
+        }
+        Destroy(this.gameObject);
+    }
+    public override Health GetHealth()
+    {
+        return hpsys;
     }
     void OnEnable()
     {
@@ -62,7 +126,6 @@ public class EnemyBehaviour : MonoBehaviour, IMortal
     void FixedUpdate()
     {
         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
-        updateHealthBar();
         if (bulletrig)
         {
             bulletrig.transform.position = animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + offset;
@@ -108,58 +171,6 @@ public class EnemyBehaviour : MonoBehaviour, IMortal
         }
         animator.SetFloat("speedPercent",animSpeed);
     }
-    void OnCollisionEnter(Collision other)
-    {
-        if (other.HasAnyTag(new List<string>(){"Bullet","BulletPlayer", "BulletPlayerShockwave"}))
-        {
-            if (other.HasAnyTag(new List<string>(){"BulletPlayer","BulletPlayerShockwave"}))
-            {
-                LastHit = true;
-            }
-            if (CombatUtils.DealDamage(other, this))
-            {
-                Die();
-            }
-            if (other.HasAnyTag(new List<string>(){"Bullet","BulletPlayer"}))
-            {
-                Destroy(other.gameObject);
-            }
-        }
-    }
-    void OnCollisionStay(Collision other)
-    {
-        if (other.HasAnyTag(new List<string>(){"UltBulletFriendly"}))
-        {
-            LastHit = true;
-            other.gameObject.GetComponent<UltBulletBehaviour>().count--;
-            if (CombatUtils.DealDamage(other, this))
-            {
-                Die();
-            }
-        }
-    }
-    void OnTriggerStay(Collider other)
-    {
-        if (other.HasAnyTag(new List<string>(){"Fire"}))
-        {
-            LastHit = true;
-            if (CombatUtils.DealDamage(other, this))
-            {
-                Die();
-            }
-        }
-    }
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.HasAnyTag(new List<string>(){"MeleePlayer", "BulletPlayerShockwave"}))
-        {
-            LastHit = true;
-            if (CombatUtils.DealDamage(other, this))
-            {
-                Die();
-            }
-        }
-    }
     public void getShanked(Damage damage)
     {
         LastHit = true;
@@ -199,36 +210,5 @@ public class EnemyBehaviour : MonoBehaviour, IMortal
         bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
         bulletrig = null;
         StartCoroutine("resetanim");
-    }
-    void updateHealthBar()
-    {
-        float hpval = hpsys.healthDisplay();
-        if (healthbar.fillAmount > hpval)
-        {
-            healthbar.fillAmount = Mathf.Max(hpval, healthbar.fillAmount - Time.deltaTime);
-        }
-        if (healthbar.fillAmount < hpval)
-        {
-            healthbar.fillAmount = Mathf.Max(hpval, healthbar.fillAmount + Time.deltaTime);
-        }
-    }
-    public void Die()
-    {
-        if ((player != null) && LastHit)
-        {
-            if (player.gameObject.activeSelf)
-            {
-                player.levelsys.gainExp(5);
-            }
-        }
-        if (bulletinstance)
-        {
-            bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
-        }
-        Destroy(this.gameObject);
-    }
-    public Health GetHealth()
-    {
-        return hpsys; 
     }
 }

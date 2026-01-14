@@ -61,7 +61,7 @@ public class Immolate : Ability
         reloader.shoot();
         player.manasys.useMana(manaCost);
         fire.SetActive(true);
-        fire.GetComponent<Damage>().SetDamage(2f * player.levelsys.getLevel(), 0);
+        fire.GetComponent<Damage>().SetDamage(3.5f * player.levelsys.getLevel(), 0);
         isOnFire = true;
     }
     private void TurnOff()

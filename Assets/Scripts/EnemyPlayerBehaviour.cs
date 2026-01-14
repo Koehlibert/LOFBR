@@ -4,12 +4,10 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 using Extensions;
-public class EnemyPlayerBehaviour : MonoBehaviour, IMortal, IMainPlayer
+public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
 {
     public Level levelsys;
-    public Health hpsys;
     public float reloadtime;
-    public MasterScript master;
     public GameObject enemybase;
     public PlayerController player;
     public float followdistance;
@@ -23,7 +21,6 @@ public class EnemyPlayerBehaviour : MonoBehaviour, IMortal, IMainPlayer
     public GameObject bullet;
     Vector3 offset = new Vector3(0,-0.5f,-1.5f);
     public string enemytype;
-    private bool LastHit;
     public GameObject closestCurrentEnemy;
     private GameObject yourbase;
     private float animSpeed;
@@ -61,10 +58,10 @@ public class EnemyPlayerBehaviour : MonoBehaviour, IMortal, IMainPlayer
     private GameObject shieldInstance;
     public Mana manasys;
     private ClosestFinder closestFinder;
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         attackdistance = 20;
-        hpsys = GetComponent<Health>();
         manasys = GetComponent<Mana>();
         levelsys = GetComponent<Level>();
         hpsys.Initialize(300,3,4,5);
@@ -78,7 +75,6 @@ public class EnemyPlayerBehaviour : MonoBehaviour, IMortal, IMainPlayer
         closestCurrentEnemy = null;
         enemybase = GameObject.FindWithTag(enemytype + "Base");
         yourbase = GameObject.FindWithTag("EnemyBase");
-        master = GameObject.FindObjectOfType<MasterScript>();
         animator = GetComponent<Animator>();
         closestFinder = new ClosestFinder(player, this.gameObject, master);
         bulletinstance = Instantiate(bullet, animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + offset, transform.rotation);
@@ -112,8 +108,72 @@ public class EnemyPlayerBehaviour : MonoBehaviour, IMortal, IMainPlayer
         loadedShield = true;
         loadedUlt = true;
     }
-    void OnDestroy()
+    protected override void ConfigureCollisionRules(DamageCollisionHandler handler)
     {
+        handler.AddRule(new DamageCollisionHandler.CollisionRule
+        {
+            tags = new List<string> { "Bullet", "BulletPlayer", },
+            eventType = DamageCollisionHandler.CollisionEventType.Enter,
+            destroyOnHit = true,
+            setLastHit = true
+        });
+        handler.AddRule(new DamageCollisionHandler.CollisionRule
+        {
+            tags = new List<string> { "MeleePlayer" },
+            eventType = DamageCollisionHandler.CollisionEventType.Enter,
+            destroyOnHit = false,
+            setLastHit = true
+        });
+        handler.AddRule(new DamageCollisionHandler.CollisionRule
+        {
+            tags = new List<string> { "Fire" },
+            eventType = DamageCollisionHandler.CollisionEventType.TriggerStay,
+            destroyOnHit = false,
+            setLastHit = true
+        });
+        
+        handler.AddRule(new DamageCollisionHandler.CollisionRule
+        {
+            tags = new List<string> { "MeleePlayer", "BulletPlayerShockwave" },
+            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
+            setLastHit = true
+        });
+    }
+    public override void Die()
+    {
+        if (player != null && LastHit)
+        {
+            if (player.gameObject.activeSelf)
+            {
+                player.levelsys.gainExp(5 + 5 * levelsys.getLevel());
+            }
+        }
+        if (bulletinstance)
+        {
+            bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
+        }
+        if (bulletinstance2)
+        {
+            bulletinstance2.GetComponent<DestroyAfterTime>().DelayedDestroy();
+        }
+        LastHit = false;
+        hurt = false;
+        loaded = true;
+        loadedShock = true;
+        isShocking = false;
+        master.EnemyDieAndRespawn();
+    }
+    public GameObject GetGameObject()
+    {
+        return this.gameObject;
+    }
+    public Transform GetTransform()
+    {
+        return this.transform;
+    }
+    public override Health GetHealth()
+    {
+        return hpsys;
     }
     void FixedUpdate()
     {
@@ -236,46 +296,6 @@ public class EnemyPlayerBehaviour : MonoBehaviour, IMortal, IMainPlayer
             }
         }  
     }
-    void OnCollisionEnter(Collision other)
-    {
-        if (other.HasAnyTag(new List<string>(){"Bullet","BulletPlayer", "BulletPlayerShockwave", "MeleePlayer"}))
-        {
-            if (other.HasAnyTag(new List<string>(){"BulletPlayer","BulletPlayerShockwave","MeleePlayer"}))
-            {
-                LastHit = true;
-            }
-            if (CombatUtils.DealDamage(other, this))
-            {
-                Die();
-            }
-            if (other.HasAnyTag(new List<string>(){"Bullet","BulletPlayer"}))
-            {
-                Destroy(other.gameObject);
-            }
-        }
-    }
-    void OnTriggerStay(Collider other)
-    {
-        if (other.HasAnyTag(new List<string>(){"Fire"}))
-        {
-            LastHit = true;
-            if (CombatUtils.DealDamage(other, this))
-            {
-                Die();
-            }
-        }
-    }
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.HasAnyTag(new List<string>(){"MeleePlayer", "BulletPlayerShockwave"}))
-        {
-            LastHit = true;
-            if (CombatUtils.DealDamage(other, this))
-            {
-                Die();
-            }
-        }
-    }
     public void Attack(Vector3 target)
     {   
         transform.LookAt(new Vector3(target.x,transform.position.y,target.z));
@@ -374,14 +394,7 @@ public class EnemyPlayerBehaviour : MonoBehaviour, IMortal, IMainPlayer
     private void UpdateBars()
     {
         float hpval = hpsys.healthDisplay();
-        if (healthbar.fillAmount > hpval)
-        {
-            healthbar.fillAmount = Mathf.Max(hpval, healthbar.fillAmount - Time.deltaTime);
-        }
-        if (healthbar.fillAmount < hpval)
-        {
-            healthbar.fillAmount = Mathf.Max(hpval, healthbar.fillAmount + Time.deltaTime);
-        }
+        healthbar.fillAmount = Mathf.Lerp(healthbar.fillAmount, hpval, 5f * Time.deltaTime);
         manaBar.fillAmount = manasys.getPercent();
     }
     private void UpdateBullets()
@@ -468,42 +481,5 @@ public class EnemyPlayerBehaviour : MonoBehaviour, IMortal, IMainPlayer
             returnBool = false;
         }
         return returnBool;
-    }
-
-    public void Die()
-    {
-        if (player != null && LastHit)
-        {
-            if (player.gameObject.activeSelf)
-            {
-                player.levelsys.gainExp(5 + 5 * levelsys.getLevel());
-            }
-        }
-        if (bulletinstance)
-        {
-            bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
-        }
-        if (bulletinstance2)
-        {
-            bulletinstance2.GetComponent<DestroyAfterTime>().DelayedDestroy();
-        }
-        LastHit = false;
-        hurt = false;
-        loaded = true;
-        loadedShock = true;
-        isShocking = false;
-        master.EnemyDieAndRespawn();
-    }
-    public GameObject GetGameObject()
-    {
-        return this.gameObject;
-    }
-    public Transform GetTransform()
-    {
-        return this.transform;
-    }
-    public Health GetHealth()
-    {
-        return hpsys;
     }
 }

@@ -193,7 +193,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae6577cadf2ea5b458fed2acbc461235, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hpsys: {fileID: 0}
   enemybase: {fileID: 0}
   player: {fileID: 0}
   followdistance: 30
@@ -202,6 +201,7 @@ MonoBehaviour:
   enemytype: Friendly
   closestCurrentEnemy: {fileID: 0}
   healthbar: {fileID: 6349946008277320679}
+  healthbarbg: {fileID: 5630666503110785088}
 --- !u!195 &752268848267846751
 NavMeshAgent:
   m_ObjectHideFlags: 0

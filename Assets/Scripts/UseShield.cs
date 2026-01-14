@@ -26,9 +26,9 @@ public class UseShield : Ability
     }
     private IEnumerator destroyShield()
     {
-        player.hpsys.AddArmor(100);
+        player.GetHealth().AddArmor(100);
         yield return new WaitForSeconds(1.5f);
-        player.hpsys.AddArmor(-100);
+        player.GetHealth().AddArmor(-100);
         GameObject.Destroy(shieldInstance);
     }
 }

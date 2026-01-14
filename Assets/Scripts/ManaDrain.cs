@@ -32,7 +32,7 @@ public class ManaDrain : Ability
             lRend.SetPosition(0,player.transform.position + offset);
             lRend.SetPosition(1,enemy.transform.position + offset);
             float actualDamage = enemy.manasys.drainMana((5 + player.levelsys.getLevel() * 2) * Time.deltaTime);
-            if(enemy.hpsys.TakeDamage(actualDamage * (0.05f + 0.05f*player.levelsys.getLevel())))
+            if(enemy.GetHealth().TakeDamage(actualDamage * (0.05f + 0.05f*player.levelsys.getLevel())))
             {
                 enemy.Die();
             }

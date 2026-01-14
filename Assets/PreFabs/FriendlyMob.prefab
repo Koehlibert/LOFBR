@@ -1257,6 +1257,7 @@ MonoBehaviour:
   enemytype: Enemy
   closestCurrentEnemy: {fileID: 0}
   healthbar: {fileID: 6544769053701136603}
+  healthbarbg: {fileID: 864819667386964637}
 --- !u!195 &8988679656934383969
 NavMeshAgent:
   m_ObjectHideFlags: 0

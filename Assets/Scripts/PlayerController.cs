@@ -3,29 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Extensions;
-public class PlayerController : MonoBehaviour, IMortal, IMainPlayer
+public class PlayerController : DamageableEntity, IMainPlayer
 {
     public Level levelsys;
     public Mana manasys; 
-    public MasterScript master;
     private float movementspeed;
     public int rotatespeed;
     private float flashspeed;
     public Vector3 movement;
     public Image damageimage;
-    private bool LastHit;
     public EnemyPlayerBehaviour enemyPlayer;
     public Color flashcolor = new Color(1f,0f,0f,0.1f);
     public Animator animator;
     private float animSpeed;
     public AudioSource soundsource;
-    public Health hpsys;
     private bool moveLock = false;
     private bool lookLock;
     private int classID;
     private Skillset skillSet;
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         enemyPlayer = FindObjectOfType<EnemyPlayerBehaviour>();
         levelsys = GetComponent<Level>();
         manasys = GetComponent<Mana>();
@@ -52,10 +50,30 @@ public class PlayerController : MonoBehaviour, IMortal, IMainPlayer
         hpsys.Initialize(hpVals.hpval, hpVals.regenval, hpVals.delay, hpVals.armorval);
         movementspeed = skillSet.GetSpeed();
         flashspeed = 5f;
+
+        DamageCollisionHandler handler = GetComponent<DamageCollisionHandler>();
+        handler.SetOnHitCallback(OnTakeDamage);
     }
     void OnEnable()
     {
         moveLock = false;
+    }
+    protected override void ConfigureCollisionRules(DamageCollisionHandler handler)
+    {
+        handler.AddRule(new DamageCollisionHandler.CollisionRule
+        {
+            tags = new List<string> { "BulletEnemy", "BulletEnemyPlayer" },
+            eventType = DamageCollisionHandler.CollisionEventType.Enter,
+            destroyOnHit = false,
+            setLastHit = true
+        });
+        handler.AddRule(new DamageCollisionHandler.CollisionRule
+        {
+            tags = new List<string> { "BulletEnemyShockwave" },
+            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
+            destroyOnHit = true,
+            setLastHit = true
+        });
     }
     void FixedUpdate()
     {
@@ -67,31 +85,6 @@ public class PlayerController : MonoBehaviour, IMortal, IMainPlayer
         UpdateLookPosition();
         UpdateDamageImage();
         MoveCharakter(movement);
-    }
-    void OnCollisionEnter(Collision col)
-    {
-        if (col.HasAnyTag(new List<string>(){"BulletEnemy", "BulletEnemyPlayer", "BulletEnemyShockwave"}))
-        {
-            if (col.HasAnyTag(new List<string>(){"BulletEnemyPlayer", "BulletEnemyShockwave"}))
-            {
-                LastHit = true;
-            }
-            flashcolor.a = 0.8f*(1-hpsys.healthDisplay());
-            damageimage.color = flashcolor;
-            if (!CombatUtils.DealDamage(col, this))
-            {
-                soundsource.time = 0.35f;
-                soundsource.Play();
-            }
-            else
-            {
-                Die();
-            }
-            if (!col.HasAnyTag(new List<string>(){"BulletEnemyShockwave"}))
-            {
-                Destroy(col.gameObject);
-            }
-        }
     }
     void UpdateDamageImage()
     {
@@ -110,6 +103,11 @@ public class PlayerController : MonoBehaviour, IMortal, IMainPlayer
             lookAtRotation.z = 0;
             transform.rotation = lookAtRotation;
         }
+    }
+    private void OnTakeDamage(GameObject damageSource)
+    {
+        flashcolor.a = 0.8f*(1-hpsys.healthDisplay());
+        damageimage.color = flashcolor;
     }
     void MoveCharakter(Vector3 movementv3)
     {
@@ -146,7 +144,7 @@ public class PlayerController : MonoBehaviour, IMortal, IMainPlayer
         yield return new WaitForSeconds(duration);
         lookLock = false;
     }
-    public void Die()
+    public override void Die()
     {
         if (LastHit)
         {
@@ -164,7 +162,7 @@ public class PlayerController : MonoBehaviour, IMortal, IMainPlayer
     {
         return this.transform;
     }
-    public Health GetHealth()
+    public override Health GetHealth()
     {
         return hpsys;
     }

@@ -63,6 +63,8 @@
      <Compile Include="Assets\Scripts\ClosestFinder.cs" />
      <Compile Include="Assets\Scripts\CombatUtils.cs" />
      <Compile Include="Assets\Scripts\Damage.cs" />
+     <Compile Include="Assets\Scripts\DamageableEntity.cs" />
+     <Compile Include="Assets\Scripts\DamageCollisionHandler.cs" />
      <Compile Include="Assets\Scripts\Dash.cs" />
      <Compile Include="Assets\Scripts\DestroyAfterTime.cs" />
      <Compile Include="Assets\Scripts\DestroyAfterTimeHeal.cs" />

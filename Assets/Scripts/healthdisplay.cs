@@ -11,13 +11,11 @@ public class healthdisplay : MonoBehaviour
         player = GameObject.FindObjectOfType<PlayerController>();
         healthslider = GetComponent<Slider>();
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (player.isActiveAndEnabled)
         {
-            float hpval = player.hpsys.healthDisplay();
+            float hpval = player.GetHealth().healthDisplay();
             if (healthslider.value > hpval)
             {
                 healthslider.value = Mathf.Max(hpval, healthslider.value - Time.deltaTime);

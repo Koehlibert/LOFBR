@@ -2,47 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Extensions;
-public class EnemyTowerHit : MonoBehaviour, IMortal
+public class EnemyTowerHit : DamageableEntity
 {
     private TowerBehaviourEnemy tower;
-    public Health hpsys;
-    private MasterScript master;
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         tower = GetComponentInChildren<TowerBehaviourEnemy>();
-        hpsys = GetComponent<Health>();
         hpsys.Initialize(300,0,0,20);
         master = FindObjectOfType<MasterScript>();
     }
-
-    // Update is called once per frame
-    void Update()
+    protected override void ConfigureCollisionRules(DamageCollisionHandler handler)
     {
-        
-    }
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.HasAnyTag(new List<string>(){"Bullet", "BulletPlayer"}))
+        handler.AddRule(new DamageCollisionHandler.CollisionRule
         {
-            if (CombatUtils.DealDamage(other, this))
-            {
-                Die();
-            }
-            other.gameObject.SetActive(false);
-            if (!other.gameObject.CompareTag("BulletPlayerShockwave")&&(!other.gameObject.CompareTag("MeleePlayer")))
-            {
-                Destroy(other.gameObject);
-            }
-        }
+            tags = new List<string> { "Bullet", "BulletPlayer" },
+            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
+            destroyOnHit = true
+        });
     }
-    public void Die()
+    public override void Die()
     {
-        master.allEnemiesTowers.Remove(this.gameObject);
+        master.allFriendliesTowers.Remove(this.gameObject);
         Destroy(this.gameObject);
     }
-    public Health GetHealth()
+    public override Health GetHealth()
     {
-        return this.hpsys;
+        return hpsys;
     }
 }

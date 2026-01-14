@@ -15,23 +15,20 @@ public class Health : MonoBehaviour
     private float superRegenValue;
     private float poison;
     private float poisonTime;
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+    public System.Action<float> OnHealthChanged;
     void Update()
     {
         if (superRegen)
         {
             hp = Mathf.Min(hp+superRegenValue*Time.deltaTime, maxhp);
+            OnHealthChanged?.Invoke(healthDisplay());
             poison = 0;
         }
         if (poison > 0)
         {
             hp = Mathf.Max(0,hp - poison*Time.deltaTime);
             poisonTime -= Time.deltaTime;
+            OnHealthChanged?.Invoke(healthDisplay());
             if (poisonTime<= 0f)
             {
                 poison = 0;
@@ -44,6 +41,7 @@ public class Health : MonoBehaviour
         else if ((hp<maxhp)&&(poison == 0))
         {
             hp = Mathf.Min(hp+healthRegen*Time.deltaTime, maxhp);
+            OnHealthChanged?.Invoke(healthDisplay());
         }
     }
     public void Initialize(float max, float regen, float regenTimeVar, float armval)
@@ -71,15 +69,16 @@ public class Health : MonoBehaviour
     }
     public bool TakeDamage(Damage damageObj)
     {
-        (float poisonValue, float damageValue) val = damageObj.GetDamage();
-        if (poison > 0)
+        (float damageValue, float poisonValue) val = damageObj.GetDamage();
+        if (val.poisonValue > 0)
         {
             poisonTime = poisonDuration;
-        poison = Mathf.Max(val.poisonValue, poison);
+            poison = Mathf.Max(val.poisonValue, poison);
         }
         float damage = computeDamage(val.damageValue);
         hp -= damage;
         timer = 0;
+        OnHealthChanged?.Invoke(healthDisplay());
         if (hp <= 0)
         {
             hp = maxhp;
@@ -95,6 +94,7 @@ public class Health : MonoBehaviour
         float damage = computeDamage(damageValue);
         hp -= damage;
         timer = 0;
+        OnHealthChanged?.Invoke(healthDisplay());
         if (hp <= 0)
         {
             hp = maxhp;
@@ -118,9 +118,10 @@ public class Health : MonoBehaviour
     {
         superRegen = false;
     }
-    public void Heal((float x, float healValue) val)
+    public void Heal(Damage damageComponent)
     {
-        hp = Mathf.Min(maxhp, hp + val.healValue);
+        hp = Mathf.Min(maxhp, hp + damageComponent.GetDamage().damageValue);
+        OnHealthChanged?.Invoke(healthDisplay());
     }
     public bool FullHP()
     {

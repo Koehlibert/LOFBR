@@ -2,37 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Extensions;
-public class FriendlyTowerHit : MonoBehaviour, IMortal
+public class FriendlyTowerHit : DamageableEntity
 {
     private TowerBehaviourFriendly tower;
-    public Health hpsys;
-    private MasterScript master;
-    // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         tower = GetComponentInChildren<TowerBehaviourFriendly>();
-        hpsys = GetComponent<Health>();
         hpsys.Initialize(300,0,0,20);
         master = FindObjectOfType<MasterScript>();
     }
-    void OnTriggerEnter(Collider other)
+    protected override void ConfigureCollisionRules(DamageCollisionHandler handler)
     {
-        if (other.HasAnyTag(new List<string>(){"BulletEnemy", "BulletEnemyPlayer"}))
+        handler.AddRule(new DamageCollisionHandler.CollisionRule
         {
-            if (CombatUtils.DealDamage(other, this))
-            {
-                Die();
-            }
-            Destroy(other.gameObject);
-        }
+            tags = new List<string> { "BulletEnemy", "BulletEnemyPlayer" },
+            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
+            destroyOnHit = true
+        });
     }
-    public void Die()
+    public override void Die()
     {
         master.allFriendliesTowers.Remove(this.gameObject);
         Destroy(this.gameObject);
     }
-    public Health GetHealth()
+    public override Health GetHealth()
     {
-        return this.hpsys;
+        return hpsys;
     }
 }

@@ -15,7 +15,7 @@ public class RegenAura : MonoBehaviour
         objectList = new List<GameObject>();
         player = FindObjectOfType<PlayerController>();
         buff = player.levelsys.getLevel()*3 + 10;
-        player.hpsys.ActivateSuperRegen(buff);
+        player.GetHealth().ActivateSuperRegen(buff);
     }
 
     // Update is called once per frame
@@ -53,6 +53,6 @@ public class RegenAura : MonoBehaviour
         {
             minion.gameObject.GetComponent<Health>().DeactivateSuperRegen();
         }
-        player.hpsys.DeactivateSuperRegen();
+        player.GetHealth().DeactivateSuperRegen();
     }
 }

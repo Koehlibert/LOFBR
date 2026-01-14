@@ -14,13 +14,13 @@ public class Damage : MonoBehaviour
         damage = damageValue;
         poison = 0;
     }
-    public (float poisonValue, float damageValue) GetDamage()
+    public (float damageValue, float poisonValue) GetDamage()
     {
-        return (poison, damage);
+        return (damage, poison);
     }
-    public (float poisonValue, float damageValue) GetDamage(float val)
+    public (float damageValue, float poisonValue) GetDamage(float val)
     {
-        return (poison*val, damage*val);
+        return (damage*val, poison*val);
     }
     public bool DealDamage(IMortal mortalObject)
     {
