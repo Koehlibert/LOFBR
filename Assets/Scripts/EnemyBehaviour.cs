@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using Extensions;
 public class EnemyBehaviour : MonoBehaviour, IMortal
 {
     public Health hpsys;
@@ -109,26 +110,29 @@ public class EnemyBehaviour : MonoBehaviour, IMortal
     }
     void OnCollisionEnter(Collision other)
     {
-        if ((other.gameObject.CompareTag("Bullet"))||other.gameObject.CompareTag("BulletPlayer"))
+        if (other.HasAnyTag(new List<string>(){"Bullet","BulletPlayer", "BulletPlayerShockwave"}))
         {
-            if ((other.gameObject.CompareTag("BulletPlayer"))||(other.gameObject.CompareTag("BulletPlayerShockwave")))
+            if (other.HasAnyTag(new List<string>(){"BulletPlayer","BulletPlayerShockwave"}))
             {
                 LastHit = true;
             }
-            if (hpsys.TakeDamage(other.gameObject.GetComponent<Damage>().GetDamage()))
+            if (CombatUtils.DealDamage(other, this))
             {
                 Die();
             }
-            Destroy(other.gameObject);
+            if (other.HasAnyTag(new List<string>(){"Bullet","BulletPlayer"}))
+            {
+                Destroy(other.gameObject);
+            }
         }
     }
     void OnCollisionStay(Collision other)
     {
-        if (other.gameObject.CompareTag("UltBulletFriendly"))
+        if (other.HasAnyTag(new List<string>(){"UltBulletFriendly"}))
         {
             LastHit = true;
             other.gameObject.GetComponent<UltBulletBehaviour>().count--;
-            if (hpsys.TakeDamage(other.gameObject.GetComponent<Damage>().GetDamage()))
+            if (CombatUtils.DealDamage(other, this))
             {
                 Die();
             }
@@ -136,10 +140,10 @@ public class EnemyBehaviour : MonoBehaviour, IMortal
     }
     void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Fire"))
+        if (other.HasAnyTag(new List<string>(){"Fire"}))
         {
             LastHit = true;
-            if (hpsys.TakeDamage(other.gameObject.GetComponent<Damage>().GetDamage(Time.deltaTime)))
+            if (CombatUtils.DealDamage(other, this))
             {
                 Die();
             }
@@ -147,19 +151,19 @@ public class EnemyBehaviour : MonoBehaviour, IMortal
     }
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("MeleePlayer")||(other.gameObject.CompareTag("BulletPlayerShockwave")))
+        if (other.HasAnyTag(new List<string>(){"MeleePlayer", "BulletPlayerShockwave"}))
         {
             LastHit = true;
-            if (hpsys.TakeDamage(other.gameObject.GetComponent<Damage>().GetDamage()))
+            if (CombatUtils.DealDamage(other, this))
             {
                 Die();
             }
         }
     }
-    public void getShanked((float poisonValue, float damageValue) val)
+    public void getShanked(Damage damage)
     {
         LastHit = true;
-        if (hpsys.TakeDamage(val))
+        if (CombatUtils.DealDamage(damage, this))
         {
             Die();
         }
@@ -222,5 +226,9 @@ public class EnemyBehaviour : MonoBehaviour, IMortal
             bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
         }
         Destroy(this.gameObject);
+    }
+    public Health GetHealth()
+    {
+        return hpsys; 
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Extensions;
 public class FriendlyTowerHit : MonoBehaviour, IMortal
 {
     private TowerBehaviourFriendly tower;
@@ -15,21 +15,14 @@ public class FriendlyTowerHit : MonoBehaviour, IMortal
         hpsys.Initialize(300,0,0,20);
         master = FindObjectOfType<MasterScript>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     void OnTriggerEnter(Collider other)
     {
-        if ((other.gameObject.CompareTag("BulletEnemy"))||(other.gameObject.CompareTag("BulletEnemyPlayer")))
+        if (other.HasAnyTag(new List<string>(){"BulletEnemy", "BulletEnemyPlayer"}))
         {
-            if (hpsys.TakeDamage(other.gameObject.GetComponent<Damage>().GetDamage()))
+            if (CombatUtils.DealDamage(other, this))
             {
                 Die();
             }
-            other.gameObject.SetActive(false);
             Destroy(other.gameObject);
         }
     }
@@ -37,5 +30,9 @@ public class FriendlyTowerHit : MonoBehaviour, IMortal
     {
         master.allFriendliesTowers.Remove(this.gameObject);
         Destroy(this.gameObject);
+    }
+    public Health GetHealth()
+    {
+        return this.hpsys;
     }
 }

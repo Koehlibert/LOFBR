@@ -1,9 +1,10 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Health : MonoBehaviour
 {
+    private const float poisonDuration = 10f;
     private float maxhp;
     private float hp;
     private float healthRegen;
@@ -13,7 +14,7 @@ public class Health : MonoBehaviour
     private bool superRegen;
     private float superRegenValue;
     private float poison;
-    private float poisonTime = 15f;
+    private float poisonTime;
     void Start()
     {
         
@@ -68,9 +69,14 @@ public class Health : MonoBehaviour
         armor = Mathf.Max(0,armor + armGain);
         armor = Mathf.Min(100,armor);
     }
-    public bool TakeDamage((float poisonValue, float damageValue) val)
+    public bool TakeDamage(Damage damageObj)
     {
+        (float poisonValue, float damageValue) val = damageObj.GetDamage();
+        if (poison > 0)
+        {
+            poisonTime = poisonDuration;
         poison = Mathf.Max(val.poisonValue, poison);
+        }
         float damage = computeDamage(val.damageValue);
         hp -= damage;
         timer = 0;

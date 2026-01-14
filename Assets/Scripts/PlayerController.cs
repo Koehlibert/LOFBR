@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Extensions;
 public class PlayerController : MonoBehaviour, IMortal, IMainPlayer
 {
     public Level levelsys;
@@ -70,15 +70,15 @@ public class PlayerController : MonoBehaviour, IMortal, IMainPlayer
     }
     void OnCollisionEnter(Collision col)
     {
-        if ((col.gameObject.CompareTag("BulletEnemy"))||(col.gameObject.CompareTag("BulletEnemyPlayer"))||(col.gameObject.CompareTag("BulletEnemyShockwave")))
+        if (col.HasAnyTag(new List<string>(){"BulletEnemy", "BulletEnemyPlayer", "BulletEnemyShockwave"}))
         {
-            if ((col.gameObject.CompareTag("BulletEnemyPlayer"))||(col.gameObject.CompareTag("BulletEnemyShockwave")))
+            if (col.HasAnyTag(new List<string>(){"BulletEnemyPlayer", "BulletEnemyShockwave"}))
             {
                 LastHit = true;
             }
             flashcolor.a = 0.8f*(1-hpsys.healthDisplay());
             damageimage.color = flashcolor;
-            if(!hpsys.TakeDamage(col.gameObject.GetComponent<Damage>().GetDamage()))
+            if (!CombatUtils.DealDamage(col, this))
             {
                 soundsource.time = 0.35f;
                 soundsource.Play();
@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour, IMortal, IMainPlayer
             {
                 Die();
             }
-            if (!col.gameObject.CompareTag("BulletEnemyShockwave"))
+            if (!col.HasAnyTag(new List<string>(){"BulletEnemyShockwave"}))
             {
                 Destroy(col.gameObject);
             }
@@ -163,5 +163,9 @@ public class PlayerController : MonoBehaviour, IMortal, IMainPlayer
     public Transform GetTransform()
     {
         return this.transform;
+    }
+    public Health GetHealth()
+    {
+        return hpsys;
     }
 }

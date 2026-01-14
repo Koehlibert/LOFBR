@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using Extensions;
 public class EnemyPlayerBehaviour : MonoBehaviour, IMortal, IMainPlayer
 {
     public Level levelsys;
@@ -237,28 +238,28 @@ public class EnemyPlayerBehaviour : MonoBehaviour, IMortal, IMainPlayer
     }
     void OnCollisionEnter(Collision other)
     {
-        if ((other.gameObject.CompareTag("Bullet"))||other.gameObject.CompareTag("BulletPlayer")||(other.gameObject.CompareTag("BulletPlayerShockwave"))||(other.gameObject.CompareTag("MeleePlayer")))
+        if (other.HasAnyTag(new List<string>(){"Bullet","BulletPlayer", "BulletPlayerShockwave", "MeleePlayer"}))
         {
-            if ((other.gameObject.CompareTag("BulletPlayer"))||(other.gameObject.CompareTag("BulletPlayerShockwave")))
+            if (other.HasAnyTag(new List<string>(){"BulletPlayer","BulletPlayerShockwave","MeleePlayer"}))
             {
                 LastHit = true;
             }
-            if(hpsys.TakeDamage(other.gameObject.GetComponent<Damage>().GetDamage()))
+            if (CombatUtils.DealDamage(other, this))
             {
                 Die();
             }
-            if (!other.gameObject.CompareTag("BulletPlayerShockwave")&&(!other.gameObject.CompareTag("MeleePlayer")))
+            if (other.HasAnyTag(new List<string>(){"Bullet","BulletPlayer"}))
             {
                 Destroy(other.gameObject);
             }
-            healthbar.fillAmount = hpsys.healthDisplay();
         }
     }
     void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Fire"))
+        if (other.HasAnyTag(new List<string>(){"Fire"}))
         {
-            if (hpsys.TakeDamage(other.gameObject.GetComponent<Damage>().GetDamage(Time.deltaTime)))
+            LastHit = true;
+            if (CombatUtils.DealDamage(other, this))
             {
                 Die();
             }
@@ -266,10 +267,10 @@ public class EnemyPlayerBehaviour : MonoBehaviour, IMortal, IMainPlayer
     }
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("MeleePlayer")||(other.gameObject.CompareTag("BulletPlayerShockwave")))
+        if (other.HasAnyTag(new List<string>(){"MeleePlayer", "BulletPlayerShockwave"}))
         {
             LastHit = true;
-            if (hpsys.TakeDamage(other.gameObject.GetComponent<Damage>().GetDamage()))
+            if (CombatUtils.DealDamage(other, this))
             {
                 Die();
             }
@@ -344,7 +345,7 @@ public class EnemyPlayerBehaviour : MonoBehaviour, IMortal, IMainPlayer
     void Shock()
     {
         Debug.Log("KABOOM!");
-        GameObject wave = Instantiate(shockwave, transform.position + new Vector3(0f,-0.4f,0f), transform.rotation);
+        GameObject wave = Instantiate(shockwave, transform.position + new Vector3(0f,0.4f,0f), transform.rotation);
         wave.GetComponent<Damage>().SetDamage(70+(levelsys.getLevel()-2)*6);
         isShocking = false;
         loadedShock = false;
@@ -500,5 +501,9 @@ public class EnemyPlayerBehaviour : MonoBehaviour, IMortal, IMainPlayer
     public Transform GetTransform()
     {
         return this.transform;
+    }
+    public Health GetHealth()
+    {
+        return hpsys;
     }
 }

@@ -14,8 +14,6 @@ public class UltBulletBehaviourEnemy : MonoBehaviour
         count = 8;
         master = FindObjectOfType<MasterScript>();
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (count <= 0)

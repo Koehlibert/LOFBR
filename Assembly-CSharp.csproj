@@ -61,6 +61,7 @@
      <Compile Include="Assets\Scripts\changeScene.cs" />
      <Compile Include="Assets\Scripts\checkShockWave.cs" />
      <Compile Include="Assets\Scripts\ClosestFinder.cs" />
+     <Compile Include="Assets\Scripts\CombatUtils.cs" />
      <Compile Include="Assets\Scripts\Damage.cs" />
      <Compile Include="Assets\Scripts\Dash.cs" />
      <Compile Include="Assets\Scripts\DestroyAfterTime.cs" />
@@ -76,7 +77,9 @@
      <Compile Include="Assets\Scripts\EnemySpawner.cs" />
      <Compile Include="Assets\Scripts\EnemyTowerHit.cs" />
      <Compile Include="Assets\Scripts\ExpDisplay.cs" />
+     <Compile Include="Assets\Scripts\Extensions.cs" />
      <Compile Include="Assets\Scripts\FireBehaviour.cs" />
+     <Compile Include="Assets\Scripts\FriendlyBase.cs" />
      <Compile Include="Assets\Scripts\FriendlyBehaviour.cs" />
      <Compile Include="Assets\Scripts\FriendlySpawner.cs" />
      <Compile Include="Assets\Scripts\FriendlyTowerHit.cs" />
@@ -101,7 +104,6 @@
      <Compile Include="Assets\Scripts\Parry.cs" />
      <Compile Include="Assets\Scripts\ParryColliderBehaviour.cs" />
      <Compile Include="Assets\Scripts\PauseGame.cs" />
-     <Compile Include="Assets\Scripts\PlayerBase.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scripts\PoisonBullet.cs" />
      <Compile Include="Assets\Scripts\RegenAura.cs" />

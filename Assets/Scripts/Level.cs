@@ -15,8 +15,6 @@ public class Level : MonoBehaviour
         maxlevel = 10;
         exp = 0;
     }
-
-    // Update is called once per frame
     void Update()
     {
     }
@@ -31,10 +29,10 @@ public class Level : MonoBehaviour
     public void gainExp(int amount)
     {
         exp += amount;
-        if ((exp >= levelexp[level])&&(level < maxlevel))
+        if ((exp >= levelexp[level])&&(level < maxlevel)&& gameObject != null && gameObject.activeInHierarchy)
         {
             level++;
-            SendMessage("LevelUp");
+            SendMessage("LevelUp", SendMessageOptions.DontRequireReceiver);
         }
     }
     public bool isMaxLevel()

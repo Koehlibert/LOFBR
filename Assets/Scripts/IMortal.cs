@@ -5,4 +5,5 @@ using UnityEngine;
 public interface IMortal
 {
     void Die();
+    Health GetHealth();
 }

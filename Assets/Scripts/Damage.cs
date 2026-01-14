@@ -1,21 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Damage : MonoBehaviour
 {
     private float damage;
     private float poison;
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void SetDamage(float damageValue, float poisonValue)
     {
         damage = damageValue;
@@ -24,6 +12,7 @@ public class Damage : MonoBehaviour
     public void SetDamage(float damageValue)
     {
         damage = damageValue;
+        poison = 0;
     }
     public (float poisonValue, float damageValue) GetDamage()
     {
@@ -32,5 +21,9 @@ public class Damage : MonoBehaviour
     public (float poisonValue, float damageValue) GetDamage(float val)
     {
         return (poison*val, damage*val);
+    }
+    public bool DealDamage(IMortal mortalObject)
+    {
+        return(mortalObject.GetHealth().TakeDamage(this));
     }
 }

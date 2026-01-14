@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Extensions;
 public class EnemyTowerHit : MonoBehaviour, IMortal
 {
     private TowerBehaviourEnemy tower;
@@ -23,9 +23,9 @@ public class EnemyTowerHit : MonoBehaviour, IMortal
     }
     void OnTriggerEnter(Collider other)
     {
-        if ((other.gameObject.CompareTag("Bullet"))||(other.gameObject.CompareTag("BulletPlayer")))
+        if (other.HasAnyTag(new List<string>(){"Bullet", "BulletPlayer"}))
         {
-            if (hpsys.TakeDamage(other.gameObject.GetComponent<Damage>().GetDamage()))
+            if (CombatUtils.DealDamage(other, this))
             {
                 Die();
             }
@@ -40,5 +40,9 @@ public class EnemyTowerHit : MonoBehaviour, IMortal
     {
         master.allEnemiesTowers.Remove(this.gameObject);
         Destroy(this.gameObject);
+    }
+    public Health GetHealth()
+    {
+        return this.hpsys;
     }
 }

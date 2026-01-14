@@ -1,31 +1,36 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class EnemyBase : MonoBehaviour
+using Extensions;
+public class EnemyBase : MonoBehaviour, IMortal
 {
     public Health hpsys;
-    public MasterScript master;
-    // Start is called before the first frame update
+    private MasterScript master;
+    private List<string> damagingTags = new List<string>() { "Bullet", "BulletPlayer" };
     void Start()
     {
+        master = FindObjectOfType<MasterScript>();
         hpsys = GetComponent<Health>();
         hpsys.Initialize(master.baseMaxHp,0,0,20);
     }
-    void Update()
-    {
-        
-    }
     void OnCollisionEnter(Collision col)
     {
-        if ((col.gameObject.CompareTag("Bullet"))||(col.gameObject.CompareTag("BulletPlayer")))
+        if ((col.HasAnyTag(damagingTags)))
         {
-            if (hpsys.TakeDamage(col.gameObject.GetComponent<Damage>().GetDamage()))
+            if (CombatUtils.DealDamage(col, this))
             {
-                master.victory = true;
-                master.gameOver = true;
+                Die();
             }
             Destroy(col.gameObject);
         }
+    }
+    public void Die()
+    {
+        master.victory = true;
+        master.gameOver = true;
+    }
+    public Health GetHealth()
+    {
+        return hpsys;
     }
 }

@@ -7,14 +7,15 @@ public class UltBladeFlurry : Ability
     private MasterScript master;
     private float duration = .4f;
     private List<ObjectWithDist> flurryPos;
+    private Damage damage;
     new void Start()
     {
         base.Start();
         master = FindObjectOfType<MasterScript>();
         loaded = true;
+        damage = gameObject.AddComponent<Damage>();
+        damage.SetDamage(5 + player.levelsys.getLevel() * 10, 0);
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetButtonDown("Ult")&&(loaded)&&player.manasys.checkCost(manaCost))
@@ -44,7 +45,7 @@ public class UltBladeFlurry : Ability
                 Quaternion lookDir = Quaternion.LookRotation(-offset);
                 player.transform.rotation = lookDir;
                 player.animator.Play("Melee",0,0f);
-                target.GetComponent<EnemyBehaviour>().getShanked((0,5 + player.levelsys.getLevel() * 10));
+                target.GetComponent<EnemyBehaviour>().getShanked(damage);
                 yield return new WaitForSeconds(duration);
             }
             else

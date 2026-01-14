@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using Extensions;
 public class FriendlyBehaviour : MonoBehaviour, IMortal
 {
     private Health hpsys;
@@ -115,7 +116,7 @@ public class FriendlyBehaviour : MonoBehaviour, IMortal
     }
     void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("BulletHealFriendly"))
+        if (other.HasAnyTag(new List<string>(){"BulletHealFriendly"}))
         {
             if(!hpsys.FullHP())
             {
@@ -124,17 +125,17 @@ public class FriendlyBehaviour : MonoBehaviour, IMortal
                 master.player.levelsys.gainExp(2);
             }
         }
-        else if ((other.gameObject.CompareTag("BulletEnemy"))||(other.gameObject.CompareTag("BulletEnemyPlayer")))
+        else if (other.HasAnyTag(new List<string>(){"BulletEnemy","BulletEnemyPlayer","BulletEnemyShockwave"}))
         {
-            if ((other.gameObject.CompareTag("BulletEnemyPlayer"))||(other.gameObject.CompareTag("BulletEnemyShockwave")))
+            if (other.HasAnyTag(new List<string>(){"BulletEnemyPlayer","BulletEnemyShockwave"}))
             {
                 LastHit = true;
             }
-            if (hpsys.TakeDamage(other.gameObject.GetComponent<Damage>().GetDamage()))
+            if (CombatUtils.DealDamage(other, this))
             {
                 Die();
             }
-            if (!other.gameObject.CompareTag("BulletEnemyShockwave"))
+            if (other.HasAnyTag(new List<string>(){"BulletEnemy","BulletEnemyPlayer"}))
             {
                 Destroy(other.gameObject);
             }
@@ -142,12 +143,12 @@ public class FriendlyBehaviour : MonoBehaviour, IMortal
     }
     void OnCollisionStay(Collision other)
     {
-        if (other.gameObject.CompareTag("UltBulletEnemy"))
+        if (other.HasAnyTag(new List<string>(){"UltBulletEnemy"}))
         {
-            (float, float) damage = other.gameObject.GetComponent<Damage>().GetDamage();
-            other.gameObject.GetComponent<UltBulletBehaviour>().count--;
+            if (other == null) return;
             LastHit = true;
-            if (hpsys.TakeDamage(damage))
+            other.gameObject.GetComponent<UltBulletBehaviour>().count--;
+            if (CombatUtils.DealDamage(other, this))
             {
                 Die();
             }
@@ -155,10 +156,10 @@ public class FriendlyBehaviour : MonoBehaviour, IMortal
     }
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("BulletEnemyShockwave"))
+        if (other.HasAnyTag(new List<string>(){"BulletEnemyShockwave"}))
         {
             LastHit = true;
-            if (hpsys.TakeDamage(other.gameObject.GetComponent<Damage>().GetDamage()))
+            if (CombatUtils.DealDamage(other, this))
             {
                 Die();
             }
@@ -210,5 +211,9 @@ public class FriendlyBehaviour : MonoBehaviour, IMortal
             bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
         }
         Destroy(this.gameObject);
+    }
+    public Health GetHealth()
+    {
+        return this.hpsys;
     }
 }

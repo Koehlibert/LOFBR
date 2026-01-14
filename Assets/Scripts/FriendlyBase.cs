@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class PlayerBase : MonoBehaviour
+using Extensions;
+public class FriendlyBase : MonoBehaviour, IMortal
 {
     public Health hpsys;
     public MasterScript master;
@@ -18,15 +18,22 @@ public class PlayerBase : MonoBehaviour
     }
     void OnCollisionEnter(Collision col)
     {
-        if ((col.gameObject.CompareTag("BulletEnemy"))||(col.gameObject.CompareTag("BulletEnemyPlayer")))
+        if (col.HasAnyTag(new List<string>() { "BulletEnemy", "BulletEnemyPlayer" }))
         {
-            if (hpsys.TakeDamage(col.gameObject.GetComponent<Damage>().GetDamage()))
+            if (CombatUtils.DealDamage(col, this))
             {
-                master.victory = false;
-                master.gameOver = true;
+                Die();
             }
             Destroy(col.gameObject);
         }
-
+    }
+    public void Die()
+    {
+        master.victory = false;
+        master.gameOver = true;
+    }
+    public Health GetHealth()
+    {
+        return hpsys;
     }
 }
