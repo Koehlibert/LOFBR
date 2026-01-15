@@ -61,8 +61,6 @@ public class DamageCollisionHandler : MonoBehaviour
             if (rule.eventType == eventType && other.HasAnyTag(rule.tags))
             {
                 Damage damageComponent = other.GetComponent<Damage>();
-                
-                // Special case for heal bullets
                 if (other.CompareTag("BulletHealFriendly") && damageableTarget != null)
                 {
                     FriendlyBehaviour friendlyTarget = damageableTarget as FriendlyBehaviour;
@@ -74,21 +72,15 @@ public class DamageCollisionHandler : MonoBehaviour
                         Destroy(other);
                     return;
                 }
-                
-                // Set LastHit on any DamageableEntity
                 if (rule.setLastHit && damageableTarget != null)
                 {
                     damageableTarget.SetLastHit(true);
                 }
-
                 if (damageComponent && CombatUtils.DealDamage(damageComponent, mortalTarget))
                 {
                     mortalTarget.Die();
                 }
-                
-                // Call the hit callback
                 onHitCallback?.Invoke(other);
-
                 if (rule.destroyOnHit)
                 {
                     Destroy(other);

@@ -53,6 +53,7 @@ public class UltBladeFlurry : Ability
                 continue;
             }
         }
+        player.animator.Play("Default",0,0f);
     }
     private Vector3 GetOffset(Vector3 target)
     {

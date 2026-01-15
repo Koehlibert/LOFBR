@@ -21,6 +21,7 @@ public class PlayerController : DamageableEntity, IMainPlayer
     private bool lookLock;
     private int classID;
     private Skillset skillSet;
+    private bool isDead = false;
     protected override void Start()
     {
         base.Start();
@@ -49,7 +50,7 @@ public class PlayerController : DamageableEntity, IMainPlayer
         var hpVals = skillSet.GetHPVals();
         hpsys.Initialize(hpVals.hpval, hpVals.regenval, hpVals.delay, hpVals.armorval);
         movementspeed = skillSet.GetSpeed();
-        flashspeed = 5f;
+        flashspeed = 2.5f;
 
         DamageCollisionHandler handler = GetComponent<DamageCollisionHandler>();
         handler.SetOnHitCallback(OnTakeDamage);
@@ -57,6 +58,8 @@ public class PlayerController : DamageableEntity, IMainPlayer
     void OnEnable()
     {
         moveLock = false;
+        isDead = false;
+        damageimage.color = Color.clear;
     }
     protected override void ConfigureCollisionRules(DamageCollisionHandler handler)
     {
@@ -88,7 +91,10 @@ public class PlayerController : DamageableEntity, IMainPlayer
     }
     void UpdateDamageImage()
     {
-        damageimage.color = Color.Lerp(damageimage.color, Color.clear, flashspeed * Time.deltaTime);
+        if (!isDead)
+        {
+            damageimage.color = Color.Lerp(damageimage.color, Color.clear, flashspeed * Time.deltaTime);
+        }
     }
     void UpdateLookPosition()
     {
@@ -106,8 +112,11 @@ public class PlayerController : DamageableEntity, IMainPlayer
     }
     private void OnTakeDamage(GameObject damageSource)
     {
-        flashcolor.a = 0.8f*(1-hpsys.healthDisplay());
-        damageimage.color = flashcolor;
+        if (!isDead)
+        {
+            flashcolor.a = 0.8f*(1-hpsys.healthDisplay());
+            damageimage.color = flashcolor;
+        }
     }
     void MoveCharakter(Vector3 movementv3)
     {
@@ -146,6 +155,9 @@ public class PlayerController : DamageableEntity, IMainPlayer
     }
     public override void Die()
     {
+        isDead = true;
+        flashcolor.a = 0.8f;
+        damageimage.color = flashcolor;
         if (LastHit)
         {
             enemyPlayer.levelsys.gainExp(5 + 5 * levelsys.getLevel());

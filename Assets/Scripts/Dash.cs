@@ -23,13 +23,13 @@ public class Dash : Ability
             {
                 float x = player.transform.position.x+dir.x*dashDistance;
                 float z = player.transform.position.z+dir.z*dashDistance;
-                if (x > 18)
+                if (x > master.upperAreaLimitX)
                 {
-                    x = 18;
+                    x = master.upperAreaLimitX;
                 }
-                else if (x< -18)
+                else if (x< master.lowerAreaLimitX)
                 {
-                    x = -18;
+                    x =  master.lowerAreaLimitX;
                 }
                 if (z > master.enemySpawn.getZPos() - 2)
                 {

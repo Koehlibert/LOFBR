@@ -84,7 +84,7 @@ public class TowerBehaviourFriendly : MonoBehaviour
         bulletinstance = Instantiate(bullet, transform.position + offset +1.5f*(transform.position-target.transform.position).normalized, transform.rotation);
         bulletinstance.GetComponent<Damage>().SetDamage(60,0);
         Rigidbody bulletrig = bulletinstance.GetComponent<Rigidbody>();
-        bulletrig.AddForce(gameObject.transform.forward*80000f*Time.deltaTime);
+        bulletrig.AddForce(gameObject.transform.forward*120000f*Time.deltaTime);
         StartCoroutine("reload");
     }
     private IEnumerator reload()

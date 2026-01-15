@@ -19,7 +19,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     private Vector3 standarddirection;
     public NavMeshAgent nmAgent;
     public GameObject bullet;
-    Vector3 offset = new Vector3(0,-0.5f,-1.5f);
+    Vector3 offset = new Vector3(0, -0.5f, -1.5f);
     public string enemytype;
     public GameObject closestCurrentEnemy;
     private GameObject yourbase;
@@ -64,8 +64,8 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
         attackdistance = 20;
         manasys = GetComponent<Mana>();
         levelsys = GetComponent<Level>();
-        hpsys.Initialize(300,3,4,5);
-        standarddirection = new Vector3(0f,0f,-1f);
+        hpsys.Initialize(300, 3, 4, 5);
+        standarddirection = new Vector3(0f, 0f, -1f);
         nmAgent = gameObject.GetComponent<NavMeshAgent>();
         reloadtime = 1.5f;
         player = GameObject.FindObjectOfType<PlayerController>();
@@ -94,7 +94,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     }
     void OnEnable()
     {
-        if(animator)
+        if (animator)
         {
             bulletinstance = Instantiate(bullet, animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + offset, transform.rotation);
             bulletrig = bulletinstance.GetComponent<Rigidbody>();
@@ -112,7 +112,14 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     {
         handler.AddRule(new DamageCollisionHandler.CollisionRule
         {
-            tags = new List<string> { "Bullet", "BulletPlayer", },
+            tags = new List<string> { "Bullet", },
+            eventType = DamageCollisionHandler.CollisionEventType.Enter,
+            destroyOnHit = true,
+            setLastHit = false
+        });
+        handler.AddRule(new DamageCollisionHandler.CollisionRule
+        {
+            tags = new List<string> { "BulletPlayer", },
             eventType = DamageCollisionHandler.CollisionEventType.Enter,
             destroyOnHit = true,
             setLastHit = true
@@ -131,7 +138,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
             destroyOnHit = false,
             setLastHit = true
         });
-        
+
         handler.AddRule(new DamageCollisionHandler.CollisionRule
         {
             tags = new List<string> { "MeleePlayer", "BulletPlayerShockwave" },
@@ -177,38 +184,41 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     }
     void FixedUpdate()
     {
-        transform.position = new Vector3(transform.position.x,0,transform.position.z);
+        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
         UpdateBars();
         if (master.timeCounter % 150 == 0)
         {
             circledirection *= -1;
         }
         UpdateBullets();
-        pos2D = new Vector3(transform.position.x,0,transform.position.z);
+        pos2D = new Vector3(transform.position.x, 0, transform.position.z);
         closestCurrentEnemy = closestFinder.FindClosestFriend();
         CheckUlt();
-        if(loadedShock)
+        if (loadedShock)
         {
             MoveShockCheckColliders();
         }
-        Vector3 closestpos = closestCurrentEnemy.transform.position;
         hurt = CheckHurt();
-        if ((hurt)&&(transform.position.z <= yourbase.transform.position.z - 5))
+        if ((hurt) && (transform.position.z <= yourbase.transform.position.z - 5))
         {
             if (!closestCurrentEnemy)
             {
                 nmAgent.enabled = false;
             }
-            else if (Vector3.Distance(closestpos, transform.position)<= 40f)
+            else
             {
-                nmAgent.enabled = false;
-                transform.Translate(-standarddirection*movementSpeed*Time.deltaTime,Space.World);
-                animSpeed = 0.5f;
-                distance = Vector3.Distance(closestCurrentEnemy.transform.position, transform.position);
-                if (distance < attackdistance)
+                Vector3 closestpos = closestCurrentEnemy.transform.position;
+                if (Vector3.Distance(closestpos, transform.position) <= 40f)
                 {
-                    Attack(closestpos);
-                    animSpeed = 0;
+                    nmAgent.enabled = false;
+                    transform.Translate(-standarddirection * movementSpeed * Time.deltaTime, Space.World);
+                    animSpeed = 0.5f;
+                    distance = Vector3.Distance(closestCurrentEnemy.transform.position, transform.position);
+                    if (distance < attackdistance)
+                    {
+                        Attack(closestpos);
+                        animSpeed = 0;
+                    }
                 }
             }
         }
@@ -216,21 +226,21 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
         {
             if (closestCurrentEnemy == null)
             {
-                if (Vector3.Distance(this.transform.position,enemybase.transform.position)<=attackdistance)
+                if (Vector3.Distance(this.transform.position, enemybase.transform.position) <= attackdistance)
                 {
                     Attack(enemybase.transform.position);
                     animSpeed = 0;
                 }
                 else
                 {
-                    transform.Translate(standarddirection*movementSpeed*Time.deltaTime,Space.World);
+                    transform.Translate(standarddirection * movementSpeed * Time.deltaTime, Space.World);
                     animSpeed = 1;
                 }
             }
             else
             {
                 distance = Vector3.Distance(closestCurrentEnemy.transform.position, transform.position);
-                if ((distance <= followdistance)&&(distance > attackdistance))
+                if ((distance <= followdistance) && (distance > attackdistance))
                 {
                     nmAgent.enabled = true;
                     nmAgent.SetDestination(closestCurrentEnemy.transform.position);
@@ -239,7 +249,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
                 else if (distance < attackdistance)
                 {
                     nmAgent.enabled = false;
-                    if(transform.position.x <= 1)
+                    if (transform.position.x <= 1)
                     {
                         circledirection = 1;
                     }
@@ -247,38 +257,44 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
                     {
                         circledirection = -1;
                     }
-                    if ((distance <= avoidDistance)&&(transform.position.z <=yourbase.transform.position.z - 5))
+                    if ((distance <= avoidDistance) && (transform.position.z <= yourbase.transform.position.z - 5))
                     {
                         Vector3 dir = transform.position - closestCurrentEnemy.transform.position;
-                        if((transform.position.x <= 1)||(transform.position.x >= 19))
+                        if ((transform.position.x <= 1) || (transform.position.x >= 19))
                         {
-                            dir = new Vector3(0,0,1);
+                            dir = new Vector3(0, 0, 1);
                         }
-                        transform.Translate(new Vector3(dir.x,0,1).normalized*movementSpeed*Time.deltaTime,Space.World);
+                        transform.Translate(new Vector3(dir.x, 0, 1).normalized * movementSpeed * Time.deltaTime, Space.World);
                         Attack(closestCurrentEnemy.transform.position);
                         animSpeed = 1;
                     }
                     else
                     {
-                        transform.Translate(circledirection*0.25f*movementSpeed*Time.deltaTime,0,0,Space.World);
+                        transform.Translate(circledirection * 0.25f * movementSpeed * Time.deltaTime, 0, 0, Space.World);
                         Attack(closestCurrentEnemy.transform.position);
                         animSpeed = 1;
-                    }                    
+                    }
                 }
                 else
                 {
-                    if(transform.position.z >= master.friendlySpawn.getZPos() + 10)
+                    if (transform.position.z >= master.friendlySpawn.getZPos() + 10)
                     {
-                        transform.Translate(standarddirection*movementSpeed*Time.deltaTime,Space.World);
+                        transform.Translate(standarddirection * movementSpeed * Time.deltaTime, Space.World);
                         animSpeed = 1;
                     }
                 }
             }
-            animator.SetFloat("speedPercent",animSpeed);
+            animator.SetFloat("speedPercent", animSpeed);
         }
-        else if ((isShocking)&&(loadedShock))
+        else if ((isShocking) && (loadedShock))
         {
-            if (Vector3.Distance(pos2D,closestCurrentEnemy.transform.position)<=2.5)
+            if (!closestCurrentEnemy)
+            {
+                nmAgent.enabled = false;
+                isShocking = false;
+                return;
+            }
+            if (Vector3.Distance(pos2D, closestCurrentEnemy.transform.position) <= 2.5)
             {
                 Shock();
                 isShocking = false;
@@ -286,7 +302,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
             }
             else
             {
-                if (Vector3.Distance(pos2D,closestCurrentEnemy.transform.position)<=7.5)
+                if (Vector3.Distance(pos2D, closestCurrentEnemy.transform.position) <= 7.5)
                 {
                     UseShield();
                 }
@@ -294,12 +310,12 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
                 nmAgent.SetDestination(target);
                 animSpeed = 1;
             }
-        }  
+        }
     }
     public void Attack(Vector3 target)
-    {   
-        transform.LookAt(new Vector3(target.x,transform.position.y,target.z));
-        if ((loaded)&&manasys.checkCost(5))
+    {
+        transform.LookAt(new Vector3(target.x, transform.position.y, target.z));
+        if ((loaded) && manasys.checkCost(5))
         {
             StartCoroutine("Shootanim");
             StartCoroutine("Reload");
@@ -309,15 +325,15 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     void LevelUp()
     {
         reloadtime *= 0.95f;
-        hpsys.UpdateValues((levelsys.getLevel() - 1) * 25,0.5f);
+        hpsys.UpdateValues((levelsys.getLevel() - 1) * 25, 0.5f);
         movementSpeed++;
-        nmAgent.speed+=2;
-        manasys.UpdateValues(1.2f,1.35f);
+        nmAgent.speed += 2;
+        manasys.UpdateValues(1.2f, 1.35f);
         if (levelsys.checkLevel(2))
         {
             detector.enabled = true;
             detector2.enabled = true;
-            reloadtimeShock *=0.9f;
+            reloadtimeShock *= 0.9f;
         }
     }
     private IEnumerator Reload()
@@ -336,21 +352,21 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     private IEnumerator Resetanim()
     {
         yield return new WaitForSeconds(0.25f);
-        animator.Play("Default",0,0f);
+        animator.Play("Default", 0, 0f);
     }
     private IEnumerator Shootanim()
     {
-        animator.Play("Shoot",0,0f);
+        animator.Play("Shoot", 0, 0f);
         yield return new WaitForSeconds(0.1f);
-        bulletinstance.GetComponent<Damage>().SetDamage(34 + 7*levelsys.getLevel());
-        bulletrig.AddForce(gameObject.transform.forward*200000f*Time.deltaTime);
+        bulletinstance.GetComponent<Damage>().SetDamage(34 + 7 * levelsys.getLevel());
+        bulletrig.AddForce(gameObject.transform.forward * 200000f * Time.deltaTime);
         bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
         bulletrig = null;
         if (bulletrig2)
         {
             bulletrig2.transform.position = animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + offset;
-            bulletinstance2.GetComponent<Damage>().SetDamage(34 + 7*levelsys.getLevel());
-            bulletrig2.AddForce(gameObject.transform.forward*200000f*Time.deltaTime);
+            bulletinstance2.GetComponent<Damage>().SetDamage(34 + 7 * levelsys.getLevel());
+            bulletrig2.AddForce(gameObject.transform.forward * 200000f * Time.deltaTime);
             bulletinstance2.GetComponent<DestroyAfterTime>().DelayedDestroy();
             bulletrig2 = null;
         }
@@ -364,9 +380,8 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     }
     void Shock()
     {
-        Debug.Log("KABOOM!");
-        GameObject wave = Instantiate(shockwave, transform.position + new Vector3(0f,0.4f,0f), transform.rotation);
-        wave.GetComponent<Damage>().SetDamage(70+(levelsys.getLevel()-2)*6);
+        GameObject wave = Instantiate(shockwave, transform.position + new Vector3(0f, 0.4f, 0f), transform.rotation);
+        wave.GetComponent<Damage>().SetDamage(70 + (levelsys.getLevel() - 2) * 6);
         isShocking = false;
         loadedShock = false;
         manasys.useMana(75);
@@ -374,7 +389,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     }
     public void GoShock(Vector3 location)
     {
-        if ((loadedShock)&&manasys.checkCost(75))
+        if ((loadedShock) && manasys.checkCost(75))
         {
             target = location;
             isShocking = true;
@@ -382,11 +397,11 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     }
     public void UseShield()
     {
-        if ((levelsys.checkLevel(3))&&(loadedShield)&&manasys.checkCost(120))
+        if ((levelsys.checkLevel(3)) && (loadedShield) && manasys.checkCost(120))
         {
-            shieldInstance = Instantiate(shield,transform.position,transform.rotation); 
+            shieldInstance = Instantiate(shield, transform.position, transform.rotation);
             shieldInstance.GetComponent<Shield>().SetPlayer(this);
-            manasys.useMana(120);  
+            manasys.useMana(120);
             StartCoroutine("ReloadShield");
             StartCoroutine("DestroyShield");
         }
@@ -439,7 +454,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     }
     private void MoveShockCheckColliders()
     {
-        if(levelsys.getLevel() > 1)
+        if (levelsys.getLevel() > 1)
         {
             GameObject[] closeEns = closestFinder.FindTwoClosestFriendlies();
             if (closeEns[0])

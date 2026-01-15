@@ -9,12 +9,6 @@ public class MoveAllFriendly : MonoBehaviour
     {
         Destroy(this.gameObject, 1f);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     void OnTriggerStay(Collider other)
     {
         foreach (string tag in moveableThings)

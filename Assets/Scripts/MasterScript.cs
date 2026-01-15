@@ -88,6 +88,8 @@ public class MasterScript : MonoBehaviour
     public float timeCounter;
     private bool continueBool;
     private List<Tombstone> rezPoolFriendly;
+    public float upperAreaLimitX = 18;
+    public float lowerAreaLimitX = -18;
     void Start()
     {
         ambientsource.Play();

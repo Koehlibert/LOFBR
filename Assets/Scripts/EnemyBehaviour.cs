@@ -60,7 +60,14 @@ public class EnemyBehaviour : DamageableEntity
     {
         handler.AddRule(new DamageCollisionHandler.CollisionRule
         {
-            tags = new List<string> { "Bullet", "BulletPlayer", },
+            tags = new List<string> { "Bullet", },
+            eventType = DamageCollisionHandler.CollisionEventType.Enter,
+            destroyOnHit = true,
+            setLastHit = false
+        });
+        handler.AddRule(new DamageCollisionHandler.CollisionRule
+        {
+            tags = new List<string> { "BulletPlayer", },
             eventType = DamageCollisionHandler.CollisionEventType.Enter,
             destroyOnHit = true,
             setLastHit = true
