@@ -20,4 +20,12 @@ public static class CombatUtils
     {
         return damage.DealDamage(target);
     }
+    public static bool DealDamage(float damageValue, IMortal target)
+    {
+        Damage damage = new GameObject().AddComponent<Damage>();
+        damage.SetDamage(damageValue);
+        bool result = damage.DealDamage(target);
+        GameObject.Destroy(damage.gameObject);
+        return result;
+    }
 }

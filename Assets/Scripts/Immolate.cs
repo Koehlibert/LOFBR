@@ -5,7 +5,6 @@ using UnityEngine;
 public class Immolate : Ability
 {
     public GameObject partSys;
-    //public ReloadUlt reloader
     private GameObject fire;
     private bool isOnFire;
     private float manaDrain;
@@ -21,6 +20,10 @@ public class Immolate : Ability
     void OnDisable()
     {
         reset();
+    }
+    private float computeDamage()
+    {
+        return 3.5f * player.levelsys.getLevel();
     }
     void Update()
     {
@@ -61,7 +64,7 @@ public class Immolate : Ability
         reloader.shoot();
         player.manasys.useMana(manaCost);
         fire.SetActive(true);
-        fire.GetComponent<Damage>().SetDamage(3.5f * player.levelsys.getLevel(), 0);
+        fire.GetComponent<Damage>().SetDamage(computeDamage(), 0);
         isOnFire = true;
     }
     private void TurnOff()

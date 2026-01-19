@@ -76,9 +76,21 @@ public class DamageCollisionHandler : MonoBehaviour
                 {
                     damageableTarget.SetLastHit(true);
                 }
-                if (damageComponent && CombatUtils.DealDamage(damageComponent, mortalTarget))
+                if (other.CompareTag("Fire"))
                 {
-                    mortalTarget.Die();
+                    float damageValue = damageComponent.GetDamage(Time.deltaTime).damageValue;
+                    Debug.Log("Damage dealt by fire: " + damageValue);
+                    if (damageComponent && CombatUtils.DealDamage(damageValue, mortalTarget))
+                    {
+                        mortalTarget.Die();
+                    }
+                }
+                else
+                {
+                    if (damageComponent && CombatUtils.DealDamage(damageComponent, mortalTarget))
+                    {
+                        mortalTarget.Die();
+                    }
                 }
                 onHitCallback?.Invoke(other);
                 if (rule.destroyOnHit)
