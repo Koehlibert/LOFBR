@@ -115,7 +115,6 @@ public class MasterScript : MonoBehaviour
         timeCounter++;
         if ((gameOver) && (!continueBool))
         {
-            //HUD.SetActive(false);
             GameOverMenu.SetActive(true);
             GameOverContinue.SetActive(true);
             friendlySpawn.setEnabled(false);

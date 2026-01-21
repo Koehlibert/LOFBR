@@ -22,6 +22,7 @@ public class PlayerController : DamageableEntity, IMainPlayer
     private int classID;
     private Skillset skillSet;
     private bool isDead = false;
+    private float offsetFloor = 2f;
     protected override void Start()
     {
         base.Start();
@@ -51,7 +52,6 @@ public class PlayerController : DamageableEntity, IMainPlayer
         hpsys.Initialize(hpVals.hpval, hpVals.regenval, hpVals.delay, hpVals.armorval);
         movementspeed = skillSet.GetSpeed();
         flashspeed = 2.5f;
-
         DamageCollisionHandler handler = GetComponent<DamageCollisionHandler>();
         handler.SetOnHitCallback(OnTakeDamage);
     }
@@ -66,20 +66,21 @@ public class PlayerController : DamageableEntity, IMainPlayer
         handler.AddRule(new DamageCollisionHandler.CollisionRule
         {
             tags = new List<string> { "BulletEnemy", "BulletEnemyPlayer" },
-            eventType = DamageCollisionHandler.CollisionEventType.Enter,
-            destroyOnHit = false,
+            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
+            destroyOnHit = true,
             setLastHit = true
         });
         handler.AddRule(new DamageCollisionHandler.CollisionRule
         {
             tags = new List<string> { "BulletEnemyShockwave" },
             eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
-            destroyOnHit = true,
+            destroyOnHit = false,
             setLastHit = true
         });
     }
     void FixedUpdate()
     {
+        StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
         if (Input.GetButtonDown("Cheat"))
         {
             levelsys.gainExp(100);
@@ -87,7 +88,7 @@ public class PlayerController : DamageableEntity, IMainPlayer
         }
         UpdateLookPosition();
         UpdateDamageImage();
-        MoveCharakter(movement);
+        MoveCharacter();
     }
     void UpdateDamageImage()
     {
@@ -118,17 +119,18 @@ public class PlayerController : DamageableEntity, IMainPlayer
             damageimage.color = flashcolor;
         }
     }
-    void MoveCharakter(Vector3 movementv3)
+    void MoveCharacter()
     {
         float moveSideways = Input.GetAxis("Horizontal");
         float moveForward = -Input.GetAxis("Vertical");
         float rotateSideways = Input.GetAxis("Vertical");
-        movement = new Vector3(moveForward, 0.0f, moveSideways);
+        movement = new Vector3(moveForward, 0, moveSideways);
+        transform.position = new Vector3(transform.position.x, offsetFloor, transform.position.z);
         animSpeed = movement.normalized.magnitude;
         animator.SetFloat("speedPercent", animSpeed);
         if (!moveLock)
         {
-            transform.Translate(movementv3*movementspeed*Time.deltaTime,Space.World);
+            transform.Translate(movement*movementspeed*Time.deltaTime,Space.World);
         }
     }
     void LevelUp()

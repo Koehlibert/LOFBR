@@ -56,7 +56,6 @@ public class ShootLeft : Ability
         bulletinstance = Instantiate(bullet, player.animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + player.transform.forward, player.transform.rotation);
         bulletrig = bulletinstance.GetComponent<Rigidbody>();
         loaded = true;
-        player.transform.position = new Vector3(player.transform.position.x, 0.7f, player.transform.position.z);
     }
     private IEnumerator resetanim()
     {

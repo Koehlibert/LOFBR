@@ -58,6 +58,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     private GameObject shieldInstance;
     public Mana manasys;
     private ClosestFinder closestFinder;
+    private float offsetFloor = 2f;
     protected override void Start()
     {
         base.Start();
@@ -113,21 +114,21 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
         handler.AddRule(new DamageCollisionHandler.CollisionRule
         {
             tags = new List<string> { "Bullet", },
-            eventType = DamageCollisionHandler.CollisionEventType.Enter,
+            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
             destroyOnHit = true,
             setLastHit = false
         });
         handler.AddRule(new DamageCollisionHandler.CollisionRule
         {
             tags = new List<string> { "BulletPlayer", },
-            eventType = DamageCollisionHandler.CollisionEventType.Enter,
+            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
             destroyOnHit = true,
             setLastHit = true
         });
         handler.AddRule(new DamageCollisionHandler.CollisionRule
         {
             tags = new List<string> { "MeleePlayer" },
-            eventType = DamageCollisionHandler.CollisionEventType.Enter,
+            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
             destroyOnHit = false,
             setLastHit = true
         });
@@ -184,7 +185,8 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     }
     void FixedUpdate()
     {
-        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
+        transform.position = new Vector3(transform.position.x, offsetFloor, transform.position.z);
         UpdateBars();
         if (master.timeCounter % 150 == 0)
         {

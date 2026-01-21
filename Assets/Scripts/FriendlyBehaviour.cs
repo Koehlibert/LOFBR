@@ -29,6 +29,7 @@ public class FriendlyBehaviour : DamageableEntity
     public Image healthbar;
     public Image healthbarbg;
     private ClosestFinder closestFinder;
+    private float offsetFloor = 2f;
     protected override void Start()
     {
         base.Start();
@@ -60,14 +61,14 @@ public class FriendlyBehaviour : DamageableEntity
         handler.AddRule(new DamageCollisionHandler.CollisionRule
         {
             tags = new List<string> { "BulletHealFriendly" },
-            eventType = DamageCollisionHandler.CollisionEventType.Enter,
+            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
             destroyOnHit = false
         });
         
         handler.AddRule(new DamageCollisionHandler.CollisionRule
         {
             tags = new List<string> { "BulletEnemy", "BulletEnemyPlayer", },
-            eventType = DamageCollisionHandler.CollisionEventType.Enter,
+            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
             destroyOnHit = true,
             setLastHit = true
         });
@@ -75,13 +76,13 @@ public class FriendlyBehaviour : DamageableEntity
         {
             tags = new List<string> { "BulletEnemyShockwave" },
             eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
-            destroyOnHit = true,
+            destroyOnHit = false,
             setLastHit = true
         });
         handler.AddRule(new DamageCollisionHandler.CollisionRule
         {
             tags = new List<string> { "UltBulletEnemy" },
-            eventType = DamageCollisionHandler.CollisionEventType.Stay,
+            eventType = DamageCollisionHandler.CollisionEventType.TriggerStay,
             setLastHit = true
         });
     }
@@ -127,7 +128,8 @@ public class FriendlyBehaviour : DamageableEntity
     }
     void FixedUpdate()
     {
-        transform.position = new Vector3(transform.position.x,0,transform.position.z);
+        StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
+        transform.position = new Vector3(transform.position.x, offsetFloor, transform.position.z);
         if (bulletrig)
         {
             bulletrig.transform.position = animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + offset;

@@ -54,7 +54,6 @@ public class ShootRight : Ability
         bulletinstance = Instantiate(bullet, player.animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + player.transform.forward, player.transform.rotation);
         bulletrig = bulletinstance.GetComponent<Rigidbody>();
         loaded = true;
-        player.transform.position = new Vector3(player.transform.position.x, 0.7f, player.transform.position.z);
     }
     private IEnumerator resetanim()
     {
@@ -63,6 +62,10 @@ public class ShootRight : Ability
     }
     private IEnumerator shootanim()
     {
+        if(bulletinstance==null)
+        {
+            yield break;
+        }
         player.animator.Play("Shoot",0,0f);
         yield return new WaitForSeconds(0.1f);
         soundsource.Play();

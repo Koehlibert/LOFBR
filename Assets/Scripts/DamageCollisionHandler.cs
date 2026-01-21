@@ -79,7 +79,6 @@ public class DamageCollisionHandler : MonoBehaviour
                 if (other.CompareTag("Fire"))
                 {
                     float damageValue = damageComponent.GetDamage(Time.deltaTime).damageValue;
-                    Debug.Log("Damage dealt by fire: " + damageValue);
                     if (damageComponent && CombatUtils.DealDamage(damageValue, mortalTarget))
                     {
                         mortalTarget.Die();

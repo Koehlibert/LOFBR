@@ -20,7 +20,7 @@ public class ParryColliderBehaviour : MonoBehaviour
         if ((col.gameObject.CompareTag("BulletEnemy"))||(col.gameObject.CompareTag("BulletEnemyPlayer")))
         {
             Rigidbody rb = col.GetComponent<Rigidbody>();
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
             rb.AddForce(player.transform.forward*2000);
             col.gameObject.tag = "BulletPlayer";
         }

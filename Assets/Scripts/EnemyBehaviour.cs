@@ -30,6 +30,7 @@ public class EnemyBehaviour : DamageableEntity
     private bool loaded;
     public Image healthbar;
     public Image healthbarbg;
+    private float offsetFloor = 2f;
     protected override void Start()
     {
         base.Start();
@@ -61,28 +62,21 @@ public class EnemyBehaviour : DamageableEntity
         handler.AddRule(new DamageCollisionHandler.CollisionRule
         {
             tags = new List<string> { "Bullet", },
-            eventType = DamageCollisionHandler.CollisionEventType.Enter,
+            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
             destroyOnHit = true,
             setLastHit = false
         });
         handler.AddRule(new DamageCollisionHandler.CollisionRule
         {
             tags = new List<string> { "BulletPlayer", },
-            eventType = DamageCollisionHandler.CollisionEventType.Enter,
+            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
             destroyOnHit = true,
             setLastHit = true
         });
         handler.AddRule(new DamageCollisionHandler.CollisionRule
         {
-            tags = new List<string> { "MeleePlayer" },
-            eventType = DamageCollisionHandler.CollisionEventType.Enter,
-            destroyOnHit = false,
-            setLastHit = true
-        });
-        handler.AddRule(new DamageCollisionHandler.CollisionRule
-        {
             tags = new List<string> { "UltBulletFriendly" },
-            eventType = DamageCollisionHandler.CollisionEventType.Stay,
+            eventType = DamageCollisionHandler.CollisionEventType.TriggerStay,
             destroyOnHit = false,
             setLastHit = true
         });
@@ -132,7 +126,8 @@ public class EnemyBehaviour : DamageableEntity
     }
     void FixedUpdate()
     {
-        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
+        transform.position = new Vector3(transform.position.x, offsetFloor, transform.position.z);
         if (bulletrig)
         {
             bulletrig.transform.position = animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + offset;

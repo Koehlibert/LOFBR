@@ -52,7 +52,8 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400002, guid: 3011a945998d67f4ba66fddc047e23ec, type: 3}
+    m_Motion: {fileID: -8945691123924629249, guid: 49bc1ad9be1d5b143b7a368fe080cabb,
+      type: 3}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -60,7 +61,17 @@ BlendTree:
     m_DirectBlendParameter: speedPercent
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400004, guid: 3011a945998d67f4ba66fddc047e23ec, type: 3}
+    m_Motion: {fileID: 8349542763059015795, guid: 49bc1ad9be1d5b143b7a368fe080cabb,
+      type: 3}
+    m_Threshold: 0.5
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: speedPercent
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -7551964380084998518, guid: 49bc1ad9be1d5b143b7a368fe080cabb,
+      type: 3}
     m_Threshold: 1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -76,7 +87,7 @@ BlendTree:
   m_BlendType: 0
 --- !u!1102 &1102426176155394346
 AnimatorState:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -94,7 +105,8 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400014, guid: f1586f9e19536e543b7b1b2abf9dcc6a, type: 3}
+  m_Motion: {fileID: 3520749527373145362, guid: 49bc1ad9be1d5b143b7a368fe080cabb,
+    type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -102,7 +114,7 @@ AnimatorState:
   m_TimeParameter: 
 --- !u!1102 &1102829874105358888
 AnimatorState:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -120,7 +132,8 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400010, guid: f1586f9e19536e543b7b1b2abf9dcc6a, type: 3}
+  m_Motion: {fileID: 9083654474561383684, guid: 49bc1ad9be1d5b143b7a368fe080cabb,
+    type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -128,7 +141,7 @@ AnimatorState:
   m_TimeParameter: 
 --- !u!1102 &1102858055355189988
 AnimatorState:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -146,7 +159,8 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400006, guid: f1586f9e19536e543b7b1b2abf9dcc6a, type: 3}
+  m_Motion: {fileID: -7453387558714718212, guid: 49bc1ad9be1d5b143b7a368fe080cabb,
+    type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -154,7 +168,7 @@ AnimatorState:
   m_TimeParameter: 
 --- !u!1102 &1102908773879926540
 AnimatorState:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -180,7 +194,7 @@ AnimatorState:
   m_TimeParameter: 
 --- !u!1107 &1107582178641086860
 AnimatorStateMachine:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -189,22 +203,22 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 1102908773879926540}
-    m_Position: {x: 48, y: 204, z: 0}
+    m_Position: {x: 50, y: 210, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102858055355189988}
-    m_Position: {x: 264, y: 120, z: 0}
+    m_Position: {x: 270, y: 120, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102829874105358888}
-    m_Position: {x: 264, y: 72, z: 0}
+    m_Position: {x: 270, y: 70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102426176155394346}
-    m_Position: {x: 264, y: 168, z: 0}
+    m_Position: {x: 270, y: 170, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 168, y: 48, z: 0}
+  m_AnyStatePosition: {x: 90, y: 30, z: 0}
   m_EntryPosition: {x: 48, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
