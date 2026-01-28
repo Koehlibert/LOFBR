@@ -11,7 +11,7 @@ public abstract class DamageableEntity : MonoBehaviour, IMortal
     {
         LastHit = false;
         hpsys = GetComponent<Health>();
-        master = FindObjectOfType<MasterScript>();
+        master = FindAnyObjectByType<MasterScript>();
         SetupCollisionHandler();
     }
     

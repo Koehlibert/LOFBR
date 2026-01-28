@@ -35,13 +35,13 @@ public class Skillset : MonoBehaviour
     {
         if (!wasCalled)
         {
-            meleeCol =  FindObjectOfType<MeleeCollider>().gameObject;
+            meleeCol =  FindAnyObjectByType<MeleeCollider>().gameObject;
             meleeCol.SetActive(false);
-            parryCol = FindObjectOfType<ParryColliderBehaviour>().gameObject;
+            parryCol = FindAnyObjectByType<ParryColliderBehaviour>().gameObject;
             parryCol.SetActive(false);
-            fire =  FindObjectOfType<FireBehaviour>().gameObject;
+            fire =  FindAnyObjectByType<FireBehaviour>().gameObject;
             fire.SetActive(false);
-            aura = FindObjectOfType<ArmorAura>().gameObject;
+            aura = FindAnyObjectByType<ArmorAura>().gameObject;
             aura.SetActive(false);
             manaLineRend = GetComponent<LineRenderer>();
             manaLineRend.enabled = false;
@@ -57,7 +57,7 @@ public class Skillset : MonoBehaviour
             reloadList.Add(GameObject.Find("AltReloader").GetComponent<Reload>());
             reloadList.Add(GameObject.Find("SkillReloader").GetComponent<Reload>());
             reloadList.Add(GameObject.Find("UltReloader").GetComponent<Reload>());
-            player = FindObjectOfType<PlayerController>();
+            player = FindAnyObjectByType<PlayerController>();
             manasys = player.manasys;
             for (int i = 0; i<5; i++)
             {

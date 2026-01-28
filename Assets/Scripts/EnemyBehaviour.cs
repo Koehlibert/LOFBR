@@ -34,7 +34,7 @@ public class EnemyBehaviour : DamageableEntity
         base.Start();
         rend = GetComponent<Renderer>();
         nmAgent = gameObject.GetComponent<NavMeshAgent>();
-        player = GameObject.FindObjectOfType<PlayerController>();
+        player = GameObject.FindAnyObjectByType<PlayerController>();
         enemytype = "Friendly";
         closestCurrentEnemy = null;
         closestFinder = new ClosestFinder(player, this.gameObject, master);
@@ -75,7 +75,7 @@ public class EnemyBehaviour : DamageableEntity
     }
     void OnEnable()
     {
-        master = FindObjectOfType<MasterScript>();
+        master = FindAnyObjectByType<MasterScript>();
         master.AddEnemy(this.gameObject);
     }
     void OnDisable()
@@ -91,7 +91,7 @@ public class EnemyBehaviour : DamageableEntity
         }
         if (player == null)
         {
-            player = GameObject.FindObjectOfType<PlayerController>();
+            player = GameObject.FindAnyObjectByType<PlayerController>();
         }
         closestCurrentEnemy = closestFinder.FindClosestFriend();
         if (closestCurrentEnemy == null)

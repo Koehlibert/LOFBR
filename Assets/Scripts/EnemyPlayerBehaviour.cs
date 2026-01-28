@@ -64,7 +64,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
         standarddirection = new Vector3(0f, 0f, -1f);
         nmAgent = gameObject.GetComponent<NavMeshAgent>();
         reloadtime = 1.5f;
-        player = GameObject.FindObjectOfType<PlayerController>();
+        player = GameObject.FindAnyObjectByType<PlayerController>();
         enemytype = "Friendly";
         healthbar.fillAmount = hpsys.healthDisplay();
         manaBar.fillAmount = manasys.getPercent();
@@ -84,7 +84,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
         reloadtimeShock = 6;
         detector.enabled = false;
         detector2.enabled = false;
-        bulletdetector = FindObjectOfType<DetectBullets>();
+        bulletdetector = FindAnyObjectByType<DetectBullets>();
         loadedUlt = false;
     }
     void OnEnable()

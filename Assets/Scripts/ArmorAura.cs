@@ -10,7 +10,7 @@ public class ArmorAura : MonoBehaviour
     void Start()
     {
         aura = GetComponent<CapsuleCollider>();
-        player = FindObjectOfType<PlayerController>();
+        player = FindAnyObjectByType<PlayerController>();
     }
     void OnEnable()
     {

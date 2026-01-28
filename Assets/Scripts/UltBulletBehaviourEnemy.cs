@@ -12,7 +12,7 @@ public class UltBulletBehaviourEnemy : MonoBehaviour
     void Start()
     {
         count = 8;
-        master = FindObjectOfType<MasterScript>();
+        master = FindAnyObjectByType<MasterScript>();
     }
     void Update()
     {

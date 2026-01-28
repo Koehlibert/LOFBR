@@ -10,7 +10,7 @@ public class UltRez : Ability
     new void Start()
     {
         base.Start();
-        master = FindObjectOfType<MasterScript>();
+        master = FindAnyObjectByType<MasterScript>();
         loaded = true;
         player = GetComponent<PlayerController>();
     }

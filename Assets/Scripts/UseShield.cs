@@ -17,7 +17,7 @@ public class UseShield : Ability
         if (Input.GetButtonDown("Skill")&&(loaded)&&player.manasys.checkCost(manaCost))
         {
             shieldInstance = Instantiate(shield, player.transform.position + new Vector3(0f,2f,0f), player.transform.rotation);
-            shieldInstance.GetComponent<Shield>().SetPlayer(FindObjectOfType<PlayerController>());
+            shieldInstance.GetComponent<Shield>().SetPlayer(FindAnyObjectByType<PlayerController>());
             StartCoroutine("reload");
             StartCoroutine("destroyShield");
             reloader.shoot();

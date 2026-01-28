@@ -11,7 +11,7 @@ public class UltBladeFlurry : Ability
     new void Start()
     {
         base.Start();
-        master = FindObjectOfType<MasterScript>();
+        master = FindAnyObjectByType<MasterScript>();
         loaded = true;
         damage = gameObject.AddComponent<Damage>();
         damage.SetProperties(5 + player.levelsys.getLevel() * 10, 0, CombatUtils.Team.Player, false, true);

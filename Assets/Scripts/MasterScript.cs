@@ -101,8 +101,8 @@ public class MasterScript : MonoBehaviour
         defeatImage.enabled = false;
         GameOverMenu.SetActive(false);
         GameOverContinue.SetActive(false);
-        player = FindObjectOfType<PlayerController>();
-        enemyPlayer = FindObjectOfType<EnemyPlayerBehaviour>();
+        player = FindAnyObjectByType<PlayerController>();
+        enemyPlayer = FindAnyObjectByType<EnemyPlayerBehaviour>();
         continueBool = false;
         allEnemiesTowers = new List<GameObject>(GameObject.FindGameObjectsWithTag("EnemyTower"));
         allFriendliesTowers = new List<GameObject>(GameObject.FindGameObjectsWithTag("FriendlyTower"));

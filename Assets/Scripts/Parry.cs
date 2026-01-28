@@ -11,9 +11,9 @@ public class Parry : Ability
         base.Start();
         duration = .6f;
         loaded = true;
-        parryCollider = FindObjectOfType<ParryColliderBehaviour>().gameObject;
+        parryCollider = FindAnyObjectByType<ParryColliderBehaviour>().gameObject;
         parryCollider.SetActive(false);
-        player = FindObjectOfType<PlayerController>();
+        player = FindAnyObjectByType<PlayerController>();
     }
     void Update()
     {

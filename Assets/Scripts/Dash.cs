@@ -12,7 +12,7 @@ public class Dash : Ability
     {
         base.Start();
         loaded = true;
-        master = FindObjectOfType<MasterScript>();
+        master = FindAnyObjectByType<MasterScript>();
     }
     void Update()
     {

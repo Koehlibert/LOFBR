@@ -25,7 +25,7 @@ public class PlayerController : DamageableEntity, IMainPlayer
     protected override void Start()
     {
         base.Start();
-        enemyPlayer = FindObjectOfType<EnemyPlayerBehaviour>();
+        enemyPlayer = FindAnyObjectByType<EnemyPlayerBehaviour>();
         levelsys = GetComponent<Level>();
         manasys = GetComponent<Mana>();
         hpsys = GetComponent<Health>();

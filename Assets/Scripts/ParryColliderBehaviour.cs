@@ -8,7 +8,7 @@ public class ParryColliderBehaviour : MonoBehaviour
     private Vector3 offset = new Vector3(0, 3, 0);
     void Start()
     {
-        player = FindObjectOfType<PlayerController>();
+        player = FindAnyObjectByType<PlayerController>();
     }
     void Update()
     {

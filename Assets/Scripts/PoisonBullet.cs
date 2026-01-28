@@ -17,9 +17,9 @@ public class PoisonBullet : MonoBehaviour
     private ClosestFinder closestFinder;
     void Start()
     {
-        master = FindObjectOfType<MasterScript>();
+        master = FindAnyObjectByType<MasterScript>();
         rb = GetComponent<Rigidbody>();
-        enemy = FindObjectOfType<EnemyPlayerBehaviour>();
+        enemy = FindAnyObjectByType<EnemyPlayerBehaviour>();
         closestFinder = new ClosestFinder(enemy, this.gameObject, master);
     }
     void Update()

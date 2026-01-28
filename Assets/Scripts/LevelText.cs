@@ -9,7 +9,7 @@ public class LevelText : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = FindObjectOfType<PlayerController>();
+        player = FindAnyObjectByType<PlayerController>();
     }
 
     // Update is called once per frame

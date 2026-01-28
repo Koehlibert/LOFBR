@@ -12,7 +12,7 @@ public class UltBulletBehaviour : MonoBehaviour
     void Start()
     {
         count = 8;
-        master = FindObjectOfType<MasterScript>();
+        master = FindAnyObjectByType<MasterScript>();
     }
 
     // Update is called once per frame

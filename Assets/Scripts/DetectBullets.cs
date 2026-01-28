@@ -8,7 +8,7 @@ public class DetectBullets : MonoBehaviour
     private List<GameObject> objectList;
     void Start()
     {
-        player = FindObjectOfType<EnemyPlayerBehaviour>();
+        player = FindAnyObjectByType<EnemyPlayerBehaviour>();
         objectList = new List<GameObject>();
     }
 

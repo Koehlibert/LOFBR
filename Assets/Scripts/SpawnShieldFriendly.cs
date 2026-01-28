@@ -9,7 +9,7 @@ public class SpawnShieldFriendly : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = FindObjectOfType<PlayerController>();
+        player = FindAnyObjectByType<PlayerController>();
         shield = GetComponent<CapsuleCollider>();
     }
     void Update()

@@ -13,7 +13,7 @@ public class UseArmorAura : Ability
         reloadtime = 2f;
         manaCost = 20;
         player = GetComponent<PlayerController>();
-        aura = FindObjectOfType<ArmorAura>().gameObject;
+        aura = FindAnyObjectByType<ArmorAura>().gameObject;
         aura.SetActive(false);
         armorActive = false;
     }

@@ -15,7 +15,7 @@ public class ManaDrain : Ability
         base.Start();
         lRend= GetComponent<LineRenderer>();
         loaded = true;
-        enemy = FindObjectOfType<EnemyPlayerBehaviour>();
+        enemy = FindAnyObjectByType<EnemyPlayerBehaviour>();
         lRend.enabled = false;
         isDraining = false;
     }

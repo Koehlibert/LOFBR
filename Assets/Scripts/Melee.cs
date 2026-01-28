@@ -15,9 +15,9 @@ public class Melee : Ability
     {
         base.Start();
         loaded = true;
-        meleeCollider = FindObjectOfType<MeleeCollider>().gameObject;
+        meleeCollider = FindAnyObjectByType<MeleeCollider>().gameObject;
         meleeCollider.SetActive(false);
-        master = FindObjectOfType<MasterScript>();
+        master = FindAnyObjectByType<MasterScript>();
     }
     void OnEnable()
     {
@@ -42,7 +42,7 @@ public class Melee : Ability
         }
         if (attacking)
         {
-            player.MoveCharacter(dir, speedup = speedup);
+            player.MoveCharacter(dir, speedup);
         }
     }
     private IEnumerator reload()

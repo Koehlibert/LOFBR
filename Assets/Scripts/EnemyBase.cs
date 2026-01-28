@@ -9,7 +9,7 @@ public class EnemyBase : MonoBehaviour, IMortal
     private List<string> damagingTags = new List<string>() { "Bullet", "BulletPlayer" };
     void Start()
     {
-        master = FindObjectOfType<MasterScript>();
+        master = FindAnyObjectByType<MasterScript>();
         hpsys = GetComponent<Health>();
         hpsys.Initialize(master.baseMaxHp,0,0,20);
     }

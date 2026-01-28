@@ -13,7 +13,7 @@ public class Immolate : Ability
         base.Start();
         loaded = true;
         reloadtime = 8f;
-        fire = FindObjectOfType<FireBehaviour>().gameObject;
+        fire = FindAnyObjectByType<FireBehaviour>().gameObject;
         fire.SetActive(false);
         isOnFire = false;
     }

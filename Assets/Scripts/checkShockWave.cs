@@ -10,7 +10,7 @@ public class checkShockWave : MonoBehaviour
     void Start()
     {
         objectList = new List<GameObject>();
-        player = FindObjectOfType<EnemyPlayerBehaviour>();
+        player = FindAnyObjectByType<EnemyPlayerBehaviour>();
         manyEnemies = false;
     }
 

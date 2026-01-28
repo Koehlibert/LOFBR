@@ -11,7 +11,7 @@ public class EnemyTowerHit : DamageableEntity
         base.Start();
         tower = GetComponentInChildren<TowerBehaviourEnemy>();
         hpsys.Initialize(300,0,0,20);
-        master = FindObjectOfType<MasterScript>();
+        master = FindAnyObjectByType<MasterScript>();
     }
     /* protected override void ConfigureCollisionRules(DamageCollisionHandler handler)
     {

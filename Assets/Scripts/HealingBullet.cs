@@ -18,7 +18,7 @@ public class HealingBullet : MonoBehaviour
     private ClosestFinder closestFinder;
     void Start()
     {
-        master = FindObjectOfType<MasterScript>();
+        master = FindAnyObjectByType<MasterScript>();
         rb = GetComponent<Rigidbody>();
         allFriendlies = master.allFriendlies;
         fullHPFriendlies = new List<GameObject>();

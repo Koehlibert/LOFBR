@@ -10,7 +10,7 @@ public class FireBehaviour : MonoBehaviour
     private Vector3 offset = new Vector3(0,4,0);
     void Start()
     {
-        player = FindObjectOfType<PlayerController>();
+        player = FindAnyObjectByType<PlayerController>();
         manaCost = 2;
         dmg = gameObject.GetComponent<Damage>();
     }
