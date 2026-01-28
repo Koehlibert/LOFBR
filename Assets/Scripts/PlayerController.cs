@@ -133,13 +133,11 @@ public class PlayerController : DamageableEntity, IMainPlayer
     {
         animSpeed = direction.normalized.magnitude;
         animator.SetFloat("speedPercent", animSpeed);
-        transform.Translate(direction * movementspeed * Time.deltaTime, Space.World);
+        transform.position = MasterScript.Instance.CorrectTarget(transform.position + direction * movementspeed * Time.deltaTime);
     }
     public void MoveCharacter(Vector3 direction, float speedup)
     {
-        animSpeed = direction.normalized.magnitude;
-        animator.SetFloat("speedPercent", animSpeed);
-        transform.Translate(direction * movementspeed * speedup * Time.deltaTime, Space.World);
+        MoveCharacter(direction * speedup);
     }
     void LevelUp()
     {

@@ -21,7 +21,7 @@ public class Dash : Ability
             {
                 float x = player.transform.position.x+dir.x*dashDistance;
                 float z = player.transform.position.z+dir.z*dashDistance;
-                if (x > MasterScript.Instance.upperAreaLimitX)
+                /* if (x > MasterScript.Instance.upperAreaLimitX)
                 {
                     x = MasterScript.Instance.upperAreaLimitX;
                 }
@@ -37,7 +37,8 @@ public class Dash : Ability
                 {
                     z = MasterScript.Instance.friendlySpawn.getZPos() + 2;
                 }
-                Vector3 moveDir = new Vector3(x-player.transform.position.x,0,z-player.transform.position.z);
+                Vector3 moveDir = new Vector3(x-player.transform.position.x,0,z-player.transform.position.z); */
+                Vector3 moveDir = MasterScript.Instance.CorrectTarget(new Vector3 (x, 0, z));
                 StartCoroutine(player.LockMovement(0.2f));
                 player.transform.Translate(moveDir,Space.World);
                 StartCoroutine("reload");
