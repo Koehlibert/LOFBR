@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class UltBladeFlurry : Ability
 {
-    private MasterScript master;
     private float duration = .4f;
     private List<ObjectWithDist> flurryPos;
     private Damage damage;
     new void Start()
     {
         base.Start();
-        master = FindAnyObjectByType<MasterScript>();
         loaded = true;
         damage = gameObject.AddComponent<Damage>();
         damage.SetProperties(5 + player.levelsys.getLevel() * 10, 0, CombatUtils.Team.Player, false, true);
@@ -20,7 +18,7 @@ public class UltBladeFlurry : Ability
     {
         if (Input.GetButtonDown("Ult")&&(loaded)&&player.manasys.checkCost(manaCost))
         {
-            flurryPos = master.GetFlurryTargets(player.levelsys.getLevel() -2);
+            flurryPos = MasterScript.Instance.GetFlurryTargets(player.levelsys.getLevel() -2);
             if (flurryPos.Count > 0)
             {
                 StartCoroutine("reload");
@@ -70,7 +68,7 @@ public class UltBladeFlurry : Ability
         {
             dir.x = -dir.x;
         }
-        if ((temp.z <= master.friendlySpawn.getZPos() + 1)||(temp.z >= master.enemySpawn.getZPos() - 1))
+        if ((temp.z <= MasterScript.Instance.friendlySpawn.getZPos() + 1)||(temp.z >= MasterScript.Instance.enemySpawn.getZPos() - 1))
         {
             dir.y = -dir.y;
         }

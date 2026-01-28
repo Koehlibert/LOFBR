@@ -5,13 +5,11 @@ public abstract class DamageableEntity : MonoBehaviour, IMortal
 {
     protected Health hpsys;
     protected bool LastHit;
-    protected MasterScript master;
     public abstract CombatUtils.Team Team {get;}
     protected virtual void Start()
     {
         LastHit = false;
         hpsys = GetComponent<Health>();
-        master = FindAnyObjectByType<MasterScript>();
         SetupCollisionHandler();
     }
     

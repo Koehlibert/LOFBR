@@ -39,7 +39,7 @@ public class FriendlyBehaviour : DamageableEntity
         player = FindAnyObjectByType<EnemyPlayerBehaviour>();
         closestCurrentEnemy = null;
         enemybase = GameObject.FindWithTag(enemytype + "Base");
-        closestFinder = new ClosestFinder(player, this.gameObject, master);
+        closestFinder = new ClosestFinder(player, this.gameObject);
         hpsys.Initialize(100, 0, 0, 0);
         loaded = true;
         reloadtime = 1.5f;
@@ -60,7 +60,7 @@ public class FriendlyBehaviour : DamageableEntity
         if (!hpsys.FullHP())
         {
             hpsys.Heal(damageComponent);
-            master.player.levelsys.gainExp(5);
+            MasterScript.Instance.player.levelsys.gainExp(5);
             Destroy(bulletObject);
         }
     }
@@ -87,12 +87,11 @@ public class FriendlyBehaviour : DamageableEntity
     }
     void OnEnable()
     {
-        master = FindAnyObjectByType<MasterScript>();
-        master.AddFriendly(this.gameObject);
+        MasterScript.Instance.AddFriendly(this.gameObject);
     }
     void OnDisable()
     {
-        master.RemoveFriendly(this.gameObject);
+        MasterScript.Instance.RemoveFriendly(this.gameObject);
     }
     void LateUpdate()
     {
@@ -119,7 +118,7 @@ public class FriendlyBehaviour : DamageableEntity
                 Attack(enemybase.transform.position);
                 animSpeed = 0;
             }
-            else if (transform.position.z <= master.respawnpointEnemyPlayer.transform.position.z)
+            else if (transform.position.z <= MasterScript.Instance.respawnpointEnemyPlayer.transform.position.z)
             {
                 transform.Translate(standarddirection * movementSpeed * Time.deltaTime, Space.World);
                 animSpeed = 1;
@@ -140,7 +139,7 @@ public class FriendlyBehaviour : DamageableEntity
                 Attack(closestCurrentEnemy.transform.position);
                 animSpeed = 0;
             }
-            else if (transform.position.z <= master.respawnpointEnemyPlayer.transform.position.z)
+            else if (transform.position.z <= MasterScript.Instance.respawnpointEnemyPlayer.transform.position.z)
             {
                 transform.Translate(standarddirection * movementSpeed * Time.deltaTime, Space.World);
                 animSpeed = 1;

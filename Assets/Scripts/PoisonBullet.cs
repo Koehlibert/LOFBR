@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PoisonBullet : MonoBehaviour
 {
-    private MasterScript master;
     private Rigidbody rb;
     private EnemyPlayerBehaviour enemy;
     private float speed = 25;
@@ -17,10 +16,9 @@ public class PoisonBullet : MonoBehaviour
     private ClosestFinder closestFinder;
     void Start()
     {
-        master = FindAnyObjectByType<MasterScript>();
         rb = GetComponent<Rigidbody>();
         enemy = FindAnyObjectByType<EnemyPlayerBehaviour>();
-        closestFinder = new ClosestFinder(enemy, this.gameObject, master);
+        closestFinder = new ClosestFinder(enemy, this.gameObject);
     }
     void Update()
     {

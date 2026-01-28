@@ -5,13 +5,11 @@ using Extensions;
 public class EnemyBase : MonoBehaviour, IMortal
 {
     public Health hpsys;
-    private MasterScript master;
     private List<string> damagingTags = new List<string>() { "Bullet", "BulletPlayer" };
     void Start()
     {
-        master = FindAnyObjectByType<MasterScript>();
         hpsys = GetComponent<Health>();
-        hpsys.Initialize(master.baseMaxHp,0,0,20);
+        hpsys.Initialize(MasterScript.Instance.baseMaxHp,0,0,20);
     }
     void OnCollisionEnter(Collision col)
     {
@@ -26,8 +24,8 @@ public class EnemyBase : MonoBehaviour, IMortal
     }
     public void Die()
     {
-        master.victory = true;
-        master.gameOver = true;
+        MasterScript.Instance.victory = true;
+        MasterScript.Instance.gameOver = true;
     }
     public Health GetHealth()
     {

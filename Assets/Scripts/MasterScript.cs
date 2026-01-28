@@ -57,6 +57,7 @@ public class Tombstone
 }
 public class MasterScript : MonoBehaviour
 {
+    public static MasterScript Instance;
     public PlayerController player;
     public ISpawner enemySpawn;
     public ISpawner friendlySpawn;
@@ -90,6 +91,10 @@ public class MasterScript : MonoBehaviour
     private List<Tombstone> rezPoolFriendly;
     public float upperAreaLimitX = 18;
     public float lowerAreaLimitX = -18;
+    private void Awake()
+    {
+        Instance = this;
+    }
     void Start()
     {
         ambientsource.Play();

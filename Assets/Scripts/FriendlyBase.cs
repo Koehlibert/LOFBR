@@ -5,12 +5,11 @@ using Extensions;
 public class FriendlyBase : MonoBehaviour, IMortal
 {
     public Health hpsys;
-    public MasterScript master;
     // Start is called before the first frame update
     void Start()
     {
         hpsys = GetComponent<Health>();
-        hpsys.Initialize(master.baseMaxHp,0,0,20);
+        hpsys.Initialize(MasterScript.Instance.baseMaxHp,0,0,20);
     }
     void Update()
     {
@@ -29,8 +28,8 @@ public class FriendlyBase : MonoBehaviour, IMortal
     }
     public void Die()
     {
-        master.victory = false;
-        master.gameOver = true;
+        MasterScript.Instance.victory = false;
+        MasterScript.Instance.gameOver = true;
     }
     public Health GetHealth()
     {

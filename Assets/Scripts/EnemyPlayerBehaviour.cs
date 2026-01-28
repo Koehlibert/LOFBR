@@ -71,7 +71,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
         closestCurrentEnemy = null;
         enemybase = GameObject.FindWithTag(enemytype + "Base");
         yourbase = GameObject.FindWithTag("EnemyBase");
-        closestFinder = new ClosestFinder(player, this.gameObject, master);
+        closestFinder = new ClosestFinder(player, this.gameObject);
         bulletinstance = Instantiate(bullet, animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + offset, transform.rotation);
         bulletrig = bulletinstance.GetComponent<Rigidbody>();
         loaded = true;
@@ -135,7 +135,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
         loaded = true;
         loadedShock = true;
         isShocking = false;
-        master.EnemyDieAndRespawn();
+        MasterScript.Instance.EnemyDieAndRespawn();
     }
     public GameObject GetGameObject()
     {
@@ -153,7 +153,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     {
         StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
         UpdateBars();
-        if (master.timeCounter % 150 == 0)
+        if (MasterScript.Instance.timeCounter % 150 == 0)
         {
             circledirection *= -1;
         }
@@ -243,7 +243,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
                 }
                 else
                 {
-                    if (transform.position.z >= master.friendlySpawn.getZPos() + 10)
+                    if (transform.position.z >= MasterScript.Instance.friendlySpawn.getZPos() + 10)
                     {
                         transform.Translate(standarddirection * movementSpeed * Time.deltaTime, Space.World);
                         animSpeed = 1;
@@ -410,7 +410,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     }
     private void CheckUlt()
     {
-        if ((master.allFriendlies.Count >= 4) && (loadedUlt) && (levelsys.checkLevel(5)) && manasys.checkCost(250))
+        if ((MasterScript.Instance.allFriendlies.Count >= 4) && (loadedUlt) && (levelsys.checkLevel(5)) && manasys.checkCost(250))
         {
             GameObject ultInstance = Instantiate(BulletUlt, transform.position + transform.forward + new Vector3(0, 2, 0), transform.rotation);
             ultInstance.gameObject.GetComponent<Damage>().SetProperties(50 + (levelsys.getLevel() - 5) * 4.5f, 0, this.Team, false, true);

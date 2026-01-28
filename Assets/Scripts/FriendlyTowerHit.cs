@@ -10,7 +10,6 @@ public class FriendlyTowerHit : DamageableEntity
         base.Start();
         tower = GetComponentInChildren<TowerBehaviourFriendly>();
         hpsys.Initialize(300,0,0,20);
-        master = FindAnyObjectByType<MasterScript>();
     }
     /* protected override void ConfigureCollisionRules(DamageCollisionHandler handler)
     {
@@ -24,7 +23,7 @@ public class FriendlyTowerHit : DamageableEntity
     public override CombatUtils.Team Team => CombatUtils.Team.Player;
     public override void Die()
     {
-        master.allFriendliesTowers.Remove(this.gameObject);
+        MasterScript.Instance.allFriendliesTowers.Remove(this.gameObject);
         Destroy(this.gameObject);
     }
     public override Health GetHealth()

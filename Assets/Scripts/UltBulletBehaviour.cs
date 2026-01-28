@@ -6,13 +6,11 @@ using UnityEngine.AI;
 public class UltBulletBehaviour : MonoBehaviour
 {
     public int count;
-    private MasterScript master;
     private GameObject closestCurrentEnemy;
     public GameObject target;
     void Start()
     {
         count = 8;
-        master = FindAnyObjectByType<MasterScript>();
     }
 
     // Update is called once per frame
@@ -25,7 +23,7 @@ public class UltBulletBehaviour : MonoBehaviour
         }
         if (!target)
         {
-            target = findClosestEnemy(master.allEnemies)[0];
+            target = findClosestEnemy(MasterScript.Instance.allEnemies)[0];
         }  
         if(!target)
         {

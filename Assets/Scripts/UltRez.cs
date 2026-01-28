@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class UltRez : Ability
 {
-    private MasterScript master;
     public GameObject Mob;
     private Quaternion spawndirection = new Quaternion(0,0,0,0);
     new void Start()
     {
         base.Start();
-        master = FindAnyObjectByType<MasterScript>();
         loaded = true;
         player = GetComponent<PlayerController>();
     }
@@ -20,7 +18,7 @@ public class UltRez : Ability
     {
         if (Input.GetButtonDown("Ult")&&(loaded)&&player.manasys.checkCost(manaCost))
         {
-            List<Vector3> locations = master.GetRezPositions(player.levelsys.getLevel() - 2);
+            List<Vector3> locations = MasterScript.Instance.GetRezPositions(player.levelsys.getLevel() - 2);
             if(locations.Count > 0)
             {
                 StartCoroutine("reload");

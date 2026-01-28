@@ -6,53 +6,50 @@ public class ClosestFinder
 {
     private IMainPlayer player;
     private GameObject selfObject;
-    private MasterScript master;
-    public ClosestFinder(IMainPlayer player, GameObject selfObject, MasterScript master)
+    public ClosestFinder(IMainPlayer player, GameObject selfObject)
     {
         this.player = player;
         this.selfObject = selfObject;
-        this.master = master;
     }
-    public void Initialize(IMainPlayer player, GameObject selfObject, MasterScript master)
+    public void Initialize(IMainPlayer player, GameObject selfObject)
     {
         this.player = player;
         this.selfObject = selfObject;
-        this.master = master;
     }
     public GameObject FindClosestFriend()
     {
-        List<GameObject> allFriendles = master.allFriendliesTowers;
+        List<GameObject> allFriendles = MasterScript.Instance.allFriendliesTowers;
         return FindClosest(allFriendles, player);
     }
     public GameObject[] FindTwoClosestFriendlies()
     {
-        List<GameObject> allFriendlies = master.allFriendlies;
+        List<GameObject> allFriendlies = MasterScript.Instance.allFriendlies;
         return FindTwoClosest(allFriendlies, player);
     }
     public GameObject FindClosestFriendNoTower()
     {
-        List<GameObject> allFriendles = master.allFriendlies;
+        List<GameObject> allFriendles = MasterScript.Instance.allFriendlies;
         return FindClosest(allFriendles, player);
     }
     public GameObject FindClosestEnemy()
     {
-        List<GameObject> allEnemies = master.allEnemiesTowers;
+        List<GameObject> allEnemies = MasterScript.Instance.allEnemiesTowers;
         return FindClosest(allEnemies, player);
     }
     public GameObject[] FindTwoClosestEnemies()
     {
-        List<GameObject> allEnemies = master.allEnemiesTowers;
+        List<GameObject> allEnemies = MasterScript.Instance.allEnemiesTowers;
         return FindTwoClosest(allEnemies, player);
     }
     public GameObject FindClosestEnemyNoTower()
     {
-        List<GameObject> allEnemies = master.allEnemies;
+        List<GameObject> allEnemies = MasterScript.Instance.allEnemies;
         return FindClosest(allEnemies, player);
     }
     public GameObject FindClosestHurtFriendly()
     {
         List<GameObject> hurtFriendlies = new List<GameObject>();
-        List<GameObject> allFriendlies = master.allFriendlies;
+        List<GameObject> allFriendlies = MasterScript.Instance.allFriendlies;
         foreach (GameObject friendly in allFriendlies)
         {
             if(friendly.GetComponent<Health>().healthDisplay() < 1)

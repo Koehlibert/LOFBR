@@ -173,7 +173,7 @@ public class PlayerController : DamageableEntity, IMainPlayer
             enemyPlayer.levelsys.gainExp(5 + 5 * levelsys.getLevel());
         }
         LastHit = false;
-        master.DieAndRespawn();
+        MasterScript.Instance.DieAndRespawn();
     }
     public GameObject GetGameObject()
     {

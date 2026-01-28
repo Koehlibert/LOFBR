@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class HealingBullet : MonoBehaviour
 {
-    private MasterScript master;
     private Rigidbody rb;
     private float speed = 30;
     private float focusDistance = 17.5f;
@@ -18,11 +17,10 @@ public class HealingBullet : MonoBehaviour
     private ClosestFinder closestFinder;
     void Start()
     {
-        master = FindAnyObjectByType<MasterScript>();
         rb = GetComponent<Rigidbody>();
-        allFriendlies = master.allFriendlies;
+        allFriendlies = MasterScript.Instance.allFriendlies;
         fullHPFriendlies = new List<GameObject>();
-        closestFinder = new ClosestFinder(null, this.gameObject, master);
+        closestFinder = new ClosestFinder(null, this.gameObject);
     }
     void Update()
     {

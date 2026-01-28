@@ -37,7 +37,7 @@ public class EnemyBehaviour : DamageableEntity
         player = GameObject.FindAnyObjectByType<PlayerController>();
         enemytype = "Friendly";
         closestCurrentEnemy = null;
-        closestFinder = new ClosestFinder(player, this.gameObject, master);
+        closestFinder = new ClosestFinder(player, this.gameObject);
         enemybase = GameObject.FindWithTag(enemytype + "Base");
         loaded = true;
         reloadtime = 1.5f;
@@ -75,12 +75,11 @@ public class EnemyBehaviour : DamageableEntity
     }
     void OnEnable()
     {
-        master = FindAnyObjectByType<MasterScript>();
-        master.AddEnemy(this.gameObject);
+        MasterScript.Instance.AddEnemy(this.gameObject);
     }
     void OnDisable()
     {
-        master.RemoveEnemy(this.gameObject);
+        MasterScript.Instance.RemoveEnemy(this.gameObject);
     }
     void FixedUpdate()
     {
@@ -101,7 +100,7 @@ public class EnemyBehaviour : DamageableEntity
                 attack(enemybase.transform.position);
                 animSpeed = 0;
             }
-            else if (transform.position.z >= master.respawnpointPlayer.transform.position.z)
+            else if (transform.position.z >= MasterScript.Instance.respawnpointPlayer.transform.position.z)
             {
                 transform.Translate(standarddirection * movementSpeed * Time.deltaTime, Space.World);
                 animSpeed = 1;
@@ -122,7 +121,7 @@ public class EnemyBehaviour : DamageableEntity
                 attack(closestCurrentEnemy.transform.position);
                 animSpeed = 0;
             }
-            else if (transform.position.z >= master.respawnpointPlayer.transform.position.z)
+            else if (transform.position.z >= MasterScript.Instance.respawnpointPlayer.transform.position.z)
             {
                 transform.Translate(standarddirection * movementSpeed * Time.deltaTime, Space.World);
                 animSpeed = 1;

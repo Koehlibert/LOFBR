@@ -9,7 +9,6 @@ public class Melee : Ability
     private bool attacking;
     private Vector3 dir;
     private GameObject meleeCollider;
-    private MasterScript master;
     private float speedup = 1.5f;
     new void Start()
     {
@@ -17,7 +16,6 @@ public class Melee : Ability
         loaded = true;
         meleeCollider = FindAnyObjectByType<MeleeCollider>().gameObject;
         meleeCollider.SetActive(false);
-        master = FindAnyObjectByType<MasterScript>();
     }
     void OnEnable()
     {
