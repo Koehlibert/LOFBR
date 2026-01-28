@@ -14,7 +14,7 @@ public class UltBladeFlurry : Ability
         master = FindObjectOfType<MasterScript>();
         loaded = true;
         damage = gameObject.AddComponent<Damage>();
-        damage.SetDamage(5 + player.levelsys.getLevel() * 10, 0);
+        damage.SetProperties(5 + player.levelsys.getLevel() * 10, 0, CombatUtils.Team.Player, false, true);
     }
     void Update()
     {

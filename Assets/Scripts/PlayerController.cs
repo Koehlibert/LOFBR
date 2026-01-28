@@ -14,7 +14,7 @@ public class PlayerController : DamageableEntity, IMainPlayer
     public Image damageimage;
     public EnemyPlayerBehaviour enemyPlayer;
     public Color flashcolor = new Color(1f,0f,0f,0.1f);
-    public Animator animator;
+    [SerializeField] public Animator animator;
     private float animSpeed;
     public AudioSource soundsource;
     private bool moveLock = false;
@@ -22,7 +22,6 @@ public class PlayerController : DamageableEntity, IMainPlayer
     private int classID;
     private Skillset skillSet;
     private bool isDead = false;
-    private float offsetFloor = 2f;
     protected override void Start()
     {
         base.Start();
@@ -30,7 +29,6 @@ public class PlayerController : DamageableEntity, IMainPlayer
         levelsys = GetComponent<Level>();
         manasys = GetComponent<Mana>();
         hpsys = GetComponent<Health>();
-        animator = GetComponent<Animator>();
         LastHit = false;
         classID = PlayerPrefs.GetInt("classID");
         switch (classID)
@@ -55,13 +53,14 @@ public class PlayerController : DamageableEntity, IMainPlayer
         DamageCollisionHandler handler = GetComponent<DamageCollisionHandler>();
         handler.SetOnHitCallback(OnTakeDamage);
     }
+    public override CombatUtils.Team Team => CombatUtils.Team.Player;
     void OnEnable()
     {
         moveLock = false;
         isDead = false;
         damageimage.color = Color.clear;
     }
-    protected override void ConfigureCollisionRules(DamageCollisionHandler handler)
+    /* protected override void ConfigureCollisionRules(DamageCollisionHandler handler)
     {
         handler.AddRule(new DamageCollisionHandler.CollisionRule
         {
@@ -77,7 +76,7 @@ public class PlayerController : DamageableEntity, IMainPlayer
             destroyOnHit = false,
             setLastHit = true
         });
-    }
+    } */
     void FixedUpdate()
     {
         StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
@@ -125,13 +124,22 @@ public class PlayerController : DamageableEntity, IMainPlayer
         float moveForward = -Input.GetAxis("Vertical");
         float rotateSideways = Input.GetAxis("Vertical");
         movement = new Vector3(moveForward, 0, moveSideways);
-        transform.position = new Vector3(transform.position.x, offsetFloor, transform.position.z);
-        animSpeed = movement.normalized.magnitude;
-        animator.SetFloat("speedPercent", animSpeed);
         if (!moveLock)
         {
-            transform.Translate(movement*movementspeed*Time.deltaTime,Space.World);
+            MoveCharacter(movement);
         }
+    }
+    public void MoveCharacter(Vector3 direction)
+    {
+        animSpeed = direction.normalized.magnitude;
+        animator.SetFloat("speedPercent", animSpeed);
+        transform.Translate(direction * movementspeed * Time.deltaTime, Space.World);
+    }
+    public void MoveCharacter(Vector3 direction, float speedup)
+    {
+        animSpeed = direction.normalized.magnitude;
+        animator.SetFloat("speedPercent", animSpeed);
+        transform.Translate(direction * movementspeed * speedup * Time.deltaTime, Space.World);
     }
     void LevelUp()
     {

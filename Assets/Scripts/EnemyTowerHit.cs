@@ -13,7 +13,7 @@ public class EnemyTowerHit : DamageableEntity
         hpsys.Initialize(300,0,0,20);
         master = FindObjectOfType<MasterScript>();
     }
-    protected override void ConfigureCollisionRules(DamageCollisionHandler handler)
+    /* protected override void ConfigureCollisionRules(DamageCollisionHandler handler)
     {
         handler.AddRule(new DamageCollisionHandler.CollisionRule
         {
@@ -21,7 +21,8 @@ public class EnemyTowerHit : DamageableEntity
             eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
             destroyOnHit = true
         });
-    }
+    } */
+    public override CombatUtils.Team Team => CombatUtils.Team.Enemy;
     public override void Die()
     {
         master.allFriendliesTowers.Remove(this.gameObject);

@@ -35,7 +35,7 @@ public class DamageCollisionHandler : MonoBehaviour
         onHitCallback = callback;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    /* private void OnCollisionEnter(Collision collision)
     {
         HandleCollision(collision.gameObject, collision, CollisionEventType.Enter);
     }
@@ -48,13 +48,32 @@ public class DamageCollisionHandler : MonoBehaviour
     private void OnTriggerEnter(Collider collision)
     {
         HandleCollision(collision.gameObject, null, CollisionEventType.TriggerEnter);
-    }
+    } */
     private void OnTriggerStay(Collider collision)
     {
-        HandleCollision(collision.gameObject, null, CollisionEventType.TriggerStay);
+        //HandleCollision(collision.gameObject, null, CollisionEventType.TriggerStay);
+        HandleDamageCollision(collision);
     }
-
-    private void HandleCollision(GameObject other, Collision collision, CollisionEventType eventType)
+    private void HandleDamageCollision(Collider collision)
+    {
+        Damage damageComponent = collision.gameObject.GetComponent<Damage>();
+        if (damageComponent != null)
+        {
+            if(CombatUtils.CanDamage(damageComponent, damageableTarget))
+            {
+                if (damageComponent.givesXP)
+                {
+                    Debug.Log("XP Set");
+                    damageableTarget.SetLastHit(true);
+                }
+                if (CombatUtils.DealDamage(damageComponent, mortalTarget))
+                {
+                    mortalTarget.Die();
+                }
+            }
+        }
+    }
+    /* private void HandleCollision(GameObject other, Collision collision, CollisionEventType eventType)
     {
         foreach (var rule in collisionRules)
         {
@@ -98,5 +117,5 @@ public class DamageCollisionHandler : MonoBehaviour
                 }
             }
         }
-    }
+    } */
 }

@@ -22,7 +22,8 @@ public class ParryColliderBehaviour : MonoBehaviour
             Rigidbody rb = col.GetComponent<Rigidbody>();
             rb.linearVelocity = Vector3.zero;
             rb.AddForce(player.transform.forward*2000);
-            col.gameObject.tag = "BulletPlayer";
+            col.gameObject.GetComponent<Damage>().sourceTeam = CombatUtils.Team.Player;
+            col.gameObject.GetComponent<Damage>().givesXP = true;
         }
     }
 }

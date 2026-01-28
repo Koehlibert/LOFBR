@@ -11,8 +11,6 @@ public class UltAttackHeal : Ability
         loaded = true;
         player = GetComponent<PlayerController>();
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetButtonDown("Skill")&&(loaded)&&(player.manasys.checkCost(manaCost)))

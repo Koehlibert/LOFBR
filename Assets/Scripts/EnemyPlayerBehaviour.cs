@@ -24,7 +24,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     public GameObject closestCurrentEnemy;
     private GameObject yourbase;
     private float animSpeed;
-    Animator animator;
+    [SerializeField] private Animator animator;
     private GameObject bulletinstance;
     private Rigidbody bulletrig;
     private GameObject bulletinstance2;
@@ -40,10 +40,6 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     public GameObject shockwave;
     private float reloadtimeShock;
     private bool loadedShock;
-    private Vector3 pos2D;
-    private GameObject closestCurrentEnemyNoTower;
-    private GameObject secondClosestCurrentEnemyNoTower;
-    private List<GameObject> enemyListNoTower;
     private Vector3 closestposNoTower;
     private Vector3 secondClosestposNoTower;
     private Vector3 target;
@@ -58,7 +54,6 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     private GameObject shieldInstance;
     public Mana manasys;
     private ClosestFinder closestFinder;
-    private float offsetFloor = 2f;
     protected override void Start()
     {
         base.Start();
@@ -76,7 +71,6 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
         closestCurrentEnemy = null;
         enemybase = GameObject.FindWithTag(enemytype + "Base");
         yourbase = GameObject.FindWithTag("EnemyBase");
-        animator = GetComponent<Animator>();
         closestFinder = new ClosestFinder(player, this.gameObject, master);
         bulletinstance = Instantiate(bullet, animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + offset, transform.rotation);
         bulletrig = bulletinstance.GetComponent<Rigidbody>();
@@ -99,54 +93,26 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
         {
             bulletinstance = Instantiate(bullet, animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + offset, transform.rotation);
             bulletrig = bulletinstance.GetComponent<Rigidbody>();
-            if (levelsys.checkLevel(4))
+            if (levelsys)
             {
-                bulletinstance2 = Instantiate(bullet, animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + offset, transform.rotation);
-                bulletrig2 = bulletinstance2.GetComponent<Rigidbody>();
+                if (levelsys.checkLevel(4))
+                {
+                    bulletinstance2 = Instantiate(bullet, animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + offset, transform.rotation);
+                    bulletrig2 = bulletinstance2.GetComponent<Rigidbody>();
+                }
             }
         }
         loadedShock = true;
         loadedShield = true;
         loadedUlt = true;
     }
-    protected override void ConfigureCollisionRules(DamageCollisionHandler handler)
+    void LateUpdate()
     {
-        handler.AddRule(new DamageCollisionHandler.CollisionRule
-        {
-            tags = new List<string> { "Bullet", },
-            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
-            destroyOnHit = true,
-            setLastHit = false
-        });
-        handler.AddRule(new DamageCollisionHandler.CollisionRule
-        {
-            tags = new List<string> { "BulletPlayer", },
-            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
-            destroyOnHit = true,
-            setLastHit = true
-        });
-        handler.AddRule(new DamageCollisionHandler.CollisionRule
-        {
-            tags = new List<string> { "MeleePlayer" },
-            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
-            destroyOnHit = false,
-            setLastHit = true
-        });
-        handler.AddRule(new DamageCollisionHandler.CollisionRule
-        {
-            tags = new List<string> { "Fire" },
-            eventType = DamageCollisionHandler.CollisionEventType.TriggerStay,
-            destroyOnHit = false,
-            setLastHit = true
-        });
-
-        handler.AddRule(new DamageCollisionHandler.CollisionRule
-        {
-            tags = new List<string> { "MeleePlayer", "BulletPlayerShockwave" },
-            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
-            setLastHit = true
-        });
+        Vector3 pos = transform.position;
+        pos.y = 0f;
+        transform.position = pos;
     }
+    public override CombatUtils.Team Team => CombatUtils.Team.Enemy;
     public override void Die()
     {
         if (player != null && LastHit)
@@ -186,14 +152,12 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     void FixedUpdate()
     {
         StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
-        transform.position = new Vector3(transform.position.x, offsetFloor, transform.position.z);
         UpdateBars();
         if (master.timeCounter % 150 == 0)
         {
             circledirection *= -1;
         }
         UpdateBullets();
-        pos2D = new Vector3(transform.position.x, 0, transform.position.z);
         closestCurrentEnemy = closestFinder.FindClosestFriend();
         CheckUlt();
         if (loadedShock)
@@ -296,7 +260,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
                 isShocking = false;
                 return;
             }
-            if (Vector3.Distance(pos2D, closestCurrentEnemy.transform.position) <= 2.5)
+            if (Vector3.Distance(transform.position, closestCurrentEnemy.transform.position) <= 2.5)
             {
                 Shock();
                 isShocking = false;
@@ -304,7 +268,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
             }
             else
             {
-                if (Vector3.Distance(pos2D, closestCurrentEnemy.transform.position) <= 7.5)
+                if (Vector3.Distance(transform.position, closestCurrentEnemy.transform.position) <= 7.5)
                 {
                     UseShield();
                 }
@@ -360,14 +324,14 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     {
         animator.Play("Shoot", 0, 0f);
         yield return new WaitForSeconds(0.1f);
-        bulletinstance.GetComponent<Damage>().SetDamage(34 + 7 * levelsys.getLevel());
+        bulletinstance.GetComponent<Damage>().SetProperties(34 + 7 * levelsys.getLevel(), 0, this.Team, true, true);
         bulletrig.AddForce(gameObject.transform.forward * 200000f * Time.deltaTime);
         bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
         bulletrig = null;
         if (bulletrig2)
         {
             bulletrig2.transform.position = animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + offset;
-            bulletinstance2.GetComponent<Damage>().SetDamage(34 + 7 * levelsys.getLevel());
+            bulletinstance2.GetComponent<Damage>().SetProperties(34 + 7 * levelsys.getLevel(), 0, this.Team, true, true);
             bulletrig2.AddForce(gameObject.transform.forward * 200000f * Time.deltaTime);
             bulletinstance2.GetComponent<DestroyAfterTime>().DelayedDestroy();
             bulletrig2 = null;
@@ -383,7 +347,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     void Shock()
     {
         GameObject wave = Instantiate(shockwave, transform.position + new Vector3(0f, 0.4f, 0f), transform.rotation);
-        wave.GetComponent<Damage>().SetDamage(70 + (levelsys.getLevel() - 2) * 6);
+        wave.GetComponent<Damage>().SetProperties(70 + (levelsys.getLevel() - 2) * 6, 0, this.Team, false, true);
         isShocking = false;
         loadedShock = false;
         manasys.useMana(75);
@@ -449,7 +413,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
         if ((master.allFriendlies.Count >= 4) && (loadedUlt) && (levelsys.checkLevel(5)) && manasys.checkCost(250))
         {
             GameObject ultInstance = Instantiate(BulletUlt, transform.position + transform.forward + new Vector3(0, 2, 0), transform.rotation);
-            ultInstance.gameObject.GetComponent<Damage>().SetDamage(50 + (levelsys.getLevel() - 5) * 4.5f);
+            ultInstance.gameObject.GetComponent<Damage>().SetProperties(50 + (levelsys.getLevel() - 5) * 4.5f, 0, this.Team, false, true);
             StartCoroutine("ReloadUlt");
             manasys.useMana(250);
         }

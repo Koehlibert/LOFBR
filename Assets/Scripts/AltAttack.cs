@@ -16,7 +16,7 @@ public class AltAttack : Ability
         if (Input.GetButtonDown("Alternative")&&(loaded)&&player.manasys.checkCost(manaCost))
         {
             GameObject wave = Instantiate(bullet, player.transform.position + new Vector3(0f,-0.4f,0f), player.transform.rotation);
-            wave.GetComponent<Damage>().SetDamage(70+(player.levelsys.getLevel()-2)*6,0);
+            wave.GetComponent<Damage>().SetProperties(70+(player.levelsys.getLevel()-2)*6,0,player.Team,false, true);
             StartCoroutine("reload");
             reloader.shoot();
             player.manasys.useMana(manaCost);

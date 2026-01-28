@@ -61,7 +61,8 @@ public class ShootHeal : Ability
     {
         player.animator.Play("Shoot",0,0f);
         yield return new WaitForSeconds(0.1f);
-        bulletinstance.GetComponent<Damage>().SetDamage(40 + 5*player.levelsys.getLevel(),0);
+        if (bulletinstance == null) yield break;
+        bulletinstance.GetComponent<Damage>().SetProperties(40 + 5*player.levelsys.getLevel(),0, CombatUtils.Team.Player, true, false);
         bulletinstance.transform.rotation = transform.rotation;
         bulletinstance.GetComponent<DestroyAfterTimeHeal>().DelayedDestroy();
         bulletinstance = null;

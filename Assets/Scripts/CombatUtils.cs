@@ -2,6 +2,23 @@ using UnityEngine;
 
 public static class CombatUtils
 {
+    public enum Team
+    {
+        Player,
+        Enemy
+    }
+    public static bool CanDamage(Team source, Team target)
+    {
+        return source != target;
+    }
+    public static bool CanDamage(DamageableEntity sourceObject, DamageableEntity targetObject)
+    {
+        return CanDamage(sourceObject.Team, targetObject.Team);
+    }
+    public static bool CanDamage(Damage sourceDamage, DamageableEntity targetObject)
+    {
+        return CanDamage(sourceDamage.sourceTeam, targetObject.Team);
+    }
     public static bool DealDamage(GameObject damageObject, IMortal target)
     {
         return damageObject

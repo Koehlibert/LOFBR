@@ -4,6 +4,9 @@ public class Damage : MonoBehaviour
 {
     private float damage;
     private float poison;
+    public CombatUtils.Team sourceTeam;
+    public bool DestroyOnHit;
+    public bool givesXP;
     public void SetDamage(float damageValue, float poisonValue)
     {
         damage = damageValue;
@@ -24,6 +27,22 @@ public class Damage : MonoBehaviour
     }
     public bool DealDamage(IMortal mortalObject)
     {
+        if(DestroyOnHit)
+        {
+            //Debug.Log("Destroying damage object on hit");
+            Destroy(this.gameObject);
+        }
         return(mortalObject.GetHealth().TakeDamage(this));
+    }
+    public void SetProperties(float damageValue, float poisonValue, CombatUtils.Team sourceTeamValue, bool destroyOnHit, bool lastHit = false)
+    {
+        damage = damageValue;
+        poison = poisonValue;
+        sourceTeam = sourceTeamValue;
+        DestroyOnHit = destroyOnHit;
+        if (lastHit)
+        {
+            givesXP = true;
+        }
     }
 }

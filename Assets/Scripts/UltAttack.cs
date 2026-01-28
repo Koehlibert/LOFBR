@@ -19,7 +19,7 @@ public class UltAttack : Ability
         if (Input.GetButtonDown("Ult")&&(loaded)&&player.manasys.checkCost(manaCost))
         {
             GameObject ultInstance = Instantiate(ultBullet, player.transform.position + player.transform.forward*2 + new Vector3(0f,2f,0f), player.transform.rotation);
-            ultInstance.GetComponent<Damage>().SetDamage(50+(player.levelsys.getLevel()-5)*4.5f,0);
+            ultInstance.GetComponent<Damage>().SetProperties(50+(player.levelsys.getLevel()-5)*4.5f, 0, CombatUtils.Team.Player, false, true);
             StartCoroutine("reload");
             reloader.shoot();
             player.manasys.useMana(manaCost);

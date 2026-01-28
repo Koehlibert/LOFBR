@@ -11,14 +11,13 @@ public class TowerBehaviourFriendly : MonoBehaviour
     public float cooldown;
     public GameObject bullet;
     private Vector3 offset;
-    private Animator animator;
+[SerializeField] private Animator animator;
     private bool loaded;
     private float reloadtime;
     private GameObject bulletinstance;
     // Start is called before the first frame update
     void Start()
     {
-        animator = GetComponent<Animator>();
         enemytype = "Enemy";
         player = GameObject.FindWithTag("EnemyPlayer");
         offset = new Vector3(0,9,0);
@@ -82,9 +81,9 @@ public class TowerBehaviourFriendly : MonoBehaviour
     {
         transform.LookAt(target.transform.position);
         bulletinstance = Instantiate(bullet, transform.position + offset +1.5f*(transform.position-target.transform.position).normalized, transform.rotation);
-        bulletinstance.GetComponent<Damage>().SetDamage(60,0);
+        bulletinstance.GetComponent<Damage>().SetProperties(60, 0, CombatUtils.Team.Player, true);
         Rigidbody bulletrig = bulletinstance.GetComponent<Rigidbody>();
-        bulletrig.AddForce(gameObject.transform.forward*120000f*Time.deltaTime);
+        bulletrig.AddForce(gameObject.transform.forward*250000f*Time.deltaTime);
         StartCoroutine("reload");
     }
     private IEnumerator reload()

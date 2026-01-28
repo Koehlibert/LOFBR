@@ -6,9 +6,10 @@ public abstract class DamageableEntity : MonoBehaviour, IMortal
     protected Health hpsys;
     protected bool LastHit;
     protected MasterScript master;
-    
+    public abstract CombatUtils.Team Team {get;}
     protected virtual void Start()
     {
+        LastHit = false;
         hpsys = GetComponent<Health>();
         master = FindObjectOfType<MasterScript>();
         SetupCollisionHandler();
@@ -17,10 +18,8 @@ public abstract class DamageableEntity : MonoBehaviour, IMortal
     protected virtual void SetupCollisionHandler()
     {
         DamageCollisionHandler handler = gameObject.AddComponent<DamageCollisionHandler>();
-        ConfigureCollisionRules(handler);
+        //ConfigureCollisionRules(handler);
     }
-    
-    protected abstract void ConfigureCollisionRules(DamageCollisionHandler handler);
     
     public virtual void SetLastHit(bool value)
     {

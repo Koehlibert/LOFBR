@@ -5,11 +5,12 @@ using UnityEngine;
 public class Melee : Ability
 {
     public GameObject bullet;
-    private float duration = .7f;
+    private float duration = .5f;
     private bool attacking;
     private Vector3 dir;
     private GameObject meleeCollider;
     private MasterScript master;
+    private float speedup = 1.5f;
     new void Start()
     {
         base.Start();
@@ -37,20 +38,11 @@ public class Melee : Ability
             dir = player.transform.forward;
             attacking = true;
             meleeCollider.SetActive(true);
-            meleeCollider.GetComponent<Damage>().SetDamage(35+player.levelsys.getLevel() * 3,0);
-            StartCoroutine(player.LockMovement(duration));
-            StartCoroutine(player.LockView(duration));
+            meleeCollider.GetComponent<Damage>().SetProperties(35 + player.levelsys.getLevel() * 3, 0, player.Team, false, true);
         }
         if (attacking)
         {
-            transform.Translate(dir*player.GetSpeed()*Time.deltaTime,Space.World);
-            Vector3 temp = transform.position;
-            temp.y = 0;
-            temp.x = Mathf.Clamp(temp.x, master.lowerAreaLimitX, master.upperAreaLimitX);
-            float lowerZ = Mathf.Min(master.friendlySpawn.getZPos(), master.enemySpawn.getZPos());
-            float upperZ = Mathf.Max(master.friendlySpawn.getZPos(), master.enemySpawn.getZPos());
-            temp.z = Mathf.Clamp(temp.z, lowerZ, upperZ);
-            transform.position = temp;
+            player.MoveCharacter(dir, speedup = speedup);
         }
     }
     private IEnumerator reload()
@@ -58,7 +50,6 @@ public class Melee : Ability
         loaded = false;
         yield return new WaitForSeconds(reloadtime);
         loaded = true;
-        player.transform.position = new Vector3(player.transform.position.x, 0.7f, player.transform.position.z);
     }
     private IEnumerator resetanim()
     {
@@ -70,8 +61,12 @@ public class Melee : Ability
     private IEnumerator shootanim()
     {
         player.animator.Play("Melee",0,0f);
-        yield return new WaitForSeconds(0.1f);
-        //soundsource.Play();
+        AnimatorClipInfo[] clipInfo = player.animator.GetCurrentAnimatorClipInfo(0);
+        float clipLength = 1 / 3.5f;
+        duration = clipLength;
+        StartCoroutine(player.LockMovement(duration));
+        StartCoroutine(player.LockView(duration));
+        yield return new WaitForSeconds(0.01f);
         StartCoroutine("resetanim");
     }
     public new void reset()

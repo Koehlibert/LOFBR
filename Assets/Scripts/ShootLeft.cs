@@ -67,7 +67,7 @@ public class ShootLeft : Ability
         player.animator.Play("Shoot",0,0f);
         yield return new WaitForSeconds(0.1f);
         soundsource.Play();
-        bulletinstance.GetComponent<Damage>().SetDamage(34 + 7*player.levelsys.getLevel(),0);
+        bulletinstance.GetComponent<Damage>().SetProperties(34 + 7*player.levelsys.getLevel(),0, CombatUtils.Team.Player, true, true);
         bulletrig.AddForce(player.transform.forward*2250);
         bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
         bulletrig = null;

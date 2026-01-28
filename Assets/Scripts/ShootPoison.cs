@@ -61,7 +61,8 @@ public class ShootPoison : Ability
     {
         player.animator.Play("Shoot",0,0f);
         yield return new WaitForSeconds(0.1f);
-        bulletinstance.GetComponent<Damage>().SetDamage(16 + 4*player.levelsys.getLevel(),4f + 4f + 1.5f * player.levelsys.getLevel());
+        if (bulletinstance == null) yield break;
+        bulletinstance.GetComponent<Damage>().SetProperties(16 + 4*player.levelsys.getLevel(),4f + 4f + 1.5f * player.levelsys.getLevel(), CombatUtils.Team.Player, true, true);
         bulletinstance.transform.rotation = transform.rotation;
         bulletinstance.GetComponent<DestroyAfterTimePoison>().DelayedDestroy();
         bulletinstance = null;

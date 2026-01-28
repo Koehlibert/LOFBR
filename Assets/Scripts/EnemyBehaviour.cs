@@ -13,28 +13,25 @@ public class EnemyBehaviour : DamageableEntity
     public float attackdistance;
     private float playerdistance;
     private float distance;
-    private GameObject enemy;
     private float movementSpeed = 12;
-    private Vector3 standarddirection = new Vector3(0f,0f,-1f);
+    private Vector3 standarddirection = new Vector3(0f, 0f, -1f);
     private NavMeshAgent nmAgent;
     public GameObject bullet;
     private Rigidbody bulletrig;
     private GameObject bulletinstance;
-    Vector3 offset = new Vector3(0f,0f,-1f);
+    Vector3 offset = new Vector3(0f, 0f, -1f);
     public string enemytype;
     public GameObject closestCurrentEnemy;
     private ClosestFinder closestFinder;
-    Animator animator;
+    [SerializeField] private Animator animator;
     private float animSpeed;
     private float reloadtime;
     private bool loaded;
     public Image healthbar;
     public Image healthbarbg;
-    private float offsetFloor = 2f;
     protected override void Start()
     {
         base.Start();
-        LastHit = false;
         rend = GetComponent<Renderer>();
         nmAgent = gameObject.GetComponent<NavMeshAgent>();
         player = GameObject.FindObjectOfType<PlayerController>();
@@ -42,10 +39,9 @@ public class EnemyBehaviour : DamageableEntity
         closestCurrentEnemy = null;
         closestFinder = new ClosestFinder(player, this.gameObject, master);
         enemybase = GameObject.FindWithTag(enemytype + "Base");
-        animator = GetComponent<Animator>();
         loaded = true;
         reloadtime = 1.5f;
-        hpsys.Initialize(100,0,0,0);
+        hpsys.Initialize(100, 0, 0, 0);
         bulletinstance = Instantiate(bullet, animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + offset, transform.rotation);
         bulletrig = bulletinstance.GetComponent<Rigidbody>();
         healthbar.gameObject.SetActive(false);
@@ -57,45 +53,7 @@ public class EnemyBehaviour : DamageableEntity
             healthbar.fillAmount = healthPercent;
         };
     }
-    protected override void ConfigureCollisionRules(DamageCollisionHandler handler)
-    {
-        handler.AddRule(new DamageCollisionHandler.CollisionRule
-        {
-            tags = new List<string> { "Bullet", },
-            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
-            destroyOnHit = true,
-            setLastHit = false
-        });
-        handler.AddRule(new DamageCollisionHandler.CollisionRule
-        {
-            tags = new List<string> { "BulletPlayer", },
-            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
-            destroyOnHit = true,
-            setLastHit = true
-        });
-        handler.AddRule(new DamageCollisionHandler.CollisionRule
-        {
-            tags = new List<string> { "UltBulletFriendly" },
-            eventType = DamageCollisionHandler.CollisionEventType.TriggerStay,
-            destroyOnHit = false,
-            setLastHit = true
-        });
-        handler.AddRule(new DamageCollisionHandler.CollisionRule
-        {
-            tags = new List<string> { "Fire" },
-            eventType = DamageCollisionHandler.CollisionEventType.TriggerStay,
-            destroyOnHit = false,
-            setLastHit = true
-        });
-        handler.AddRule(new DamageCollisionHandler.CollisionRule
-        {
-            tags = new List<string> { "MeleePlayer", "BulletPlayerShockwave"},
-            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
-            destroyOnHit = false,
-            setLastHit = true
-        });
-    }
-    
+    public override CombatUtils.Team Team => CombatUtils.Team.Enemy;
     public override void Die()
     {
         if ((player != null) && LastHit)
@@ -127,7 +85,6 @@ public class EnemyBehaviour : DamageableEntity
     void FixedUpdate()
     {
         StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
-        transform.position = new Vector3(transform.position.x, offsetFloor, transform.position.z);
         if (bulletrig)
         {
             bulletrig.transform.position = animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + offset;
@@ -139,21 +96,21 @@ public class EnemyBehaviour : DamageableEntity
         closestCurrentEnemy = closestFinder.FindClosestFriend();
         if (closestCurrentEnemy == null)
         {
-            if (Vector3.Distance(this.transform.position,enemybase.transform.position)<=attackdistance)
+            if (Vector3.Distance(this.transform.position, enemybase.transform.position) <= attackdistance)
             {
                 attack(enemybase.transform.position);
                 animSpeed = 0;
             }
             else if (transform.position.z >= master.respawnpointPlayer.transform.position.z)
             {
-                transform.Translate(standarddirection*movementSpeed*Time.deltaTime,Space.World);
+                transform.Translate(standarddirection * movementSpeed * Time.deltaTime, Space.World);
                 animSpeed = 1;
             }
         }
         else
         {
             distance = Vector3.Distance(closestCurrentEnemy.transform.position, transform.position);
-            if ((distance <= followdistance)&&(distance > attackdistance))
+            if ((distance <= followdistance) && (distance > attackdistance))
             {
                 nmAgent.enabled = true;
                 nmAgent.SetDestination(closestCurrentEnemy.transform.position);
@@ -167,11 +124,17 @@ public class EnemyBehaviour : DamageableEntity
             }
             else if (transform.position.z >= master.respawnpointPlayer.transform.position.z)
             {
-                transform.Translate(standarddirection*movementSpeed*Time.deltaTime,Space.World);
+                transform.Translate(standarddirection * movementSpeed * Time.deltaTime, Space.World);
                 animSpeed = 1;
             }
         }
-        animator.SetFloat("speedPercent",animSpeed);
+        animator.SetFloat("speedPercent", animSpeed);
+    }
+    void LateUpdate()
+    {
+        Vector3 pos = transform.position;
+        pos.y = 0f;
+        transform.position = pos;
     }
     public void getShanked(Damage damage)
     {
@@ -182,8 +145,8 @@ public class EnemyBehaviour : DamageableEntity
         }
     }
     public void attack(Vector3 target)
-    {   
-        transform.LookAt(new Vector3(target.x,transform.position.y,target.z));
+    {
+        transform.LookAt(new Vector3(target.x, transform.position.y, target.z));
         if (loaded)
         {
             StartCoroutine("shootanim");
@@ -201,14 +164,14 @@ public class EnemyBehaviour : DamageableEntity
     private IEnumerator resetanim()
     {
         yield return new WaitForSeconds(0.25f);
-        animator.Play("Default",0,0f);
+        animator.Play("Default", 0, 0f);
     }
     private IEnumerator shootanim()
     {
-        animator.Play("Shoot",0,0f);
+        animator.Play("Shoot", 0, 0f);
         yield return new WaitForSeconds(0.1f);
-        bulletinstance.GetComponent<Damage>().SetDamage(40,0);
-        bulletrig.AddForce(gameObject.transform.forward*200000f*Time.deltaTime);
+        bulletinstance.GetComponent<Damage>().SetProperties(40, 0, this.Team, true);
+        bulletrig.AddForce(gameObject.transform.forward * 200000f * Time.deltaTime);
         bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
         bulletrig = null;
         StartCoroutine("resetanim");

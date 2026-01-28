@@ -76,7 +76,6 @@
     <Compile Include="Assets\Scripts\RegenAura.cs" />
     <Compile Include="Assets\Scripts\Health.cs" />
     <Compile Include="Assets\Scripts\IMortal.cs" />
-    <Compile Include="Assets\Scripts\TeamData.cs" />
     <Compile Include="Assets\Scripts\EnemyBase.cs" />
     <Compile Include="Assets\Scripts\CombatUtils.cs" />
     <Compile Include="Assets\Scripts\FriendlyBase.cs" />
