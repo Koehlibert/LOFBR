@@ -20,27 +20,27 @@ public class Health : MonoBehaviour
     {
         if (superRegen)
         {
-            hp = Mathf.Min(hp+superRegenValue*Time.deltaTime, maxhp);
+            hp = Mathf.Min(hp + superRegenValue * Time.deltaTime, maxhp);
             OnHealthChanged?.Invoke(healthDisplay());
             poison = 0;
         }
         if (poison > 0)
         {
-            hp = Mathf.Max(0,hp - poison*Time.deltaTime);
+            hp = Mathf.Max(0, hp - poison * Time.deltaTime);
             poisonTime -= Time.deltaTime;
             OnHealthChanged?.Invoke(healthDisplay());
-            if (poisonTime<= 0f)
+            if (poisonTime <= 0f)
             {
                 poison = 0;
             }
         }
-        if (timer<=regenTime)
+        if (timer <= regenTime)
         {
             timer += Time.deltaTime;
         }
-        else if ((hp<maxhp)&&(poison == 0))
+        else if ((hp < maxhp) && (poison == 0))
         {
-            hp = Mathf.Min(hp+healthRegen*Time.deltaTime, maxhp);
+            hp = Mathf.Min(hp + healthRegen * Time.deltaTime, maxhp);
             OnHealthChanged?.Invoke(healthDisplay());
         }
     }
@@ -56,7 +56,7 @@ public class Health : MonoBehaviour
     {
         maxhp += gain;
         hp += gain;
-        healthRegen = Mathf.Max(0,healthRegen + regenGain);
+        healthRegen = Mathf.Max(0, healthRegen + regenGain);
     }
     public void SetArmor(float newArm)
     {
@@ -64,8 +64,8 @@ public class Health : MonoBehaviour
     }
     public void AddArmor(float armGain)
     {
-        armor = Mathf.Max(0,armor + armGain);
-        armor = Mathf.Min(100,armor);
+        armor = Mathf.Max(0, armor + armGain);
+        armor = Mathf.Min(100, armor);
     }
     public bool TakeDamage(Damage damageObj)
     {
@@ -90,7 +90,7 @@ public class Health : MonoBehaviour
         }
     }
     public bool TakeDamage(float damageValue)
-    { 
+    {
         float damage = computeDamage(damageValue);
         hp -= damage;
         timer = 0;
@@ -107,7 +107,7 @@ public class Health : MonoBehaviour
     }
     public float healthDisplay()
     {
-        return hp/maxhp;
+        return hp / maxhp;
     }
     public void ActivateSuperRegen(float val)
     {
@@ -118,10 +118,15 @@ public class Health : MonoBehaviour
     {
         superRegen = false;
     }
-    public void Heal(Damage damageComponent)
+    public bool Heal(Damage damageComponent)
     {
-        hp = Mathf.Min(maxhp, hp + damageComponent.GetDamage().damageValue);
-        OnHealthChanged?.Invoke(healthDisplay());
+        bool isDamaged = !this.FullHP();
+        if (isDamaged)
+        {
+            hp = Mathf.Min(maxhp, hp + damageComponent.GetDamage().damageValue);
+            OnHealthChanged?.Invoke(healthDisplay());
+        }
+        return isDamaged;
     }
     public bool FullHP()
     {

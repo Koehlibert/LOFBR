@@ -29,93 +29,43 @@ public class DamageCollisionHandler : MonoBehaviour
     {
         collisionRules.Add(rule);
     }
-    
+
     public void SetOnHitCallback(System.Action<GameObject> callback)
     {
         onHitCallback = callback;
     }
-
-    /* private void OnCollisionEnter(Collision collision)
-    {
-        HandleCollision(collision.gameObject, collision, CollisionEventType.Enter);
-    }
-
-    private void OnCollisionStay(Collision collision)
-    {
-        HandleCollision(collision.gameObject, collision, CollisionEventType.Stay);
-    }
-
     private void OnTriggerEnter(Collider collision)
     {
-        HandleCollision(collision.gameObject, null, CollisionEventType.TriggerEnter);
-    } */
-    private void OnTriggerStay(Collider collision)
-    {
-        //HandleCollision(collision.gameObject, null, CollisionEventType.TriggerStay);
         HandleDamageCollision(collision);
     }
     private void HandleDamageCollision(Collider collision)
     {
         Damage damageComponent = collision.gameObject.GetComponent<Damage>();
+        HealingBullet heal = collision.gameObject.GetComponent<HealingBullet>();
         if (damageComponent != null)
         {
-            if(CombatUtils.CanDamage(damageComponent, damageableTarget))
+            if (CombatUtils.CanDamage(damageComponent, damageableTarget) != (heal != null)) //this is bad
             {
-                if (damageComponent.givesXP)
+                if (heal == null)
                 {
-                    Debug.Log("XP Set");
-                    damageableTarget.SetLastHit(true);
-                }
-                if (CombatUtils.DealDamage(damageComponent, mortalTarget))
-                {
-                    mortalTarget.Die();
-                }
-            }
-        }
-    }
-    /* private void HandleCollision(GameObject other, Collision collision, CollisionEventType eventType)
-    {
-        foreach (var rule in collisionRules)
-        {
-            if (rule.eventType == eventType && other.HasAnyTag(rule.tags))
-            {
-                Damage damageComponent = other.GetComponent<Damage>();
-                if (other.CompareTag("BulletHealFriendly") && damageableTarget != null)
-                {
-                    FriendlyBehaviour friendlyTarget = damageableTarget as FriendlyBehaviour;
-                    if (friendlyTarget != null)
+                    if (damageComponent.givesXP)
                     {
-                        friendlyTarget.OnHealBulletHit(damageComponent, other);
+                        damageableTarget.SetLastHit(true);
                     }
-                    if (rule.destroyOnHit)
-                        Destroy(other);
-                    return;
-                }
-                if (rule.setLastHit && damageableTarget != null)
-                {
-                    damageableTarget.SetLastHit(true);
-                }
-                if (other.CompareTag("Fire"))
-                {
-                    float damageValue = damageComponent.GetDamage(Time.deltaTime).damageValue;
-                    if (damageComponent && CombatUtils.DealDamage(damageValue, mortalTarget))
+                    if (CombatUtils.DealDamage(damageComponent, mortalTarget))
                     {
                         mortalTarget.Die();
                     }
                 }
                 else
                 {
-                    if (damageComponent && CombatUtils.DealDamage(damageComponent, mortalTarget))
+                    //somehow this needs to give xp
+                    if (mortalTarget.GetHealth().Heal(damageComponent))
                     {
-                        mortalTarget.Die();
+                        Destroy(collision.gameObject);
                     }
-                }
-                onHitCallback?.Invoke(other);
-                if (rule.destroyOnHit)
-                {
-                    Destroy(other);
                 }
             }
         }
-    } */
+    }
 }
