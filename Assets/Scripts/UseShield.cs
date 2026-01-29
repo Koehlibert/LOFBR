@@ -27,8 +27,10 @@ public class UseShield : Ability
     private IEnumerator destroyShield()
     {
         player.GetHealth().AddArmor(100);
+        player.DisableDamageFlash();
         yield return new WaitForSeconds(1.5f);
         player.GetHealth().AddArmor(-100);
+        player.EnableDamageFlash();
         GameObject.Destroy(shieldInstance);
     }
 }

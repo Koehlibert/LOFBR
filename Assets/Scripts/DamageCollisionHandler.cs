@@ -29,15 +29,38 @@ public class DamageCollisionHandler : MonoBehaviour
     {
         collisionRules.Add(rule);
     }
-    private void OnTriggerEnter(Collider collision)
+    private void OnTriggerEnter(Collider collider)
     {
-        HandleDamageCollision(collision);
+        HandleDamageCollision(collider);
     }
-    private void HandleDamageCollision(Collider collision)
+    private void OnTriggerStay(Collider collider)
     {
-        Damage damageComponent = collision.gameObject.GetComponent<Damage>();
-        HealingBullet heal = collision.gameObject.GetComponent<HealingBullet>();
-        if (damageComponent != null)
+        HandleEnduringDamage(collider);
+    }
+    private void HandleEnduringDamage(Collider collider)
+    {
+        Damage damageComponent = collider.gameObject.GetComponent<Damage>();
+        if (damageComponent?.isEnduring == true)
+        {
+            if (CombatUtils.CanDamage(damageComponent, damageableTarget)) //this is bad
+            {
+                if (damageComponent.givesXP)
+                {
+                    damageableTarget.SetLastHit(true);
+                }
+                OnHitCallback?.Invoke();
+                if (CombatUtils.DealDamage(damageComponent, mortalTarget))
+                {
+                    mortalTarget.Die();
+                }
+            }
+        }
+    }
+    private void HandleDamageCollision(Collider collider)
+    {
+        Damage damageComponent = collider.gameObject.GetComponent<Damage>();
+        HealingBullet heal = collider.gameObject.GetComponent<HealingBullet>();
+        if (damageComponent != null && !damageComponent.isEnduring)
         {
             if (CombatUtils.CanDamage(damageComponent, damageableTarget) != (heal != null)) //this is bad
             {
@@ -46,6 +69,17 @@ public class DamageCollisionHandler : MonoBehaviour
                     if (damageComponent.givesXP)
                     {
                         damageableTarget.SetLastHit(true);
+                    }
+                    if (collider.gameObject.GetComponent<UltBulletBehaviour>() != null || collider.gameObject.GetComponent<UltBulletBehaviourEnemy>() != null)
+                    {
+                        if (collider.gameObject.GetComponent<UltBulletBehaviour>() != null)
+                        {
+                            collider.gameObject.GetComponent<UltBulletBehaviour>().count -= 1;
+                        }
+                        if (collider.gameObject.GetComponent<UltBulletBehaviourEnemy>() != null)
+                        {
+                            collider.gameObject.GetComponent<UltBulletBehaviourEnemy>().count -= 1;
+                        }
                     }
                     OnHitCallback?.Invoke();
                     if (CombatUtils.DealDamage(damageComponent, mortalTarget))
@@ -58,7 +92,7 @@ public class DamageCollisionHandler : MonoBehaviour
                     //somehow this needs to give xp
                     if (mortalTarget.GetHealth().Heal(damageComponent))
                     {
-                        Destroy(collision.gameObject);
+                        Destroy(collider.gameObject);
                     }
                 }
             }

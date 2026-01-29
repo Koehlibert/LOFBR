@@ -64,8 +64,7 @@ public class Health : MonoBehaviour
     }
     public void AddArmor(float armGain)
     {
-        armor = Mathf.Max(0, armor + armGain);
-        armor = Mathf.Min(100, armor);
+        armor = Mathf.Clamp(0, armor + armGain, 100);
     }
     public bool TakeDamage(Damage damageObj)
     {
@@ -75,7 +74,7 @@ public class Health : MonoBehaviour
             poisonTime = poisonDuration;
             poison = Mathf.Max(val.poisonValue, poison);
         }
-        float damage = computeDamage(val.damageValue);
+        float damage = computeDamage(damageObj);
         hp -= damage;
         timer = 0;
         OnHealthChanged?.Invoke(healthDisplay());
@@ -135,5 +134,9 @@ public class Health : MonoBehaviour
     float computeDamage(float damageValue)
     {
         return Mathf.Max(damageValue * ((100 - armor) / 100), 0);
+    }
+    float computeDamage(Damage damageObject)
+    {
+        return Mathf.Max(damageObject.GetDamage().damageValue * ((100 - armor) / 100), 0) * (damageObject.isEnduring ? Time.deltaTime : 1f);
     }
 }

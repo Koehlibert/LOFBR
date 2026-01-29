@@ -11,14 +11,12 @@ public class UltBladeFlurry : Ability
     {
         base.Start();
         loaded = true;
-        damage = gameObject.AddComponent<Damage>();
-        damage.SetProperties(5 + player.levelsys.getLevel() * 10, 0, CombatUtils.Team.Player, false, true);
     }
     void Update()
     {
         if (Input.GetButtonDown("Ult")&&(loaded)&&player.manasys.checkCost(manaCost))
         {
-            flurryPos = MasterScript.Instance.GetFlurryTargets(player.levelsys.getLevel() -2);
+            flurryPos = MasterScript.Instance.GetFlurryTargets(player.levelsys.getLevel() -1);
             if (flurryPos.Count > 0)
             {
                 StartCoroutine("reload");
@@ -32,6 +30,8 @@ public class UltBladeFlurry : Ability
     {
         StartCoroutine(player.LockMovement(duration*(flurryPos.Count + 1)));
         StartCoroutine(player.LockView(duration*(flurryPos.Count + 1)));
+        damage = gameObject.AddComponent<Damage>();
+        damage.SetProperties(25 + player.levelsys.getLevel() * 10, 0, CombatUtils.Team.Player, false, true);
         yield return new WaitForSeconds(duration);
         foreach (ObjectWithDist enemy in flurryPos)
         {
@@ -51,6 +51,7 @@ public class UltBladeFlurry : Ability
                 continue;
             }
         }
+        Destroy(damage);
         player.animator.Play("Default",0,0f);
     }
     private Vector3 GetOffset(Vector3 target)
