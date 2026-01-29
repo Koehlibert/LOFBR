@@ -67,7 +67,7 @@ public class MasterScript : MonoBehaviour
     public bool gameOver;
     public bool victory;
     public int baseMaxHp;
-    private EnemyPlayerBehaviour enemyPlayer;
+    public EnemyPlayerBehaviour enemyPlayer;
     public RawImage defeatImage;
     public RawImage victoryImage;
     public GameObject friendlyArea;

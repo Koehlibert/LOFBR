@@ -19,7 +19,7 @@ public class Immolate : Ability
     }
     void OnDisable()
     {
-        reset();
+        Reset();
     }
     private float computeDamage()
     {
@@ -50,7 +50,7 @@ public class Immolate : Ability
             }  
         }  
     }
-    public new void  reset()
+    public new void  Reset()
     {
         loaded = true;
         isOnFire = false;

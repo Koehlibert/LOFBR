@@ -15,7 +15,7 @@ public abstract class Ability : MonoBehaviour
     }
     void OnEnable()
     {
-        reset();
+        Reset();
         player = GetComponent<PlayerController>();
     }
     void Update()
@@ -25,11 +25,11 @@ public abstract class Ability : MonoBehaviour
             player = GetComponent<PlayerController>();
         }
     }
-    public void activate()
+    public void Activate()
     {
         reloader.Activate();
     }
-    public void reset()
+    public void Reset()
     {
         loaded = true;
     }

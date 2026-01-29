@@ -31,10 +31,10 @@ public class SkillsetMelee : Skillset
     public override void BaseUnlock()
     {
         primary.enabled = true;
-        primary.activate();
+        primary.Activate();
         meleeCol.SetActive(true);
         secondary.enabled = true;
-        secondary.activate();
+        secondary.Activate();
         parryCol.SetActive(true);
     }
     public override void LevelUnlock(int lvl)
@@ -43,16 +43,16 @@ public class SkillsetMelee : Skillset
         {
             case 2:
                 alternative.enabled = true;
-                alternative.activate();
+                alternative.Activate();
                 break;
             case 4:
                 fire.SetActive(true);
                 skill.enabled = true;
-                skill.activate();
+                skill.Activate();
                 break;
             case 5:
                 ultimate.enabled = true;
-                ultimate.activate();
+                ultimate.Activate();
                 break;
             default:
                 break;

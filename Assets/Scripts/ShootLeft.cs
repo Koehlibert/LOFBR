@@ -18,8 +18,8 @@ public class ShootLeft : Ability
     void OnEnable()
     {
         base.Start();
-        StartCoroutine("firstbullet");
-        reset();
+        StartCoroutine("Firstbullet");
+        Reset();
     }
     void OnDisable()
     {
@@ -36,20 +36,20 @@ public class ShootLeft : Ability
         }
         if (Input.GetButtonDown("Secondary")&&(loaded)&&player.manasys.checkCost(manaCost))
         {
-            StartCoroutine("shootanim");
+            StartCoroutine("Shootanim");
             reloader.shoot();
-            StartCoroutine("reload");
+            StartCoroutine("Reload");
             player.manasys.useMana(manaCost);
         }
     }
-    private IEnumerator firstbullet()
+    private IEnumerator Firstbullet()
     {
         yield return new WaitForSeconds(.4f);
         loaded = true;
         bulletinstance = Instantiate(bullet, player.animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + player.transform.forward, player.transform.rotation);
         bulletrig = bulletinstance.GetComponent<Rigidbody>();
     }
-    private IEnumerator reload()
+    private IEnumerator Reload()
     {
         loaded = false;
         yield return new WaitForSeconds(reloadtime);
@@ -57,13 +57,17 @@ public class ShootLeft : Ability
         bulletrig = bulletinstance.GetComponent<Rigidbody>();
         loaded = true;
     }
-    private IEnumerator resetanim()
+    private IEnumerator Resetanim()
     {
         yield return new WaitForSeconds(0.25f);
         player.animator.Play("Default",0,0f);
     }
-    private IEnumerator shootanim()
+    private IEnumerator Shootanim()
     {
+        if(bulletinstance==null)
+        {
+            yield break;
+        }
         player.animator.Play("Shoot",0,0f);
         yield return new WaitForSeconds(0.1f);
         soundsource.Play();
@@ -71,6 +75,6 @@ public class ShootLeft : Ability
         bulletrig.AddForce(player.transform.forward*2250);
         bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
         bulletrig = null;
-        StartCoroutine("resetanim");
+        StartCoroutine("Resetanim");
     }
 }

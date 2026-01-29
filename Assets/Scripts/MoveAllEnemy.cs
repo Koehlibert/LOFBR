@@ -13,7 +13,7 @@ public class MoveAllEnemy : MonoBehaviour
     {
         foreach (string tag in moveableThings)
         {
-            if ((other.tag == tag)&&(!other.gameObject.GetComponent<EnemyTowerHit>()))
+            if ((other.tag == tag)&&(!other.gameObject.GetComponent<TowerBehaviourEnemy>()))
             {
                 other.gameObject.transform.Translate(new Vector3(0,0,-1)*10,Space.World);
             }

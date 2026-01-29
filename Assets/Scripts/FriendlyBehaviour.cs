@@ -39,7 +39,7 @@ public class FriendlyBehaviour : DamageableEntity
         player = FindAnyObjectByType<EnemyPlayerBehaviour>();
         closestCurrentEnemy = null;
         enemybase = GameObject.FindWithTag(enemytype + "Base");
-        closestFinder = new ClosestFinder(player, this.gameObject);
+        closestFinder = new ClosestFinder(Team, this.gameObject);
         hpsys.Initialize(100, 0, 0, 0);
         loaded = true;
         reloadtime = 1.5f;
@@ -110,7 +110,7 @@ public class FriendlyBehaviour : DamageableEntity
         {
             player = GameObject.FindAnyObjectByType<EnemyPlayerBehaviour>();
         }
-        closestCurrentEnemy = closestFinder.FindClosestEnemy();
+        closestCurrentEnemy = closestFinder.FindClosest();
         if (closestCurrentEnemy == null)
         {
             if (Vector3.Distance(this.transform.position, enemybase.transform.position) <= attackdistance)

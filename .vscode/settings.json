@@ -53,5 +53,5 @@
         "Temp/": true
     },
     "dotnet.preferCSharpExtension": true,
-    "dotnet.defaultSolution": "LoFBR - OOP 23_09_2022.slnx"
+    "dotnet.defaultSolution": "LoFBR.slnx"
 }

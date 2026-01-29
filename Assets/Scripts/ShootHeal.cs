@@ -14,8 +14,8 @@ public class ShootHeal : Ability
     void OnEnable()
     {
         base.Start();
-        StartCoroutine("firstbullet");
-        reset();
+        StartCoroutine("Firstbullet");
+        Reset();
     }
     void OnDisable()
     {
@@ -32,19 +32,19 @@ public class ShootHeal : Ability
         }
         if (Input.GetButtonDown("Primary")&&(loaded)&&player.manasys.checkCost(manaCost))
         {
-            StartCoroutine("shootanim");
+            StartCoroutine(nameof(Shootanim));
             reloader.shoot();
-            StartCoroutine("reload");
+            StartCoroutine(nameof(Reload));
             player.manasys.useMana(manaCost);
         }
     }
-    private IEnumerator firstbullet()
+    private IEnumerator Firstbullet()
     {
         yield return new WaitForSeconds(.4f);
         loaded = true;
         bulletinstance = Instantiate(bullet, player.animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + player.transform.forward, player.transform.rotation);
     }
-    private IEnumerator reload()
+    private IEnumerator Reload()
     {
         loaded = false;
         yield return new WaitForSeconds(reloadtime);
@@ -52,12 +52,12 @@ public class ShootHeal : Ability
         loaded = true;
         player.transform.position = new Vector3(player.transform.position.x, 0.7f, player.transform.position.z);
     }
-    private IEnumerator resetanim()
+    private IEnumerator Resetanim()
     {
         yield return new WaitForSeconds(0.25f);
         player.animator.Play("Default",0,0f);
     }
-    private IEnumerator shootanim()
+    private IEnumerator Shootanim()
     {
         player.animator.Play("Shoot",0,0f);
         yield return new WaitForSeconds(0.1f);
@@ -66,6 +66,6 @@ public class ShootHeal : Ability
         bulletinstance.transform.rotation = transform.rotation;
         bulletinstance.GetComponent<DestroyAfterTimeHeal>().DelayedDestroy();
         bulletinstance = null;
-        StartCoroutine("resetanim");
+        StartCoroutine("Resetanim");
     }
 }

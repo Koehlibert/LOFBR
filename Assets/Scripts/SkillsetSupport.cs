@@ -31,9 +31,9 @@ public class SkillsetSupport : Skillset
     public override void BaseUnlock()
     {
         primary.enabled = true;
-        primary.activate();
+        primary.Activate();
         secondary.enabled = true;
-        secondary.activate();
+        secondary.Activate();
     }
     public override void LevelUnlock(int lvl)
     {
@@ -45,15 +45,15 @@ public class SkillsetSupport : Skillset
             case 3:
                 manaLineRend.enabled = true;
                 alternative.enabled = true;
-                alternative.activate();
+                alternative.Activate();
                 break;
             case 4:
                 skill.enabled = true;
-                skill.activate();
+                skill.Activate();
                 break;
             case 5:
                 ultimate.enabled = true;
-                ultimate.activate();
+                ultimate.Activate();
                 break;
             default:
                 break;

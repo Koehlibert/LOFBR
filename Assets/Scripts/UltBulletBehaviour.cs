@@ -12,8 +12,6 @@ public class UltBulletBehaviour : MonoBehaviour
     {
         count = 8;
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (count <= 0)

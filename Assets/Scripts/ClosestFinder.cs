@@ -1,50 +1,54 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ClosestFinder
 {
     private IMainPlayer player;
     private GameObject selfObject;
-    public ClosestFinder(IMainPlayer player, GameObject selfObject)
+    private CombatUtils.Team enemyTeam;
+    private IMainPlayer GetPlayer(CombatUtils.Team team)
     {
-        this.player = player;
+        return team == CombatUtils.Team.Enemy ? MasterScript.Instance.enemyPlayer : MasterScript.Instance.player;
+    }
+    public ClosestFinder(CombatUtils.Team team, GameObject selfObject)
+    {
+        this.enemyTeam = CombatUtils.GetOpposingTeam(team);
         this.selfObject = selfObject;
+        this.player = GetPlayer(enemyTeam);
     }
-    public void Initialize(IMainPlayer player, GameObject selfObject)
+    public GameObject FindClosest()
     {
-        this.player = player;
-        this.selfObject = selfObject;
+        List<GameObject> allObjects = enemyTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemiesTowers : MasterScript.Instance.allFriendliesTowers;
+        if (player == null)
+        {
+            player = GetPlayer(enemyTeam);
+        }
+        allObjects.Append(player.GetGameObject());
+        return FindClosest(allObjects);
     }
-    public GameObject FindClosestFriend()
+    public GameObject FindClosestNoTower()
     {
-        List<GameObject> allFriendles = MasterScript.Instance.allFriendliesTowers;
-        return FindClosest(allFriendles, player);
+        List<GameObject> allObjects = enemyTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemies : MasterScript.Instance.allFriendlies;
+        if (player == null)
+        {
+            player = GetPlayer(enemyTeam);
+        }
+        allObjects.Append(player.GetGameObject());
+        return FindClosest(allObjects);
     }
-    public GameObject[] FindTwoClosestFriendlies()
+    public GameObject[] FindTwoClosest()
     {
-        List<GameObject> allFriendlies = MasterScript.Instance.allFriendlies;
-        return FindTwoClosest(allFriendlies, player);
-    }
-    public GameObject FindClosestFriendNoTower()
-    {
-        List<GameObject> allFriendles = MasterScript.Instance.allFriendlies;
-        return FindClosest(allFriendles, player);
-    }
-    public GameObject FindClosestEnemy()
-    {
-        List<GameObject> allEnemies = MasterScript.Instance.allEnemiesTowers;
-        return FindClosest(allEnemies, player);
-    }
-    public GameObject[] FindTwoClosestEnemies()
-    {
-        List<GameObject> allEnemies = MasterScript.Instance.allEnemiesTowers;
-        return FindTwoClosest(allEnemies, player);
-    }
-    public GameObject FindClosestEnemyNoTower()
-    {
-        List<GameObject> allEnemies = MasterScript.Instance.allEnemies;
-        return FindClosest(allEnemies, player);
+        List<GameObject> allObjects = enemyTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemiesTowers : MasterScript.Instance.allFriendliesTowers;
+        if (player == null)
+        {
+            player = GetPlayer(enemyTeam);
+        }
+        allObjects.Append(player.GetGameObject());
+        return FindTwoClosest(allObjects);
     }
     public GameObject FindClosestHurtFriendly()
     {
@@ -52,14 +56,14 @@ public class ClosestFinder
         List<GameObject> allFriendlies = MasterScript.Instance.allFriendlies;
         foreach (GameObject friendly in allFriendlies)
         {
-            if(friendly.GetComponent<Health>().healthDisplay() < 1)
+            if (friendly.GetComponent<Health>().healthDisplay() < 1)
             {
                 hurtFriendlies.Add(friendly);
             }
         }
-        return FindClosest(hurtFriendlies, null);
+        return FindClosest(hurtFriendlies);
     }
-    private GameObject FindClosest(List<GameObject> allEnemies, IMainPlayer player)
+    private GameObject FindClosest(List<GameObject> allEnemies)
     {
         GameObject closestEnemy = null;
         if (allEnemies.Count != 0)
@@ -84,16 +88,13 @@ public class ClosestFinder
             }
             return closestEnemy;
         }
-        else
+        if ((player != null) && (player.GetGameObject().activeSelf))
         {
-            if ((player != null) && (player.GetGameObject().activeSelf))
-            {
-                closestEnemy = player.GetGameObject();
-            }
-            return closestEnemy;
+            closestEnemy = player.GetGameObject();
         }
+        return closestEnemy;
     }
-    private GameObject[] FindTwoClosest(List<GameObject> allEnemies, IMainPlayer player)
+    private GameObject[] FindTwoClosest(List<GameObject> allEnemies)
     {
         GameObject[] closeEnemies = new GameObject[2];
         if (allEnemies.Count != 0)
@@ -122,13 +123,6 @@ public class ClosestFinder
             }
             return closeEnemies;
         }
-        else
-        {
-            if ((player != null) && (player.GetGameObject().activeSelf))
-            {
-                closeEnemies[0] = player.GetGameObject();
-            }
-            return closeEnemies;
-        }
+        return closeEnemies;
     }
 }

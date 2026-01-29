@@ -71,7 +71,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
         closestCurrentEnemy = null;
         enemybase = GameObject.FindWithTag(enemytype + "Base");
         yourbase = GameObject.FindWithTag("EnemyBase");
-        closestFinder = new ClosestFinder(player, this.gameObject);
+        closestFinder = new ClosestFinder(Team, this.gameObject);
         bulletinstance = Instantiate(bullet, animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + offset, transform.rotation);
         bulletrig = bulletinstance.GetComponent<Rigidbody>();
         loaded = true;
@@ -158,7 +158,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
             circledirection *= -1;
         }
         UpdateBullets();
-        closestCurrentEnemy = closestFinder.FindClosestFriend();
+        closestCurrentEnemy = closestFinder.FindClosest();
         CheckUlt();
         if (loadedShock)
         {
@@ -250,7 +250,6 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
                     }
                 }
             }
-            animator.SetFloat("speedPercent", animSpeed);
         }
         else if ((isShocking) && (loadedShock))
         {
@@ -277,6 +276,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
                 animSpeed = 1;
             }
         }
+        animator.SetFloat("speedPercent", animSpeed);
     }
     public void Attack(Vector3 target)
     {
@@ -422,7 +422,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     {
         if (levelsys.getLevel() > 1)
         {
-            GameObject[] closeEns = closestFinder.FindTwoClosestFriendlies();
+            GameObject[] closeEns = closestFinder.FindTwoClosest();
             if (closeEns[0])
             {
                 detector.enabled = true;

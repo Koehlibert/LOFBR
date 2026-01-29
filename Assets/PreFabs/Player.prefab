@@ -457,6 +457,7 @@ MonoBehaviour:
   reloader: {fileID: 0}
   manaCost: 0
   bullet: {fileID: 3013956373289337006, guid: 0c57fd25be1334043aca051df608cada, type: 3}
+  soundsource: {fileID: 874059498112534172}
   bulletinstance: {fileID: 0}
 --- !u!114 &4034508094622212554
 MonoBehaviour:

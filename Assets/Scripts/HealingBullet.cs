@@ -20,7 +20,7 @@ public class HealingBullet : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         allFriendlies = MasterScript.Instance.allFriendlies;
         fullHPFriendlies = new List<GameObject>();
-        closestFinder = new ClosestFinder(null, this.gameObject);
+        closestFinder = new ClosestFinder(CombatUtils.Team.Player, this.gameObject);
     }
     void Update()
     {
@@ -65,31 +65,6 @@ public class HealingBullet : MonoBehaviour
         {
             MoveForward(Time.deltaTime);
         }
-    }
-    public GameObject[] findClosestEnemy(List<GameObject> allEnemies)
-    {
-        GameObject[] closeEnemies = new GameObject[2];
-        if (allEnemies.Count != 0)
-        {
-            float secondclosestDistance = Mathf.Infinity;
-            float closestDistance = Mathf.Infinity;
-            foreach (GameObject currenemy in allEnemies)
-            {
-                if (!currenemy)
-                {
-                    continue;
-                }
-                float distanceToEnemy = Vector3.Distance(currenemy.transform.position,this.transform.position);
-                if (distanceToEnemy < closestDistance)
-                {
-                    secondclosestDistance = closestDistance;
-                    closestDistance = distanceToEnemy;
-                    closeEnemies[1] = closeEnemies[0];
-                    closeEnemies[0] = currenemy;
-                }
-            }
-        }
-        return closeEnemies;
     }
     private void MoveForward (float rate)
     {

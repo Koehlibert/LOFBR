@@ -13,7 +13,7 @@ public class MoveAllFriendly : MonoBehaviour
     {
         foreach (string tag in moveableThings)
         {
-            if ((other.tag == tag)&&(!other.gameObject.GetComponent<FriendlyTowerHit>()))
+            if ((other.tag == tag)&&(!other.gameObject.GetComponent<TowerBehaviourFriendly>()))
             {
                 other.gameObject.transform.Translate(new Vector3(0,0,1)*10,Space.World);
             }

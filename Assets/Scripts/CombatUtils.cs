@@ -45,4 +45,17 @@ public static class CombatUtils
         GameObject.Destroy(damage.gameObject);
         return result;
     }
+    public static bool InRange(GameObject object1, GameObject object2, float range)
+    {
+        bool isInRange = false;
+        if ((object2 != null)&&(Vector3.Distance(object2.transform.position,object1.transform.position)<=range))
+        {
+            isInRange = true;
+        }
+        return isInRange;
+    }
+    public static Team GetOpposingTeam(Team team)
+    {
+        return team == Team.Enemy ? Team.Player : Team.Enemy;
+    }
 }

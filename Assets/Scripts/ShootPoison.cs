@@ -5,7 +5,8 @@ using UnityEngine;
 public class ShootPoison : Ability
 {
     public GameObject bullet;
-    Vector3 offset = new Vector3(0,-0.5f,1.5f);
+    Vector3 offset = new Vector3(0, -0.5f, 1.5f);
+    public AudioSource soundsource;
     public GameObject bulletinstance;
     new void Start()
     {
@@ -14,8 +15,8 @@ public class ShootPoison : Ability
     void OnEnable()
     {
         base.Start();
-        StartCoroutine("firstbullet");
-        reset();
+        StartCoroutine("Firstbullet");
+        Reset();
     }
     void OnDisable()
     {
@@ -30,42 +31,42 @@ public class ShootPoison : Ability
         {
             bulletinstance.transform.position = player.animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + player.transform.forward;
         }
-        if (Input.GetButtonDown("Secondary")&&(loaded)&&player.manasys.checkCost(manaCost))
+        if (Input.GetButtonDown("Secondary") && (loaded) && player.manasys.checkCost(manaCost))
         {
-            StartCoroutine("shootanim");
+            StartCoroutine("Shootanim");
             reloader.shoot();
-            StartCoroutine("reload");
+            StartCoroutine("Reload");
             player.manasys.useMana(manaCost);
         }
     }
-    private IEnumerator firstbullet()
+    private IEnumerator Firstbullet()
     {
         yield return new WaitForSeconds(.4f);
         loaded = true;
         bulletinstance = Instantiate(bullet, player.animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + player.transform.forward, player.transform.rotation);
     }
-    private IEnumerator reload()
+    private IEnumerator Reload()
     {
         loaded = false;
         yield return new WaitForSeconds(reloadtime);
         bulletinstance = Instantiate(bullet, player.animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + player.transform.forward, player.transform.rotation);
         loaded = true;
-        player.transform.position = new Vector3(player.transform.position.x, 0.7f, player.transform.position.z);
     }
-    private IEnumerator resetanim()
+    private IEnumerator Resetanim()
     {
         yield return new WaitForSeconds(0.25f);
-        player.animator.Play("Default",0,0f);
+        player.animator.Play("Default", 0, 0f);
     }
-    private IEnumerator shootanim()
+    private IEnumerator Shootanim()
     {
-        player.animator.Play("Shoot",0,0f);
-        yield return new WaitForSeconds(0.1f);
         if (bulletinstance == null) yield break;
-        bulletinstance.GetComponent<Damage>().SetProperties(16 + 4*player.levelsys.getLevel(),4f + 4f + 1.5f * player.levelsys.getLevel(), CombatUtils.Team.Player, true, true);
+        player.animator.Play("Shoot", 0, 0f);
+        yield return new WaitForSeconds(0.1f);
+        soundsource.Play();
+        bulletinstance.GetComponent<Damage>().SetProperties(16 + 4 * player.levelsys.getLevel(), 4f + 4f + 1.5f * player.levelsys.getLevel(), CombatUtils.Team.Player, true, true);
         bulletinstance.transform.rotation = transform.rotation;
         bulletinstance.GetComponent<DestroyAfterTimePoison>().DelayedDestroy();
         bulletinstance = null;
-        StartCoroutine("resetanim");
+        StartCoroutine("Resetanim");
     }
 }

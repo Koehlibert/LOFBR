@@ -42,7 +42,7 @@ public class DamageCollisionHandler : MonoBehaviour
         Damage damageComponent = collider.gameObject.GetComponent<Damage>();
         if (damageComponent?.isEnduring == true)
         {
-            if (CombatUtils.CanDamage(damageComponent, damageableTarget)) //this is bad
+            if (CombatUtils.CanDamage(damageComponent, damageableTarget))
             {
                 if (damageComponent.givesXP)
                 {

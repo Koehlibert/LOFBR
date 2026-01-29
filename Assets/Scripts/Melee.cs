@@ -23,7 +23,7 @@ public class Melee : Ability
     }
     void OnDisable()
     {
-        reset();
+        Reset();
     }
     void FixedUpdate()
     {
@@ -67,7 +67,7 @@ public class Melee : Ability
         yield return new WaitForSeconds(0.01f);
         StartCoroutine("resetanim");
     }
-    public new void reset()
+    public new void Reset()
     {
         loaded = true;
         attacking = false;

@@ -37,7 +37,7 @@ public class EnemyBehaviour : DamageableEntity
         player = GameObject.FindAnyObjectByType<PlayerController>();
         enemytype = "Friendly";
         closestCurrentEnemy = null;
-        closestFinder = new ClosestFinder(player, this.gameObject);
+        closestFinder = new ClosestFinder(Team, this.gameObject);
         enemybase = GameObject.FindWithTag(enemytype + "Base");
         loaded = true;
         reloadtime = 1.5f;
@@ -92,7 +92,7 @@ public class EnemyBehaviour : DamageableEntity
         {
             player = GameObject.FindAnyObjectByType<PlayerController>();
         }
-        closestCurrentEnemy = closestFinder.FindClosestFriend();
+        closestCurrentEnemy = closestFinder.FindClosest();
         if (closestCurrentEnemy == null)
         {
             if (Vector3.Distance(this.transform.position, enemybase.transform.position) <= attackdistance)
@@ -148,11 +148,11 @@ public class EnemyBehaviour : DamageableEntity
         transform.LookAt(new Vector3(target.x, transform.position.y, target.z));
         if (loaded)
         {
-            StartCoroutine("shootanim");
-            StartCoroutine("reload");
+            StartCoroutine("Shootanim");
+            StartCoroutine("Reload");
         }
     }
-    private IEnumerator reload()
+    private IEnumerator Reload()
     {
         loaded = false;
         yield return new WaitForSeconds(reloadtime);
@@ -165,7 +165,7 @@ public class EnemyBehaviour : DamageableEntity
         yield return new WaitForSeconds(0.25f);
         animator.Play("Default", 0, 0f);
     }
-    private IEnumerator shootanim()
+    private IEnumerator Shootanim()
     {
         animator.Play("Shoot", 0, 0f);
         yield return new WaitForSeconds(0.1f);

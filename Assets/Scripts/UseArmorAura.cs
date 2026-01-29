@@ -19,7 +19,7 @@ public class UseArmorAura : Ability
     }
     void OnDisable()
     {
-        reset();
+        Reset();
     }
     void Update()
     {
@@ -41,7 +41,7 @@ public class UseArmorAura : Ability
         }
           
     }
-    public new void reset()
+    public new void Reset()
     {
         loaded = true;
         armorActive = false;

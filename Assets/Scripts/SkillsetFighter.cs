@@ -31,7 +31,7 @@ public class SkillsetFighter : Skillset
     public override void BaseUnlock()
     {
         primary.enabled = true;
-        primary.activate();
+        primary.Activate();
     }
     public override void LevelUnlock(int lvl)
     {
@@ -39,19 +39,19 @@ public class SkillsetFighter : Skillset
         {
             case 2:
                 alternative.enabled = true;
-                alternative.activate();
+                alternative.Activate();
                 break;
             case 3:
                 skill.enabled = true;
-                skill.activate();
+                skill.Activate();
                 break;
             case 4:
                 secondary.enabled = true;
-                secondary.activate();
+                secondary.Activate();
                 break;
             case 5:
                 ultimate.enabled = true;
-                ultimate.activate();
+                ultimate.Activate();
                 break;
             default:
                 break;
