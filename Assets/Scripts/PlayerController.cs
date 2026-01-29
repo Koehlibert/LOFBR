@@ -51,7 +51,7 @@ public class PlayerController : DamageableEntity, IMainPlayer
         movementspeed = skillSet.GetSpeed();
         flashspeed = 2.5f;
         DamageCollisionHandler handler = GetComponent<DamageCollisionHandler>();
-        handler.SetOnHitCallback(OnTakeDamage);
+        handler.OnHitCallback += OnTakeDamage;
     }
     public override CombatUtils.Team Team => CombatUtils.Team.Player;
     void OnEnable()
@@ -60,23 +60,6 @@ public class PlayerController : DamageableEntity, IMainPlayer
         isDead = false;
         damageimage.color = Color.clear;
     }
-    /* protected override void ConfigureCollisionRules(DamageCollisionHandler handler)
-    {
-        handler.AddRule(new DamageCollisionHandler.CollisionRule
-        {
-            tags = new List<string> { "BulletEnemy", "BulletEnemyPlayer" },
-            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
-            destroyOnHit = true,
-            setLastHit = true
-        });
-        handler.AddRule(new DamageCollisionHandler.CollisionRule
-        {
-            tags = new List<string> { "BulletEnemyShockwave" },
-            eventType = DamageCollisionHandler.CollisionEventType.TriggerEnter,
-            destroyOnHit = false,
-            setLastHit = true
-        });
-    } */
     void FixedUpdate()
     {
         StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
@@ -110,12 +93,14 @@ public class PlayerController : DamageableEntity, IMainPlayer
             transform.rotation = lookAtRotation;
         }
     }
-    private void OnTakeDamage(GameObject damageSource)
+    private void OnTakeDamage()
     {
         if (!isDead)
         {
             flashcolor.a = 0.8f*(1-hpsys.healthDisplay());
             damageimage.color = flashcolor;
+            soundsource.time = 0.4f;
+            soundsource.Play();
         }
     }
     void MoveCharacter()

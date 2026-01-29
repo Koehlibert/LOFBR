@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Extensions;
+using System;
 
 public class DamageCollisionHandler : MonoBehaviour
 {
@@ -12,9 +13,8 @@ public class DamageCollisionHandler : MonoBehaviour
         public bool destroyOnHit = false;
         public bool setLastHit = false;
     }
-    private System.Action<GameObject> onHitCallback;
+    public event Action OnHitCallback;
     public enum CollisionEventType { Enter, Stay, TriggerStay, TriggerEnter }
-
     private List<CollisionRule> collisionRules = new List<CollisionRule>();
     private IMortal mortalTarget;
     private DamageableEntity damageableTarget;
@@ -28,11 +28,6 @@ public class DamageCollisionHandler : MonoBehaviour
     public void AddRule(CollisionRule rule)
     {
         collisionRules.Add(rule);
-    }
-
-    public void SetOnHitCallback(System.Action<GameObject> callback)
-    {
-        onHitCallback = callback;
     }
     private void OnTriggerEnter(Collider collision)
     {
@@ -52,6 +47,7 @@ public class DamageCollisionHandler : MonoBehaviour
                     {
                         damageableTarget.SetLastHit(true);
                     }
+                    OnHitCallback?.Invoke();
                     if (CombatUtils.DealDamage(damageComponent, mortalTarget))
                     {
                         mortalTarget.Die();
