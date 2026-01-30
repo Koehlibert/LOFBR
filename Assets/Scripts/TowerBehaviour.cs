@@ -42,8 +42,8 @@ public abstract class TowerBehaviour : DamageableEntity
         bulletinstance = Instantiate(bullet, transform.position + offset + 1.5f * (transform.position - target.transform.position).normalized, transform.rotation);
         Rigidbody bulletrig = bulletinstance.GetComponent<Rigidbody>();
         bulletinstance.GetComponent<Damage>().SetProperties(60, 0, Team, true);
-        bulletrig.AddForce(gameObject.transform.forward * 200000f * Time.deltaTime);
-        bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
+        bulletrig.AddForce(gameObject.transform.forward * 1750);
+        bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy(2);
         StartCoroutine("Reload");
     }
     private IEnumerator Reload()

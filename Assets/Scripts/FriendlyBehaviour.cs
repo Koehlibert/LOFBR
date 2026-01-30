@@ -174,7 +174,7 @@ public class FriendlyBehaviour : DamageableEntity
         animator.Play("Shoot", 0, 0f);
         yield return new WaitForSeconds(0.1f);
         bulletinstance.GetComponent<Damage>().SetProperties(40, 0, this.Team, true);
-        bulletrig.AddForce(gameObject.transform.forward * 200000f * Time.deltaTime);
+        bulletrig.AddForce(gameObject.transform.forward * 2250);
         bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
         bulletrig = null;
         StartCoroutine("Resetanim");
