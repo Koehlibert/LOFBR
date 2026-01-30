@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
+[RequireComponent(typeof(Slider))]
 public class ExpDisplay : MonoBehaviour
 {
-    // Start is called before the first frame update
     public PlayerController player;
     public Slider expslider;
     void Start()
@@ -12,8 +13,6 @@ public class ExpDisplay : MonoBehaviour
         player = GameObject.FindAnyObjectByType<PlayerController>();
         expslider = GetComponent<Slider>();
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (player.isActiveAndEnabled)

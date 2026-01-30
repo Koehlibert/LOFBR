@@ -180,4 +180,8 @@ public class PlayerController : DamageableEntity, IMainPlayer
     {
         handler.OnHitCallback += OnTakeDamage;
     }
+    public void OnHealXP()
+    {
+        levelsys.gainExp(5);
+    }
 }

@@ -89,9 +89,9 @@ public class DamageCollisionHandler : MonoBehaviour
                 }
                 else
                 {
-                    //somehow this needs to give xp
                     if (mortalTarget.GetHealth().Heal(damageComponent))
                     {
+                        MasterScript.Instance.player.OnHealXP();
                         Destroy(collider.gameObject);
                     }
                 }
