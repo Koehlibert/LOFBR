@@ -5,6 +5,9 @@ using UnityEngine;
 public class UltAttack : Ability
 {
     public GameObject ultBullet;
+
+    public override string InputString => "Ult";
+
     new void Start()
     {
         base.Start();
@@ -12,17 +15,12 @@ public class UltAttack : Ability
         reloadtime = 15f;
         manaCost = 250;
     }
-
-    // Update is called once per frame
-    void Update()
+    protected override void AbilityAction()
     {
-        if (Input.GetButtonDown("Ult")&&(loaded)&&player.manasys.checkCost(manaCost))
-        {
-            GameObject ultInstance = Instantiate(ultBullet, player.transform.position + player.transform.forward*2 + new Vector3(0f,2f,0f), player.transform.rotation);
+        GameObject ultInstance = Instantiate(ultBullet, player.transform.position + player.transform.forward*2 + new Vector3(0f,2f,0f), player.transform.rotation);
             ultInstance.GetComponent<Damage>().SetProperties(50+(player.levelsys.getLevel()-5)*4.5f, 0, CombatUtils.Team.Player, false, true, true);
             StartCoroutine("reload");
             reloader.shoot();
             player.manasys.useMana(manaCost);
-        }
     }
 }

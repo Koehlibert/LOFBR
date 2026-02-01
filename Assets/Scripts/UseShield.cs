@@ -6,23 +6,14 @@ public class UseShield : Ability
 {
     public GameObject shield;
     private GameObject shieldInstance;
+
+    public override string InputString => "Skill";
+
     // Start is called before the first frame update
     new void Start()
     {
         base.Start();
         loaded = true;
-    }
-    void Update()
-    {
-        if (Input.GetButtonDown("Skill")&&(loaded)&&player.manasys.checkCost(manaCost))
-        {
-            shieldInstance = Instantiate(shield, player.transform.position + new Vector3(0f,2f,0f), player.transform.rotation);
-            shieldInstance.GetComponent<Shield>().SetPlayer(FindAnyObjectByType<PlayerController>());
-            StartCoroutine("reload");
-            StartCoroutine("destroyShield");
-            reloader.shoot();
-            player.manasys.useMana(manaCost);
-        }
     }
     private IEnumerator destroyShield()
     {
@@ -32,5 +23,15 @@ public class UseShield : Ability
         player.GetHealth().AddArmor(-100);
         player.EnableDamageFlash();
         GameObject.Destroy(shieldInstance);
+    }
+
+    protected override void AbilityAction()
+    {
+        shieldInstance = Instantiate(shield, player.transform.position + new Vector3(0f, 2f, 0f), player.transform.rotation);
+        shieldInstance.GetComponent<Shield>().SetPlayer(FindAnyObjectByType<PlayerController>());
+        StartCoroutine("reload");
+        StartCoroutine("destroyShield");
+        reloader.shoot();
+        player.manasys.useMana(manaCost);
     }
 }

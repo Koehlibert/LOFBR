@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PauseGame : MonoBehaviour
@@ -9,6 +10,16 @@ public class PauseGame : MonoBehaviour
     public GameObject GameOverMenu;
     public GameObject GameOverContinue;
     public GameObject AudioSlider;
+    public InputActionAsset InputActions;
+    private InputAction pause;
+    private void OnEnable()
+    {
+        InputActions.FindActionMap("Player").Enable();
+    }
+    private void Awake()
+    {
+        pause = InputSystem.actions.FindAction("Pause");
+    }
     void Start()
     {
         isPaused = false;
@@ -18,19 +29,19 @@ public class PauseGame : MonoBehaviour
     }
     void Update()
     {
-        if(Input.GetKeyDown (KeyCode.Escape))
+        if(pause.WasPressedThisFrame())
         {
             if (!isPaused)
             {
-                stop();
+                Stop();
             }
             else
             {
-                continueGame();
+                ContinueGame();
             }
         }
     }
-    void stop()
+    void Stop()
     {
         Time.timeScale = 0;
         isPaused = true;
@@ -38,7 +49,7 @@ public class PauseGame : MonoBehaviour
         GameOverContinue.SetActive(true);
         AudioSlider.SetActive(true);
     }
-    public void continueGame()
+    public void ContinueGame()
     {
         Time.timeScale = 1;
         isPaused = false;

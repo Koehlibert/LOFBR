@@ -2,7 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using Extensions;
+
+[RequireComponent(typeof(SkillsetMelee))]
+[RequireComponent(typeof(SkillsetSupport))]
+[RequireComponent(typeof(SkillsetFighter))]
 public class PlayerController : DamageableEntity, IMainPlayer
 {
     public Level levelsys;
@@ -23,6 +28,7 @@ public class PlayerController : DamageableEntity, IMainPlayer
     private Skillset skillSet;
     private bool isDead = false;
     private DamageCollisionHandler handler;
+    private PlayerInputRouter input;
     protected override void Start()
     {
         base.Start();
@@ -61,10 +67,14 @@ public class PlayerController : DamageableEntity, IMainPlayer
         isDead = false;
         damageimage.color = Color.clear;
     }
+    private void Awake()
+    {
+        input = GetComponent<PlayerInputRouter>();
+    }
     void FixedUpdate()
     {
         StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
-        if (Input.GetButtonDown("Cheat"))
+        if (input.CheatedPressed)
         {
             levelsys.gainExp(100);
             enemyPlayer.levelsys.gainExp(100);
@@ -83,12 +93,13 @@ public class PlayerController : DamageableEntity, IMainPlayer
     void UpdateLookPosition()
     {
         Plane playerPlane = new Plane(Vector3.up, transform.position);
-        Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
-        float hitDist = 0.0f;
-        if ((playerPlane.Raycast(ray, out hitDist)) && (!lookLock))
+        Ray ray = Camera.main.ScreenPointToRay(input.Look);
+        if (playerPlane.Raycast(ray, out float hitDist) && !lookLock)
         {
             Vector3 lookAtPoint = ray.GetPoint(hitDist);
-            Quaternion lookAtRotation = Quaternion.LookRotation(lookAtPoint - transform.position);
+            Quaternion lookAtRotation =
+                Quaternion.LookRotation(lookAtPoint - transform.position);
+
             lookAtRotation.x = 0;
             lookAtRotation.z = 0;
             transform.rotation = lookAtRotation;
@@ -106,9 +117,8 @@ public class PlayerController : DamageableEntity, IMainPlayer
     }
     void MoveCharacter()
     {
-        float moveSideways = Input.GetAxis("Horizontal");
-        float moveForward = -Input.GetAxis("Vertical");
-        float rotateSideways = Input.GetAxis("Vertical");
+        float moveSideways = input.Move.x;
+        float moveForward = input.Move.y;
         movement = new Vector3(moveForward, 0, moveSideways);
         if (!moveLock)
         {

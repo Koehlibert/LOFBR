@@ -6441,6 +6441,8 @@ MonoBehaviour:
   GameOverMenu: {fileID: 2056277156}
   GameOverContinue: {fileID: 1330237192}
   AudioSlider: {fileID: 485770959}
+  InputActions: {fileID: -944628639613478452, guid: 3ee215d4f2c75744db4784c44b3c4d65,
+    type: 3}
 --- !u!1001 &1776057421
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8666,6 +8668,12 @@ PrefabInstance:
       propertyPath: damageimage
       value: 
       objectReference: {fileID: 181606342}
+    - target: {fileID: 874059498112534147, guid: 19b6ea4c0c8e0a8468e61191a6c9bf78,
+        type: 3}
+      propertyPath: InputActions
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: 3ee215d4f2c75744db4784c44b3c4d65,
+        type: 3}
     - target: {fileID: 874059498112534147, guid: 19b6ea4c0c8e0a8468e61191a6c9bf78,
         type: 3}
       propertyPath: manaForShoot

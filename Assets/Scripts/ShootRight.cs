@@ -9,6 +9,9 @@ public class ShootRight : Ability
     public AudioSource soundsource;
     public GameObject bulletinstance;
     private Rigidbody bulletrig;
+
+    public override string InputString => "AttackPrimary";
+
     new void Start()
     {
         base.Start();
@@ -32,13 +35,7 @@ public class ShootRight : Ability
         {
             bulletrig.transform.position = player.animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + player.transform.forward;
         }
-        if (Input.GetButtonDown("Primary") && (loaded) && player.manasys.checkCost(manaCost))
-        {
-            StartCoroutine("Shootanim");
-            reloader.shoot();
-            StartCoroutine("Reload");
-            player.manasys.useMana(manaCost);
-        }
+        base.Update();
     }
     private IEnumerator Firstbullet()
     {
@@ -71,5 +68,13 @@ public class ShootRight : Ability
         bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
         bulletrig = null;
         StartCoroutine("Resetanim");
+    }
+
+    protected override void AbilityAction()
+    {
+        StartCoroutine("Shootanim");
+        reloader.shoot();
+        StartCoroutine("Reload");
+        player.manasys.useMana(manaCost);
     }
 }

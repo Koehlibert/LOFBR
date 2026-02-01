@@ -7,24 +7,13 @@ public class UltBladeFlurry : Ability
     private float duration = .4f;
     private List<ObjectWithDist> flurryPos;
     private Damage damage;
+
+    public override string InputString => "Ult";
+
     new void Start()
     {
         base.Start();
         loaded = true;
-    }
-    void Update()
-    {
-        if (Input.GetButtonDown("Ult")&&(loaded)&&player.manasys.checkCost(manaCost))
-        {
-            flurryPos = MasterScript.Instance.GetFlurryTargets(player.levelsys.getLevel() -1);
-            if (flurryPos.Count > 0)
-            {
-                StartCoroutine("reload");
-                StartCoroutine("Flurry");
-                reloader.shoot();
-                player.manasys.useMana(manaCost);
-            }
-        }
     }
     private IEnumerator Flurry()
     {
@@ -74,5 +63,17 @@ public class UltBladeFlurry : Ability
             dir.y = -dir.y;
         }
         return dir;
+    }
+
+    protected override void AbilityAction()
+    {
+        flurryPos = MasterScript.Instance.GetFlurryTargets(player.levelsys.getLevel() -1);
+            if (flurryPos.Count > 0)
+            {
+                StartCoroutine("reload");
+                StartCoroutine("Flurry");
+                reloader.shoot();
+                player.manasys.useMana(manaCost);
+            }
     }
 }

@@ -8,6 +8,9 @@ public class ShootPoison : Ability
     Vector3 offset = new Vector3(0, -0.5f, 1.5f);
     public AudioSource soundsource;
     public GameObject bulletinstance;
+
+    public override string InputString => "AttackPrimary";
+
     new void Start()
     {
         base.Start();
@@ -31,13 +34,7 @@ public class ShootPoison : Ability
         {
             bulletinstance.transform.position = player.animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + player.transform.forward;
         }
-        if (Input.GetButtonDown("Secondary") && (loaded) && player.manasys.checkCost(manaCost))
-        {
-            StartCoroutine("Shootanim");
-            reloader.shoot();
-            StartCoroutine("Reload");
-            player.manasys.useMana(manaCost);
-        }
+        base.Update();
     }
     private IEnumerator Firstbullet()
     {
@@ -68,5 +65,13 @@ public class ShootPoison : Ability
         bulletinstance.GetComponent<DestroyAfterTimePoison>().DelayedDestroy();
         bulletinstance = null;
         StartCoroutine("Resetanim");
+    }
+
+    protected override void AbilityAction()
+    {
+        StartCoroutine("Shootanim");
+        reloader.shoot();
+        StartCoroutine("Reload");
+        player.manasys.useMana(manaCost);
     }
 }
