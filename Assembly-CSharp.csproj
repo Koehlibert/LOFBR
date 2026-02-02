@@ -124,6 +124,7 @@
     <Compile Include="Assets\Scripts\UltAttackHeal.cs" />
     <Compile Include="Assets\Scripts\UseShield.cs" />
     <Compile Include="Assets\Scripts\IMainPlayer.cs" />
+    <Compile Include="Assets\Scripts\UltBullet.cs" />
     <Compile Include="Assets\Scripts\FireBehaviour.cs" />
     <Compile Include="Assets\Scripts\LevelText.cs" />
     <Compile Include="Assets\Scripts\ArmorAura.cs" />

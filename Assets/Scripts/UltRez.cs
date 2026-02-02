@@ -6,9 +6,6 @@ public class UltRez : Ability
 {
     public GameObject Mob;
     private Quaternion spawndirection = new Quaternion(0, 0, 0, 0);
-
-    public override string InputString => "Ult";
-
     new void Start()
     {
         base.Start();
@@ -34,5 +31,9 @@ public class UltRez : Ability
             reloader.shoot();
             player.manasys.useMana(manaCost);
         }
+    }
+    protected override bool InputPressed()
+    {
+        return PlayerInputRouter.Instance.UltPressed;
     }
 }

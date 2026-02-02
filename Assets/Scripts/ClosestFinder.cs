@@ -20,24 +20,31 @@ public class ClosestFinder
         this.selfObject = selfObject;
         this.player = GetPlayer(enemyTeam);
     }
-    public GameObject FindClosest()
+    private List<GameObject> AddPlayer(List<GameObject> gameObjects)
+    {
+        if (player == null)
+        {
+            player = GetPlayer(enemyTeam);
+        }
+        gameObjects.Add(player.GetGameObject());
+        return gameObjects;
+    }
+    public GameObject FindClosest(bool shouldAddPlayer = true)
     {
         List<GameObject> allObjects = enemyTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemiesTowers : MasterScript.Instance.allFriendliesTowers;
-        if (player == null)
+        if (shouldAddPlayer)
         {
-            player = GetPlayer(enemyTeam);
+            allObjects = AddPlayer(allObjects);
         }
-        allObjects.Append(player.GetGameObject());
         return FindClosest(allObjects);
     }
-    public GameObject FindClosestNoTower()
+    public GameObject FindClosestNoTower(bool shouldAddPlayer = true)
     {
         List<GameObject> allObjects = enemyTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemies : MasterScript.Instance.allFriendlies;
-        if (player == null)
+        if (shouldAddPlayer)
         {
-            player = GetPlayer(enemyTeam);
+            allObjects = AddPlayer(allObjects);
         }
-        allObjects.Append(player.GetGameObject());
         return FindClosest(allObjects);
     }
     public GameObject[] FindTwoClosest()
@@ -82,15 +89,6 @@ public class ClosestFinder
                     closestEnemy = currenemy;
                 }
             }
-            if ((player != null) && (player.GetGameObject().activeSelf) && (Vector3.Distance(selfObject.transform.position, player.GetTransform().position) < closestDistance))
-            {
-                closestEnemy = player.GetGameObject();
-            }
-            return closestEnemy;
-        }
-        if ((player != null) && (player.GetGameObject().activeSelf))
-        {
-            closestEnemy = player.GetGameObject();
         }
         return closestEnemy;
     }

@@ -11,14 +11,14 @@ using Extensions;
 public class PlayerController : DamageableEntity, IMainPlayer
 {
     public Level levelsys;
-    public Mana manasys; 
+    public Mana manasys;
     private float movementspeed;
     public int rotatespeed;
     private float flashspeed;
     public Vector3 movement;
     public Image damageimage;
     public EnemyPlayerBehaviour enemyPlayer;
-    public Color flashcolor = new Color(1f,0f,0f,0.1f);
+    public Color flashcolor = new Color(1f, 0f, 0f, 0.1f);
     [SerializeField] public Animator animator;
     private float animSpeed;
     public AudioSource soundsource;
@@ -28,7 +28,6 @@ public class PlayerController : DamageableEntity, IMainPlayer
     private Skillset skillSet;
     private bool isDead = false;
     private DamageCollisionHandler handler;
-    private PlayerInputRouter input;
     protected override void Start()
     {
         base.Start();
@@ -67,14 +66,10 @@ public class PlayerController : DamageableEntity, IMainPlayer
         isDead = false;
         damageimage.color = Color.clear;
     }
-    private void Awake()
-    {
-        input = GetComponent<PlayerInputRouter>();
-    }
     void FixedUpdate()
     {
         StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
-        if (input.CheatedPressed)
+        if (PlayerInputRouter.Instance.CheatedPressed)
         {
             levelsys.gainExp(100);
             enemyPlayer.levelsys.gainExp(100);
@@ -92,24 +87,31 @@ public class PlayerController : DamageableEntity, IMainPlayer
     }
     void UpdateLookPosition()
     {
-        Plane playerPlane = new Plane(Vector3.up, transform.position);
-        Ray ray = Camera.main.ScreenPointToRay(input.Look);
-        if (playerPlane.Raycast(ray, out float hitDist) && !lookLock)
+        if (!lookLock)
         {
-            Vector3 lookAtPoint = ray.GetPoint(hitDist);
-            Quaternion lookAtRotation =
-                Quaternion.LookRotation(lookAtPoint - transform.position);
+            Vector2 mouseScreenPosition = PlayerInputRouter.Instance.Look;
+            Plane playerPlane = new Plane(Vector3.up, transform.position);
+            Ray ray = Camera.main.ScreenPointToRay(mouseScreenPosition);
 
-            lookAtRotation.x = 0;
-            lookAtRotation.z = 0;
-            transform.rotation = lookAtRotation;
+            if (playerPlane.Raycast(ray, out float hitDist))
+            {
+                Vector3 lookAtPoint = ray.GetPoint(hitDist);
+
+                Vector3 dir = lookAtPoint - transform.position;
+                dir.y = 0;
+
+                if (dir.sqrMagnitude > 0.001f)
+                {
+                    transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
+                }
+            }
         }
     }
     private void OnTakeDamage()
     {
         if (!isDead)
         {
-            flashcolor.a = 0.8f*(1-hpsys.healthDisplay());
+            flashcolor.a = 0.8f * (1 - hpsys.healthDisplay());
             damageimage.color = flashcolor;
             soundsource.time = 0.4f;
             soundsource.Play();
@@ -117,9 +119,7 @@ public class PlayerController : DamageableEntity, IMainPlayer
     }
     void MoveCharacter()
     {
-        float moveSideways = input.Move.x;
-        float moveForward = input.Move.y;
-        movement = new Vector3(moveForward, 0, moveSideways);
+        movement = new Vector3(-PlayerInputRouter.Instance.Move.y, 0, PlayerInputRouter.Instance.Move.x).normalized;
         if (!moveLock)
         {
             MoveCharacter(movement);
@@ -138,8 +138,8 @@ public class PlayerController : DamageableEntity, IMainPlayer
     void LevelUp()
     {
         skillSet.LevelUnlock(levelsys.getLevel());
-        hpsys.UpdateValues((levelsys.getLevel()-1)*25,2);
-        manasys.UpdateValues(50, levelsys.getLevel()*0.25f);
+        hpsys.UpdateValues((levelsys.getLevel() - 1) * 25, 2);
+        manasys.UpdateValues(50, levelsys.getLevel() * 0.25f);
     }
     public float GetSpeed()
     {

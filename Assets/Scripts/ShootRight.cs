@@ -9,9 +9,6 @@ public class ShootRight : Ability
     public AudioSource soundsource;
     public GameObject bulletinstance;
     private Rigidbody bulletrig;
-
-    public override string InputString => "AttackPrimary";
-
     new void Start()
     {
         base.Start();
@@ -64,7 +61,7 @@ public class ShootRight : Ability
         yield return new WaitForSeconds(0.1f);
         soundsource.Play();
         bulletinstance.GetComponent<Damage>().SetProperties(34 + 7 * player.levelsys.getLevel(), 0, CombatUtils.Team.Player, true, true);
-        bulletrig.AddForce(player.transform.forward * 2250);
+        bulletrig?.AddForce(player.transform.forward * 2250);
         bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
         bulletrig = null;
         StartCoroutine("Resetanim");
@@ -76,5 +73,9 @@ public class ShootRight : Ability
         reloader.shoot();
         StartCoroutine("Reload");
         player.manasys.useMana(manaCost);
+    }
+    protected override bool InputPressed()
+    {
+        return PlayerInputRouter.Instance.PrimaryPressed;
     }
 }

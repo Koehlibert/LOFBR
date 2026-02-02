@@ -6,10 +6,6 @@ public class UseShield : Ability
 {
     public GameObject shield;
     private GameObject shieldInstance;
-
-    public override string InputString => "Skill";
-
-    // Start is called before the first frame update
     new void Start()
     {
         base.Start();
@@ -33,5 +29,9 @@ public class UseShield : Ability
         StartCoroutine("destroyShield");
         reloader.shoot();
         player.manasys.useMana(manaCost);
+    }
+    protected override bool InputPressed()
+    {
+        return PlayerInputRouter.Instance.SkillPressed;
     }
 }

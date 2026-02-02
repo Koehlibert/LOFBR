@@ -10,21 +10,12 @@ public abstract class Ability : MonoBehaviour
     protected bool loaded;
     public Reload reloader;
     public float manaCost;
-    protected InputActionAsset InputActions;
-    private InputAction ability;
-    public abstract string InputString { get; }
     protected virtual void Start()
     {
         player = GetComponent<PlayerController>();
     }
-    protected virtual void Awake()
-    {
-        Debug.Log(InputString);
-        ability = InputSystem.actions.FindAction(InputString);
-    }
     void OnEnable()
     {
-        InputActions.FindActionMap("Player").Enable();
         Reset();
         player = GetComponent<PlayerController>();
     }
@@ -34,11 +25,12 @@ public abstract class Ability : MonoBehaviour
         {
             player = GetComponent<PlayerController>();
         }
-        if(ability.WasPressedThisFrame() && (loaded) && player.manasys.checkCost(manaCost))
+        if(InputPressed() && (loaded) && player.manasys.checkCost(manaCost))
         {
             AbilityAction();
         }
     }
+    protected abstract bool InputPressed();
     protected abstract void AbilityAction();
     public void Activate()
     {

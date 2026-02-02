@@ -7,9 +7,6 @@ public class Dash : Ability
     public GameObject shield;
 
     private float dashDistance = 10;
-
-    public override string InputString => "Alternative";
-
     protected override void AbilityAction()
     {
         Vector3 dir = player.movement.normalized;
@@ -25,11 +22,13 @@ public class Dash : Ability
             player.manasys.useMana(manaCost);
         }
     }
-
-    // Start is called before the first frame update
     new void Start()
     {
         base.Start();
         loaded = true;
+    }
+        protected override bool InputPressed()
+    {
+        return PlayerInputRouter.Instance.AlternativePressed;
     }
 }

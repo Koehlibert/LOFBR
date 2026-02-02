@@ -6,19 +6,15 @@ using UnityEngine.UI;
 
 public class PauseGame : MonoBehaviour
 {
+    public static PauseGame Instance;
     bool isPaused;
     public GameObject GameOverMenu;
     public GameObject GameOverContinue;
     public GameObject AudioSlider;
-    public InputActionAsset InputActions;
-    private InputAction pause;
-    private void OnEnable()
+
+    void Awake()
     {
-        InputActions.FindActionMap("Player").Enable();
-    }
-    private void Awake()
-    {
-        pause = InputSystem.actions.FindAction("Pause");
+        Instance = this;
     }
     void Start()
     {
@@ -27,11 +23,9 @@ public class PauseGame : MonoBehaviour
         GameOverMenu.SetActive(false);
         GameOverContinue.SetActive(false);
     }
-    void Update()
+    public void TogglePause()
     {
-        if(pause.WasPressedThisFrame())
-        {
-            if (!isPaused)
+        if (!isPaused)
             {
                 Stop();
             }
@@ -39,7 +33,6 @@ public class PauseGame : MonoBehaviour
             {
                 ContinueGame();
             }
-        }
     }
     void Stop()
     {

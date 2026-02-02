@@ -5,9 +5,6 @@ using UnityEngine;
 public class AltAttack : Ability
 {
     public GameObject bullet;
-
-    public override string InputString => "Alternative";
-
     new void Start()
     {
         base.Start();
@@ -19,7 +16,6 @@ public class AltAttack : Ability
         yield return new WaitForSeconds(reloadtime);
         loaded = true;
     }
-
     protected override void AbilityAction()
     {
         GameObject wave = Instantiate(bullet, player.transform.position + new Vector3(0f, 0.4f, 0f), player.transform.rotation);
@@ -27,5 +23,9 @@ public class AltAttack : Ability
         StartCoroutine("reload");
         reloader.shoot();
         player.manasys.useMana(manaCost);
+    }
+    protected override bool InputPressed()
+    {
+        return PlayerInputRouter.Instance.AlternativePressed;
     }
 }

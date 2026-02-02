@@ -8,9 +8,6 @@ public class Immolate : Ability
     private GameObject fire;
     private bool isOnFire;
     private float manaDrain;
-
-    public override string InputString => "Skill";
-
     new void Start()
     {
         base.Start();
@@ -66,16 +63,21 @@ public class Immolate : Ability
         fire.SetActive(false);
         isOnFire = false;
     }
-
     protected override void AbilityAction()
     {
         if (isOnFire)
         {
+            Debug.Log("Fire Off :(");
             TurnOff();
         }
-        else if ((loaded) && player.manasys.checkCost(manaCost))
+        else
         {
+            Debug.Log("Fire!");
             TurnOn();
         }
+    }
+    protected override bool InputPressed()
+    {
+        return PlayerInputRouter.Instance.SkillPressedThisFrame;
     }
 }

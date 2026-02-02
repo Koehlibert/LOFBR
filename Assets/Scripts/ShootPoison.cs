@@ -8,9 +8,6 @@ public class ShootPoison : Ability
     Vector3 offset = new Vector3(0, -0.5f, 1.5f);
     public AudioSource soundsource;
     public GameObject bulletinstance;
-
-    public override string InputString => "AttackPrimary";
-
     new void Start()
     {
         base.Start();
@@ -73,5 +70,9 @@ public class ShootPoison : Ability
         reloader.shoot();
         StartCoroutine("Reload");
         player.manasys.useMana(manaCost);
+    }
+        protected override bool InputPressed()
+    {
+        return PlayerInputRouter.Instance.PrimaryPressed;
     }
 }

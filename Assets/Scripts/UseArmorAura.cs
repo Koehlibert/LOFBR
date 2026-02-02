@@ -6,9 +6,6 @@ public class UseArmorAura : Ability
 {
     private GameObject aura;
     private bool armorActive;
-
-    public override string InputString => "Alternative";
-
     new void Start()
     {
         base.Start();
@@ -48,5 +45,9 @@ public class UseArmorAura : Ability
             aura.SetActive(true);
             armorActive = true;
         }
+    }
+    protected override bool InputPressed()
+    {
+        return PlayerInputRouter.Instance.AlternativePressed;
     }
 }

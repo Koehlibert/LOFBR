@@ -6,9 +6,6 @@ public class Parry : Ability
 {
     private GameObject parryCollider;
     private float duration;
-
-    public override string InputString => "AttackSecondary";
-
     new void Start()
     {
         base.Start();
@@ -24,7 +21,7 @@ public class Parry : Ability
         {
             parryCollider.SetActive(false);
         }
-        if (Input.GetButtonDown("Secondary") && (loaded) && player.manasys.checkCost(manaCost))
+        if (InputPressed() && (loaded) && player.manasys.checkCost(manaCost))
         {
             base.Update();
         }
@@ -34,7 +31,6 @@ public class Parry : Ability
         yield return new WaitForSeconds(duration);
         parryCollider.SetActive(false);
     }
-
     protected override void AbilityAction()
     {
         parryCollider.SetActive(true);
@@ -42,5 +38,9 @@ public class Parry : Ability
         reloader.shoot();
         StartCoroutine("reload");
         player.manasys.useMana(manaCost);
+    }
+    protected override bool InputPressed()
+    {
+        return PlayerInputRouter.Instance.SecondaryPressed;
     }
 }

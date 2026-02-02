@@ -5,9 +5,6 @@ using UnityEngine;
 public class UltAttack : Ability
 {
     public GameObject ultBullet;
-
-    public override string InputString => "Ult";
-
     new void Start()
     {
         base.Start();
@@ -22,5 +19,9 @@ public class UltAttack : Ability
             StartCoroutine("reload");
             reloader.shoot();
             player.manasys.useMana(manaCost);
+    }
+    protected override bool InputPressed()
+    {
+        return PlayerInputRouter.Instance.UltPressed;
     }
 }

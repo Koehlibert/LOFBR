@@ -7,9 +7,6 @@ public class ShootHeal : Ability
     public GameObject bullet;
     Vector3 offset = new Vector3(0, -0.5f, 1.5f);
     public GameObject bulletinstance;
-
-    public override string InputString => "AttachSecondary";
-
     new void Start()
     {
         base.Start();
@@ -71,5 +68,9 @@ public class ShootHeal : Ability
         reloader.shoot();
         StartCoroutine(nameof(Reload));
         player.manasys.useMana(manaCost);
+    }
+    protected override bool InputPressed()
+    {
+        return PlayerInputRouter.Instance.SecondaryPressed;
     }
 }

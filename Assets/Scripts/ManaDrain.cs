@@ -6,13 +6,9 @@ public class ManaDrain : Ability
 {
     private LineRenderer lRend;
     private EnemyPlayerBehaviour enemy;
-    //public ReloadAlt reloader;
     private float durationTime = 4f;
     private Vector3 offset = new Vector3(0, 2, 0);
     private bool isDraining;
-
-    public override string InputString => "Alternative";
-
     new void Start()
     {
         base.Start();
@@ -41,7 +37,7 @@ public class ManaDrain : Ability
             }
             player.manasys.gainMana(actualDamage);
         }
-        if (Input.GetButtonDown("Alternative") && (loaded) && player.manasys.checkCost(manaCost) && enemy)
+        if (InputPressed() && (loaded) && player.manasys.checkCost(manaCost) && enemy)
         {
             AbilityAction();
         }
@@ -58,7 +54,6 @@ public class ManaDrain : Ability
     {
         isDraining = false;
     }
-
     protected override void AbilityAction()
     {
         float distance = Vector3.Distance(player.transform.position, enemy.transform.position);
@@ -69,5 +64,9 @@ public class ManaDrain : Ability
             StartCoroutine("duration");
             reloader.shoot();
         }
+    }
+    protected override bool InputPressed()
+    {
+        return PlayerInputRouter.Instance.AlternativePressed;
     }
 }

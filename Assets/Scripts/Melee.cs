@@ -10,9 +10,6 @@ public class Melee : Ability
     private Vector3 dir;
     private GameObject meleeCollider;
     private float speedup = 1.5f;
-
-    public override string InputString => "AttackPrimary";
-
     new void Start()
     {
         base.Start();
@@ -66,7 +63,6 @@ public class Melee : Ability
         attacking = false;
 
     }
-
     protected override void AbilityAction()
     {
         StartCoroutine("shootanim");
@@ -77,5 +73,9 @@ public class Melee : Ability
         attacking = true;
         meleeCollider.SetActive(true);
         meleeCollider.GetComponent<Damage>().SetProperties(35 + player.levelsys.getLevel() * 3, 0, player.Team, false, true);
+    }
+    protected override bool InputPressed()
+    {
+        return PlayerInputRouter.Instance.PrimaryPressed;
     }
 }
