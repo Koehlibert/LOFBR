@@ -27,17 +27,7 @@ public class Melee : Ability
     }
     void FixedUpdate()
     {
-        if (Input.GetButtonDown("Primary")&&(loaded)&&player.manasys.checkCost(manaCost))
-        {
-            StartCoroutine("shootanim");
-            reloader.shoot();
-            StartCoroutine("reload");
-            player.manasys.useMana(manaCost);
-            dir = player.transform.forward;
-            attacking = true;
-            meleeCollider.SetActive(true);
-            meleeCollider.GetComponent<Damage>().SetProperties(35 + player.levelsys.getLevel() * 3, 0, player.Team, false, true);
-        }
+        base.Update();
         if (attacking)
         {
             player.MoveCharacter(dir, speedup);
@@ -54,11 +44,11 @@ public class Melee : Ability
         yield return new WaitForSeconds(duration);
         meleeCollider.SetActive(false);
         attacking = false;
-        player.animator.Play("Default",0,0f);
+        player.animator.Play("Default", 0, 0f);
     }
     private IEnumerator shootanim()
     {
-        player.animator.Play("Melee",0,0f);
+        player.animator.Play("Melee", 0, 0f);
         AnimatorClipInfo[] clipInfo = player.animator.GetCurrentAnimatorClipInfo(0);
         float clipLength = 1 / 3.5f;
         duration = clipLength;
@@ -72,5 +62,20 @@ public class Melee : Ability
         loaded = true;
         attacking = false;
 
+    }
+    protected override void AbilityAction()
+    {
+        StartCoroutine("shootanim");
+        reloader.shoot();
+        StartCoroutine("reload");
+        player.manasys.useMana(manaCost);
+        dir = player.transform.forward;
+        attacking = true;
+        meleeCollider.SetActive(true);
+        meleeCollider.GetComponent<Damage>().SetProperties(35 + player.levelsys.getLevel() * 3, 0, player.Team, false, true);
+    }
+    protected override bool InputPressed()
+    {
+        return PlayerInputRouter.Instance.PrimaryPressed;
     }
 }

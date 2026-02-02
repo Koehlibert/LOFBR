@@ -1,14 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PauseGame : MonoBehaviour
 {
+    public static PauseGame Instance;
     bool isPaused;
     public GameObject GameOverMenu;
     public GameObject GameOverContinue;
     public GameObject AudioSlider;
+
+    void Awake()
+    {
+        Instance = this;
+    }
     void Start()
     {
         isPaused = false;
@@ -16,21 +23,18 @@ public class PauseGame : MonoBehaviour
         GameOverMenu.SetActive(false);
         GameOverContinue.SetActive(false);
     }
-    void Update()
+    public void TogglePause()
     {
-        if(Input.GetKeyDown (KeyCode.Escape))
-        {
-            if (!isPaused)
+        if (!isPaused)
             {
-                stop();
+                Stop();
             }
             else
             {
-                continueGame();
+                ContinueGame();
             }
-        }
     }
-    void stop()
+    void Stop()
     {
         Time.timeScale = 0;
         isPaused = true;
@@ -38,7 +42,7 @@ public class PauseGame : MonoBehaviour
         GameOverContinue.SetActive(true);
         AudioSlider.SetActive(true);
     }
-    public void continueGame()
+    public void ContinueGame()
     {
         Time.timeScale = 1;
         isPaused = false;

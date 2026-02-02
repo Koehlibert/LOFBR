@@ -15,7 +15,6 @@ public abstract class DamageableEntity : MonoBehaviour, IMortal
     protected virtual void SetupCollisionHandler()
     {
         DamageCollisionHandler handler = gameObject.AddComponent<DamageCollisionHandler>();
-        //ConfigureCollisionRules(handler);
     }
     public virtual void SetLastHit(bool value)
     {

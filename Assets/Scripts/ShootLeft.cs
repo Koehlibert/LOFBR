@@ -34,13 +34,7 @@ public class ShootLeft : Ability
         {
             bulletrig.transform.position = player.animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + player.transform.forward;
         }
-        if (Input.GetButtonDown("Secondary") && (loaded) && player.manasys.checkCost(manaCost))
-        {
-            StartCoroutine("Shootanim");
-            reloader.shoot();
-            StartCoroutine("Reload");
-            player.manasys.useMana(manaCost);
-        }
+        base.Update();
     }
     private IEnumerator Firstbullet()
     {
@@ -72,9 +66,21 @@ public class ShootLeft : Ability
         yield return new WaitForSeconds(0.1f);
         soundsource.Play();
         bulletinstance.GetComponent<Damage>().SetProperties(34 + 7 * player.levelsys.getLevel(), 0, CombatUtils.Team.Player, true, true);
-        bulletrig.AddForce(player.transform.forward * 2250);
+        bulletrig?.AddForce(player.transform.forward * 2250);
         bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
         bulletrig = null;
         StartCoroutine("Resetanim");
+    }
+
+    protected override void AbilityAction()
+    {
+        StartCoroutine("Shootanim");
+        reloader.shoot();
+        StartCoroutine("Reload");
+        player.manasys.useMana(manaCost);
+    }
+    protected override bool InputPressed()
+    {
+        return PlayerInputRouter.Instance.SecondaryPressed;
     }
 }

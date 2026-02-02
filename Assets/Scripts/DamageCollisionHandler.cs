@@ -44,6 +44,17 @@ public class DamageCollisionHandler : MonoBehaviour
         {
             if (CombatUtils.CanDamage(damageComponent, damageableTarget))
             {
+                if (collider.gameObject.GetComponent<UltBulletBehaviour>() != null || collider.gameObject.GetComponent<UltBulletBehaviourEnemy>() != null)
+                {
+                    if (collider.gameObject.GetComponent<UltBulletBehaviour>() != null)
+                    {
+                        collider.gameObject.GetComponent<UltBulletBehaviour>().count -= Time.deltaTime;
+                    }
+                    if (collider.gameObject.GetComponent<UltBulletBehaviourEnemy>() != null)
+                    {
+                        collider.gameObject.GetComponent<UltBulletBehaviourEnemy>().count -= Time.deltaTime;
+                    }
+                }
                 if (damageComponent.givesXP)
                 {
                     damageableTarget.SetLastHit(true);
@@ -69,17 +80,6 @@ public class DamageCollisionHandler : MonoBehaviour
                     if (damageComponent.givesXP)
                     {
                         damageableTarget.SetLastHit(true);
-                    }
-                    if (collider.gameObject.GetComponent<UltBulletBehaviour>() != null || collider.gameObject.GetComponent<UltBulletBehaviourEnemy>() != null)
-                    {
-                        if (collider.gameObject.GetComponent<UltBulletBehaviour>() != null)
-                        {
-                            collider.gameObject.GetComponent<UltBulletBehaviour>().count -= 1;
-                        }
-                        if (collider.gameObject.GetComponent<UltBulletBehaviourEnemy>() != null)
-                        {
-                            collider.gameObject.GetComponent<UltBulletBehaviourEnemy>().count -= 1;
-                        }
                     }
                     OnHitCallback?.Invoke();
                     if (CombatUtils.DealDamage(damageComponent, mortalTarget))

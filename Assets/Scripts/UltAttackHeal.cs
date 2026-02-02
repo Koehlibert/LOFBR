@@ -11,21 +11,22 @@ public class UltAttackHeal : Ability
         loaded = true;
         player = GetComponent<PlayerController>();
     }
-    void Update()
-    {
-        if (Input.GetButtonDown("Skill")&&(loaded)&&(player.manasys.checkCost(manaCost)))
-        {
-            GameObject ultInstance = Instantiate(ultBullet, player.transform.position + player.transform.forward*2 + new Vector3(0f,2f,0f), player.transform.rotation);
-            StartCoroutine("reload");
-            reloader.shoot();
-            player.manasys.useMana(manaCost);
-        }
-    }
     private IEnumerator reload()
     {
         loaded = false;
-        Instantiate(ultBullet,player.transform);
+        Instantiate(ultBullet, player.transform);
         yield return new WaitForSeconds(reloadtime);
         loaded = true;
+    }
+    protected override void AbilityAction()
+    {
+        GameObject ultInstance = Instantiate(ultBullet, player.transform.position + player.transform.forward * 2 + new Vector3(0f, 2f, 0f), player.transform.rotation);
+        StartCoroutine("reload");
+        reloader.shoot();
+        player.manasys.useMana(manaCost);
+    }
+    protected override bool InputPressed()
+    {
+        return PlayerInputRouter.Instance.SkillPressed;
     }
 }

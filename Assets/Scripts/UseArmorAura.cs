@@ -21,33 +21,33 @@ public class UseArmorAura : Ability
     {
         Reset();
     }
-    void Update()
-    {
-        if (Input.GetButtonDown("Alternative"))
-        {
-            if(armorActive)
-            {
-                StartCoroutine("reload");
-                aura.SetActive(false);
-                armorActive = false;
-            }
-            else if ((loaded)&&player.manasys.checkCost(manaCost))
-            {
-                //reloader.shoot();
-                player.manasys.useMana(manaCost);
-                aura.SetActive(true);
-                armorActive = true;
-            }  
-        }
-          
-    }
     public new void Reset()
     {
         loaded = true;
         armorActive = false;
-        if(aura)
+        if (aura)
         {
             aura.SetActive(false);
         }
+    }
+
+    protected override void AbilityAction()
+    {
+        if (armorActive)
+        {
+            StartCoroutine("reload");
+            aura.SetActive(false);
+            armorActive = false;
+        }
+        else if ((loaded) && player.manasys.checkCost(manaCost))
+        {
+            player.manasys.useMana(manaCost);
+            aura.SetActive(true);
+            armorActive = true;
+        }
+    }
+    protected override bool InputPressed()
+    {
+        return PlayerInputRouter.Instance.AlternativePressed;
     }
 }

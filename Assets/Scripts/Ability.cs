@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 using UnityEngine;
 
 public abstract class Ability : MonoBehaviour
@@ -18,13 +19,19 @@ public abstract class Ability : MonoBehaviour
         Reset();
         player = GetComponent<PlayerController>();
     }
-    void Update()
+    protected virtual void Update()
     {
         if(!player)
         {
             player = GetComponent<PlayerController>();
         }
+        if(InputPressed() && (loaded) && player.manasys.checkCost(manaCost))
+        {
+            AbilityAction();
+        }
     }
+    protected abstract bool InputPressed();
+    protected abstract void AbilityAction();
     public void Activate()
     {
         reloader.Activate();
@@ -44,4 +51,5 @@ public abstract class Ability : MonoBehaviour
         reloader = val;
         reloader.setAbility(this);
     }
+    
 }

@@ -20,7 +20,7 @@ public abstract class TowerBehaviour : DamageableEntity
         hpsys.Initialize(300, 0, 0, 20);
         closestFinder = new ClosestFinder(Team, this.gameObject);
         offset = new Vector3(0, 7, 0);
-        range = 35;
+        range = 25;
         loaded = true;
         reloadtime = 1.25f;
     }

@@ -25,11 +25,11 @@ public class Immolate : Ability
     {
         return 3.5f * player.levelsys.getLevel();
     }
-    void Update()
+    protected override void Update()
     {
         if (isOnFire)
         {
-            if(player.manasys.checkCost(manaDrain * Time.deltaTime))
+            if (player.manasys.checkCost(manaDrain * Time.deltaTime))
             {
                 player.manasys.useMana(manaDrain * Time.deltaTime);
             }
@@ -38,23 +38,13 @@ public class Immolate : Ability
                 TurnOff();
             }
         }
-        if (Input.GetButtonDown("Skill"))
-        {
-            if(isOnFire)
-            {
-                TurnOff();
-            }
-            else if ((loaded)&&player.manasys.checkCost(manaCost))
-            {
-                TurnOn();
-            }  
-        }  
+        base.Update();
     }
-    public new void  Reset()
+    public new void Reset()
     {
         loaded = true;
         isOnFire = false;
-        if(fire)
+        if (fire)
         {
             fire.SetActive(false);
         }
@@ -72,5 +62,22 @@ public class Immolate : Ability
         StartCoroutine("reload");
         fire.SetActive(false);
         isOnFire = false;
+    }
+    protected override void AbilityAction()
+    {
+        if (isOnFire)
+        {
+            Debug.Log("Fire Off :(");
+            TurnOff();
+        }
+        else
+        {
+            Debug.Log("Fire!");
+            TurnOn();
+        }
+    }
+    protected override bool InputPressed()
+    {
+        return PlayerInputRouter.Instance.SkillPressedThisFrame;
     }
 }

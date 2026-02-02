@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShootHeal : Ability
 {
     public GameObject bullet;
-    Vector3 offset = new Vector3(0,-0.5f,1.5f);
+    Vector3 offset = new Vector3(0, -0.5f, 1.5f);
     public GameObject bulletinstance;
     new void Start()
     {
@@ -30,13 +30,6 @@ public class ShootHeal : Ability
         {
             bulletinstance.transform.position = player.animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + player.transform.forward;
         }
-        if (Input.GetButtonDown("Primary")&&(loaded)&&player.manasys.checkCost(manaCost))
-        {
-            StartCoroutine(nameof(Shootanim));
-            reloader.shoot();
-            StartCoroutine(nameof(Reload));
-            player.manasys.useMana(manaCost);
-        }
     }
     private IEnumerator Firstbullet()
     {
@@ -55,17 +48,29 @@ public class ShootHeal : Ability
     private IEnumerator Resetanim()
     {
         yield return new WaitForSeconds(0.25f);
-        player.animator.Play("Default",0,0f);
+        player.animator.Play("Default", 0, 0f);
     }
     private IEnumerator Shootanim()
     {
-        player.animator.Play("Shoot",0,0f);
+        player.animator.Play("Shoot", 0, 0f);
         yield return new WaitForSeconds(0.1f);
         if (bulletinstance == null) yield break;
-        bulletinstance.GetComponent<Damage>().SetProperties(40 + 5*player.levelsys.getLevel(),0, CombatUtils.Team.Player, true, false);
+        bulletinstance.GetComponent<Damage>().SetProperties(40 + 5 * player.levelsys.getLevel(), 0, CombatUtils.Team.Player, true, false);
         bulletinstance.transform.rotation = transform.rotation;
         bulletinstance.GetComponent<DestroyAfterTimeHeal>().DelayedDestroy();
         bulletinstance = null;
         StartCoroutine("Resetanim");
+    }
+
+    protected override void AbilityAction()
+    {
+        StartCoroutine(nameof(Shootanim));
+        reloader.shoot();
+        StartCoroutine(nameof(Reload));
+        player.manasys.useMana(manaCost);
+    }
+    protected override bool InputPressed()
+    {
+        return PlayerInputRouter.Instance.SecondaryPressed;
     }
 }
