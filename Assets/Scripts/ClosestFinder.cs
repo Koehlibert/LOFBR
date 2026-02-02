@@ -10,6 +10,8 @@ public class ClosestFinder
     private IMainPlayer player;
     private GameObject selfObject;
     private CombatUtils.Team enemyTeam;
+    private List<GameObject> AllObjects;
+    private List<GameObject> AllObjectsNoTowers;
     private IMainPlayer GetPlayer(CombatUtils.Team team)
     {
         return team == CombatUtils.Team.Enemy ? MasterScript.Instance.enemyPlayer : MasterScript.Instance.player;
@@ -19,43 +21,31 @@ public class ClosestFinder
         this.enemyTeam = CombatUtils.GetOpposingTeam(team);
         this.selfObject = selfObject;
         this.player = GetPlayer(enemyTeam);
+        AllObjects = enemyTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemiesTowers : MasterScript.Instance.allFriendliesTowers;
+        AddPlayer(AllObjects);
+        AllObjectsNoTowers = enemyTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemies : MasterScript.Instance.allFriendlies;
+        AddPlayer(AllObjectsNoTowers);
     }
-    private List<GameObject> AddPlayer(List<GameObject> gameObjects)
+    private void AddPlayer(List<GameObject> gameObjects)
     {
         if (player == null)
         {
             player = GetPlayer(enemyTeam);
         }
         gameObjects.Add(player.GetGameObject());
-        return gameObjects;
+        Debug.Log(gameObjects.Count());
     }
-    public GameObject FindClosest(bool shouldAddPlayer = true)
+    public GameObject FindClosest(bool withPlayer = true)
     {
-        List<GameObject> allObjects = enemyTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemiesTowers : MasterScript.Instance.allFriendliesTowers;
-        if (shouldAddPlayer)
-        {
-            allObjects = AddPlayer(allObjects);
-        }
-        return FindClosest(allObjects);
+        return FindClosest(AllObjects, withPlayer);
     }
-    public GameObject FindClosestNoTower(bool shouldAddPlayer = true)
+    public GameObject FindClosestNoTower(bool withPlayer = true)
     {
-        List<GameObject> allObjects = enemyTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemies : MasterScript.Instance.allFriendlies;
-        if (shouldAddPlayer)
-        {
-            allObjects = AddPlayer(allObjects);
-        }
-        return FindClosest(allObjects);
+        return FindClosest(AllObjectsNoTowers, withPlayer);
     }
-    public GameObject[] FindTwoClosest()
+    public GameObject[] FindTwoClosest(bool withPlayer = true)
     {
-        List<GameObject> allObjects = enemyTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemiesTowers : MasterScript.Instance.allFriendliesTowers;
-        if (player == null)
-        {
-            player = GetPlayer(enemyTeam);
-        }
-        allObjects.Append(player.GetGameObject());
-        return FindTwoClosest(allObjects);
+        return FindTwoClosest(AllObjects, withPlayer);
     }
     public GameObject FindClosestHurtFriendly()
     {
@@ -68,9 +58,9 @@ public class ClosestFinder
                 hurtFriendlies.Add(friendly);
             }
         }
-        return FindClosest(hurtFriendlies);
+        return FindClosest(hurtFriendlies, false);
     }
-    private GameObject FindClosest(List<GameObject> allEnemies)
+    private GameObject FindClosest(List<GameObject> allEnemies, bool withPlayer)
     {
         GameObject closestEnemy = null;
         if (allEnemies.Count != 0)
@@ -78,7 +68,7 @@ public class ClosestFinder
             float closestDistance = Mathf.Infinity;
             foreach (GameObject currenemy in allEnemies)
             {
-                if (!currenemy)
+                if (!currenemy || !withPlayer && currenemy == player.GetGameObject())
                 {
                     continue;
                 }
@@ -92,7 +82,7 @@ public class ClosestFinder
         }
         return closestEnemy;
     }
-    private GameObject[] FindTwoClosest(List<GameObject> allEnemies)
+    private GameObject[] FindTwoClosest(List<GameObject> allEnemies, bool withPlayer)
     {
         GameObject[] closeEnemies = new GameObject[2];
         if (allEnemies.Count != 0)
@@ -101,7 +91,7 @@ public class ClosestFinder
             float closestDistance = Mathf.Infinity;
             foreach (GameObject currenemy in allEnemies)
             {
-                if (!currenemy)
+                if (!currenemy || !withPlayer && currenemy == player.GetGameObject())
                 {
                     continue;
                 }

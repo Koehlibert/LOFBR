@@ -94,9 +94,6 @@ public class MasterScript : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-    }
-    void Start()
-    {
         ambientsource.Play();
         friendlyArea = GameObject.FindGameObjectWithTag("FriendlyArea");
         enemyArea = GameObject.FindGameObjectWithTag("EnemyArea");
@@ -106,14 +103,14 @@ public class MasterScript : MonoBehaviour
         defeatImage.enabled = false;
         GameOverMenu.SetActive(false);
         GameOverContinue.SetActive(false);
-        player = FindAnyObjectByType<PlayerController>();
-        enemyPlayer = FindAnyObjectByType<EnemyPlayerBehaviour>();
         continueBool = false;
         allEnemiesTowers = new List<GameObject>(GameObject.FindGameObjectsWithTag("EnemyTower"));
         allFriendliesTowers = new List<GameObject>(GameObject.FindGameObjectsWithTag("FriendlyTower"));
         allEnemies = new List<GameObject>();
         allFriendlies = new List<GameObject>();
         rezPoolFriendly = new List<Tombstone>();
+        player = FindAnyObjectByType<PlayerController>();
+        enemyPlayer = FindAnyObjectByType<EnemyPlayerBehaviour>();
     }
     void Update()
     {
