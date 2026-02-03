@@ -23,7 +23,6 @@ public class EnemyBehaviour : DamageableEntity
     public string enemytype;
     public GameObject closestCurrentEnemy;
     private ClosestFinder closestFinder;
-    [SerializeField] private Animator animator;
     private float animSpeed;
     private float reloadtime;
     private bool loaded;
@@ -169,10 +168,14 @@ public class EnemyBehaviour : DamageableEntity
     {
         animator.Play("Shoot", 0, 0f);
         yield return new WaitForSeconds(0.1f);
-        bulletinstance.GetComponent<Damage>().SetProperties(40, 0, this.Team, true);
+        bulletinstance.GetComponent<Damage>().SetProperties(GetDamageInfo());
         bulletrig.AddForce(gameObject.transform.forward * 2250);
         bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
         bulletrig = null;
         StartCoroutine("resetanim");
+    }
+    private DamageInfo GetDamageInfo()
+    {
+        return new DamageInfo(40, 0, this.Team, true);
     }
 }

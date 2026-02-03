@@ -9,11 +9,11 @@ public abstract class TowerBehaviour : DamageableEntity
     protected float cooldown;
     [SerializeField] private GameObject bullet;
     protected Vector3 offset;
-    [SerializeField] private Animator animator;
     protected bool loaded;
     protected float reloadtime;
     protected GameObject bulletinstance;
     protected ClosestFinder closestFinder;
+    private DamageInfo damageInfo;
     protected override void Start()
     {
         base.Start();
@@ -23,6 +23,7 @@ public abstract class TowerBehaviour : DamageableEntity
         range = 25;
         loaded = true;
         reloadtime = 1.25f;
+        damageInfo = new DamageInfo(60, 0, this.Team);
     }
     protected virtual void Update()
     {
@@ -41,7 +42,7 @@ public abstract class TowerBehaviour : DamageableEntity
         transform.rotation = Quaternion.LookRotation(dir);
         bulletinstance = Instantiate(bullet, transform.position + offset + 1.5f * (transform.position - target.transform.position).normalized, transform.rotation);
         Rigidbody bulletrig = bulletinstance.GetComponent<Rigidbody>();
-        bulletinstance.GetComponent<Damage>().SetProperties(60, 0, Team, true);
+        bulletinstance.GetComponent<Damage>().SetProperties(damageInfo);
         bulletrig.AddForce(gameObject.transform.forward * 1750);
         bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy(2);
         StartCoroutine("Reload");

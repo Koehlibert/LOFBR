@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootHeal : Ability
+public class ShootHeal : DamagingAbility
 {
     public GameObject bullet;
     Vector3 offset = new Vector3(0, -0.5f, 1.5f);
@@ -55,7 +55,7 @@ public class ShootHeal : Ability
         player.animator.Play("Shoot", 0, 0f);
         yield return new WaitForSeconds(0.1f);
         if (bulletinstance == null) yield break;
-        bulletinstance.GetComponent<Damage>().SetProperties(40 + 5 * player.levelsys.getLevel(), 0, CombatUtils.Team.Player, true, false);
+        bulletinstance.GetComponent<Damage>().SetProperties(GetDamageValues());
         bulletinstance.transform.rotation = transform.rotation;
         bulletinstance.GetComponent<DestroyAfterTimeHeal>().DelayedDestroy();
         bulletinstance = null;
@@ -72,5 +72,9 @@ public class ShootHeal : Ability
     protected override bool InputPressed()
     {
         return PlayerInputRouter.Instance.SecondaryPressed;
+    }
+    protected override DamageInfo GetDamageValues()
+    {
+        return new DamageInfo(40 + 5 * player.levelsys.getLevel(), 0, CombatUtils.Team.Player, false, false);
     }
 }

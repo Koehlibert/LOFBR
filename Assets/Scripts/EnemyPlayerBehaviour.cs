@@ -24,7 +24,6 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     public GameObject closestCurrentEnemy;
     private GameObject yourbase;
     private float animSpeed;
-    [SerializeField] private Animator animator;
     private GameObject bulletinstance;
     private Rigidbody bulletrig;
     private GameObject bulletinstance2;
@@ -324,14 +323,14 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     {
         animator.Play("Shoot", 0, 0f);
         yield return new WaitForSeconds(0.1f);
-        bulletinstance.GetComponent<Damage>().SetProperties(34 + 7 * levelsys.getLevel(), 0, this.Team, true, true);
+        bulletinstance.GetComponent<Damage>().SetProperties(GetMainAttackDamage());
         bulletrig.AddForce(gameObject.transform.forward * 2250);
         bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
         bulletrig = null;
         if (bulletrig2)
         {
             bulletrig2.transform.position = animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + offset;
-            bulletinstance2.GetComponent<Damage>().SetProperties(34 + 7 * levelsys.getLevel(), 0, this.Team, true, true);
+            bulletinstance2.GetComponent<Damage>().SetProperties(GetMainAttackDamage());
             bulletrig2.AddForce(gameObject.transform.forward * 200000f * Time.deltaTime);
             bulletinstance2.GetComponent<DestroyAfterTime>().DelayedDestroy();
             bulletrig2 = null;
@@ -347,7 +346,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     void Shock()
     {
         GameObject wave = Instantiate(shockwave, transform.position + new Vector3(0f, 0.4f, 0f), transform.rotation);
-        wave.GetComponent<Damage>().SetProperties(70 + (levelsys.getLevel() - 2) * 6, 0, this.Team, false, true);
+        wave.GetComponent<Damage>().SetProperties(GetShockDamage());
         isShocking = false;
         loadedShock = false;
         manasys.useMana(75);
@@ -413,7 +412,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
         if ((MasterScript.Instance.allFriendlies.Count >= 4) && (loadedUlt) && (levelsys.checkLevel(5)) && manasys.checkCost(250))
         {
             GameObject ultInstance = Instantiate(BulletUlt, transform.position + transform.forward + new Vector3(0, 2, 0), transform.rotation);
-            ultInstance.gameObject.GetComponent<Damage>().SetProperties(50 + (levelsys.getLevel() - 5) * 4.5f, 0, this.Team, false, true);
+            ultInstance.gameObject.GetComponent<Damage>().SetProperties(GetUltDamage());
             StartCoroutine("ReloadUlt");
             manasys.useMana(250);
         }
@@ -462,5 +461,17 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
             returnBool = false;
         }
         return returnBool;
+    }
+    private DamageInfo GetMainAttackDamage()
+    {
+        return new DamageInfo(34 + 7 * levelsys.getLevel(), 0, this.Team, true);
+    }
+    private DamageInfo GetShockDamage()
+    {
+        return new DamageInfo(70 + (levelsys.getLevel() - 2) * 6, 0, this.Team, true, true);
+    }
+    private DamageInfo GetUltDamage()
+    {
+        return new DamageInfo(50 + (levelsys.getLevel() - 5) * 4.5f, 0, this.Team, true, true);
     }
 }

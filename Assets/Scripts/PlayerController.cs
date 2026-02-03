@@ -19,7 +19,6 @@ public class PlayerController : DamageableEntity, IMainPlayer
     public Image damageimage;
     public EnemyPlayerBehaviour enemyPlayer;
     public Color flashcolor = new Color(1f, 0f, 0f, 0.1f);
-    [SerializeField] public Animator animator;
     private float animSpeed;
     public AudioSource soundsource;
     private bool moveLock = false;

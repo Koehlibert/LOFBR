@@ -1,18 +1,29 @@
-﻿using UnityEngine;
-
+﻿using System;
+using UnityEngine;
+public class DamageInfo
+{
+    public float damageValue;
+    public float poisonValue;
+    public CombatUtils.Team sourceTeamValue;
+    public bool lastHit = false;
+    public bool enduring = false;
+    public DamageInfo(float damageValue, float poisonValue, CombatUtils.Team sourceTeamValue, bool lastHit = false, bool enduring = false)
+    {
+        this.damageValue = damageValue;
+        this.poisonValue = poisonValue;
+        this.sourceTeamValue = sourceTeamValue;
+        this.lastHit = lastHit;
+        this.enduring = enduring;
+    }
+}
 public class Damage : MonoBehaviour
 {
     private float damage;
     private float poison;
     public CombatUtils.Team sourceTeam;
-    public bool DestroyOnHit;
     public bool givesXP;
     public bool isEnduring;
-    public void SetDamage(float damageValue, float poisonValue)
-    {
-        damage = damageValue;
-        poison = poisonValue;
-    }
+    public event Action DamageDealt;
     public void SetDamage(float damageValue)
     {
         damage = damageValue;
@@ -22,25 +33,17 @@ public class Damage : MonoBehaviour
     {
         return (damage, poison);
     }
-    public (float damageValue, float poisonValue) GetDamage(float val)
-    {
-        return (damage*val, poison*val);
-    }
     public bool DealDamage(IMortal mortalObject)
     {
-        if(DestroyOnHit)
-        {
-            Destroy(this.gameObject);
-        }
+        DamageDealt?.Invoke();
         return mortalObject.GetHealth().TakeDamage(this);
     }
-    public void SetProperties(float damageValue, float poisonValue, CombatUtils.Team sourceTeamValue, bool destroyOnHit, bool lastHit = false, bool enduring = false)
+    public void SetProperties(DamageInfo damageInfo)
     {
-        damage = damageValue;
-        poison = poisonValue;
-        sourceTeam = sourceTeamValue;
-        DestroyOnHit = destroyOnHit;
-        givesXP = lastHit;
-        isEnduring = enduring;
+        damage = damageInfo.damageValue;
+        poison = damageInfo.poisonValue;
+        sourceTeam = damageInfo.sourceTeamValue;
+        givesXP = damageInfo.lastHit;
+        isEnduring = damageInfo.enduring;
     }
 }

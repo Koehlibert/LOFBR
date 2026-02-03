@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Melee : Ability
+public class Melee : DamagingAbility
 {
     public GameObject bullet;
     private float duration = .5f;
@@ -72,10 +72,14 @@ public class Melee : Ability
         dir = player.transform.forward;
         attacking = true;
         meleeCollider.SetActive(true);
-        meleeCollider.GetComponent<Damage>().SetProperties(35 + player.levelsys.getLevel() * 3, 0, player.Team, false, true);
+        meleeCollider.GetComponent<Damage>().SetProperties(GetDamageValues());
     }
     protected override bool InputPressed()
     {
         return PlayerInputRouter.Instance.PrimaryPressed;
+    }
+    protected override DamageInfo GetDamageValues()
+    {
+        return new DamageInfo(35 + player.levelsys.getLevel() * 3, 0, player.Team, true, false);
     }
 }

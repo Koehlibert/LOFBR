@@ -11,8 +11,6 @@ public class DetectBullets : MonoBehaviour
         player = FindAnyObjectByType<EnemyPlayerBehaviour>();
         objectList = new List<GameObject>();
     }
-
-    // Update is called once per frame
     void Update()
     {
         transform.position = player.transform.position;

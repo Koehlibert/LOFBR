@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UltBladeFlurry : Ability
+public class UltBladeFlurry : DamagingAbility
 {
     private float duration = .4f;
     private List<ObjectWithDist> flurryPos;
@@ -17,7 +17,7 @@ public class UltBladeFlurry : Ability
         StartCoroutine(player.LockMovement(duration * (flurryPos.Count + 1)));
         StartCoroutine(player.LockView(duration * (flurryPos.Count + 1)));
         damage = gameObject.AddComponent<Damage>();
-        damage.SetProperties(25 + player.levelsys.getLevel() * 10, 0, CombatUtils.Team.Player, false, true);
+        damage.SetProperties(GetDamageValues());
         yield return new WaitForSeconds(duration);
         foreach (ObjectWithDist enemy in flurryPos)
         {
@@ -61,7 +61,6 @@ public class UltBladeFlurry : Ability
         }
         return dir;
     }
-
     protected override void AbilityAction()
     {
         flurryPos = MasterScript.Instance.GetFlurryTargets(player.levelsys.getLevel() - 1);
@@ -76,5 +75,9 @@ public class UltBladeFlurry : Ability
     protected override bool InputPressed()
     {
         return PlayerInputRouter.Instance.UltPressed;
+    }
+    protected override DamageInfo GetDamageValues()
+    {
+        return new DamageInfo(25 + (player.levelsys.getLevel() - 0) * 10, 0, CombatUtils.Team.Player, true, false);
     }
 }

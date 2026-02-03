@@ -37,14 +37,6 @@ public static class CombatUtils
     {
         return damage.DealDamage(target);
     }
-    public static bool DealDamage(float damageValue, IMortal target)
-    {
-        Damage damage = new GameObject().AddComponent<Damage>();
-        damage.SetDamage(damageValue);
-        bool result = damage.DealDamage(target);
-        GameObject.Destroy(damage.gameObject);
-        return result;
-    }
     public static bool InRange(GameObject object1, GameObject object2, float range)
     {
         bool isInRange = false;

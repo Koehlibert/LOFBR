@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Immolate : Ability
+public class Immolate : DamagingAbility
 {
     public GameObject partSys;
     private GameObject fire;
@@ -20,10 +20,6 @@ public class Immolate : Ability
     void OnDisable()
     {
         Reset();
-    }
-    private float computeDamage()
-    {
-        return 3.5f * player.levelsys.getLevel();
     }
     protected override void Update()
     {
@@ -54,7 +50,7 @@ public class Immolate : Ability
         reloader.shoot();
         player.manasys.useMana(manaCost);
         fire.SetActive(true);
-        fire.GetComponent<Damage>().SetProperties(computeDamage(), 0, player.Team, false, true, true);
+        fire.GetComponent<Damage>().SetProperties(GetDamageValues());
         isOnFire = true;
     }
     private void TurnOff()
@@ -79,5 +75,9 @@ public class Immolate : Ability
     protected override bool InputPressed()
     {
         return PlayerInputRouter.Instance.SkillPressedThisFrame;
+    }
+    protected override DamageInfo GetDamageValues()
+    {
+        return new DamageInfo(3.5f * player.levelsys.getLevel(), 0, player.Team, true, true);
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootLeft : Ability
+public class ShootLeft : DamagingAbility
 {
     public GameObject bullet;
     Vector3 offset = new Vector3(0, -0.5f, 1.5f);
@@ -27,14 +27,6 @@ public class ShootLeft : Ability
         {
             bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
         }
-    }
-    void FixedUpdate()
-    {
-        if (bulletrig)
-        {
-            bulletrig.transform.position = player.animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + player.transform.forward;
-        }
-        base.Update();
     }
     private IEnumerator Firstbullet()
     {
@@ -65,10 +57,7 @@ public class ShootLeft : Ability
         player.animator.Play("Shoot", 0, 0f);
         yield return new WaitForSeconds(0.1f);
         soundsource.Play();
-        bulletinstance.GetComponent<Damage>().SetProperties(34 + 7 * player.levelsys.getLevel(), 0, CombatUtils.Team.Player, true, true);
-        bulletrig?.AddForce(player.transform.forward * 2250);
-        bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
-        bulletrig = null;
+        bulletinstance.GetComponent<BulletBehaviour>().Shoot(GetDamageValues());
         StartCoroutine("Resetanim");
     }
 
@@ -82,5 +71,9 @@ public class ShootLeft : Ability
     protected override bool InputPressed()
     {
         return PlayerInputRouter.Instance.SecondaryPressed;
+    }
+    protected override DamageInfo GetDamageValues()
+    {
+        return new DamageInfo(34 + 7 * player.levelsys.getLevel(), 0, CombatUtils.Team.Player, true);
     }
 }

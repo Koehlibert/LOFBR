@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootPoison : Ability
+public class ShootPoison : DamagingAbility
 {
     public GameObject bullet;
     Vector3 offset = new Vector3(0, -0.5f, 1.5f);
@@ -57,13 +57,12 @@ public class ShootPoison : Ability
         player.animator.Play("Shoot", 0, 0f);
         yield return new WaitForSeconds(0.1f);
         soundsource.Play();
-        bulletinstance.GetComponent<Damage>().SetProperties(16 + 4 * player.levelsys.getLevel(), 4f + 4f + 1.5f * player.levelsys.getLevel(), CombatUtils.Team.Player, true, true);
+        bulletinstance.GetComponent<Damage>().SetProperties(GetDamageValues());
         bulletinstance.transform.rotation = transform.rotation;
         bulletinstance.GetComponent<DestroyAfterTimePoison>().DelayedDestroy();
         bulletinstance = null;
         StartCoroutine("Resetanim");
     }
-
     protected override void AbilityAction()
     {
         StartCoroutine("Shootanim");
@@ -74,5 +73,9 @@ public class ShootPoison : Ability
         protected override bool InputPressed()
     {
         return PlayerInputRouter.Instance.PrimaryPressed;
+    }
+    protected override DamageInfo GetDamageValues()
+    {
+        return new DamageInfo(16 + 4 * player.levelsys.getLevel(), 4f + 4f + 1.5f * player.levelsys.getLevel(), CombatUtils.Team.Player, true, false);
     }
 }

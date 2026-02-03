@@ -89,11 +89,13 @@
     <Compile Include="Assets\Scripts\MoveAllEnemy.cs" />
     <Compile Include="Assets\Scripts\SetSkillSet.cs" />
     <Compile Include="Assets\Scripts\FriendlyBehaviour.cs" />
+    <Compile Include="Assets\Scripts\BulletBehaviourStraight.cs" />
     <Compile Include="Assets\Scripts\StackingHandler.cs" />
     <Compile Include="Assets\Scripts\ShootPoison.cs" />
     <Compile Include="Assets\Scripts\EnemyPlayerBehaviour.cs" />
     <Compile Include="Assets\Scripts\ShootRight.cs" />
     <Compile Include="Assets\Scripts\Melee.cs" />
+    <Compile Include="Assets\Scripts\BulletBehaviour.cs" />
     <Compile Include="Assets\Scripts\ClosestFinder.cs" />
     <Compile Include="Assets\Scripts\UseArmorAura.cs" />
     <Compile Include="Assets\Scripts\ISpawner.cs" />
@@ -116,6 +118,7 @@
     <Compile Include="Assets\Scripts\SetVolume.cs" />
     <Compile Include="Assets\Scripts\SpawnShieldFriendly.cs" />
     <Compile Include="Assets\Scripts\AltAttack.cs" />
+    <Compile Include="Assets\Scripts\BulletFactory.cs" />
     <Compile Include="Assets\Scripts\ParryColliderBehaviour.cs" />
     <Compile Include="Assets\Scripts\TowerBehaviourFriendly.cs" />
     <Compile Include="Assets\Scripts\SkillsetMelee.cs" />

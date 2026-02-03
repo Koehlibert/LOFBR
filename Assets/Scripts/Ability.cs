@@ -51,5 +51,8 @@ public abstract class Ability : MonoBehaviour
         reloader = val;
         reloader.setAbility(this);
     }
-    
+}
+public abstract class DamagingAbility : Ability
+{
+    protected abstract DamageInfo GetDamageValues();
 }

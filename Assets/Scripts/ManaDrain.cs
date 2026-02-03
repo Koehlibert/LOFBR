@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ManaDrain : Ability
+public class ManaDrain : DamagingAbility
 {
     private LineRenderer lRend;
     private EnemyPlayerBehaviour enemy;
@@ -68,5 +68,9 @@ public class ManaDrain : Ability
     protected override bool InputPressed()
     {
         return PlayerInputRouter.Instance.AlternativePressed;
+    }
+    protected override DamageInfo GetDamageValues()
+    {
+        return new DamageInfo(0, 0, CombatUtils.Team.Player, true, true);
     }
 }
