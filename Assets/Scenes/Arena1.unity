@@ -6156,6 +6156,7 @@ GameObject:
   - component: {fileID: 1772391473}
   - component: {fileID: 1772391474}
   - component: {fileID: 1772391475}
+  - component: {fileID: 1772391476}
   m_Layer: 0
   m_Name: GameController
   m_TagString: GameController
@@ -6464,8 +6465,6 @@ MonoBehaviour:
   GameOverMenu: {fileID: 2056277156}
   GameOverContinue: {fileID: 1330237192}
   AudioSlider: {fileID: 485770959}
-  InputActions: {fileID: -944628639613478452, guid: 3ee215d4f2c75744db4784c44b3c4d65,
-    type: 3}
 --- !u!114 &1772391475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6478,6 +6477,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20b6ff11ba217fd4181259e715e32ec5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInputRouter
+--- !u!114 &1772391476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1772391467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dbf4d7708f45374f8cc8d210ac113ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BulletFactory
+  BulletPrefab: {fileID: 3013956373289337006, guid: fa1e9ef33a5beba4f81321a3f2e473a7,
+    type: 3}
 --- !u!1001 &1776057421
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8638,6 +8651,12 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114550860073527180, guid: 19b6ea4c0c8e0a8468e61191a6c9bf78,
+        type: 3}
+      propertyPath: bullet
+      value: 
+      objectReference: {fileID: 3013956373289337006, guid: fa1e9ef33a5beba4f81321a3f2e473a7,
+        type: 3}
     - target: {fileID: 114550860073527180, guid: 19b6ea4c0c8e0a8468e61191a6c9bf78,
         type: 3}
       propertyPath: m_Enabled

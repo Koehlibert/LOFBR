@@ -6,24 +6,26 @@ using UnityEngine.PlayerLoop;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(SphereCollider))]
+[RequireComponent(typeof(Damage))]
 public class BulletBehaviour : MonoBehaviour
 {
     protected DamageableEntity Owner;
-    public Damage damage;
-    public bool destroyOnHit;
+    private Damage damage;
     public CombatUtils.Team team;
     protected float timer;
     private SphereCollider col;
     private Rigidbody rb;
-    public void Init(DamageableEntity owner, bool destroyOnHit, Damage damage, float timer = 1.5f)
+    private HumanBodyBones bone;
+    public void Init(DamageableEntity owner, bool destroyOnHit, HumanBodyBones bone, float timer = 1.5f)
     {
-        col = GetComponent<SphereCollider>();
-        rb = GetComponent<Rigidbody>();
+        this.col = GetComponent<SphereCollider>();
+        this.rb = GetComponent<Rigidbody>();
+        this.damage = GetComponent<Damage>();
         col.enabled = false;
         this.Owner = owner;
-        this.damage = damage;
         this.team = owner.Team;
         this.timer = timer;
+        this.bone = bone;
         if (destroyOnHit)
         {
             damage.DamageDealt += () => Destroy(this.gameObject);
@@ -33,7 +35,7 @@ public class BulletBehaviour : MonoBehaviour
     {
         if (rb)
         {
-            rb.transform.position = Owner.animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + Owner.transform.forward;
+            rb.transform.position = Owner.animator.GetBoneTransform(bone).position + Owner.transform.forward;
         }
     }
     public virtual void Shoot(DamageInfo damageInfo)

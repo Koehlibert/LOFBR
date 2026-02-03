@@ -6,11 +6,15 @@ public class BulletFactory : MonoBehaviour
 {
     public static BulletFactory Instance;
     [SerializeField] GameObject BulletPrefab;
-    public GameObject CreateBullet(DamageableEntity owner, bool destroyOnHit, Damage damage, Vector3 spawnlocation, float timer = 1.5f)
+    private void Awake()
     {
-        GameObject BulletInstance = Instantiate(BulletPrefab, spawnlocation, owner.gameObject.transform.rotation);
-        BulletBehaviour bulletBehaviour = BulletInstance.AddComponent<BulletBehaviour>();
-        bulletBehaviour.Init(owner, destroyOnHit, damage, timer);
+        Instance = this;
+    }
+    public GameObject CreateBullet(DamageableEntity owner, bool destroyOnHit, HumanBodyBones bone, float timer = 1.5f)
+    {
+        GameObject BulletInstance = Instantiate(BulletPrefab, owner.animator.GetBoneTransform(bone).position, owner.gameObject.transform.rotation);
+        BulletBehaviour bulletBehaviour = BulletInstance.GetComponent<BulletBehaviour>();
+        bulletBehaviour.Init(owner, destroyOnHit, bone, timer);
         return(BulletInstance);
     }
 }

@@ -33,7 +33,6 @@ public class ClosestFinder
             player = GetPlayer(enemyTeam);
         }
         gameObjects.Add(player.GetGameObject());
-        Debug.Log(gameObjects.Count());
     }
     public GameObject FindClosest(bool withPlayer = true)
     {

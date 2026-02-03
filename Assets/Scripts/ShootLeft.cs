@@ -8,7 +8,6 @@ public class ShootLeft : DamagingAbility
     Vector3 offset = new Vector3(0, -0.5f, 1.5f);
     public AudioSource soundsource;
     public GameObject bulletinstance;
-    private Rigidbody bulletrig;
     new void Start()
     {
         manaCost = 5;
@@ -25,22 +24,20 @@ public class ShootLeft : DamagingAbility
     {
         if (bulletinstance)
         {
-            bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
+            bulletinstance.GetComponent<BulletBehaviour>().DelayedDestroy();
         }
     }
     private IEnumerator Firstbullet()
     {
         yield return new WaitForSeconds(.4f);
         loaded = true;
-        bulletinstance = Instantiate(bullet, player.animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + player.transform.forward, player.transform.rotation);
-        bulletrig = bulletinstance.GetComponent<Rigidbody>();
+        bulletinstance = BulletFactory.Instance.CreateBullet(player, true, HumanBodyBones.LeftLowerLeg);
     }
     private IEnumerator Reload()
     {
         loaded = false;
         yield return new WaitForSeconds(reloadtime);
-        bulletinstance = Instantiate(bullet, player.animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + player.transform.forward, player.transform.rotation);
-        bulletrig = bulletinstance.GetComponent<Rigidbody>();
+        bulletinstance = BulletFactory.Instance.CreateBullet(player, true, HumanBodyBones.LeftLowerLeg);
         loaded = true;
     }
     private IEnumerator Resetanim()
