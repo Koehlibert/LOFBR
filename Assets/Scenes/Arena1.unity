@@ -6226,6 +6226,8 @@ MonoBehaviour:
   victoryImage: {fileID: 1820571087}
   friendlyArea: {fileID: 0}
   enemyArea: {fileID: 0}
+  enemyBase: {fileID: 0}
+  friendlyBase: {fileID: 0}
   friendlyFloor: {fileID: 1797639383}
   enemyFloor: {fileID: 1017717348}
   death: {fileID: 8300000, guid: 662c3d66de3967149910b3f6a40eaad3, type: 3}
@@ -8844,6 +8846,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 874059498112534154, guid: 19b6ea4c0c8e0a8468e61191a6c9bf78,
+        type: 3}
+      propertyPath: soundsource
+      value: 
+      objectReference: {fileID: 109973209}
     - target: {fileID: 874059498112534155, guid: 19b6ea4c0c8e0a8468e61191a6c9bf78,
         type: 3}
       propertyPath: m_Enabled
