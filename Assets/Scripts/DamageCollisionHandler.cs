@@ -44,16 +44,9 @@ public class DamageCollisionHandler : MonoBehaviour
         {
             if (CombatUtils.CanDamage(damageComponent, damageableTarget))
             {
-                if (collider.gameObject.GetComponent<UltBulletBehaviour>() != null || collider.gameObject.GetComponent<UltBulletBehaviourEnemy>() != null)
+                if (collider.gameObject.GetComponent<BulletBehaviourFollowingUlt>() != null)
                 {
-                    if (collider.gameObject.GetComponent<UltBulletBehaviour>() != null)
-                    {
-                        collider.gameObject.GetComponent<UltBulletBehaviour>().count -= Time.deltaTime;
-                    }
-                    if (collider.gameObject.GetComponent<UltBulletBehaviourEnemy>() != null)
-                    {
-                        collider.gameObject.GetComponent<UltBulletBehaviourEnemy>().count -= Time.deltaTime;
-                    }
+                    collider.gameObject.GetComponent<BulletBehaviourFollowingUlt>().count -= Time.deltaTime;
                 }
                 if (damageComponent.givesXP)
                 {
@@ -70,12 +63,11 @@ public class DamageCollisionHandler : MonoBehaviour
     private void HandleDamageCollision(Collider collider)
     {
         Damage damageComponent = collider.gameObject.GetComponent<Damage>();
-        HealingBullet heal = collider.gameObject.GetComponent<HealingBullet>();
         if (damageComponent != null && !damageComponent.isEnduring)
         {
-            if (CombatUtils.CanDamage(damageComponent, damageableTarget) != (heal != null)) //this is bad
+            if (CombatUtils.CanDamage(damageComponent, damageableTarget) != damageComponent.isHealing) //this is bad
             {
-                if (heal == null)
+                if (!damageComponent.isHealing)
                 {
                     if (damageComponent.givesXP)
                     {

@@ -26,7 +26,7 @@ public class HealingBullet : MonoBehaviour
     {
         if(!target)
         {
-            target = closestFinder.FindClosestHurtFriendly();
+            target = closestFinder.FindClosest(false, true);
         }
         if (target)
         {

@@ -24,6 +24,7 @@ public class Damage : MonoBehaviour
     public bool givesXP;
     public bool isEnduring;
     public event Action DamageDealt;
+    public bool isHealing = false;
     public void SetDamage(float damageValue)
     {
         damage = damageValue;
@@ -45,5 +46,9 @@ public class Damage : MonoBehaviour
         sourceTeam = damageInfo.sourceTeamValue;
         givesXP = damageInfo.lastHit;
         isEnduring = damageInfo.enduring;
+    }
+    public void MakeHealing()
+    {
+        isHealing = true;
     }
 }

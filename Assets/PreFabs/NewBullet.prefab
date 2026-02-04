@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3009870627968079556}
-  - component: {fileID: 1328172203757874890}
   - component: {fileID: 4490738511181383442}
   - component: {fileID: 3002825040990282378}
   - component: {fileID: 2990646014056674362}
@@ -37,19 +36,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1328172203757874890
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3013956373289337006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b606008c03cbcd4890e51c05508b2fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BulletBehaviour
-  team: 0
 --- !u!114 &4490738511181383442
 MonoBehaviour:
   m_ObjectHideFlags: 0

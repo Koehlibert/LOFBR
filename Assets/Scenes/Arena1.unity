@@ -589,6 +589,12 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 80, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!82 &109973209 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 874059498112534172, guid: 19b6ea4c0c8e0a8468e61191a6c9bf78,
+    type: 3}
+  m_PrefabInstance: {fileID: 874059499823879922}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &111247819
 GameObject:
   m_ObjectHideFlags: 0
@@ -8646,6 +8652,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114473089623744422, guid: 19b6ea4c0c8e0a8468e61191a6c9bf78,
+        type: 3}
+      propertyPath: soundsource
+      value: 
+      objectReference: {fileID: 109973209}
     - target: {fileID: 114495804589146558, guid: 19b6ea4c0c8e0a8468e61191a6c9bf78,
         type: 3}
       propertyPath: m_Enabled

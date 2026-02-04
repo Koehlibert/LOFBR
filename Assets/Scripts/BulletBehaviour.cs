@@ -10,13 +10,13 @@ using UnityEngine.PlayerLoop;
 public class BulletBehaviour : MonoBehaviour
 {
     protected DamageableEntity Owner;
-    private Damage damage;
+    protected Damage damage;
     public CombatUtils.Team team;
     protected float timer;
     private SphereCollider col;
-    private Rigidbody rb;
+    protected Rigidbody rb;
     private HumanBodyBones bone;
-    public void Init(DamageableEntity owner, bool destroyOnHit, HumanBodyBones bone, float timer = 1.5f)
+    public virtual void Init(DamageableEntity owner, bool destroyOnHit, HumanBodyBones bone, float timer = 1.5f)
     {
         this.col = GetComponent<SphereCollider>();
         this.rb = GetComponent<Rigidbody>();

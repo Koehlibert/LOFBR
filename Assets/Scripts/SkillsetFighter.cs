@@ -11,10 +11,10 @@ public class SkillsetFighter : Skillset
         regenDelay = 4;
         startingArmor = 5;
         startingSpeed = 12;
-        primary = FindAnyObjectByType<ShootRight>();
+        primary = FindAnyObjectByType<ShootRightBasic>();
         primary.manaCost = 5;
         primary.reloadtime = 1.5f;
-        secondary = FindAnyObjectByType<ShootLeft>();
+        secondary = FindAnyObjectByType<ShootLeftBasic>();
         secondary.manaCost = 5;
         secondary.reloadtime = 1.5f;
         alternative = FindAnyObjectByType<AltAttack>();

@@ -8,6 +8,7 @@ using Extensions;
 [RequireComponent(typeof(SkillsetMelee))]
 [RequireComponent(typeof(SkillsetSupport))]
 [RequireComponent(typeof(SkillsetFighter))]
+[RequireComponent(typeof(DamageCollisionHandler))]
 public class PlayerController : DamageableEntity, IMainPlayer
 {
     public Level levelsys;
