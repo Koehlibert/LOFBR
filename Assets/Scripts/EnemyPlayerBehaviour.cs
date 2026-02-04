@@ -71,7 +71,7 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
         enemybase = GameObject.FindWithTag(enemytype + "Base");
         yourbase = GameObject.FindWithTag("EnemyBase");
         closestFinder = new ClosestFinder(Team, this.gameObject);
-        bulletinstance = Instantiate(bullet, animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + offset, transform.rotation);
+        bulletinstance = BulletFactory.Instance.CreateBullet(this, true, HumanBodyBones.RightLowerLeg);
         bulletrig = bulletinstance.GetComponent<Rigidbody>();
         loaded = true;
         hurt = false;
@@ -88,22 +88,25 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     }
     void OnEnable()
     {
-        if (animator)
-        {
-            bulletinstance = Instantiate(bullet, animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + offset, transform.rotation);
-            bulletrig = bulletinstance.GetComponent<Rigidbody>();
-            if (levelsys)
-            {
-                if (levelsys.checkLevel(4))
-                {
-                    bulletinstance2 = Instantiate(bullet, animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + offset, transform.rotation);
-                    bulletrig2 = bulletinstance2.GetComponent<Rigidbody>();
-                }
-            }
-        }
+        StartCoroutine("Firstbullet");
         loadedShock = true;
         loadedShield = true;
         loadedUlt = true;
+    }
+    private IEnumerator Firstbullet()
+    {
+        yield return new WaitForSeconds(.4f);
+        loaded = true;
+        bulletinstance = BulletFactory.Instance.CreateBullet(this, true, HumanBodyBones.RightLowerLeg);
+        bulletrig = bulletinstance.GetComponent<Rigidbody>();
+        if (levelsys)
+        {
+            if (levelsys.checkLevel(4))
+            {
+                bulletinstance2 = BulletFactory.Instance.CreateBullet(this, true, HumanBodyBones.LeftLowerLeg);
+                bulletrig2 = bulletinstance2.GetComponent<Rigidbody>();
+            }
+        }
     }
     void LateUpdate()
     {
@@ -123,11 +126,11 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
         }
         if (bulletinstance)
         {
-            bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
+            bulletinstance.GetComponent<BulletBehaviour>().DelayedDestroy();
         }
         if (bulletinstance2)
         {
-            bulletinstance2.GetComponent<DestroyAfterTime>().DelayedDestroy();
+            bulletinstance2.GetComponent<BulletBehaviour>().DelayedDestroy();
         }
         LastHit = false;
         hurt = false;
@@ -305,12 +308,12 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     {
         loaded = false;
         yield return new WaitForSeconds(reloadtime);
-        bulletinstance = Instantiate(bullet, animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + offset, transform.rotation);
+        bulletinstance = BulletFactory.Instance.CreateBullet(this, true, HumanBodyBones.RightLowerLeg);
         bulletrig = bulletinstance.GetComponent<Rigidbody>();
         loaded = true;
         if (levelsys.checkLevel(4))
         {
-            bulletinstance2 = Instantiate(bullet, animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + offset, transform.rotation);
+            bulletinstance2 = BulletFactory.Instance.CreateBullet(this, true, HumanBodyBones.LeftLowerLeg);
             bulletrig2 = bulletinstance2.GetComponent<Rigidbody>();
         }
     }
@@ -323,16 +326,12 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     {
         animator.Play("Shoot", 0, 0f);
         yield return new WaitForSeconds(0.1f);
-        bulletinstance.GetComponent<Damage>().SetProperties(GetMainAttackDamage());
-        bulletrig.AddForce(gameObject.transform.forward * 2250);
-        bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy();
+        bulletinstance.GetComponent<BulletBehaviour>().Shoot(GetMainAttackDamage());
         bulletrig = null;
         if (bulletrig2)
         {
             bulletrig2.transform.position = animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + offset;
-            bulletinstance2.GetComponent<Damage>().SetProperties(GetMainAttackDamage());
-            bulletrig2.AddForce(gameObject.transform.forward * 200000f * Time.deltaTime);
-            bulletinstance2.GetComponent<DestroyAfterTime>().DelayedDestroy();
+            bulletinstance2.GetComponent<BulletBehaviour>().Shoot(GetMainAttackDamage());
             bulletrig2 = null;
         }
         StartCoroutine("Resetanim");
@@ -473,5 +472,10 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     private DamageInfo GetUltDamage()
     {
         return new DamageInfo(50 + (levelsys.getLevel() - 5) * 4.5f, 0, this.Team, true, true);
+    }
+
+    public Level GetLevel()
+    {
+        return this.levelsys;
     }
 }

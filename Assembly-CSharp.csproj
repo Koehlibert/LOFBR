@@ -94,6 +94,7 @@
     <Compile Include="Assets\Scripts\EnemyPlayerBehaviour.cs" />
     <Compile Include="Assets\Scripts\ShootRight.cs" />
     <Compile Include="Assets\Scripts\Melee.cs" />
+    <Compile Include="Assets\Scripts\MobBehaviour.cs" />
     <Compile Include="Assets\Scripts\BulletBehaviour.cs" />
     <Compile Include="Assets\Scripts\ClosestFinder.cs" />
     <Compile Include="Assets\Scripts\UseArmorAura.cs" />

@@ -23,7 +23,7 @@ public abstract class TowerBehaviour : DamageableEntity
         range = 25;
         loaded = true;
         reloadtime = 1.25f;
-        damageInfo = new DamageInfo(60, 0, this.Team);
+        damageInfo = new DamageInfo(45, 0, this.Team);
     }
     protected virtual void Update()
     {
@@ -31,21 +31,27 @@ public abstract class TowerBehaviour : DamageableEntity
         animator.SetFloat("speedPercent", 0);
         if (CombatUtils.InRange(this.gameObject, currentenemy, range) && (loaded))
         {
-            animator.Play("Throw", 0, 0f);
-            Attack(currentenemy);
+            Attack(currentenemy.transform.position);
         }
     }
-    void Attack(GameObject target)
+    void Attack(Vector3 target)
     {
-        Vector3 dir = target.transform.position - transform.position;
-        dir.y = 0;
-        transform.rotation = Quaternion.LookRotation(dir);
-        bulletinstance = Instantiate(bullet, transform.position + offset + 1.5f * (transform.position - target.transform.position).normalized, transform.rotation);
+        transform.LookAt(new Vector3(target.x, transform.position.y, target.z));
+        if (loaded)
+        {
+            StartCoroutine("Shootanim");
+            StartCoroutine("Reload");
+        }
+    }
+    private IEnumerator Shootanim()
+    {
+        animator.Play("Throw", 0, 0f);
+        yield return new WaitForSeconds(0.15f);
+        bulletinstance = BulletFactory.Instance.CreateBullet(this, true, HumanBodyBones.RightHand);
         Rigidbody bulletrig = bulletinstance.GetComponent<Rigidbody>();
-        bulletinstance.GetComponent<Damage>().SetProperties(damageInfo);
-        bulletrig.AddForce(gameObject.transform.forward * 1750);
-        bulletinstance.GetComponent<DestroyAfterTime>().DelayedDestroy(2);
-        StartCoroutine("Reload");
+        bulletinstance.GetComponent<BulletBehaviour>().Shoot(damageInfo, 1500);
+        bulletrig = null;
+        StartCoroutine("Resetanim");
     }
     private IEnumerator Reload()
     {
@@ -53,7 +59,11 @@ public abstract class TowerBehaviour : DamageableEntity
         yield return new WaitForSeconds(reloadtime);
         loaded = true;
     }
-    public override CombatUtils.Team Team => CombatUtils.Team.Player;
+    private IEnumerator Resetanim()
+    {
+        yield return new WaitForSeconds(0.25f);
+        animator.Play("Default", 0, 0f);
+    }
     public override void Die()
     {
         if (Team == CombatUtils.Team.Enemy)

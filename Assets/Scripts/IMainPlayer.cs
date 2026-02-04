@@ -6,4 +6,5 @@ public interface IMainPlayer
 {
     GameObject GetGameObject();
     Transform GetTransform();
+    Level GetLevel();
 }

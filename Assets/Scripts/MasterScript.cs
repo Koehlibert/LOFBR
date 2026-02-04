@@ -72,6 +72,8 @@ public class MasterScript : MonoBehaviour
     public RawImage victoryImage;
     public GameObject friendlyArea;
     public GameObject enemyArea;
+    public GameObject enemyBase;
+    public GameObject friendlyBase;
     public GameObject friendlyFloor;
     public GameObject enemyFloor;
     public AudioClip death;
@@ -97,6 +99,8 @@ public class MasterScript : MonoBehaviour
         ambientsource.Play();
         friendlyArea = GameObject.FindGameObjectWithTag("FriendlyArea");
         enemyArea = GameObject.FindGameObjectWithTag("EnemyArea");
+        friendlyBase = GameObject.FindGameObjectWithTag("FriendlyBase");
+        enemyBase = GameObject.FindGameObjectWithTag("EnemyBase");
         enemySpawn = GetComponent<EnemySpawner>();
         friendlySpawn = GetComponent<FriendlySpawner>();
         victoryImage.enabled = false;
@@ -191,30 +195,39 @@ public class MasterScript : MonoBehaviour
         defeatImage.enabled = false;
         victoryImage.enabled = false;
     }
-    public void AddEnemy(GameObject enemy)
+    public void AddMob(MobBehaviour Mob)
     {
-        allEnemiesTowers.Add(enemy);
-        allEnemies.Add(enemy);
-    }
-    public void RemoveEnemy(GameObject enemy)
-    {
-        allEnemiesTowers.Remove(enemy);
-        allEnemies.Remove(enemy);
-    }
-    public void AddFriendly(GameObject friendly)
-    {
-        allFriendliesTowers.Add(friendly);
-        allFriendlies.Add(friendly);
-    }
-    public void RemoveFriendly(GameObject friendly)
-    {
-        allFriendliesTowers.Remove(friendly);
-        allFriendlies.Remove(friendly);
-        rezPoolFriendly.Add(new Tombstone(friendly.transform.position));
-        if (rezPoolFriendly.Count > 10)
+        if (Mob.Team == CombatUtils.Team.Enemy)
         {
-            rezPoolFriendly.RemoveAt(0);
+            allEnemiesTowers.Add(Mob.gameObject);
+            allEnemies.Add(Mob.gameObject);
         }
+        else
+        {
+            allFriendliesTowers.Add(Mob.gameObject);
+            allFriendlies.Add(Mob.gameObject);
+        }
+    }
+    public void RemoveMob(MobBehaviour Mob)
+    {
+        if (Mob.Team == CombatUtils.Team.Enemy)
+        {
+            allEnemiesTowers.Remove(Mob.gameObject);
+            allEnemies.Remove(Mob.gameObject);
+        }
+        else
+        {
+            allFriendliesTowers.Remove(Mob.gameObject);
+            allFriendlies.Remove(Mob.gameObject);
+        }
+    }
+    public IMainPlayer GetOpponentPlayer(CombatUtils.Team enemyTeam)
+    {
+        return enemyTeam == CombatUtils.Team.Enemy ? enemyPlayer : player;
+    }
+    public float GetOpponentSpawnZ(CombatUtils.Team enemyTeam)
+    {
+        return enemyTeam == CombatUtils.Team.Enemy ? respawnpointEnemyPlayer.transform.position.z : respawnpointPlayer.transform.position.z;
     }
     public List<Vector3> GetRezPositions(int count)
     {
@@ -272,6 +285,10 @@ public class MasterScript : MonoBehaviour
         }
         count = Mathf.Min(count, damagedEnemies.Count);
         return damagedEnemies.GetRange(0,count);
+    }
+    public GameObject GetOpponentBase(CombatUtils.Team enemyTeam)
+    {
+        return enemyTeam == CombatUtils.Team.Enemy ? enemyBase : friendlyBase;
     }
     void MoveSpawner(string playerTeam)
     {

@@ -71,6 +71,7 @@ public class PlayerController : DamageableEntity, IMainPlayer
         StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
         if (PlayerInputRouter.Instance.CheatedPressed)
         {
+            hpsys.AddArmor(1000);
             levelsys.gainExp(100);
             enemyPlayer.levelsys.gainExp(100);
         }
@@ -193,5 +194,9 @@ public class PlayerController : DamageableEntity, IMainPlayer
     public void OnHealXP()
     {
         levelsys.gainExp(5);
+    }
+    public Level GetLevel()
+    {
+        return(levelsys);
     }
 }

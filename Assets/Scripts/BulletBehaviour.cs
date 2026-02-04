@@ -35,13 +35,23 @@ public class BulletBehaviour : MonoBehaviour
     {
         if (rb)
         {
-            rb.transform.position = Owner.animator.GetBoneTransform(bone).position + Owner.transform.forward;
+            if (Owner)
+            {
+                rb.transform.position = Owner.animator.GetBoneTransform(bone).position + Owner.transform.forward;
+            }
         }
     }
     public virtual void Shoot(DamageInfo damageInfo)
     {
         damage.SetProperties(damageInfo);
         rb?.AddForce(Owner.transform.forward * 2250);
+        DelayedDestroy();
+        rb = null;
+    }
+    public virtual void Shoot(DamageInfo damageInfo, float force)
+    {
+        damage.SetProperties(damageInfo);
+        rb?.AddForce(Owner.transform.forward * force);
         DelayedDestroy();
         rb = null;
     }
