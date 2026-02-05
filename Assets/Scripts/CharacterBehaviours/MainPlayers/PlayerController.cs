@@ -157,7 +157,7 @@ public class PlayerController : MainPlayerBehaviour
         yield return new WaitForSeconds(duration);
         lookLock = false;
     }
-    public override void Die()
+    protected override void Die()
     {
         isDead = true;
         flashcolor.a = 0.8f;
@@ -167,7 +167,7 @@ public class PlayerController : MainPlayerBehaviour
             enemyPlayer.levelsys.gainExp(5 + 5 * levelsys.getLevel());
         }
         LastHit = false;
-        MasterScript.Instance.DieAndRespawn();
+        base.Die();
     }
     public void DisableDamageFlash()
     {

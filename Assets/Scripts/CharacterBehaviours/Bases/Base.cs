@@ -9,7 +9,7 @@ public abstract class Base : DamageableEntity
         hpsys = GetComponent<Health>();
         hpsys.Initialize(MasterScript.Instance.baseMaxHp,0,0,20);
     }
-    public override void Die()
+    protected override void Die()
     {
         MasterScript.Instance.gameOver = true;
         if (Team == CombatUtils.Team.Enemy)

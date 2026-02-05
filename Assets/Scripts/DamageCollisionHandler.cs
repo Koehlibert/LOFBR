@@ -53,7 +53,7 @@ public class DamageCollisionHandler : MonoBehaviour
                 OnHitCallback?.Invoke();
                 if (CombatUtils.DealDamage(damageComponent, damageableTarget))
                 {
-                    damageableTarget.Die();
+                    damageableTarget.Kill();
                 }
             }
         }
@@ -74,7 +74,7 @@ public class DamageCollisionHandler : MonoBehaviour
                     OnHitCallback?.Invoke();
                     if (CombatUtils.DealDamage(damageComponent, damageableTarget))
                     {
-                        damageableTarget.Die();
+                        damageableTarget.Kill();
                     }
                 }
                 else

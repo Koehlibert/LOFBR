@@ -8,4 +8,8 @@ using System;
 public abstract class MainPlayerBehaviour : DamageableEntity
 {
     public Level levelsys;
+    protected override void Die()
+    {
+        MasterScript.Instance.DieAndRespawn(Team);
+    }
 }

@@ -114,7 +114,7 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
         transform.position = pos;
     }
     public override CombatUtils.Team Team => CombatUtils.Team.Enemy;
-    public override void Die()
+    protected override void Die()
     {
         if (player != null && LastHit)
         {
@@ -136,7 +136,7 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
         loaded = true;
         loadedShock = true;
         isShocking = false;
-        MasterScript.Instance.EnemyDieAndRespawn();
+        base.Die();
     }
     void FixedUpdate()
     {
@@ -232,7 +232,7 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
                 }
                 else
                 {
-                    if (transform.position.z >= MasterScript.Instance.friendlySpawn.getZPos() + 10)
+                    if (transform.position.z >= MasterScript.Instance.friendlySpawn.GetZPos() + 10)
                     {
                         transform.Translate(standarddirection * movementSpeed * Time.deltaTime, Space.World);
                         animSpeed = 1;

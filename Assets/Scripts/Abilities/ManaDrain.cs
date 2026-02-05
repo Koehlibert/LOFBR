@@ -33,7 +33,7 @@ public class ManaDrain : DamagingAbility
             float actualDamage = enemy.manasys.drainMana((5 + player.levelsys.getLevel() * 2) * Time.deltaTime);
             if (enemy.GetHealth().TakeDamage(actualDamage * (0.05f + 0.05f * player.levelsys.getLevel())))
             {
-                enemy.Die();
+                enemy.Kill();
             }
             player.manasys.gainMana(actualDamage);
         }

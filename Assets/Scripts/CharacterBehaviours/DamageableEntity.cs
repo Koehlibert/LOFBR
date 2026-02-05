@@ -22,9 +22,13 @@ public abstract class DamageableEntity : MonoBehaviour
     {
         LastHit = value;
     }
-    public abstract void Die();
+    protected abstract void Die();
     public virtual Health GetHealth()
     {
         return hpsys;
+    }
+    public virtual void Kill()
+    {
+        Die();
     }
 }

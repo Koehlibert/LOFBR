@@ -71,7 +71,7 @@ public abstract class TowerBehaviour : DamageableEntity
         yield return new WaitForSeconds(0.25f);
         animator.Play("Default", 0, 0f);
     }
-    public override void Die()
+    protected override void Die()
     {
         if (Team == CombatUtils.Team.Enemy)
         {

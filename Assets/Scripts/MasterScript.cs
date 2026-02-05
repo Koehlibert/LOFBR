@@ -59,8 +59,8 @@ public class MasterScript : MonoBehaviour
 {
     public static MasterScript Instance;
     public PlayerController player;
-    public ISpawner enemySpawn;
-    public ISpawner friendlySpawn;
+    public EnemySpawner enemySpawn;
+    public FriendlySpawner friendlySpawn;
     public int respawntime;
     public GameObject respawnpointPlayer;
     public GameObject respawnpointEnemyPlayer;
@@ -123,8 +123,8 @@ public class MasterScript : MonoBehaviour
         {
             GameOverMenu.SetActive(true);
             GameOverContinue.SetActive(true);
-            friendlySpawn.setEnabled(false);
-            enemySpawn.setEnabled(false);
+            friendlySpawn.SetEnabled(false);
+            enemySpawn.SetEnabled(false);
             if (victory)
             {
                 victoryImage.enabled = true;
@@ -135,18 +135,12 @@ public class MasterScript : MonoBehaviour
             }
         }
     }
-    public void EnemyDieAndRespawn()
-    {
-        StartCoroutine("EnemyRespawnCoroutine");
-        enemySpawn.speedUpSpawner(0.85f);
-        MoveSpawner("Enemy");
-    }
     public Vector3 CorrectTarget(Vector3 target)
     {
         return new Vector3(
             Mathf.Clamp(target.x, lowerAreaLimitX, upperAreaLimitX),
             target.y,
-            Mathf.Clamp(target.z, friendlySpawn.getZPos(), enemySpawn.getZPos())
+            Mathf.Clamp(target.z, friendlySpawn.GetZPos(), enemySpawn.GetZPos())
         );
     }
     public IEnumerator EnemyRespawnCoroutine()
@@ -159,11 +153,11 @@ public class MasterScript : MonoBehaviour
             enemyPlayer.gameObject.SetActive(true);
         }
     }
-    public void DieAndRespawn()
+    public void DieAndRespawn(CombatUtils.Team team)
     {
         StartCoroutine("RespawnCoroutine");
-        friendlySpawn.speedUpSpawner(0.85f);
-        MoveSpawner("Friendly");
+        friendlySpawn.SpeedUpSpawner(0.85f);
+        MoveSpawner(team);
 
     }
     public IEnumerator RespawnCoroutine()
@@ -190,8 +184,8 @@ public class MasterScript : MonoBehaviour
         GameOverMenu.SetActive(false);
         GameOverContinue.SetActive(false);
         gameOver = false;
-        friendlySpawn.setEnabled(true);
-        enemySpawn.setEnabled(true);
+        friendlySpawn.SetEnabled(true);
+        enemySpawn.SetEnabled(true);
         defeatImage.enabled = false;
         victoryImage.enabled = false;
     }
@@ -290,16 +284,16 @@ public class MasterScript : MonoBehaviour
     {
         return enemyTeam == CombatUtils.Team.Enemy ? enemyBase : friendlyBase;
     }
-    void MoveSpawner(string playerTeam)
+    void MoveSpawner(CombatUtils.Team playerTeam)
     {
         GameObject area;
         float direction;
         GameObject respawnPoint;
-        ISpawner spawner;
+        SpawnerBehaviour spawner;
         GameObject floor;
         GameObject mover;
         bool bigEnough;
-        if (playerTeam == "Friendly")
+        if (playerTeam == CombatUtils.Team.Player)
         {
             area = friendlyArea;
             direction = 1;
@@ -309,7 +303,7 @@ public class MasterScript : MonoBehaviour
             mover = moverFriendly;
             bigEnough = area.transform.position.z < 90;
         }
-        else if (playerTeam == "Enemy")
+        else if (playerTeam == CombatUtils.Team.Enemy)
         {
             area = enemyArea;
             direction = -1;
@@ -336,7 +330,7 @@ public class MasterScript : MonoBehaviour
             area.transform.position = area.transform.position + direction * new Vector3(0, 0, 10);
             floor.transform.position = floor.transform.position + direction * new Vector3(0, 0, 5);
             floor.transform.localScale = floor.transform.localScale + new Vector3(-10, 0, 0);
-            spawner.moveSpawner();
+            spawner.MoveSpawner();
         }
     }
 }

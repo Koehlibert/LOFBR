@@ -65,7 +65,7 @@ public abstract class MobBehaviour : DamageableEntity
             Destroy(bulletObject);
         }
     }
-    public override void Die()
+    protected override void Die()
     {
         if ((player != null) && LastHit)
         {

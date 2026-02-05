@@ -159,9 +159,9 @@
     <Compile Include="Library\PackageCache\com.unity.test-framework@0b7a23ab2e1d\UnityEditor.TestRunner\TestLaunchers\RuntimeTestLauncherBase.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0b7a23ab2e1d\UnityEditor.TestRunner\GUI\Controls\MultiValueContentProvider.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0b7a23ab2e1d\UnityEditor.TestRunner\CommandLineParser\ICommandLineOption.cs" />
+    <Compile Include="Library\PackageCache\com.unity.test-framework@0b7a23ab2e1d\UnityEditor.TestRunner\TestRun\Tasks\SaveUndoIndexTask.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0b7a23ab2e1d\UnityEditor.TestRunner\TestRun\Tasks\CleanupConstructDelegatorTask.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0b7a23ab2e1d\UnityEditor.TestRunner\Api\ITestRunnerApi.cs" />
-    <Compile Include="Library\PackageCache\com.unity.test-framework@0b7a23ab2e1d\UnityEditor.TestRunner\TestRun\Tasks\SaveUndoIndexTask.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0b7a23ab2e1d\UnityEditor.TestRunner\TestRun\Tasks\Scene\CreateNewSceneTask.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0b7a23ab2e1d\UnityEditor.TestRunner\TestRun\Data\TestJobData.cs" />
     <Compile Include="Library\PackageCache\com.unity.test-framework@0b7a23ab2e1d\UnityEditor.TestRunner\TestLaunchers\Helpers\PrebuildSetupAttributeFinder.cs" />
