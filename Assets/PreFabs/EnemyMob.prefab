@@ -72,14 +72,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae6577cadf2ea5b458fed2acbc461235, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemybase: {fileID: 0}
-  player: {fileID: 0}
-  followdistance: 30
-  attackdistance: 17.5
-  bullet: {fileID: 3013956373289337006, guid: 4b5792511e065694eade0b3cb8adca22, type: 3}
-  enemytype: Friendly
-  closestCurrentEnemy: {fileID: 0}
-  animator: {fileID: 727082237571005862}
+  animator: {fileID: 0}
   healthbar: {fileID: 6349946008277320679}
   healthbarbg: {fileID: 5630666503110785088}
 --- !u!195 &752268848267846751
@@ -419,7 +412,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3541046500393680007}
-  - component: {fileID: 727082237571005862}
   m_Layer: 0
   m_Name: visuals
   m_TagString: Untagged
@@ -444,28 +436,6 @@ Transform:
   - {fileID: 7352548288846219125}
   m_Father: {fileID: 752268847723263080}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &727082237571005862
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8682780096126644614}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 635fc66a6e848d343ba9d3a3fc9eeab5, type: 3}
-  m_Controller: {fileID: 9100000, guid: 16e6b52545ddbb541b6b91ee33690580, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &7026678422703743134
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -529,6 +499,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AllAnim
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 635fc66a6e848d343ba9d3a3fc9eeab5,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 16e6b52545ddbb541b6b91ee33690580, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

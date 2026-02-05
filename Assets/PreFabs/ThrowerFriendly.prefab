@@ -70,8 +70,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c6fc3d18fbdfc04da4093a1017cf937, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerBehaviourFriendly
-  bullet: {fileID: 3013956373289337006, guid: 4b5792511e065694eade0b3cb8adca22, type: 3}
   animator: {fileID: 4925710569382230769}
+  bullet: {fileID: 3013956373289337006, guid: 4b5792511e065694eade0b3cb8adca22, type: 3}
 --- !u!114 &-7066719942265957342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,7 +126,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6628421590119788269}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 584a3ae0aa40abd4785ffdbf419f7f31, type: 3}
+  m_Avatar: {fileID: 9000000, guid: 635fc66a6e848d343ba9d3a3fc9eeab5, type: 3}
   m_Controller: {fileID: 9100000, guid: 16e6b52545ddbb541b6b91ee33690580, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
@@ -202,6 +202,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AllAnim
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 635fc66a6e848d343ba9d3a3fc9eeab5,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 16e6b52545ddbb541b6b91ee33690580, type: 2}
     - target: {fileID: 8417361359673230750, guid: 635fc66a6e848d343ba9d3a3fc9eeab5,
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'

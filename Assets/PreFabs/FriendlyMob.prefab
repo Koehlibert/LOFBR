@@ -149,14 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e5a56cca0c163c47afed11ef92d3e69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemybase: {fileID: 0}
-  player: {fileID: 0}
-  followdistance: 30
-  attackdistance: 17.5
-  bullet: {fileID: 3013956373289337006, guid: 4b5792511e065694eade0b3cb8adca22, type: 3}
-  enemytype: Enemy
-  closestCurrentEnemy: {fileID: 0}
-  animator: {fileID: 6120311514798386878}
+  animator: {fileID: 0}
   healthbar: {fileID: 6544769053701136603}
   healthbarbg: {fileID: 864819667386964637}
 --- !u!195 &8988679656934383969
@@ -353,7 +346,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7282166802256536878}
-  - component: {fileID: 6120311514798386878}
   m_Layer: 0
   m_Name: Visuals
   m_TagString: Untagged
@@ -378,28 +370,6 @@ Transform:
   - {fileID: 6931917173258822494}
   m_Father: {fileID: 1421225335743800074}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &6120311514798386878
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2827711281728920806}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 584a3ae0aa40abd4785ffdbf419f7f31, type: 3}
-  m_Controller: {fileID: 9100000, guid: 16e6b52545ddbb541b6b91ee33690580, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5787411341909399077
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,6 +549,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AllAnim
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 635fc66a6e848d343ba9d3a3fc9eeab5,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 16e6b52545ddbb541b6b91ee33690580, type: 2}
     - target: {fileID: 8417361359673230750, guid: 635fc66a6e848d343ba9d3a3fc9eeab5,
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'

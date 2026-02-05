@@ -42,6 +42,7 @@ public class BulletFactory : MonoBehaviour
     }
     private GameObject InstantiateBullet(DamageableEntity owner, HumanBodyBones bone)
     {
+        Debug.Log(owner);
         return Instantiate(BulletPrefab, owner.animator.GetBoneTransform(bone).position, owner.gameObject.transform.rotation);
     }
 }
