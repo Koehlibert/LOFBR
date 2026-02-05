@@ -19,28 +19,32 @@ public static class CombatUtils
     {
         return CanDamage(sourceDamage.sourceTeam, targetObject.Team);
     }
-    public static bool DealDamage(GameObject damageObject, IMortal target)
+    public static bool DealDamage(GameObject damageObject, DamageableEntity target)
     {
         return damageObject
             .GetComponent<Damage>()
             .DealDamage(target);
     }
-    public static bool DealDamage(Collision collision, IMortal target)
+    public static bool DealDamage(Collision collision, DamageableEntity target)
     {
         return DealDamage(collision.gameObject, target);
     }
-    public static bool DealDamage(Collider collider, IMortal target)
+    public static bool DealDamage(Collider collider, DamageableEntity target)
     {
         return DealDamage(collider.gameObject, target);
     }
-    public static bool DealDamage(Damage damage, IMortal target)
+    public static bool DealDamage(Damage damage, DamageableEntity target)
     {
         return damage.DealDamage(target);
+    }
+    public static float GetDistance(GameObject object1, GameObject object2)
+    {
+        return Vector3.Distance(object2.transform.position,object1.transform.position);
     }
     public static bool InRange(GameObject object1, GameObject object2, float range)
     {
         bool isInRange = false;
-        if ((object2 != null)&&(Vector3.Distance(object2.transform.position,object1.transform.position)<=range))
+        if ((object2 != null)&&(GetDistance(object1, object2) <=range))
         {
             isInRange = true;
         }

@@ -4,21 +4,14 @@ using UnityEngine;
 
 public class Shield : MonoBehaviour
 {
-    public IMainPlayer player;
-    public void SetPlayer(IMainPlayer player)
+    public MainPlayerBehaviour player;
+    public void SetPlayer(MainPlayerBehaviour player)
     {
         this.player = player;
     }
     void Update()
     {
-        this.transform.position = player.GetTransform().position + new Vector3(0f,2f,0f);
-        this.transform.rotation = player.GetTransform().rotation;
+        this.transform.position = player.transform.position + new Vector3(0f,2f,0f);
+        this.transform.rotation = player.transform.rotation;
     }
-    /*void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("BulletEnemy")||other.gameObject.CompareTag("BulletEnemyPlayer"))
-        {
-            Destroy(other.gameObject);
-        }
-    }*/
 }

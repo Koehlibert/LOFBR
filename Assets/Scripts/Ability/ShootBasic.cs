@@ -16,7 +16,7 @@ public abstract class ShootBasic : DamagingAbility
     new void Start()
     {
         manaCost = 5;
-        loaded = true;
+        loaded = false;
         reloadtime = 1.5f;
     }
     void OnEnable()
@@ -34,9 +34,9 @@ public abstract class ShootBasic : DamagingAbility
     }
     private IEnumerator Firstbullet()
     {
-        yield return new WaitForSeconds(.4f);
-        loaded = true;
+        yield return new WaitForSeconds(.2f);
         bulletinstance = CreateBullet();
+        loaded = true;
     }
     private IEnumerator Reload()
     {

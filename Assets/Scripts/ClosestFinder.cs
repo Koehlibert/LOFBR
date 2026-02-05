@@ -7,12 +7,12 @@ using UnityEngine.UIElements;
 
 public class ClosestFinder
 {
-    private IMainPlayer player;
+    private MainPlayerBehaviour player;
     private GameObject selfObject;
     private CombatUtils.Team targetTeam;
     private List<GameObject> AllObjects;
     private List<GameObject> AllObjectsNoTowers;
-    private IMainPlayer GetPlayer(CombatUtils.Team team)
+    private MainPlayerBehaviour GetPlayer(CombatUtils.Team team)
     {
         return team == CombatUtils.Team.Enemy ? MasterScript.Instance.enemyPlayer : MasterScript.Instance.player;
     }
@@ -42,7 +42,7 @@ public class ClosestFinder
         {
             player = GetPlayer(targetTeam);
         }
-        gameObjects.Add(player.GetGameObject());
+        gameObjects.Add(player.gameObject);
     }
     public GameObject FindClosest(bool withPlayer = true, bool onlyHurt = false)
     {
@@ -64,7 +64,7 @@ public class ClosestFinder
             float closestDistance = Mathf.Infinity;
             foreach (GameObject currenemy in allEnemies)
             {
-                if ((!currenemy) || (onlyHurt && currenemy.GetComponent<Health>().FullHP()) || (!withPlayer && currenemy == player.GetGameObject()))
+                if ((!currenemy) || (onlyHurt && currenemy.GetComponent<Health>().FullHP()) || (!withPlayer && currenemy == player.gameObject))
                 {
                     continue;
                 }
@@ -87,7 +87,7 @@ public class ClosestFinder
             float closestDistance = Mathf.Infinity;
             foreach (GameObject currenemy in allEnemies)
             {
-                if (!currenemy || !withPlayer && currenemy == player.GetGameObject())
+                if (!currenemy || !withPlayer && currenemy == player.gameObject)
                 {
                     continue;
                 }
@@ -100,10 +100,10 @@ public class ClosestFinder
                     closeEnemies[0] = currenemy;
                 }
             }
-            if ((player != null) && (player.GetGameObject().activeSelf) && (Vector3.Distance(selfObject.transform.position, player.GetTransform().position) < closestDistance))
+            if ((player != null) && player.gameObject.activeSelf && (Vector3.Distance(selfObject.transform.position, player.transform.position) < closestDistance))
             {
                 closeEnemies[1] = closeEnemies[0];
-                closeEnemies[0] = player.GetGameObject();
+                closeEnemies[0] = player.gameObject;
             }
             return closeEnemies;
         }

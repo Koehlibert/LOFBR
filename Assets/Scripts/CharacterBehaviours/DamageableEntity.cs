@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class DamageableEntity : MonoBehaviour, IMortal
+public abstract class DamageableEntity : MonoBehaviour
 {
     protected Health hpsys;
     protected bool LastHit;
@@ -23,5 +23,8 @@ public abstract class DamageableEntity : MonoBehaviour, IMortal
         LastHit = value;
     }
     public abstract void Die();
-    public abstract Health GetHealth();
+    public virtual Health GetHealth()
+    {
+        return hpsys;
+    }
 }

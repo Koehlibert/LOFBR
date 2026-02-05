@@ -4,9 +4,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 using Extensions;
-public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
+public class EnemyPlayerBehaviour : MainPlayerBehaviour
 {
-    public Level levelsys;
     public float reloadtime;
     public GameObject enemybase;
     public PlayerController player;
@@ -138,18 +137,6 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
         loadedShock = true;
         isShocking = false;
         MasterScript.Instance.EnemyDieAndRespawn();
-    }
-    public GameObject GetGameObject()
-    {
-        return this.gameObject;
-    }
-    public Transform GetTransform()
-    {
-        return this.transform;
-    }
-    public override Health GetHealth()
-    {
-        return hpsys;
     }
     void FixedUpdate()
     {
@@ -472,10 +459,5 @@ public class EnemyPlayerBehaviour : DamageableEntity, IMainPlayer
     private DamageInfo GetUltDamage()
     {
         return new DamageInfo(50 + (levelsys.getLevel() - 5) * 4.5f, 0, this.Team, true, true);
-    }
-
-    public Level GetLevel()
-    {
-        return this.levelsys;
     }
 }

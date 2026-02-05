@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using UnityEngine;
 
 public abstract class TowerBehaviour : DamageableEntity
 {
     protected float range;
+    protected float lookRange;
     protected GameObject currentenemy;
     protected float cooldown;
     [SerializeField] private GameObject bullet;
@@ -21,6 +23,7 @@ public abstract class TowerBehaviour : DamageableEntity
         closestFinder = new ClosestFinder(Team, this.gameObject);
         offset = new Vector3(0, 7, 0);
         range = 25;
+        lookRange = 35;
         loaded = true;
         reloadtime = 1.25f;
         damageInfo = new DamageInfo(45, 0, this.Team);
@@ -28,15 +31,19 @@ public abstract class TowerBehaviour : DamageableEntity
     protected virtual void Update()
     {
         currentenemy = closestFinder?.FindClosestNoTower();
-        animator.SetFloat("speedPercent", 0);
-        if (CombatUtils.InRange(this.gameObject, currentenemy, range) && (loaded))
+        float enemyDist = CombatUtils.GetDistance(this.gameObject, currentenemy);
+        if (enemyDist <= lookRange)
         {
-            Attack(currentenemy.transform.position);
+            transform.LookAt(new Vector3(currentenemy.transform.position.x, transform.position.y, currentenemy.transform.position.z));
+            animator.SetFloat("speedPercent", 0);
+            if ((enemyDist <= range) && loaded)
+            {
+                Attack();
+            }
         }
     }
-    void Attack(Vector3 target)
+    void Attack()
     {
-        transform.LookAt(new Vector3(target.x, transform.position.y, target.z));
         if (loaded)
         {
             StartCoroutine("Shootanim");

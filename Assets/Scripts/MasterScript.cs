@@ -221,7 +221,7 @@ public class MasterScript : MonoBehaviour
             allFriendlies.Remove(Mob.gameObject);
         }
     }
-    public IMainPlayer GetOpponentPlayer(CombatUtils.Team enemyTeam)
+    public MainPlayerBehaviour GetOpponentPlayer(CombatUtils.Team enemyTeam)
     {
         return enemyTeam == CombatUtils.Team.Enemy ? enemyPlayer : player;
     }

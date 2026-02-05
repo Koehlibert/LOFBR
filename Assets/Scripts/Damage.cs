@@ -34,7 +34,7 @@ public class Damage : MonoBehaviour
     {
         return (damage, poison);
     }
-    public bool DealDamage(IMortal mortalObject)
+    public bool DealDamage(DamageableEntity mortalObject)
     {
         DamageDealt?.Invoke();
         return mortalObject.GetHealth().TakeDamage(this);

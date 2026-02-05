@@ -8,7 +8,7 @@ using System;
 public abstract class MobBehaviour : DamageableEntity
 {
     protected GameObject enemybase;
-    protected IMainPlayer player;
+    protected MainPlayerBehaviour player;
     protected float followdistance = 25;
     protected float attackdistance = 10;
     private float movementSpeed = 12;
@@ -61,7 +61,7 @@ public abstract class MobBehaviour : DamageableEntity
         if (!hpsys.FullHP())
         {
             hpsys.Heal(damageComponent);
-            player.GetLevel().gainExp(5);
+            player.levelsys.gainExp(5);
             Destroy(bulletObject);
         }
     }
@@ -69,9 +69,9 @@ public abstract class MobBehaviour : DamageableEntity
     {
         if ((player != null) && LastHit)
         {
-            if (player.GetGameObject().activeSelf)
+            if (player.gameObject.activeSelf)
             {
-                player.GetLevel().gainExp(5);
+                player.levelsys.gainExp(5);
             }
         }
         if (bulletinstance)

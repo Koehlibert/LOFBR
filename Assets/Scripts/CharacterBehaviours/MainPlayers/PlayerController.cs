@@ -9,9 +9,8 @@ using Extensions;
 [RequireComponent(typeof(SkillsetSupport))]
 [RequireComponent(typeof(SkillsetFighter))]
 [RequireComponent(typeof(DamageCollisionHandler))]
-public class PlayerController : DamageableEntity, IMainPlayer
+public class PlayerController : MainPlayerBehaviour
 {
-    public Level levelsys;
     public Mana manasys;
     private float movementspeed;
     public int rotatespeed;
@@ -170,19 +169,6 @@ public class PlayerController : DamageableEntity, IMainPlayer
         LastHit = false;
         MasterScript.Instance.DieAndRespawn();
     }
-    public GameObject GetGameObject()
-    {
-        return this.gameObject;
-    }
-
-    public Transform GetTransform()
-    {
-        return this.transform;
-    }
-    public override Health GetHealth()
-    {
-        return hpsys;
-    }
     public void DisableDamageFlash()
     {
         handler.OnHitCallback -= OnTakeDamage;
@@ -194,9 +180,5 @@ public class PlayerController : DamageableEntity, IMainPlayer
     public void OnHealXP()
     {
         levelsys.gainExp(5);
-    }
-    public Level GetLevel()
-    {
-        return(levelsys);
     }
 }

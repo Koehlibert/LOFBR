@@ -16,12 +16,10 @@ public class DamageCollisionHandler : MonoBehaviour
     public event Action OnHitCallback;
     public enum CollisionEventType { Enter, Stay, TriggerStay, TriggerEnter }
     private List<CollisionRule> collisionRules = new List<CollisionRule>();
-    private IMortal mortalTarget;
     private DamageableEntity damageableTarget;
 
     private void OnEnable()
     {
-        mortalTarget = GetComponent<IMortal>();
         damageableTarget = GetComponent<DamageableEntity>();
     }
 
@@ -53,9 +51,9 @@ public class DamageCollisionHandler : MonoBehaviour
                     damageableTarget.SetLastHit(true);
                 }
                 OnHitCallback?.Invoke();
-                if (CombatUtils.DealDamage(damageComponent, mortalTarget))
+                if (CombatUtils.DealDamage(damageComponent, damageableTarget))
                 {
-                    mortalTarget.Die();
+                    damageableTarget.Die();
                 }
             }
         }
@@ -74,14 +72,14 @@ public class DamageCollisionHandler : MonoBehaviour
                         damageableTarget.SetLastHit(true);
                     }
                     OnHitCallback?.Invoke();
-                    if (CombatUtils.DealDamage(damageComponent, mortalTarget))
+                    if (CombatUtils.DealDamage(damageComponent, damageableTarget))
                     {
-                        mortalTarget.Die();
+                        damageableTarget.Die();
                     }
                 }
                 else
                 {
-                    if (mortalTarget.GetHealth().Heal(damageComponent))
+                    if (damageableTarget.GetHealth().Heal(damageComponent))
                     {
                         MasterScript.Instance.player.OnHealXP();
                         Destroy(collider.gameObject);
