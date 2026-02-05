@@ -1,11 +1,11 @@
 [Licensing::Module] Trying to connect to existing licensing client channel...
 Built from '6000.3/respin/6000.3.6f1-732c1ec89f18' branch; Version is '6000.3.6f1 (bbb010bdb8a3) revision 12300304'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-dk199" at "2026-02-05T15:39:21.4253819Z"
 OS: 'Windows 11  (10.0.26100) Professional' Language: 'en' Physical Memory: 32694 MB
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-dk199" at "2026-02-05T13:55:01.8546444Z"
 BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
 System  architecture: x64
 Process architecture: x64
-Date: 2026-02-05T13:55:01Z
+Date: 2026-02-05T15:39:21Z
 
 COMMAND LINE ARGUMENTS:
 C:\Program Files\Unity\Hub\Editor\6000.3.6f1\Editor\Unity.exe
@@ -19,7 +19,7 @@ D:/Unity/LOFBR
 -logFile
 Logs/AssetImportWorker1.log
 -srvPort
-61065
+53053
 -licensingIpc
 LicenseClient-dk199
 -job-worker-count
@@ -67,12 +67,12 @@ D:/Unity/LOFBR
     "memorysetup-job-temp-allocator-block-size-background=1048576"
     "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
     "memorysetup-temp-allocator-size-cloud-worker=32768"
-Player connection [1292]  Target information:
+Player connection [22732]  Target information:
 
-Player connection [1292]  * "[IP] 192.168.178.21 [Port] 0 [Flags] 2 [Guid] 3996600396 [EditorId] 3996600396 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-B7ONB71) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+Player connection [22732]  * "[IP] 192.168.178.21 [Port] 0 [Flags] 2 [Guid] 1495481308 [EditorId] 1495481308 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-B7ONB71) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
 
-Player connection [1292] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [1292] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [22732] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [22732] Host joined alternative multi-casting on [225.0.0.222:34997]...
 JobSystem: Creating JobQueue using job-worker-count value 7
 Input System module state changed to: Initialized.
 [Physics::Module] Initialized fallback backend.
@@ -84,7 +84,7 @@ Library Redirect Path: Library/
 [Physics::Module] SDK Version: 4.1.2
 [Physics::Module] Integration Version: 1.0.0
 [Physics::Module] Threading Mode: Multi-Threaded
-Refreshing native plugins compatible for Editor in 5.41 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 5.56 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 6000.3.6f1 (bbb010bdb8a3)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.3.6f1/Editor/Data/Resources/UnitySubsystems
@@ -100,53 +100,53 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.3.6f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.3.6f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.3.6f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56744
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56892
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.6f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.002698 seconds.
+Registered in 0.002764 seconds.
+- Loaded All Assemblies, in  0.578 seconds
 [Licensing::Client] Handshaking with LicensingClient:
   Version:                 1.17.4+4293ba1
-  Session Id:              4eb98c2cace8419d9213c86c992dd202
+  Session Id:              9f90296ee2c24c0b9808ac41923f0b19
   Correlation Id:          8add00d69c37df0cab01432929c7bfce
-  External correlation Id: 3619174355608344054
+  External correlation Id: 3710992527742996707
   Machine Id:              w7YeKB8mm1qvfRWBaBjksY/SOok=
-[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-dk199" (connect: 0.00s, validation: 0.00s, handshake: 1.23s)
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-dk199-notifications" at "2026-02-05T13:55:03.0910925Z"
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-dk199" (connect: 0.00s, validation: 0.00s, handshake: 1.24s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-dk199-notifications" at "2026-02-05T15:39:22.6621855Z"
 [Licensing::Module] Licensing Background thread has ended after 1.24s
-- Loaded All Assemblies, in  0.578 seconds
 Native extension for WindowsStandalone target not found
 ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.496 seconds
-Domain Reload Profiling: 1069ms
-	BeginReloadAssembly (181ms)
+- Finished resetting the current domain, in  0.507 seconds
+Domain Reload Profiling: 1078ms
+	BeginReloadAssembly (191ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (0ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
 		CreateAndSetChildDomain (1ms)
-	RebuildCommonClasses (62ms)
+	RebuildCommonClasses (54ms)
 	RebuildNativeTypeToScriptingClass (20ms)
-	initialDomainReloadingComplete (71ms)
-	LoadAllAssembliesAndSetupDomain (239ms)
-		LoadAssemblies (172ms)
+	initialDomainReloadingComplete (69ms)
+	LoadAllAssembliesAndSetupDomain (237ms)
+		LoadAssemblies (184ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (235ms)
-			TypeCache.Refresh (233ms)
-				TypeCache.ScanAssembly (215ms)
+		AnalyzeDomain (234ms)
+			TypeCache.Refresh (231ms)
+				TypeCache.ScanAssembly (211ms)
 			BuildScriptInfoCaches (0ms)
 			ResolveRequiredComponents (1ms)
-	FinalizeReload (496ms)
+	FinalizeReload (508ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
 		SetupLoadedEditorAssemblies (453ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (55ms)
-			SetLoadedEditorAssemblies (4ms)
-			BeforeProcessingInitializeOnLoad (112ms)
-			ProcessInitializeOnLoadAttributes (196ms)
-			ProcessInitializeOnLoadMethodAttributes (85ms)
+			InitializePlatformSupportModulesInManaged (54ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (114ms)
+			ProcessInitializeOnLoadAttributes (202ms)
+			ProcessInitializeOnLoadMethodAttributes (78ms)
 			AfterProcessingInitializeOnLoad (0ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
@@ -167,87 +167,143 @@ Begin MonoManager ReloadAssembly
   Type: Assigned
   Expiration: Unlimited
 Symbol file LoadedFromMemory is not a mono symbol file
-- Loaded All Assemblies, in  0.753 seconds
-Refreshing native plugins compatible for Editor in 3.61 ms, found 2 plugins.
+- Loaded All Assemblies, in  0.757 seconds
+Refreshing native plugins compatible for Editor in 4.59 ms, found 2 plugins.
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 3.98 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 3.66 ms, found 2 plugins.
 Package Manager log level set to [2]
 [Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
 [Package Manager] Unable to send message (not connected to server process).
 [Package Manager] Cannot connect to Unity Package Manager local server
 ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.904 seconds
-Domain Reload Profiling: 1652ms
-	BeginReloadAssembly (218ms)
+- Finished resetting the current domain, in  0.874 seconds
+Domain Reload Profiling: 1626ms
+	BeginReloadAssembly (214ms)
 		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (6ms)
+		DisableScriptedObjects (8ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (40ms)
-	RebuildCommonClasses (43ms)
-	RebuildNativeTypeToScriptingClass (16ms)
-	initialDomainReloadingComplete (47ms)
-	LoadAllAssembliesAndSetupDomain (424ms)
+		CreateAndSetChildDomain (42ms)
+	RebuildCommonClasses (46ms)
+	RebuildNativeTypeToScriptingClass (15ms)
+	initialDomainReloadingComplete (43ms)
+	LoadAllAssembliesAndSetupDomain (433ms)
 		LoadAssemblies (368ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
 		AnalyzeDomain (176ms)
-			TypeCache.Refresh (128ms)
-				TypeCache.ScanAssembly (110ms)
-			BuildScriptInfoCaches (40ms)
-			ResolveRequiredComponents (4ms)
-	FinalizeReload (905ms)
+			TypeCache.Refresh (130ms)
+				TypeCache.ScanAssembly (111ms)
+			BuildScriptInfoCaches (36ms)
+			ResolveRequiredComponents (6ms)
+	FinalizeReload (875ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (774ms)
+		SetupLoadedEditorAssemblies (752ms)
 			LogAssemblyErrors (0ms)
 			InitializePlatformSupportModulesInManaged (2ms)
-			SetLoadedEditorAssemblies (5ms)
-			BeforeProcessingInitializeOnLoad (158ms)
-			ProcessInitializeOnLoadAttributes (375ms)
-			ProcessInitializeOnLoadMethodAttributes (224ms)
-			AfterProcessingInitializeOnLoad (10ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (159ms)
+			ProcessInitializeOnLoadAttributes (370ms)
+			ProcessInitializeOnLoadMethodAttributes (208ms)
+			AfterProcessingInitializeOnLoad (8ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
 		AwakeInstancesAfterBackupRestoration (8ms)
 Launched and connected shader compiler UnityShaderCompiler.exe after 0.01 seconds
-Refreshing native plugins compatible for Editor in 3.78 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 4.58 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 3475 unused Assets / (0.9 MB). Loaded Objects now: 4050.
-Memory consumption went from 92.3 MB to 91.4 MB.
-Total: 14.362000 ms (FindLiveObjects: 0.598500 ms CreateObjectMapping: 0.169300 ms MarkObjects: 12.364800 ms  DeleteObjects: 1.227900 ms)
+Unloading 3475 unused Assets / (1.1 MB). Loaded Objects now: 4050.
+Memory consumption went from 92.3 MB to 91.2 MB.
+Total: 14.996000 ms (FindLiveObjects: 0.585200 ms CreateObjectMapping: 0.215300 ms MarkObjects: 12.511500 ms  DeleteObjects: 1.682100 ms)
 
 ========================================================================
 Received Import Request.
-  Time since last request: 227146.635203 seconds.
-  path: Assets/Scripts/CharacterBehaviours/Mobs/FriendlyBehaviour.cs
-  artifactKey: Guid(3e5a56cca0c163c47afed11ef92d3e69) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
-Start importing Assets/Scripts/CharacterBehaviours/Mobs/FriendlyBehaviour.cs using Guid(3e5a56cca0c163c47afed11ef92d3e69) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: 'c72cb8dcf53979c8eebdfb67a4139f29') in 0.095843 seconds
+  Time since last request: 233406.169194 seconds.
+  path: Assets/Scripts/CharacterBehaviours/Bases/Spawners
+  artifactKey: Guid(e04a2398f4f52ae4d9984c03dccf145c) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Scripts/CharacterBehaviours/Bases/Spawners using Guid(e04a2398f4f52ae4d9984c03dccf145c) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '89d9e066566a71de41b51573bbe01ee5') in 0.0628539 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000018 seconds.
+  path: Assets/Scripts/Abilities/UltAttackHeal.cs
+  artifactKey: Guid(9bc976f4b1868ba42bf897da72bf5b5a) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Scripts/Abilities/UltAttackHeal.cs using Guid(9bc976f4b1868ba42bf897da72bf5b5a) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '3c81742a3db16df10cd8639ddc5ae5a4') in 0.0430474 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000087 seconds.
-  path: Assets/Scripts/ClosestFinder.cs
-  artifactKey: Guid(90495de1153175046ae8ae1cafb0ef8b) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
-Start importing Assets/Scripts/ClosestFinder.cs using Guid(90495de1153175046ae8ae1cafb0ef8b) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: 'e825ed9cc717de920371446ff5d91e02') in 0.0134731 seconds
+  Time since last request: 0.000118 seconds.
+  path: Assets/Scripts/CharacterBehaviours/TowerBehaviours/TowerBehaviour.cs
+  artifactKey: Guid(391005d67d5d75e4797613b947f85a7e) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Scripts/CharacterBehaviours/TowerBehaviours/TowerBehaviour.cs using Guid(391005d67d5d75e4797613b947f85a7e) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '50a924abb3a6c0f24643b9752956f118') in 0.0118339 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000150 seconds.
-  path: Assets/Scripts/CharacterBehaviours/DamageableEntity.cs
-  artifactKey: Guid(43c97218e9be7484e8577ac6d2ccf9a9) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
-Start importing Assets/Scripts/CharacterBehaviours/DamageableEntity.cs using Guid(43c97218e9be7484e8577ac6d2ccf9a9) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: 'ee12ae81868028b2f6e4b8fee403ea00') in 0.0142017 seconds
+  Time since last request: 0.000120 seconds.
+  path: Assets/Materials/Blender
+  artifactKey: Guid(4e128ca4c4accb342b401953b031bcf7) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Materials/Blender using Guid(4e128ca4c4accb342b401953b031bcf7) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '4b4fc72babd8065d58d77ecedf5c98b2') in 0.012899 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000120 seconds.
+  path: Assets/Scripts/CharacterBehaviours/MainPlayers/MainPlayerBehaviour.cs
+  artifactKey: Guid(135a708af4e9db744bea4e9c68619ef4) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Scripts/CharacterBehaviours/MainPlayers/MainPlayerBehaviour.cs using Guid(135a708af4e9db744bea4e9c68619ef4) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '69c407d2af362207954535124931c393') in 0.0132804 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000106 seconds.
+  Time since last request: 0.000098 seconds.
+  path: Assets/PreFabs/EnemyPlayer.prefab
+  artifactKey: Guid(76f3cb2aa1f94a540972145b59ab0294) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/PreFabs/EnemyPlayer.prefab using Guid(76f3cb2aa1f94a540972145b59ab0294) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '8fb2dcd5280723895c77db8fbd4532ea') in 0.1032412 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 120
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000059 seconds.
+  path: Assets/Scripts/Abilities/UltRez.cs
+  artifactKey: Guid(aac82d62011ee7941a36ed1b02318c1c) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Scripts/Abilities/UltRez.cs using Guid(aac82d62011ee7941a36ed1b02318c1c) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: 'dd4ce0160252ec1686c708e0709ad42d') in 0.013879 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
   path: Assets/Scripts/CharacterBehaviours/MainPlayers/PlayerController.cs
   artifactKey: Guid(e6a22d599e402544abf9985c58288c32) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
-Start importing Assets/Scripts/CharacterBehaviours/MainPlayers/PlayerController.cs using Guid(e6a22d599e402544abf9985c58288c32) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '388d3b44d2ba71e97c1b49c337a2df36') in 0.0132115 seconds
+Start importing Assets/Scripts/CharacterBehaviours/MainPlayers/PlayerController.cs using Guid(e6a22d599e402544abf9985c58288c32) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '6febbe516b54d50e43c291fabffe8393') in 0.0111294 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000170 seconds.
+  path: Assets/Scripts/Abilities/AltAttack.cs
+  artifactKey: Guid(e14e949856301704a974d0fbc7d1ce1b) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Scripts/Abilities/AltAttack.cs using Guid(e14e949856301704a974d0fbc7d1ce1b) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: 'ede51be6d1cbab93c8cdb6a420a65a6b') in 0.0144199 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000070 seconds.
+  path: Assets/Scripts/Abilities/UltAttack.cs
+  artifactKey: Guid(601bcd95b3c26934ea9cb3134ffcc911) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Scripts/Abilities/UltAttack.cs using Guid(601bcd95b3c26934ea9cb3134ffcc911) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: 'aab128db1de0d4d7f58be9d69b096dec') in 0.0135816 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000082 seconds.
+  path: Assets/Scripts/Abilities/Melee.cs
+  artifactKey: Guid(fdeb22c3f1602dd4594bddcf540eb158) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Scripts/Abilities/Melee.cs using Guid(fdeb22c3f1602dd4594bddcf540eb158) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '0369830883901062aa65741b3a552361') in 0.0117257 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
 
 Editor requested this worker to shutdown with reason: Scaling down because of idle timeout

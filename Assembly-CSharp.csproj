@@ -111,11 +111,11 @@
     <Compile Include="Assets\Scripts\Abilities\ShootLeft.cs" />
     <Compile Include="Assets\Scripts\Abilities\UltAttack.cs" />
     <Compile Include="Assets\Scripts\CharacterBehaviours\Bases\Spawners\FriendlySpawner.cs" />
+    <Compile Include="Assets\Scripts\Abilities\Stomp.cs" />
     <Compile Include="Assets\Scripts\Abilities\UltRez.cs" />
     <Compile Include="Assets\Scripts\CharacterBehaviours\Bases\Spawners\SpawnerBehaviour.cs" />
     <Compile Include="Assets\Scripts\IReloadable.cs" />
     <Compile Include="Assets\Scripts\CharacterBehaviours\MainPlayers\PlayerController.cs" />
-    <Compile Include="Assets\Scripts\Abilities\AltAttack.cs" />
     <Compile Include="Assets\Scripts\SetVolume.cs" />
     <Compile Include="Assets\Scripts\SpawnShieldFriendly.cs" />
     <Compile Include="Assets\Scripts\BulletFactory.cs" />

@@ -70,8 +70,8 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
         enemybase = GameObject.FindWithTag(enemytype + "Base");
         yourbase = GameObject.FindWithTag("EnemyBase");
         closestFinder = new ClosestFinder(Team, this.gameObject);
-        bulletinstance = BulletFactory.Instance.CreateBullet(this, true, HumanBodyBones.RightLowerLeg);
-        bulletrig = bulletinstance.GetComponent<Rigidbody>();
+        //bulletinstance = BulletFactory.Instance.CreateBullet(this, true, HumanBodyBones.RightLowerLeg);
+        //bulletrig = bulletinstance.GetComponent<Rigidbody>();
         loaded = true;
         hurt = false;
         circledirection = 1;

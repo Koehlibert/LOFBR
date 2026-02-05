@@ -120,16 +120,21 @@ public class PlayerController : MainPlayerBehaviour
     void MoveCharacter()
     {
         movement = new Vector3(-PlayerInputRouter.Instance.Move.y, 0, PlayerInputRouter.Instance.Move.x).normalized;
-        if (!moveLock)
-        {
-            MoveCharacter(movement);
-        }
+        MoveCharacter(movement);
     }
     public void MoveCharacter(Vector3 direction)
     {
-        animSpeed = direction.normalized.magnitude;
+        animSpeed = 0;
+        if (moveLock) 
+        {
+            Debug.Log("Move Stopped");
+        }
+        if (!moveLock)
+        {
+            animSpeed = direction.normalized.magnitude;
+            transform.position = MasterScript.Instance.CorrectTarget(transform.position + direction * movementspeed * Time.deltaTime);
+        }
         animator.SetFloat("speedPercent", animSpeed);
-        transform.position = MasterScript.Instance.CorrectTarget(transform.position + direction * movementspeed * Time.deltaTime);
     }
     public void MoveCharacter(Vector3 direction, float speedup)
     {
@@ -147,9 +152,11 @@ public class PlayerController : MainPlayerBehaviour
     }
     public IEnumerator LockMovement(float duration)
     {
+        Debug.Log("Lock started");
         moveLock = true;
         yield return new WaitForSeconds(duration);
         moveLock = false;
+        Debug.Log("Lock ended");
     }
     public IEnumerator LockView(float duration)
     {

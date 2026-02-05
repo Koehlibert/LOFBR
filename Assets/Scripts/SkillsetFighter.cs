@@ -17,7 +17,7 @@ public class SkillsetFighter : Skillset
         secondary = FindAnyObjectByType<ShootLeftBasic>();
         secondary.manaCost = 5;
         secondary.reloadtime = 1.5f;
-        alternative = FindAnyObjectByType<AltAttack>();
+        alternative = FindAnyObjectByType<Stomp>();
         alternative.manaCost = 75;
         alternative.reloadtime = 6f;
         skill = FindAnyObjectByType<UseShield>();
