@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BulletBehaviourFollowing : BulletBehaviour
 {
-    private float speed;
+    protected float speed;
     private float focusDistance = 17.5f;
     private float rotationSpeed = 2.75f;
     private bool isFollowingTarget;
@@ -73,7 +73,7 @@ public class BulletBehaviourFollowing : BulletBehaviour
     {
         MoveForward(Time.deltaTime);
     }
-    private void MoveForward(float rate)
+    protected virtual void MoveForward(float rate)
     {
         transform.Translate(Vector3.forward * rate * speed, Space.Self);
         Vector3 temp = transform.position;

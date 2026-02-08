@@ -395,13 +395,13 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
     }
     private void CheckUlt()
     {
-        if ((MasterScript.Instance.allFriendlies.Count >= 4) && (loadedUlt) && (levelsys.checkLevel(5)) && manasys.checkCost(250))
+        /* if ((MasterScript.Instance.allFriendlies.Count >= 4) && (loadedUlt) && (levelsys.checkLevel(5)) && manasys.checkCost(250))
         {
             GameObject ultInstance = Instantiate(BulletUlt, transform.position + transform.forward + new Vector3(0, 2, 0), transform.rotation);
             ultInstance.gameObject.GetComponent<Damage>().SetProperties(GetUltDamage());
             StartCoroutine("ReloadUlt");
             manasys.useMana(250);
-        }
+        } */
     }
     private void MoveShockCheckColliders()
     {
@@ -454,7 +454,7 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
     }
     private DamageInfo GetShockDamage()
     {
-        return new DamageInfo(70 + (levelsys.getLevel() - 2) * 6, 0, this.Team, true, true);
+        return new DamageInfo(70 + (levelsys.getLevel() - 2) * 6, 0, this.Team, true);
     }
     private DamageInfo GetUltDamage()
     {

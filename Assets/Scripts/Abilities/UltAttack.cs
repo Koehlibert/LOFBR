@@ -5,14 +5,45 @@ using UnityEngine;
 public class UltAttack : ShootBasic
 {
     public GameObject ultBullet;
-
-    protected override HumanBodyBones Bone => HumanBodyBones.Head;
+    private ShootRightBasic ShootRight;
+    private ShootLeftBasic ShootLeft;
+    protected override HumanBodyBones Bone => HumanBodyBones.LeftLowerLeg;
     new void Start()
     {
         offset = new Vector3(0, 1, 0);
         loaded = true;
         reloadtime = 15f;
         manaCost = 250;
+    }
+    private IEnumerator Firstbullet()
+    {
+        yield return new WaitForSeconds(.2f);
+        ShootLeft = player.GetComponent<ShootLeftBasic>();
+        ShootRight = player.GetComponent<ShootRightBasic>();
+    }
+    private IEnumerator Shootanim()
+    {
+        ShootLeft.enabled = false;
+        ShootRight.enabled = false;
+        StartCoroutine(player.LockMovement(1.6f));
+        player.animator.Play("Backflip", 0, 0f);
+        yield return new WaitForSeconds(0.6f);
+        bulletinstance = CreateBullet();
+        bulletinstance.GetComponent<BulletBehaviour>().Shoot(GetDamageValues());
+        StartCoroutine("Resetanim");
+    }
+    protected override IEnumerator Reload()
+    {
+        loaded = false;
+        yield return new WaitForSeconds(reloadtime);
+        loaded = true;
+    }
+    private IEnumerator Resetanim()
+    {
+        yield return new WaitForSeconds(1f);
+        player.animator.Play("Default", 0, 0f);
+        ShootLeft.enabled = true;
+        ShootRight.enabled = true;
     }
     protected override bool InputPressed()
     {

@@ -19,7 +19,7 @@ public abstract class ShootBasic : DamagingAbility
         loaded = false;
         reloadtime = 1.5f;
     }
-    void OnEnable()
+    protected virtual void OnEnable()
     {
         base.Start();
         StartCoroutine("Firstbullet");
@@ -29,7 +29,8 @@ public abstract class ShootBasic : DamagingAbility
     {
         if (bulletinstance)
         {
-            bulletinstance.GetComponent<BulletBehaviour>().DelayedDestroy();
+            Destroy(bulletinstance);
+            //bulletinstance.GetComponent<BulletBehaviour>().DelayedDestroy();
         }
     }
     private IEnumerator Firstbullet()
@@ -38,7 +39,7 @@ public abstract class ShootBasic : DamagingAbility
         bulletinstance = CreateBullet();
         loaded = true;
     }
-    private IEnumerator Reload()
+    protected virtual IEnumerator Reload()
     {
         loaded = false;
         yield return new WaitForSeconds(reloadtime);

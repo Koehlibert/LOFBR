@@ -155,10 +155,16 @@ public class MasterScript : MonoBehaviour
     }
     public void DieAndRespawn(CombatUtils.Team team)
     {
-        StartCoroutine("RespawnCoroutine");
-        friendlySpawn.SpeedUpSpawner(0.85f);
+        if (team == CombatUtils.Team.Player){
+            StartCoroutine("RespawnCoroutine");
+            friendlySpawn.SpeedUpSpawner(0.85f);
+        }
+        else
+        {
+            StartCoroutine("EnemyRespawnCoroutine");
+            enemySpawn.SpeedUpSpawner(0.85f);
+        }
         MoveSpawner(team);
-
     }
     public IEnumerator RespawnCoroutine()
     {
@@ -328,7 +334,7 @@ public class MasterScript : MonoBehaviour
         {
             Instantiate(mover, respawnPoint.transform.position - direction * new Vector3(0, 0, 5), Quaternion.identity);
             area.transform.position = area.transform.position + direction * new Vector3(0, 0, 10);
-            floor.transform.position = floor.transform.position + direction * new Vector3(0, 0, 5);
+            floor.transform.position = floor.transform.position - direction * new Vector3(0, 0, 5);
             floor.transform.localScale = floor.transform.localScale + new Vector3(-10, 0, 0);
             spawner.MoveSpawner();
         }

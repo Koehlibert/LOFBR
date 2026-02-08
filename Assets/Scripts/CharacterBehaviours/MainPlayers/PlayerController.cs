@@ -125,10 +125,6 @@ public class PlayerController : MainPlayerBehaviour
     public void MoveCharacter(Vector3 direction)
     {
         animSpeed = 0;
-        if (moveLock) 
-        {
-            Debug.Log("Move Stopped");
-        }
         if (!moveLock)
         {
             animSpeed = direction.normalized.magnitude;
@@ -152,11 +148,9 @@ public class PlayerController : MainPlayerBehaviour
     }
     public IEnumerator LockMovement(float duration)
     {
-        Debug.Log("Lock started");
         moveLock = true;
         yield return new WaitForSeconds(duration);
         moveLock = false;
-        Debug.Log("Lock ended");
     }
     public IEnumerator LockView(float duration)
     {
