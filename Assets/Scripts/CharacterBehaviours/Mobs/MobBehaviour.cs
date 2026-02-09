@@ -171,6 +171,6 @@ public abstract class MobBehaviour : DamageableEntity
     }
     private DamageInfo GetDamageInfo()
     {
-        return new DamageInfo(40, 0, this.Team, true);
+        return new DamageInfo(40, 0, this.Team);
     }
 }

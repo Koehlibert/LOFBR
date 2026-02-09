@@ -3,16 +3,20 @@ using UnityEngine;
 
 public abstract class DamageableEntity : MonoBehaviour
 {
-    protected Health hpsys;
+    public Health hpsys { get; set; }
     protected bool LastHit;
     public abstract CombatUtils.Team Team { get; }
     public Animator animator;
+    public GameObject enemyBase;
+    public GameObject yourbase;
     protected virtual void Start()
     {
         LastHit = false;
         hpsys = GetComponent<Health>();
         animator = GetComponentInChildren<Animator>();
         SetupCollisionHandler();
+        enemyBase = MasterScript.Instance.GetOpponentBase(Team);
+        yourbase = MasterScript.Instance.GetOpponentBase(CombatUtils.GetOpposingTeam(Team));
     }
     protected virtual void SetupCollisionHandler()
     {

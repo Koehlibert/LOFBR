@@ -30,7 +30,7 @@ public class Melee : DamagingAbility
         base.Update();
         if (attacking)
         {
-            player.MoveCharacter(dir, speedup);
+            player.MoveCharacter(dir, speedup, true);
         }
     }
     private IEnumerator reload()

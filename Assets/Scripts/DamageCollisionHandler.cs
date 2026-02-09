@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Extensions;
 using System;
+using NUnit.Framework;
 
 public class DamageCollisionHandler : MonoBehaviour
 {
@@ -63,7 +64,7 @@ public class DamageCollisionHandler : MonoBehaviour
         Damage damageComponent = collider.gameObject.GetComponent<Damage>();
         if (damageComponent != null && !damageComponent.isEnduring)
         {
-            if (CombatUtils.CanDamage(damageComponent, damageableTarget) != damageComponent.isHealing) //this is bad
+            if (CombatUtils.CanDamage(damageComponent, damageableTarget) != damageComponent.isHealing)
             {
                 if (!damageComponent.isHealing)
                 {
@@ -79,9 +80,17 @@ public class DamageCollisionHandler : MonoBehaviour
                 }
                 else
                 {
+                    DamageableEntity bulletOwner = collider.GetComponent<BulletBehaviourFollowing>()?.Owner;
+                    if (damageableTarget == bulletOwner)
+                    {
+                        return;
+                    }
                     if (damageableTarget.GetHealth().Heal(damageComponent))
                     {
-                        MasterScript.Instance.player.OnHealXP();
+                        if(bulletOwner is MainPlayerBehaviour)
+                        {
+                            MasterScript.Instance.player.OnHealXP();
+                        }
                         Destroy(collider.gameObject);
                     }
                 }

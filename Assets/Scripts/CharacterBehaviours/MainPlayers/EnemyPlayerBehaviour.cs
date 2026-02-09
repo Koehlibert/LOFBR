@@ -21,7 +21,6 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
     Vector3 offset = new Vector3(0, -0.5f, -1.5f);
     public string enemytype;
     public GameObject closestCurrentEnemy;
-    private GameObject yourbase;
     private float animSpeed;
     private GameObject bulletinstance;
     private Rigidbody bulletrig;
@@ -70,8 +69,6 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
         enemybase = GameObject.FindWithTag(enemytype + "Base");
         yourbase = GameObject.FindWithTag("EnemyBase");
         closestFinder = new ClosestFinder(Team, this.gameObject);
-        //bulletinstance = BulletFactory.Instance.CreateBullet(this, true, HumanBodyBones.RightLowerLeg);
-        //bulletrig = bulletinstance.GetComponent<Rigidbody>();
         loaded = true;
         hurt = false;
         circledirection = 1;
@@ -204,7 +201,7 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
                 else if (distance < attackdistance)
                 {
                     nmAgent.enabled = false;
-                    if (transform.position.x <= 1)
+                    if (transform.position.x <= -19)
                     {
                         circledirection = 1;
                     }
@@ -313,7 +310,7 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
     {
         animator.Play("Shoot", 0, 0f);
         yield return new WaitForSeconds(0.1f);
-        bulletinstance.GetComponent<BulletBehaviour>().Shoot(GetMainAttackDamage());
+        bulletinstance?.GetComponent<BulletBehaviour>().Shoot(GetMainAttackDamage());
         bulletrig = null;
         if (bulletrig2)
         {

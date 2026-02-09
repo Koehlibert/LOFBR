@@ -16,15 +16,15 @@ public class ObjectWithDist
     {
         return thing;
     }
-    public void setDistance(Transform pos2)
+    public void SetDistance(Transform pos2)
     {
         distToPlayer = Vector3.Distance(thing.transform.position, pos2.position);
     }
-    public float getDistance()
+    public float GetDistance()
     {
         return distToPlayer;
     }
-    public ObjectWithDist clone()
+    public ObjectWithDist Clone()
     {
         return new ObjectWithDist(this.thing);
     }
@@ -42,15 +42,15 @@ public class Tombstone
     {
         return pos;
     }
-    public void setDistance(Transform pos2)
+    public void SetDistance(Transform pos2)
     {
         distToPlayer = Vector3.Distance(pos, pos2.position);
     }
-    public float getDistance()
+    public float GetDistance()
     {
         return distToPlayer;
     }
-    public Tombstone clone()
+    public Tombstone Clone()
     {
         return new Tombstone(this.pos);
     }
@@ -155,7 +155,8 @@ public class MasterScript : MonoBehaviour
     }
     public void DieAndRespawn(CombatUtils.Team team)
     {
-        if (team == CombatUtils.Team.Player){
+        if (team == CombatUtils.Team.Player)
+        {
             StartCoroutine("RespawnCoroutine");
             friendlySpawn.SpeedUpSpawner(0.85f);
         }
@@ -217,6 +218,12 @@ public class MasterScript : MonoBehaviour
         }
         else
         {
+            //TOFIX:: ADD FOR ENEMY
+            rezPoolFriendly.Add(new Tombstone(Mob.transform.position));
+            if (rezPoolFriendly.Count > 10)
+            {
+                rezPoolFriendly.RemoveAt(0);
+            }
             allFriendliesTowers.Remove(Mob.gameObject);
             allFriendlies.Remove(Mob.gameObject);
         }
@@ -241,11 +248,11 @@ public class MasterScript : MonoBehaviour
             List<Tombstone> tempList = new List<Tombstone>();
             foreach (Tombstone tomb in rezPoolFriendly)
             {
-                tempList.Add(tomb.clone());
+                tempList.Add(tomb.Clone());
             }
             foreach (Tombstone tomb in tempList)
             {
-                tomb.setDistance(player.transform);
+                tomb.SetDistance(player.transform);
             }
             tempList.Sort(SortByDistanceTomb);
             List<Vector3> posList = new List<Vector3>();
@@ -259,11 +266,11 @@ public class MasterScript : MonoBehaviour
     }
     static int SortByDistanceTomb(Tombstone t1, Tombstone t2)
     {
-        return t1.getDistance().CompareTo(t2.getDistance());
+        return t1.GetDistance().CompareTo(t2.GetDistance());
     }
     static int SortByDistanceObj(ObjectWithDist t1, ObjectWithDist t2)
     {
-        return t1.getDistance().CompareTo(t2.getDistance());
+        return t1.GetDistance().CompareTo(t2.GetDistance());
     }
     public List<ObjectWithDist> GetFlurryTargets(int count)
     {
@@ -276,15 +283,15 @@ public class MasterScript : MonoBehaviour
             }
         }
         if (damagedEnemies.Count > 0)
-        { 
+        {
             foreach (ObjectWithDist enemy in damagedEnemies)
             {
-                enemy.setDistance(player.transform);
+                enemy.SetDistance(player.transform);
             }
             damagedEnemies.Sort(SortByDistanceObj);
         }
         count = Mathf.Min(count, damagedEnemies.Count);
-        return damagedEnemies.GetRange(0,count);
+        return damagedEnemies.GetRange(0, count);
     }
     public GameObject GetOpponentBase(CombatUtils.Team enemyTeam)
     {

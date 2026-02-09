@@ -9,7 +9,7 @@ using UnityEngine.PlayerLoop;
 [RequireComponent(typeof(Damage))]
 public class BulletBehaviour : MonoBehaviour
 {
-    protected DamageableEntity Owner;
+    public DamageableEntity Owner { get; private set; }
     protected Damage damage;
     public CombatUtils.Team team;
     protected float timer;
@@ -59,7 +59,7 @@ public class BulletBehaviour : MonoBehaviour
     {
         col.enabled = true;
         GetComponent<Rigidbody>().useGravity = true;
-        Destroy(gameObject,delay);
+        Destroy(gameObject, delay);
     }
     public void DelayedDestroy()
     {

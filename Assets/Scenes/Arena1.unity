@@ -656,6 +656,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
+  enemyBase: {fileID: 0}
+  yourbase: {fileID: 0}
 --- !u!114 &111247822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5692,6 +5694,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
+  enemyBase: {fileID: 0}
+  yourbase: {fileID: 0}
 --- !u!1 &1622040685
 GameObject:
   m_ObjectHideFlags: 0
@@ -8788,6 +8792,12 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114948698789993062, guid: 19b6ea4c0c8e0a8468e61191a6c9bf78,
+        type: 3}
+      propertyPath: Mob
+      value: 
+      objectReference: {fileID: 1421225335743905642, guid: a16790b3d812c5f4cb9876f67b336f51,
+        type: 3}
     - target: {fileID: 114948698789993062, guid: 19b6ea4c0c8e0a8468e61191a6c9bf78,
         type: 3}
       propertyPath: m_Enabled

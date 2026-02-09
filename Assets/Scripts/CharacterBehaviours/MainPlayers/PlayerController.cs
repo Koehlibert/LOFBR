@@ -5,10 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using Extensions;
 
-[RequireComponent(typeof(SkillsetMelee))]
-[RequireComponent(typeof(SkillsetSupport))]
-[RequireComponent(typeof(SkillsetFighter))]
-[RequireComponent(typeof(DamageCollisionHandler))]
 public class PlayerController : MainPlayerBehaviour
 {
     public Mana manasys;
@@ -122,19 +118,19 @@ public class PlayerController : MainPlayerBehaviour
         movement = new Vector3(-PlayerInputRouter.Instance.Move.y, 0, PlayerInputRouter.Instance.Move.x).normalized;
         MoveCharacter(movement);
     }
-    public void MoveCharacter(Vector3 direction)
+    public void MoveCharacter(Vector3 direction, bool bypass = false)
     {
         animSpeed = 0;
-        if (!moveLock)
+        if (!moveLock || bypass)
         {
             animSpeed = direction.normalized.magnitude;
             transform.position = MasterScript.Instance.CorrectTarget(transform.position + direction * movementspeed * Time.deltaTime);
         }
         animator.SetFloat("speedPercent", animSpeed);
     }
-    public void MoveCharacter(Vector3 direction, float speedup)
+    public void MoveCharacter(Vector3 direction, float speedup, bool bypass = false)
     {
-        MoveCharacter(direction * speedup);
+        MoveCharacter(direction * speedup, bypass);
     }
     void LevelUp()
     {

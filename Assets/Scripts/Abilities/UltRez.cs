@@ -14,7 +14,7 @@ public class UltRez : Ability
     }
     private void Rez(List<Vector3> locations)
     {
-
+        Debug.Log("Rezing");
         foreach (Vector3 pos in locations)
         {
             Instantiate(Mob, pos, spawndirection);
@@ -24,6 +24,7 @@ public class UltRez : Ability
     protected override void AbilityAction()
     {
         List<Vector3> locations = MasterScript.Instance.GetRezPositions(player.levelsys.getLevel() - 2);
+        Debug.Log(locations.Count);
         if (locations.Count > 0)
         {
             StartCoroutine("reload");

@@ -30,7 +30,6 @@ public abstract class ShootBasic : DamagingAbility
         if (bulletinstance)
         {
             Destroy(bulletinstance);
-            //bulletinstance.GetComponent<BulletBehaviour>().DelayedDestroy();
         }
     }
     private IEnumerator Firstbullet()
