@@ -7,7 +7,7 @@ using System;
 public abstract class Ability : MonoBehaviour
 {
     protected bool IsActive { get; set; }
-    protected bool IsInteractive { get; set; }
+    public bool IsInteractive { get; set; }
     protected AIHandler Handler { get; set; }
     public virtual void Checker()
     {
@@ -29,11 +29,13 @@ public abstract class Ability : MonoBehaviour
     protected virtual void Start()
     {
         player = GetComponent<PlayerController>();
+        Handler = GetComponent<AIHandler>();
     }
-    void OnEnable()
+    protected virtual void OnEnable()
     {
         Reset();
         player = GetComponent<PlayerController>();
+        Handler = GetComponent<AIHandler>();
     }
     protected virtual void Update()
     {

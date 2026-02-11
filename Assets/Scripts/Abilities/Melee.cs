@@ -17,10 +17,6 @@ public class Melee : DamagingAbility
         meleeCollider = FindAnyObjectByType<MeleeCollider>().gameObject;
         meleeCollider.SetActive(false);
     }
-    void OnEnable()
-    {
-        player = GetComponent<PlayerController>();
-    }
     void OnDisable()
     {
         Reset();
@@ -30,7 +26,7 @@ public class Melee : DamagingAbility
         base.Update();
         if (attacking)
         {
-            player.MoveCharacter(dir, speedup, true);
+            player.aIHandler.MovementDirection = dir;
         }
     }
     private IEnumerator reload()
@@ -52,8 +48,10 @@ public class Melee : DamagingAbility
         AnimatorClipInfo[] clipInfo = player.animator.GetCurrentAnimatorClipInfo(0);
         float clipLength = 1 / 3.5f;
         duration = clipLength;
-        StartCoroutine(player.LockMovement(duration));
+        StartCoroutine(player.aIHandler.movementAI.LockMovement(duration));
+        StartCoroutine(player.aIHandler.SetForcemovement(duration));
         StartCoroutine(player.LockView(duration));
+        player.aIHandler.movementAI.Speedup = speedup;
         yield return new WaitForSeconds(0.01f);
         StartCoroutine("resetanim");
     }

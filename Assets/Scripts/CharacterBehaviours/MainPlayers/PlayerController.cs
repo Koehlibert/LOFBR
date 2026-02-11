@@ -11,18 +11,18 @@ public class PlayerController : MainPlayerBehaviour
     private float movementspeed;
     public int rotatespeed;
     private float flashspeed;
-    public Vector3 movement;
     public Image damageimage;
     public EnemyPlayerBehaviour enemyPlayer;
     public Color flashcolor = new Color(1f, 0f, 0f, 0.1f);
     private float animSpeed;
     public AudioSource soundsource;
-    private bool moveLock = false;
+    // private bool moveLock = false;
     private bool lookLock;
     private int classID;
     private Skillset skillSet;
     private bool isDead = false;
     private DamageCollisionHandler handler;
+    public AIHandler aIHandler;
     protected override void Start()
     {
         base.Start();
@@ -47,9 +47,11 @@ public class PlayerController : MainPlayerBehaviour
         }
         skillSet.enabled = true;
         skillSet.BaseUnlock();
+        aIHandler = gameObject.AddComponent<PlayerAIHandler>();
+        aIHandler.Init(this, new List<Ability>(), new List<AIModule>());
+        aIHandler.movementAI.Movementspeed = skillSet.GetSpeed();
         var hpVals = skillSet.GetHPVals();
         hpsys.Initialize(hpVals.hpval, hpVals.regenval, hpVals.delay, hpVals.armorval);
-        movementspeed = skillSet.GetSpeed();
         flashspeed = 2.5f;
         handler = GetComponent<DamageCollisionHandler>();
         EnableDamageFlash();
@@ -57,7 +59,7 @@ public class PlayerController : MainPlayerBehaviour
     public override CombatUtils.Team Team => CombatUtils.Team.Player;
     void OnEnable()
     {
-        moveLock = false;
+        //moveLock = false;
         isDead = false;
         damageimage.color = Color.clear;
     }
@@ -72,7 +74,7 @@ public class PlayerController : MainPlayerBehaviour
         }
         UpdateLookPosition();
         UpdateDamageImage();
-        MoveCharacter();
+        //MoveCharacter();
     }
     void UpdateDamageImage()
     {
@@ -113,7 +115,7 @@ public class PlayerController : MainPlayerBehaviour
             soundsource.Play();
         }
     }
-    void MoveCharacter()
+    /* void MoveCharacter()
     {
         movement = new Vector3(-PlayerInputRouter.Instance.Move.y, 0, PlayerInputRouter.Instance.Move.x).normalized;
         MoveCharacter(movement);
@@ -131,7 +133,7 @@ public class PlayerController : MainPlayerBehaviour
     public void MoveCharacter(Vector3 direction, float speedup, bool bypass = false)
     {
         MoveCharacter(direction * speedup, bypass);
-    }
+    } */
     void LevelUp()
     {
         skillSet.LevelUnlock(levelsys.getLevel());
@@ -142,12 +144,12 @@ public class PlayerController : MainPlayerBehaviour
     {
         return movementspeed;
     }
-    public IEnumerator LockMovement(float duration)
+    /* public IEnumerator LockMovement(float duration)
     {
         moveLock = true;
         yield return new WaitForSeconds(duration);
         moveLock = false;
-    }
+    } */
     public IEnumerator LockView(float duration)
     {
         lookLock = true;

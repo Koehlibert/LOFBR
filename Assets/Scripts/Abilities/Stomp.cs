@@ -36,7 +36,7 @@ public class Stomp : DamagingAbility
     }
     private IEnumerator Shootanim()
     {
-        StartCoroutine(player.LockMovement(0.95f));
+        StartCoroutine(player.aIHandler.movementAI.LockMovement(0.95f));
         player.animator.Play("Stomp", 0, 0f);
         yield return new WaitForSeconds(0.7f);
         GameObject wave = Instantiate(bullet, player.transform.position + new Vector3(0f, 0.4f, 0f), player.transform.rotation);

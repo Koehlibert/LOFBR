@@ -14,8 +14,11 @@ public class MovementAI : Ability
     public bool moveLock;
     public bool CaresAboutHealth;
     public float Movementspeed { get; set; }
-    protected void OnEnable()
+    public float Speedup;
+    protected override void OnEnable()
     {
+        base.OnEnable();
+        moveLock = false;
         TeamDirectionMultiplier = 1;
         if (Handler.Owner.Team == CombatUtils.Team.Enemy)
         {
@@ -29,13 +32,13 @@ public class MovementAI : Ability
     }
     public override void Checker()
     {
-        if (!IsInteractive)
+        if (IsInteractive)
         {
-            if (IsInteractive)
+            if (!moveLock)
             {
                 Handler.MovementDirection = new Vector3(-PlayerInputRouter.Instance.Move.y, 0, PlayerInputRouter.Instance.Move.x).normalized;
-                return;
             }
+            return;
         }
         if (CaresAboutHealth)
         {
@@ -63,16 +66,22 @@ public class MovementAI : Ability
     }
     public void HandleMovement()
     {
-        MoveCharacter(Handler.MovementDirection, Handler.ForceMovement);
+        MoveCharacter(Handler.MovementDirection, Handler.ForceMovement, Speedup);
+        if (!moveLock)
+        {
+            Speedup = 1;
+        }
     }
     private Vector3 GetDirection(Vector3 target) => target - Handler.Owner.transform.position;
-    public void MoveCharacter(Vector3 direction, bool bypass = false)
+    public void MoveCharacter(Vector3 direction, bool bypass = false, float speedup = 1)
     {
         Handler.Owner.AnimSpeed = 0;
         if (!moveLock || bypass)
         {
             Handler.Owner.AnimSpeed = direction.normalized.magnitude;
-            transform.position = MasterScript.Instance.CorrectTarget(transform.position + direction * Movementspeed * Time.deltaTime);
+            Vector3 newPos = MasterScript.Instance.CorrectTarget(transform.position + direction * Movementspeed * Time.deltaTime);
+            Debug.Log(newPos);
+            Handler.Owner.transform.position = newPos;
         }
         Handler.Owner.animator.SetFloat("speedPercent", Handler.Owner.AnimSpeed);
     }
@@ -80,6 +89,7 @@ public class MovementAI : Ability
     {
         moveLock = true;
         yield return new WaitForSeconds(duration);
+        Speedup = 1;
         moveLock = false;
     }
     protected override bool InputPressed()

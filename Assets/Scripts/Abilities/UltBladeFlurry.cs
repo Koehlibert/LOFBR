@@ -14,7 +14,7 @@ public class UltBladeFlurry : DamagingAbility
     }
     private IEnumerator Flurry()
     {
-        StartCoroutine(player.LockMovement(duration * (flurryPos.Count + 1)));
+        StartCoroutine(player.aIHandler.movementAI.LockMovement(duration * (flurryPos.Count + 1)));
         StartCoroutine(player.LockView(duration * (flurryPos.Count + 1)));
         damage = gameObject.AddComponent<Damage>();
         damage.SetProperties(GetDamageValues());

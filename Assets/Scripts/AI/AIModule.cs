@@ -9,6 +9,10 @@ public abstract class AIModule : MonoBehaviour
     protected AIHandler Handler { get; set; }
     public abstract void Checker();
     protected AIUtils.AIState ActiveState { get; set; }
+    protected virtual void OnEnable()
+    {
+        Handler = GetComponent<AIHandler>();
+    }
     protected void SetFinalAction(Action action, Vector3 target, AIUtils.AIState aIState, float lockAITimer)
     {
         Handler.FinalAction = action;

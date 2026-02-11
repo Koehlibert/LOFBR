@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Search;
@@ -8,41 +9,39 @@ public abstract class AIHandler : MonoBehaviour
 {
     protected List<Ability> Abilities;
     protected List<AIModule> AIModules;
-    public DamageableEntity Owner { get; }
+    public DamageableEntity Owner { get; set; }
     public ClosestFinder ClosestFinder { get; }
     private AIUtils.AIState AIState;
     public AIUtils.HealthState HealthState { get; set; }
     public float LockAITimer;
-    private MovementAI movementAI;
+    public MovementAI movementAI;
     private bool IsAILocked;
-    private HealthChecker healthChecker;
-    private DistanceHandler distanceHandler;
+    protected HealthChecker healthChecker;
+    protected DistanceHandler distanceHandler;
     public Action FinalAction;
     public Action FallBackAction;
     public Vector3 MovementDirection;
     public bool ForceMovement;
-    private void Onable()
+    public virtual void Init(DamageableEntity owner, List<Ability> abilities, List<AIModule> aIModules)
     {
+        Owner = owner;
+        AIModules = aIModules;
+        Abilities = abilities;        
         healthChecker = Owner.gameObject.AddComponent<HealthChecker>();
         healthChecker.Init(0.7f, 0.3f);
         AIModules.Add(healthChecker);
         distanceHandler = Owner.gameObject.AddComponent<DistanceHandler>();
         AIModules.Add(distanceHandler);
+        movementAI = Owner.gameObject.AddComponent<MovementAI>();
+        Abilities.Add(movementAI);
         LockAITimer = 0f;
         FinalAction = null;
         FallBackAction = null;
+        ForceMovement = false;
         MovementDirection = new Vector3();
-    }
-    public void Init(List<Ability> abilities)
-    {
-        foreach (Ability ability in abilities)
-        {
-            Abilities.Add(ability);
-        }
     }
     private void Update()
     {
-        movementAI.Checker();
         if (IsAILocked)
         {
             LockAITimer -= Time.deltaTime;
@@ -56,7 +55,7 @@ public abstract class AIHandler : MonoBehaviour
                 break;
             }
         }
-        movementAI.HandleMovement();
+        movementAI?.HandleMovement();
         FinalAction?.Invoke();
     }
     public void SetAIState(AIUtils.AIState aIState)
@@ -75,5 +74,11 @@ public abstract class AIHandler : MonoBehaviour
     {
         IsAILocked = false;
         LockAITimer = 0;
+    }
+    public IEnumerator SetForcemovement(float duration)
+    {
+        ForceMovement = true;
+        yield return new WaitForSeconds(duration);
+        ForceMovement = false;
     }
 }

@@ -13,15 +13,15 @@ public abstract class ShootBasic : DamagingAbility
         return BulletFactory.Instance.CreateBullet(player, true, Bone);
     }
     protected abstract HumanBodyBones Bone { get; }
-    new void Start()
+    protected override void Start()
     {
+        base.Start();
         manaCost = 5;
         loaded = false;
         reloadtime = 1.5f;
     }
-    protected virtual void OnEnable()
+    protected override void OnEnable()
     {
-        base.Start();
         StartCoroutine("Firstbullet");
         Reset();
     }
