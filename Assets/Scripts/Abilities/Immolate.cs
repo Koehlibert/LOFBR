@@ -80,4 +80,9 @@ public class Immolate : DamagingAbility
     {
         return new DamageInfo(3.5f * player.levelsys.getLevel(), 0, player.Team, true, true);
     }
+
+    public override void Checker()
+    {
+        throw new System.NotImplementedException();
+    }
 }

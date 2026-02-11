@@ -6,6 +6,7 @@ using UnityEngine;
 
 public abstract class AIHandler : MonoBehaviour
 {
+    protected List<Ability> Abilities;
     protected List<AIModule> AIModules;
     public DamageableEntity Owner { get; }
     public ClosestFinder ClosestFinder { get; }
@@ -17,7 +18,9 @@ public abstract class AIHandler : MonoBehaviour
     private HealthChecker healthChecker;
     private DistanceHandler distanceHandler;
     public Action FinalAction;
-    public Vector3 MovementTarget;
+    public Action FallBackAction;
+    public Vector3 MovementDirection;
+    public bool ForceMovement;
     private void Onable()
     {
         healthChecker = Owner.gameObject.AddComponent<HealthChecker>();
@@ -27,25 +30,27 @@ public abstract class AIHandler : MonoBehaviour
         AIModules.Add(distanceHandler);
         LockAITimer = 0f;
         FinalAction = null;
-        MovementTarget = new Vector3();
+        FallBackAction = null;
+        MovementDirection = new Vector3();
     }
-    public void Init(List<AIModule> aIModules)
+    public void Init(List<Ability> abilities)
     {
-        foreach (AIModule aIModule in aIModules)
+        foreach (Ability ability in abilities)
         {
-            AIModules.Add(aIModule);
+            Abilities.Add(ability);
         }
     }
     private void Update()
     {
+        movementAI.Checker();
         if (IsAILocked)
         {
             LockAITimer -= Time.deltaTime;
             IsAILocked = LockAITimer > 0;
         }
-        foreach (AIModule aIModule in AIModules)
+        foreach (Ability ability in Abilities)
         {
-            aIModule.Checker();
+            ability.Checker();
             if (FinalAction != null)
             {
                 break;

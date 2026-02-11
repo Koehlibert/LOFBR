@@ -7,6 +7,7 @@ public abstract class DamageableEntity : MonoBehaviour
     protected bool LastHit;
     public abstract CombatUtils.Team Team { get; }
     public Animator animator;
+    public float AnimSpeed { get; set; }
     public GameObject enemyBase;
     public GameObject yourbase;
     protected virtual void Start()

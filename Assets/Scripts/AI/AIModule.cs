@@ -12,7 +12,7 @@ public abstract class AIModule : MonoBehaviour
     protected void SetFinalAction(Action action, Vector3 target, AIUtils.AIState aIState, float lockAITimer)
     {
         Handler.FinalAction = action;
-        Handler.MovementTarget = target;
+        Handler.MovementDirection = target;
         Handler.SetAIState(aIState);
         Handler.LockAI(lockAITimer);
     }

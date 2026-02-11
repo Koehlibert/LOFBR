@@ -2,9 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
+using System;
 
 public abstract class Ability : MonoBehaviour
 {
+    protected bool IsActive { get; set; }
+    protected bool IsInteractive { get; set; }
+    protected AIHandler Handler { get; set; }
+    public virtual void Checker()
+    {
+        
+    }
+    protected AIUtils.AIState ActiveState { get; set; }
+    protected void SetFinalAction(Action action, Vector3 target, AIUtils.AIState aIState, float lockAITimer)
+    {
+        Handler.FinalAction = action;
+        Handler.MovementDirection = target;
+        Handler.SetAIState(aIState);
+        Handler.LockAI(lockAITimer);
+    }
     public PlayerController player;
     public float reloadtime;
     protected bool loaded;
