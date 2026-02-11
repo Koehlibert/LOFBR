@@ -7,11 +7,6 @@ public class UltBladeFlurry : DamagingAbility
     private float duration = .4f;
     private List<ObjectWithDist> flurryPos;
     private Damage damage;
-    new void Start()
-    {
-        base.Start();
-        loaded = true;
-    }
     private IEnumerator Flurry()
     {
         StartCoroutine(player.aIHandler.movementAI.LockMovement(duration * (flurryPos.Count + 1)));
@@ -29,7 +24,10 @@ public class UltBladeFlurry : DamagingAbility
                 Quaternion lookDir = Quaternion.LookRotation(-offset);
                 player.transform.rotation = lookDir;
                 player.animator.Play("Melee", 0, 0f);
-                target.GetComponent<EnemyBehaviour>().getShanked(damage);
+                if (target != null)
+                {
+                    target?.GetComponent<EnemyBehaviour>().getShanked(damage);
+                }
                 yield return new WaitForSeconds(duration);
             }
             else

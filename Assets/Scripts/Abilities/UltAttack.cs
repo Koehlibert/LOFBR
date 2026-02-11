@@ -21,13 +21,12 @@ public class UltAttack : ShootBasic
         ShootLeft = player.GetComponent<ShootLeftBasic>();
         ShootRight = player.GetComponent<ShootRightBasic>();
     }
-    private IEnumerator Shootanim()
+    private void Shootanim()
     {
         ShootLeft.enabled = false;
         ShootRight.enabled = false;
         StartCoroutine(player.aIHandler.movementAI.LockMovement(1.6f));
         player.animator.Play("Backflip", 0, 0f);
-        yield return new WaitForSeconds(0.6f);
         bulletinstance = CreateBullet();
         bulletinstance.GetComponent<BulletBehaviour>().Shoot(GetDamageValues());
         StartCoroutine("Resetanim");

@@ -14,7 +14,6 @@ public class PlayerController : MainPlayerBehaviour
     public Image damageimage;
     public EnemyPlayerBehaviour enemyPlayer;
     public Color flashcolor = new Color(1f, 0f, 0f, 0.1f);
-    private float animSpeed;
     public AudioSource soundsource;
     // private bool moveLock = false;
     private bool lookLock;

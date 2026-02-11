@@ -45,22 +45,16 @@ public abstract class ShootBasic : DamagingAbility
         bulletinstance = CreateBullet();
         loaded = true;
     }
-    private IEnumerator Resetanim()
-    {
-        yield return new WaitForSeconds(0.25f);
-        player.animator.Play("Default", 0, 0f);
-    }
     private IEnumerator Shootanim()
     {
         if (bulletinstance == null)
         {
             yield break;
         }
-        player.animator.Play("Shoot", 0, 0f);
-        yield return new WaitForSeconds(0.1f);
+        player.animator.SetTrigger("Shoot");
+        yield return new WaitForSeconds(0.15f);
         soundsource.Play();
         bulletinstance.GetComponent<BulletBehaviour>().Shoot(GetDamageValues());
-        StartCoroutine("Resetanim");
     }
     protected override void AbilityAction()
     {

@@ -15,7 +15,7 @@ public class Parry : Ability
         parryCollider.SetActive(false);
         player = FindAnyObjectByType<PlayerController>();
     }
-    protected override void Update()
+    protected override void InteractiveCheck()
     {
         if (!player)
         {
@@ -23,7 +23,7 @@ public class Parry : Ability
         }
         if (InputPressed() && (loaded) && player.manasys.checkCost(manaCost))
         {
-            base.Update();
+            base.InteractiveCheck();
         }
     }
     private IEnumerator autoDisable()

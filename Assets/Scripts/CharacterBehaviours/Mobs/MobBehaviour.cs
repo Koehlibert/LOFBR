@@ -94,6 +94,7 @@ public abstract class MobBehaviour : DamageableEntity
     protected void FixedUpdate()
     {
         StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
+        Vector3 direction = new(0,0,0);
         if (bulletrig)
         {
             bulletrig.transform.position = animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + offset;
@@ -129,7 +130,8 @@ public abstract class MobBehaviour : DamageableEntity
                 animSpeed = 1;
             }
         }
-        animator.SetFloat("speedPercent", animSpeed);
+        animator.SetFloat("moveX", 0);
+        animator.SetFloat("moveZ", animSpeed);
     }
     public void getShanked(Damage damage)
     {

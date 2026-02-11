@@ -23,7 +23,6 @@ public class Melee : DamagingAbility
     }
     void FixedUpdate()
     {
-        base.Update();
         if (attacking)
         {
             player.aIHandler.MovementDirection = dir;
@@ -40,30 +39,26 @@ public class Melee : DamagingAbility
         yield return new WaitForSeconds(duration);
         meleeCollider.SetActive(false);
         attacking = false;
-        player.animator.Play("Default", 0, 0f);
     }
-    private IEnumerator shootanim()
+    private void Shootanim()
     {
-        player.animator.Play("Melee", 0, 0f);
-        AnimatorClipInfo[] clipInfo = player.animator.GetCurrentAnimatorClipInfo(0);
-        float clipLength = 1 / 3.5f;
+        player.animator.SetTrigger("Melee");
+        float clipLength = 1 / 2f;
         duration = clipLength;
         StartCoroutine(player.aIHandler.movementAI.LockMovement(duration));
         StartCoroutine(player.aIHandler.SetForcemovement(duration));
         StartCoroutine(player.LockView(duration));
         player.aIHandler.movementAI.Speedup = speedup;
-        yield return new WaitForSeconds(0.01f);
         StartCoroutine("resetanim");
     }
     public new void Reset()
     {
         loaded = true;
         attacking = false;
-
     }
     protected override void AbilityAction()
     {
-        StartCoroutine("shootanim");
+        Shootanim();
         reloader.shoot();
         StartCoroutine("reload");
         player.manasys.useMana(manaCost);

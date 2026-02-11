@@ -11,14 +11,15 @@ public class MovementAI : Ability
     private Vector3 standarddirection = new Vector3(0f, 0f, 1f);
     private float TeamDirectionMultiplier;
     public AIUtils.MovementState MovementState { get; }
-    public bool moveLock;
+    public bool MoveLock;
     public bool CaresAboutHealth;
     public float Movementspeed { get; set; }
     public float Speedup;
     protected override void OnEnable()
     {
         base.OnEnable();
-        moveLock = false;
+        MoveLock = false;
+        CaresAboutHealth = false;
         TeamDirectionMultiplier = 1;
         if (Handler.Owner.Team == CombatUtils.Team.Enemy)
         {
@@ -26,15 +27,11 @@ public class MovementAI : Ability
         }
         standarddirection.z *= TeamDirectionMultiplier;
     }
-    protected override void Update()
-    {
-
-    }
     public override void Checker()
     {
         if (IsInteractive)
         {
-            if (!moveLock)
+            if (!MoveLock)
             {
                 Handler.MovementDirection = new Vector3(-PlayerInputRouter.Instance.Move.y, 0, PlayerInputRouter.Instance.Move.x).normalized;
             }
@@ -67,7 +64,7 @@ public class MovementAI : Ability
     public void HandleMovement()
     {
         MoveCharacter(Handler.MovementDirection, Handler.ForceMovement, Speedup);
-        if (!moveLock)
+        if (!MoveLock)
         {
             Speedup = 1;
         }
@@ -76,21 +73,27 @@ public class MovementAI : Ability
     public void MoveCharacter(Vector3 direction, bool bypass = false, float speedup = 1)
     {
         Handler.Owner.AnimSpeed = 0;
-        if (!moveLock || bypass)
+        if (!MoveLock || bypass)
         {
             Handler.Owner.AnimSpeed = direction.normalized.magnitude;
-            Vector3 newPos = MasterScript.Instance.CorrectTarget(transform.position + direction * Movementspeed * Time.deltaTime);
-            Debug.Log(newPos);
+            Vector3 newPos = MasterScript.Instance.CorrectTarget(transform.position + Movementspeed * Time.deltaTime * direction);
             Handler.Owner.transform.position = newPos;
+            if (!bypass)
+            {
+                Vector3 worldMove = new Vector3(direction.normalized.x, 0f, direction.normalized.z);
+                worldMove = Vector3.ClampMagnitude(worldMove, 1f);
+                Vector3 localMove = transform.InverseTransformDirection(worldMove);
+                Handler.Owner.animator.SetFloat("moveX", localMove.x);
+                Handler.Owner.animator.SetFloat("moveZ", localMove.z);
+            }
         }
-        Handler.Owner.animator.SetFloat("speedPercent", Handler.Owner.AnimSpeed);
     }
     public IEnumerator LockMovement(float duration)
     {
-        moveLock = true;
+        MoveLock = true;
         yield return new WaitForSeconds(duration);
         Speedup = 1;
-        moveLock = false;
+        MoveLock = false;
     }
     protected override bool InputPressed()
     {

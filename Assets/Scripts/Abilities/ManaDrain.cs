@@ -18,7 +18,7 @@ public class ManaDrain : DamagingAbility
         lRend.enabled = false;
         isDraining = false;
     }
-    protected override void Update()
+    protected override void InteractiveCheck()
     {
         if (isDraining)
         {

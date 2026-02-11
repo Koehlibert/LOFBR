@@ -262,7 +262,8 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
                 animSpeed = 1;
             }
         }
-        animator.SetFloat("speedPercent", animSpeed);
+        animator.SetFloat("moveX", 0);
+        animator.SetFloat("moveZ", animSpeed);
     }
     public void Attack(Vector3 target)
     {

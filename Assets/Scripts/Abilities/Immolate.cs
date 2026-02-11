@@ -21,7 +21,7 @@ public class Immolate : DamagingAbility
     {
         Reset();
     }
-    protected override void Update()
+    protected override void InteractiveCheck()
     {
         if (isOnFire)
         {
@@ -34,7 +34,7 @@ public class Immolate : DamagingAbility
                 TurnOff();
             }
         }
-        base.Update();
+        base.InteractiveCheck();
     }
     public new void Reset()
     {

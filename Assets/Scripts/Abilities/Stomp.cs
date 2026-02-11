@@ -42,11 +42,5 @@ public class Stomp : DamagingAbility
         GameObject wave = Instantiate(bullet, player.transform.position + new Vector3(0f, 0.4f, 0f), player.transform.rotation);
         wave.GetComponent<Damage>().SetProperties(GetDamageValues());
         //soundsource.Play();
-        StartCoroutine("Resetanim");
-    }
-    private IEnumerator Resetanim()
-    {
-        yield return new WaitForSeconds(0.25f);
-        player.animator.Play("Default", 0, 0f);
     }
 }

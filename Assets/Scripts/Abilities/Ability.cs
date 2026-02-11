@@ -11,7 +11,10 @@ public abstract class Ability : MonoBehaviour
     protected AIHandler Handler { get; set; }
     public virtual void Checker()
     {
-        
+        if(IsInteractive)
+        {
+            InteractiveCheck();
+        }
     }
     protected AIUtils.AIState ActiveState { get; set; }
     protected void SetFinalAction(Action action, Vector3 target, AIUtils.AIState aIState, float lockAITimer)
@@ -30,6 +33,7 @@ public abstract class Ability : MonoBehaviour
     {
         player = GetComponent<PlayerController>();
         Handler = GetComponent<AIHandler>();
+        loaded = true;
     }
     protected virtual void OnEnable()
     {
@@ -37,7 +41,7 @@ public abstract class Ability : MonoBehaviour
         player = GetComponent<PlayerController>();
         Handler = GetComponent<AIHandler>();
     }
-    protected virtual void Update()
+    protected virtual void InteractiveCheck()
     {
         if(!player)
         {
@@ -47,6 +51,10 @@ public abstract class Ability : MonoBehaviour
         {
             AbilityAction();
         }
+    }
+    void Update()
+    {
+        InteractiveCheck();
     }
     protected abstract bool InputPressed();
     protected abstract void AbilityAction();
