@@ -5002,6 +5002,7 @@ GameObject:
   - component: {fileID: 1360865148}
   - component: {fileID: 1360865147}
   - component: {fileID: 1360865146}
+  - component: {fileID: 1360865150}
   m_Layer: 5
   m_Name: HUD
   m_TagString: Untagged
@@ -5103,6 +5104,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1360865150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1360865144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73e62bbd3db939b468eb6423238e6bc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  PrimaryReloader: {fileID: 145698118}
+  SecondaryReloader: {fileID: 412893699}
+  AltReloader: {fileID: 1805395404}
+  SkillReloader: {fileID: 1327135179}
+  UltReloader: {fileID: 1988524061}
 --- !u!114 &1395042712 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1703324441975676562, guid: 5aba39df55eb0bc4d94b8551745ff536,

@@ -18,6 +18,11 @@ public class ManaDrain : DamagingAbility
         lRend.enabled = false;
         isDraining = false;
     }
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        reloader = HUD.Instance.GetReload(HUD.Instance.AltReloader);
+    }
     protected override void InteractiveCheck()
     {
         if (isDraining)

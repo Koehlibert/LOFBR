@@ -20,7 +20,11 @@ public class UltRez : Ability
             Instantiate(Mob, pos, spawndirection);
         }
     }
-
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        reloader = HUD.Instance.GetReload(HUD.Instance.UltReloader);
+    }
     protected override void AbilityAction()
     {
         List<Vector3> locations = MasterScript.Instance.GetRezPositions(player.levelsys.getLevel() - 2);

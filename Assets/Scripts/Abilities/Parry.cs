@@ -15,6 +15,11 @@ public class Parry : Ability
         parryCollider.SetActive(false);
         player = FindAnyObjectByType<PlayerController>();
     }
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        reloader = HUD.Instance.GetReload(HUD.Instance.SecondaryReloader);
+    }
     protected override void InteractiveCheck()
     {
         if (!player)

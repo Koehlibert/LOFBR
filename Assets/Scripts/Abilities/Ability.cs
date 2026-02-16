@@ -27,7 +27,7 @@ public abstract class Ability : MonoBehaviour
     public PlayerController player;
     public float reloadtime;
     protected bool loaded;
-    public Reload reloader;
+    protected Reload reloader;
     public float manaCost;
     protected virtual void Start()
     {

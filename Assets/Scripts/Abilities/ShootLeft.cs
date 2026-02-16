@@ -6,6 +6,11 @@ using UnityEngine.InputSystem.XR;
 public class ShootLeftBasic : ShootBasic
 {
     protected override HumanBodyBones Bone => HumanBodyBones.LeftLowerLeg;
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        reloader = HUD.Instance.GetReload(HUD.Instance.SecondaryReloader);
+    }
     protected override bool InputPressed()
     {
         return PlayerInputRouter.Instance.SecondaryPressed;

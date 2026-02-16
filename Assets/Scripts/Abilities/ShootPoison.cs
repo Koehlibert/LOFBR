@@ -10,6 +10,11 @@ public class ShootPoison : ShootBasic
     {
         return PlayerInputRouter.Instance.PrimaryPressed;
     }
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        reloader = HUD.Instance.GetReload(HUD.Instance.PrimaryReloader);
+    }
     protected override DamageInfo GetDamageValues()
     {
         return new DamageInfo(16 + 4 * player.levelsys.getLevel(), 4f + 4f + 1.5f * player.levelsys.getLevel(), CombatUtils.Team.Player, true, false);

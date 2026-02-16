@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class ShootHeal : ShootBasic
 {
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        reloader = HUD.Instance.GetReload(HUD.Instance.SecondaryReloader);
+    }
     protected override HumanBodyBones Bone => HumanBodyBones.LeftLowerLeg;
     protected override bool InputPressed()
     {

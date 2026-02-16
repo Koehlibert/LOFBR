@@ -10,6 +10,11 @@ public class Stomp : DamagingAbility
         base.Start();
         loaded = true;
     }
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        reloader = HUD.Instance.GetReload(HUD.Instance.AltReloader);
+    }
     private IEnumerator Reload()
     {
         loaded = false;

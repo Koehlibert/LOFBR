@@ -15,18 +15,24 @@ public class UltAttack : ShootBasic
         reloadtime = 15f;
         manaCost = 250;
     }
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        reloader = HUD.Instance.GetReload(HUD.Instance.UltReloader);
+    }
     private IEnumerator Firstbullet()
     {
         yield return new WaitForSeconds(.2f);
         ShootLeft = player.GetComponent<ShootLeftBasic>();
         ShootRight = player.GetComponent<ShootRightBasic>();
     }
-    private void Shootanim()
+    private IEnumerator Shootanim()
     {
         ShootLeft.enabled = false;
         ShootRight.enabled = false;
         StartCoroutine(player.aIHandler.movementAI.LockMovement(1.6f));
         player.animator.Play("Backflip", 0, 0f);
+        yield return new WaitForSeconds(0.6f);
         bulletinstance = CreateBullet();
         bulletinstance.GetComponent<BulletBehaviour>().Shoot(GetDamageValues());
         StartCoroutine("Resetanim");

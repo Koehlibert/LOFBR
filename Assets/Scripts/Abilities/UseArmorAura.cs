@@ -30,7 +30,11 @@ public class UseArmorAura : Ability
             aura.SetActive(false);
         }
     }
-
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        reloader = HUD.Instance.GetReload(HUD.Instance.AltReloader);
+    }
     protected override void AbilityAction()
     {
         if (armorActive)

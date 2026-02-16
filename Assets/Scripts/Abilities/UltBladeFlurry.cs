@@ -7,6 +7,11 @@ public class UltBladeFlurry : DamagingAbility
     private float duration = .4f;
     private List<ObjectWithDist> flurryPos;
     private Damage damage;
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        reloader = HUD.Instance.GetReload(HUD.Instance.UltReloader);
+    }
     private IEnumerator Flurry()
     {
         StartCoroutine(player.aIHandler.movementAI.LockMovement(duration * (flurryPos.Count + 1)));
