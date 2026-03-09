@@ -35,6 +35,13 @@ public class MovementAI : Ability
             {
                 Handler.MovementDirection = new Vector3(-PlayerInputRouter.Instance.Move.y, 0, PlayerInputRouter.Instance.Move.x).normalized;
             }
+            Vector2 mouseScreenPosition = PlayerInputRouter.Instance.Look;
+            Plane playerPlane = new Plane(Vector3.up, transform.position);
+            Ray ray = Camera.main.ScreenPointToRay(mouseScreenPosition);
+            if (playerPlane.Raycast(ray, out float hitDist))
+            {
+                Handler.LookDirection = ray.GetPoint(hitDist);
+            }
             return;
         }
         if (CaresAboutHealth)
@@ -96,14 +103,11 @@ public class MovementAI : Ability
     }
     public void HandleLook()
     {
-        if (!IsInteractive)
+        Vector3 dir = Handler.LookDirection - transform.position;
+        dir.y = 0;
+        if (dir.sqrMagnitude > 0.001f)
         {
-            Vector3 dir = Handler.LookDirection - transform.position;
-            dir.y = 0;
-            if (dir.sqrMagnitude > 0.001f)
-            {
-                transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
-            }
+            transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
         }
     }
     public IEnumerator LockMovement(float duration)

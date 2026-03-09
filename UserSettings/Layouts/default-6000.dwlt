@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 112}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 94
+  controlID: 54
   draggingID: 0
 --- !u!114 &6
 MonoBehaviour:
@@ -716,8 +716,8 @@ MonoBehaviour:
       - m_Data: -1296
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: 
-        m_OriginalName: 
+        m_Name: Player
+        m_OriginalName: Player
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
@@ -725,10 +725,10 @@ MonoBehaviour:
           width: 0
           height: 0
         m_UserData:
-          m_Data: 0
+          m_Data: -2694
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 11
+        m_OriginalEventType: 0
         m_IsRenamingFilename: 0
         m_TrimLeadingAndTrailingWhitespace: 0
         m_ClientGUIView: {fileID: 8}
@@ -1349,9 +1349,9 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 10.114692, y: 3.0181196, z: -56.424255}
+    m_Target: {x: 5.595383, y: 10.335825, z: 45.70055}
     speed: 2
-    m_Value: {x: 10.114692, y: 3.0181196, z: -56.424255}
+    m_Value: {x: 5.595383, y: 10.335825, z: 45.70055}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1397,13 +1397,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.22841582, y: 0.32455716, z: -0.081072256, w: -0.9143062}
+    m_Target: {x: -0.21076247, y: 0.5967645, z: -0.16631615, w: -0.7561943}
     speed: 2
-    m_Value: {x: -0.2284113, y: 0.32455072, z: -0.081070654, w: -0.9142881}
+    m_Value: {x: -0.20987171, y: 0.59586614, z: -0.16510288, w: -0.7573893}
   m_Size:
-    m_Target: 5.579913
+    m_Target: 1.7954851
     speed: 2
-    m_Value: 5.579913
+    m_Value: 1.8800892
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -1644,9 +1644,7 @@ MonoBehaviour:
       m_Data: 36632
     m_ExpandedIDs:
     - m_Data: 0
-    - m_Data: 36480
-    - m_Data: 36628
-    - m_Data: 1000000000
+    - m_Data: 36476
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1679,7 +1677,7 @@ MonoBehaviour:
       m_Data: 0
     m_ExpandedIDs:
     - m_Data: 0
-    - m_Data: 36480
+    - m_Data: 36476
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

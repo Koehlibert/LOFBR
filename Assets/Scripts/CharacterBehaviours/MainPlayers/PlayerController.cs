@@ -67,7 +67,6 @@ public class PlayerController : MainPlayerBehaviour
             levelsys.gainExp(100);
             enemyPlayer.levelsys.gainExp(100);
         }
-        UpdateLookPosition();
         UpdateDamageImage();
     }
     void UpdateDamageImage()
@@ -75,27 +74,6 @@ public class PlayerController : MainPlayerBehaviour
         if (!isDead)
         {
             damageimage.color = Color.Lerp(damageimage.color, Color.clear, flashspeed * Time.deltaTime);
-        }
-    }
-    void UpdateLookPosition()
-    {
-        if (!lookLock)
-        {
-            Vector2 mouseScreenPosition = PlayerInputRouter.Instance.Look;
-            Plane playerPlane = new Plane(Vector3.up, transform.position);
-            Ray ray = Camera.main.ScreenPointToRay(mouseScreenPosition);
-            if (playerPlane.Raycast(ray, out float hitDist))
-            {
-                Vector3 lookAtPoint = ray.GetPoint(hitDist);
-
-                Vector3 dir = lookAtPoint - transform.position;
-                dir.y = 0;
-
-                if (dir.sqrMagnitude > 0.001f)
-                {
-                    transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
-                }
-            }
         }
     }
     private void OnTakeDamage()
