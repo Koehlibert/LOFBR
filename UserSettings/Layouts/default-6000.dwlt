@@ -716,8 +716,8 @@ MonoBehaviour:
       - m_Data: -1296
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: Player
-        m_OriginalName: Player
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
@@ -725,10 +725,10 @@ MonoBehaviour:
           width: 0
           height: 0
         m_UserData:
-          m_Data: -2694
+          m_Data: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_TrimLeadingAndTrailingWhitespace: 0
         m_ClientGUIView: {fileID: 8}
@@ -1399,11 +1399,11 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: -0.21076247, y: 0.5967645, z: -0.16631615, w: -0.7561943}
     speed: 2
-    m_Value: {x: -0.20987171, y: 0.59586614, z: -0.16510288, w: -0.7573893}
+    m_Value: {x: -0.2107583, y: 0.5967527, z: -0.16631286, w: -0.75617933}
   m_Size:
     m_Target: 1.7954851
     speed: 2
-    m_Value: 1.8800892
+    m_Value: 1.7954851
   m_Ortho:
     m_Target: 0
     speed: 2

@@ -23,11 +23,11 @@ public class ShootRightBasic : ShootBasic
     {
         if (IsInteractive)
         {
-            return new DamageInfo(34 + 7 * player.levelsys.getLevel(), 0, CombatUtils.Team.Player, true);
+            return new DamageInfo(34 + 7 * player.levelsys.getLevel(), 0, Handler.Owner.Team, true);
         }
         else
         {
-            return new DamageInfo(40, 0, CombatUtils.Team.Player, true);
+            return new DamageInfo(40, 0, Handler.Owner.Team, true);
         }
     }
     protected override void AICheck()
