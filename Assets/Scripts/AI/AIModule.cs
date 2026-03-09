@@ -12,6 +12,7 @@ public abstract class AIModule : MonoBehaviour
     protected virtual void OnEnable()
     {
         Handler = GetComponent<AIHandler>();
+        IsInteractive = Handler.Owner is MainPlayerBehaviour;
     }
     protected void SetFinalAction(Action action, Vector3 target, AIUtils.AIState aIState, float lockAITimer)
     {

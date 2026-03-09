@@ -4,6 +4,7 @@ public static class AIUtils
 {
     public enum MovementState
     {
+        IsStanding,
         IsMovingForward,
         IsFollowingTarget,
         IsGoingToPlace,

@@ -10,6 +10,7 @@ public abstract class DamageableEntity : MonoBehaviour
     public float AnimSpeed { get; set; }
     public GameObject enemyBase;
     public GameObject yourbase;
+    public AIHandler aIHandler;
     protected virtual void Start()
     {
         LastHit = false;

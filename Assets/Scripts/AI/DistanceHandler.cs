@@ -9,38 +9,45 @@ public class DistanceHandler : AIModule
     private float AttentionDistance;
     private float CheckDistance;
     private float Followdistance;
-    private float Attackdistance;
+    private float AttackDistance;
+    public void Init(float attentionDistance, float checkDistance, float followdistance, float attackDistance)
+    {
+        AttentionDistance = attentionDistance;
+        CheckDistance = checkDistance;
+        Followdistance = followdistance;
+        AttackDistance = attackDistance;
+    }
     public override void Checker()
     {
-        GameObject closestCurrentEnemy = Handler.ClosestFinder.FindClosest();
-        if (closestCurrentEnemy == null)
+        Handler.closestEnemy = Handler?.ClosestFinder?.FindClosest();
+        if (Handler.closestEnemy == null)
         {
-            closestCurrentEnemy = Handler.Owner.enemyBase;
+            Handler.closestEnemy = Handler.Owner.enemyBase;
         }
-        float distance = CombatUtils.GetDistance(Handler.Owner.gameObject, closestCurrentEnemy);
-        if (distance > AttentionDistance)
+        Handler.distanceToClosest = CombatUtils.GetDistance(Handler.Owner.gameObject, Handler.closestEnemy);
+        if (Handler.distanceToClosest < AttackDistance)
         {
-            Handler.SetAIState(AIUtils.AIState.MoveOnly);
+            Handler.SetAIState(AIUtils.AIState.Attacking);
             return;
         }
-        if (distance > CheckDistance)
-        {
-            Handler.SetAIState(AIUtils.AIState.CheckGeneralSkills);
-            return;
-        }
-        if (distance > Followdistance)
-        {
-            Handler.SetAIState(AIUtils.AIState.CheckDistSkills);
-            return;
-        }
-        if (distance > Attackdistance)
+        else if (Handler.distanceToClosest < Followdistance)
         {
             Handler.SetAIState(AIUtils.AIState.CheckShoot);
             return;
         }
+        else if (Handler.distanceToClosest < CheckDistance)
+        {
+            Handler.SetAIState(AIUtils.AIState.CheckDistSkills);
+            return;
+        }
+        else if (Handler.distanceToClosest > AttentionDistance)
+        {
+            Handler.SetAIState(AIUtils.AIState.CheckGeneralSkills);
+            return;
+        }
         else
         {
-            Handler.SetAIState(AIUtils.AIState.Attacking);
+            Handler.SetAIState(AIUtils.AIState.MoveOnly);
             return;
         }
     }

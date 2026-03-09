@@ -10,7 +10,7 @@ public class MovementAI : Ability
     public GameObject Target { get; set; }
     private Vector3 standarddirection = new Vector3(0f, 0f, 1f);
     private float TeamDirectionMultiplier;
-    public AIUtils.MovementState MovementState { get; }
+    public AIUtils.MovementState MovementState { get; set; }
     public bool MoveLock;
     public bool CaresAboutHealth;
     public float Movementspeed { get; set; }
@@ -45,14 +45,20 @@ public class MovementAI : Ability
                 return;
             }
         }
+        if (MovementState == AIUtils.MovementState.IsStanding)
+        {
+            Handler.MovementDirection = new Vector3(0, 0, 0);
+            return;
+        }
         if (MovementState == AIUtils.MovementState.IsMovingForward)
         {
-            //Move Handler Forward
+            Handler.MovementDirection = standarddirection;
+            Handler.LookDirection = Handler.Owner.transform.position + standarddirection; ;
             return;
         }
         if (MovementState == AIUtils.MovementState.IsFollowingTarget)
         {
-            //Move Handler to target; don't lock AI
+            Handler.MovementDirection = GetDirection(Handler.closestEnemy.transform.position);
             return;
         }
         if (MovementState == AIUtils.MovementState.IsGoingToPlace)
@@ -69,7 +75,7 @@ public class MovementAI : Ability
             Speedup = 1;
         }
     }
-    private Vector3 GetDirection(Vector3 target) => target - Handler.Owner.transform.position;
+    public Vector3 GetDirection(Vector3 target) => (target - Handler.Owner.transform.position).normalized;
     public void MoveCharacter(Vector3 direction, bool bypass = false, float speedup = 1)
     {
         Handler.Owner.AnimSpeed = 0;
@@ -85,6 +91,18 @@ public class MovementAI : Ability
                 Vector3 localMove = transform.InverseTransformDirection(worldMove);
                 Handler.Owner.animator.SetFloat("moveX", localMove.x);
                 Handler.Owner.animator.SetFloat("moveZ", localMove.z);
+            }
+        }
+    }
+    public void HandleLook()
+    {
+        if (!IsInteractive)
+        {
+            Vector3 dir = Handler.LookDirection - transform.position;
+            dir.y = 0;
+            if (dir.sqrMagnitude > 0.001f)
+            {
+                transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
             }
         }
     }

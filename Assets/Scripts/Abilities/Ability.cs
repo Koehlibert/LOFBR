@@ -15,6 +15,10 @@ public abstract class Ability : MonoBehaviour
         {
             InteractiveCheck();
         }
+        else
+        {
+            AICheck();
+        }
     }
     protected AIUtils.AIState ActiveState { get; set; }
     protected void SetFinalAction(Action action, Vector3 target, AIUtils.AIState aIState, float lockAITimer)
@@ -31,14 +35,21 @@ public abstract class Ability : MonoBehaviour
     public float manaCost;
     protected virtual void Start()
     {
-        player = GetComponent<PlayerController>();
         Handler = GetComponent<AIHandler>();
         loaded = true;
+        IsInteractive = Handler.Owner is MainPlayerBehaviour;
+        if (IsInteractive)
+        {
+            player = GetComponent<PlayerController>();
+        }
     }
     protected virtual void OnEnable()
     {
         Reset();
-        player = GetComponent<PlayerController>();
+        if (IsInteractive)
+        {
+            player = GetComponent<PlayerController>();
+        }
         Handler = GetComponent<AIHandler>();
     }
     protected virtual void InteractiveCheck()
@@ -52,9 +63,16 @@ public abstract class Ability : MonoBehaviour
             AbilityAction();
         }
     }
+    protected virtual void AICheck()
+    {
+        throw new NotImplementedException();
+    }
     void Update()
     {
-        InteractiveCheck();
+        if (IsInteractive)
+        {
+            InteractiveCheck();
+        }
     }
     protected abstract bool InputPressed();
     protected abstract void AbilityAction();

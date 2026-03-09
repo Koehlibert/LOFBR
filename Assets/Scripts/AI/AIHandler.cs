@@ -10,8 +10,8 @@ public abstract class AIHandler : MonoBehaviour
     protected List<Ability> Abilities;
     protected List<AIModule> AIModules;
     public DamageableEntity Owner { get; set; }
-    public ClosestFinder ClosestFinder { get; }
-    private AIUtils.AIState AIState;
+    public ClosestFinder ClosestFinder { get; set; }
+    public AIUtils.AIState AIState;
     public AIUtils.HealthState HealthState { get; set; }
     public float LockAITimer;
     public MovementAI movementAI;
@@ -21,24 +21,30 @@ public abstract class AIHandler : MonoBehaviour
     public Action FinalAction;
     public Action FallBackAction;
     public Vector3 MovementDirection;
+    public Vector3 LookDirection;
     public bool ForceMovement;
+    public GameObject closestEnemy;
+    public float distanceToClosest;
     public virtual void Init(DamageableEntity owner, List<Ability> abilities, List<AIModule> aIModules)
     {
         Owner = owner;
         AIModules = aIModules;
-        Abilities = abilities;        
+        Abilities = abilities;
+        ClosestFinder = new ClosestFinder(Owner.Team, Owner.gameObject);
         healthChecker = Owner.gameObject.AddComponent<HealthChecker>();
         healthChecker.Init(0.7f, 0.3f);
         AIModules.Add(healthChecker);
         distanceHandler = Owner.gameObject.AddComponent<DistanceHandler>();
+        distanceHandler.Init(50, 30, 25, 12);
         AIModules.Add(distanceHandler);
         movementAI = Owner.gameObject.AddComponent<MovementAI>();
-        Abilities.Add(movementAI);
+        movementAI.IsInteractive = owner is MainPlayerBehaviour;
         LockAITimer = 0f;
         FinalAction = null;
         FallBackAction = null;
         ForceMovement = false;
         MovementDirection = new Vector3();
+        LookDirection = new Vector3();
     }
     private void Update()
     {
@@ -47,16 +53,37 @@ public abstract class AIHandler : MonoBehaviour
             LockAITimer -= Time.deltaTime;
             IsAILocked = LockAITimer > 0;
         }
-        foreach (Ability ability in Abilities)
+        distanceHandler.Checker();
+        movementAI.MovementState = AIUtils.MovementState.IsMovingForward;
+        if (AIState != AIUtils.AIState.MoveOnly)
         {
-            ability.Checker();
-            if (FinalAction != null)
+            foreach (Ability ability in Abilities)
             {
-                break;
+                ability.Checker();
+                if (FinalAction != null)
+                {
+                    break;
+                }
+            }
+            if (FinalAction == null)
+            {
+                
             }
         }
-        movementAI?.HandleMovement();
+        movementAI.Checker();
+        movementAI.HandleMovement();
+        movementAI.HandleLook();
+        if (FinalAction == null)
+        {
+            FinalAction = FallBackAction;
+        }
         FinalAction?.Invoke();
+        FinalAction = null;
+    }
+    public void SetEvenLookDirection(Vector3 direction)
+    {
+        direction.y = 0;
+        LookDirection = direction;
     }
     public void SetAIState(AIUtils.AIState aIState)
     {

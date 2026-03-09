@@ -21,8 +21,6 @@ public abstract class MobBehaviour : DamageableEntity
     private GameObject closestCurrentEnemy;
     private ClosestFinder closestFinder;
     private float animSpeed;
-    private float reloadtime;
-    private bool loaded;
     [SerializeField] Image healthbar;
     [SerializeField] Image healthbarbg;
     protected HumanBodyBones Bone;
@@ -36,11 +34,7 @@ public abstract class MobBehaviour : DamageableEntity
         enemybase = MasterScript.Instance.GetOpponentBase(EnemyTeam);
         closestFinder = new ClosestFinder(Team, this.gameObject);
         hpsys.Initialize(100, 0, 0, 0);
-        loaded = true;
-        reloadtime = 1.5f;
         Bone = HumanBodyBones.RightLowerLeg;
-        bulletinstance = BulletFactory.Instance.CreateBullet(this, true, Bone);
-        bulletrig = bulletinstance.GetComponent<Rigidbody>();
         healthbar.gameObject.SetActive(false);
         healthbarbg.gameObject.SetActive(false);
         MasterScript.Instance.AddMob(this);
@@ -55,6 +49,9 @@ public abstract class MobBehaviour : DamageableEntity
             offset.z *= -1;
             standarddirection.z *= -1;
         }
+        aIHandler = gameObject.AddComponent<MobAIHandler>();
+        aIHandler.Init(this, new List<Ability>(), new List<AIModule>());
+        aIHandler.movementAI.Movementspeed = movementSpeed;
     }
     public void OnHealBulletHit(Damage damageComponent, GameObject bulletObject)
     {
@@ -94,41 +91,9 @@ public abstract class MobBehaviour : DamageableEntity
     protected void FixedUpdate()
     {
         StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
-        Vector3 direction = new(0,0,0);
-        if (bulletrig)
-        {
-            bulletrig.transform.position = animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + offset;
-        }
         if (player == null)
         {
             player = MasterScript.Instance.GetOpponentPlayer(EnemyTeam);
-        }
-        closestCurrentEnemy = closestFinder.FindClosest();
-        if (closestCurrentEnemy == null)
-        {
-            closestCurrentEnemy = enemybase;
-        }
-        else
-        {
-            float distance = Vector3.Distance(closestCurrentEnemy.transform.position, transform.position);
-            float distToSpawn = Math.Abs(MasterScript.Instance.GetOpponentSpawnZ(EnemyTeam));
-            if ((distance <= followdistance) && (distance > attackdistance))
-            {
-                nmAgent.enabled = true;
-                nmAgent.SetDestination(closestCurrentEnemy.transform.position);
-                animSpeed = 0.5f;
-            }
-            else if (distance < attackdistance)
-            {
-                nmAgent.enabled = false;
-                Attack(closestCurrentEnemy.transform.position);
-                animSpeed = 0;
-            }
-            else if (distToSpawn > 0)
-            {
-                transform.Translate(standarddirection * movementSpeed * Time.deltaTime, Space.World);
-                animSpeed = 1;
-            }
         }
         animator.SetFloat("moveX", 0);
         animator.SetFloat("moveZ", animSpeed);
@@ -141,38 +106,9 @@ public abstract class MobBehaviour : DamageableEntity
             Die();
         }
     }
-    public void Attack(Vector3 target)
-    {
-        transform.LookAt(new Vector3(target.x, transform.position.y, target.z));
-        if (loaded)
-        {
-            StartCoroutine("Shootanim");
-            StartCoroutine("Reload");
-        }
-    }
-    private IEnumerator Reload()
-    {
-        loaded = false;
-        yield return new WaitForSeconds(reloadtime);
-        bulletinstance = BulletFactory.Instance.CreateBullet(this, true, Bone);
-        bulletrig = bulletinstance.GetComponent<Rigidbody>();
-        loaded = true;
-    }
     private IEnumerator Resetanim()
     {
         yield return new WaitForSeconds(0.25f);
         animator.Play("Default", 0, 0f);
-    }
-    private IEnumerator Shootanim()
-    {
-        animator.Play("Shoot", 0, 0f);
-        yield return new WaitForSeconds(0.1f);
-        bulletinstance.GetComponent<BulletBehaviour>().Shoot(GetDamageInfo());
-        bulletrig = null;
-        StartCoroutine("Resetanim");
-    }
-    private DamageInfo GetDamageInfo()
-    {
-        return new DamageInfo(40, 0, this.Team);
     }
 }

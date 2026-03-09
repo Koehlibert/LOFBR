@@ -20,13 +20,13 @@ public class UltAttack : ShootBasic
         base.OnEnable();
         reloader = HUD.Instance.GetReload(HUD.Instance.UltReloader);
     }
-    private IEnumerator Firstbullet()
+    protected override IEnumerator Firstbullet()
     {
         yield return new WaitForSeconds(.2f);
-        ShootLeft = player.GetComponent<ShootLeftBasic>();
-        ShootRight = player.GetComponent<ShootRightBasic>();
+        ShootLeft = player?.GetComponent<ShootLeftBasic>();
+        ShootRight = player?.GetComponent<ShootRightBasic>();
     }
-    private IEnumerator Shootanim()
+    protected override IEnumerator Shootanim()
     {
         ShootLeft.enabled = false;
         ShootRight.enabled = false;

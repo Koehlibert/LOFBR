@@ -10,7 +10,7 @@ public abstract class ShootBasic : DamagingAbility
     protected GameObject bulletinstance;
     protected virtual GameObject CreateBullet()
     {
-        return BulletFactory.Instance.CreateBullet(player, true, Bone);
+        return BulletFactory.Instance.CreateBullet(Handler.Owner, true, Bone);
     }
     protected abstract HumanBodyBones Bone { get; }
     protected override void Start()
@@ -22,7 +22,7 @@ public abstract class ShootBasic : DamagingAbility
     }
     protected override void OnEnable()
     {
-        StartCoroutine("Firstbullet");
+        StartCoroutine(Firstbullet());
         Reset();
     }
     void OnDisable()
@@ -32,7 +32,7 @@ public abstract class ShootBasic : DamagingAbility
             Destroy(bulletinstance);
         }
     }
-    private IEnumerator Firstbullet()
+    protected virtual IEnumerator Firstbullet()
     {
         yield return new WaitForSeconds(.2f);
         bulletinstance = CreateBullet();
@@ -45,22 +45,25 @@ public abstract class ShootBasic : DamagingAbility
         bulletinstance = CreateBullet();
         loaded = true;
     }
-    private IEnumerator Shootanim()
+    protected virtual IEnumerator Shootanim()
     {
         if (bulletinstance == null)
         {
             yield break;
         }
-        player.animator.SetTrigger("Shoot");
+        Handler.Owner.animator.SetTrigger("Shoot");
         yield return new WaitForSeconds(0.15f);
-        soundsource.Play();
+        soundsource?.Play();
         bulletinstance.GetComponent<BulletBehaviour>().Shoot(GetDamageValues());
     }
     protected override void AbilityAction()
     {
-        StartCoroutine("Shootanim");
-        reloader.shoot();
-        StartCoroutine("Reload");
-        player.manasys.useMana(manaCost);
+        StartCoroutine(Shootanim());
+        StartCoroutine(Reload());
+        if (IsInteractive)
+        {
+            reloader.shoot();
+            player.manasys.useMana(manaCost);
+        }
     }
 }

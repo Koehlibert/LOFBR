@@ -13,10 +13,42 @@ public class ShootRightBasic : ShootBasic
     protected override void OnEnable()
     {
         base.OnEnable();
-        reloader = HUD.Instance.GetReload(HUD.Instance.PrimaryReloader);
+        if (IsInteractive)
+        {
+            reloader = HUD.Instance.GetReload(HUD.Instance.PrimaryReloader);
+            IsInteractive = Handler?.Owner is MainPlayerBehaviour;
+        }
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(34 + 7 * player.levelsys.getLevel(), 0, CombatUtils.Team.Player, true);
+        if (IsInteractive)
+        {
+            return new DamageInfo(34 + 7 * player.levelsys.getLevel(), 0, CombatUtils.Team.Player, true);
+        }
+        else
+        {
+            return new DamageInfo(40, 0, CombatUtils.Team.Player, true);
+        }
+    }
+    protected override void AICheck()
+    {
+        if (Handler.AIState == AIUtils.AIState.CheckShoot || Handler.AIState == AIUtils.AIState.Attacking)
+        {
+            if (Handler.distanceToClosest < 10)
+            {
+                Handler.movementAI.MovementState = AIUtils.MovementState.IsStanding;
+                Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);
+                if (loaded)
+                {
+                    Handler.FinalAction = AbilityAction;
+                }
+            }
+            else
+            {
+                Handler.movementAI.MovementState = AIUtils.MovementState.IsFollowingTarget;
+                Handler.movementAI.Speedup = 0.75f;
+                Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);
+            }
+        }
     }
 }

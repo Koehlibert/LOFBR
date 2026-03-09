@@ -15,13 +15,11 @@ public class PlayerController : MainPlayerBehaviour
     public EnemyPlayerBehaviour enemyPlayer;
     public Color flashcolor = new Color(1f, 0f, 0f, 0.1f);
     public AudioSource soundsource;
-    // private bool moveLock = false;
     private bool lookLock;
     private int classID;
     private Skillset skillSet;
     private bool isDead = false;
     private DamageCollisionHandler handler;
-    public AIHandler aIHandler;
     protected override void Start()
     {
         base.Start();
@@ -42,7 +40,6 @@ public class PlayerController : MainPlayerBehaviour
             case 3:
                 skillSet = GetComponent<SkillsetMelee>();
                 break;
-
         }
         skillSet.enabled = true;
         skillSet.BaseUnlock();
@@ -58,7 +55,6 @@ public class PlayerController : MainPlayerBehaviour
     public override CombatUtils.Team Team => CombatUtils.Team.Player;
     void OnEnable()
     {
-        //moveLock = false;
         isDead = false;
         damageimage.color = Color.clear;
     }
@@ -73,7 +69,6 @@ public class PlayerController : MainPlayerBehaviour
         }
         UpdateLookPosition();
         UpdateDamageImage();
-        //MoveCharacter();
     }
     void UpdateDamageImage()
     {
@@ -89,7 +84,6 @@ public class PlayerController : MainPlayerBehaviour
             Vector2 mouseScreenPosition = PlayerInputRouter.Instance.Look;
             Plane playerPlane = new Plane(Vector3.up, transform.position);
             Ray ray = Camera.main.ScreenPointToRay(mouseScreenPosition);
-
             if (playerPlane.Raycast(ray, out float hitDist))
             {
                 Vector3 lookAtPoint = ray.GetPoint(hitDist);
@@ -114,25 +108,6 @@ public class PlayerController : MainPlayerBehaviour
             soundsource.Play();
         }
     }
-    /* void MoveCharacter()
-    {
-        movement = new Vector3(-PlayerInputRouter.Instance.Move.y, 0, PlayerInputRouter.Instance.Move.x).normalized;
-        MoveCharacter(movement);
-    }
-    public void MoveCharacter(Vector3 direction, bool bypass = false)
-    {
-        animSpeed = 0;
-        if (!moveLock || bypass)
-        {
-            animSpeed = direction.normalized.magnitude;
-            transform.position = MasterScript.Instance.CorrectTarget(transform.position + direction * movementspeed * Time.deltaTime);
-        }
-        animator.SetFloat("speedPercent", animSpeed);
-    }
-    public void MoveCharacter(Vector3 direction, float speedup, bool bypass = false)
-    {
-        MoveCharacter(direction * speedup, bypass);
-    } */
     void LevelUp()
     {
         skillSet.LevelUnlock(levelsys.getLevel());
@@ -143,12 +118,6 @@ public class PlayerController : MainPlayerBehaviour
     {
         return movementspeed;
     }
-    /* public IEnumerator LockMovement(float duration)
-    {
-        moveLock = true;
-        yield return new WaitForSeconds(duration);
-        moveLock = false;
-    } */
     public IEnumerator LockView(float duration)
     {
         lookLock = true;
