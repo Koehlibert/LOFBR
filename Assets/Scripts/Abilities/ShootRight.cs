@@ -16,7 +16,6 @@ public class ShootRightBasic : ShootBasic
         if (IsInteractive)
         {
             reloader = HUD.Instance.GetReload(HUD.Instance.PrimaryReloader);
-            IsInteractive = Handler?.Owner is MainPlayerBehaviour;
         }
     }
     protected override DamageInfo GetDamageValues()
@@ -28,27 +27,6 @@ public class ShootRightBasic : ShootBasic
         else
         {
             return new DamageInfo(40, 0, Handler.Owner.Team, true);
-        }
-    }
-    protected override void AICheck()
-    {
-        if (Handler.AIState == AIUtils.AIState.CheckShoot || Handler.AIState == AIUtils.AIState.Attacking)
-        {
-            if (Handler.distanceToClosest < 10)
-            {
-                Handler.movementAI.MovementState = AIUtils.MovementState.IsStanding;
-                Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);
-                if (loaded)
-                {
-                    Handler.FinalAction = AbilityAction;
-                }
-            }
-            else
-            {
-                Handler.movementAI.MovementState = AIUtils.MovementState.IsFollowingTarget;
-                Handler.movementAI.Speedup = 0.75f;
-                Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);
-            }
         }
     }
 }

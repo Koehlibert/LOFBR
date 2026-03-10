@@ -19,7 +19,11 @@ public class UltAttack : ShootBasic
     protected override void OnEnable()
     {
         base.OnEnable();
-        reloader = HUD.Instance.GetReload(HUD.Instance.UltReloader);
+        IsInteractive = Handler?.Owner is MainPlayerBehaviour;
+        if (IsInteractive)
+        {
+            reloader = HUD.Instance.GetReload(HUD.Instance.UltReloader);
+        }
     }
     protected override IEnumerator Firstbullet()
     {
@@ -57,10 +61,25 @@ public class UltAttack : ShootBasic
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(50+(player.levelsys.getLevel()-5)*6.5f, 0, CombatUtils.Team.Player, true, true);
+        return new DamageInfo(50 + (player.levelsys.getLevel() - 5) * 6.5f, 0, CombatUtils.Team.Player, true, true);
     }
     protected override GameObject CreateBullet()
     {
         return BulletFactory.Instance.CreateUltBullet(player, false, Bone);
+    }
+    protected override void AICheck()
+    {
+        if (Handler.AIState == AIUtils.AIState.CheckShoot || Handler.AIState == AIUtils.AIState.Attacking || Handler.AIState == AIUtils.AIState.CheckDistSkills)
+        {
+            if (Handler.ClosestFinder.GetActiveEnemyNumber() >= 3)
+            {
+                Handler.movementAI.MovementState = AIUtils.MovementState.IsStanding;
+                Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);
+                if (loaded)
+                {
+                    Handler.FinalAction = AbilityAction;
+                }
+            }
+        }
     }
 }

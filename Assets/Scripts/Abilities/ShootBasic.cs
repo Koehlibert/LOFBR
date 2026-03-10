@@ -8,6 +8,7 @@ public abstract class ShootBasic : DamagingAbility
     protected Vector3 offset = new Vector3(0, -0.5f, 1.5f);
     [SerializeField] AudioSource soundsource;
     protected GameObject bulletinstance;
+    protected Coroutine reloadCoroutine;
     protected virtual GameObject CreateBullet()
     {
         return BulletFactory.Instance.CreateBullet(Handler.Owner, true, Bone);
@@ -24,12 +25,17 @@ public abstract class ShootBasic : DamagingAbility
     {
         StartCoroutine(Firstbullet());
         Reset();
+        IsInteractive = Handler?.Owner is MainPlayerBehaviour;
     }
     void OnDisable()
     {
         if (bulletinstance)
         {
             Destroy(bulletinstance);
+        }
+        if (reloadCoroutine != null)
+        {
+            StopCoroutine(reloadCoroutine);
         }
     }
     protected virtual IEnumerator Firstbullet()
@@ -42,6 +48,7 @@ public abstract class ShootBasic : DamagingAbility
     {
         loaded = false;
         yield return new WaitForSeconds(reloadtime);
+        yield return new WaitUntil(() => Handler.movementAI.MoveLock == false);
         bulletinstance = CreateBullet();
         loaded = true;
     }
@@ -59,11 +66,32 @@ public abstract class ShootBasic : DamagingAbility
     protected override void AbilityAction()
     {
         StartCoroutine(Shootanim());
-        StartCoroutine(Reload());
+        reloadCoroutine = StartCoroutine(Reload());
         if (IsInteractive)
         {
             reloader.shoot();
             player.manasys.useMana(manaCost);
+        }
+    }
+    protected override void AICheck()
+    {
+        if (Handler.AIState == AIUtils.AIState.CheckShoot || Handler.AIState == AIUtils.AIState.Attacking)
+        {
+            if (Handler.distanceToClosest < 10)
+            {
+                Handler.movementAI.MovementState = AIUtils.MovementState.IsStanding;
+                Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);
+                if (loaded)
+                {
+                    Handler.FinalAction = AbilityAction;
+                }
+            }
+            else
+            {
+                Handler.movementAI.MovementState = AIUtils.MovementState.IsFollowingTarget;
+                Handler.movementAI.Speedup = 0.75f;
+                Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);
+            }
         }
     }
 }

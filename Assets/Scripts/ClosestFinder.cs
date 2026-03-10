@@ -109,4 +109,8 @@ public class ClosestFinder
         }
         return closeEnemies;
     }
+    public int GetActiveEnemyNumber()
+    {
+        return AllObjectsNoTowers.Count;
+    }
 }

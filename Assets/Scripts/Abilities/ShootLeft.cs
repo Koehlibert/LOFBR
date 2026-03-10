@@ -13,8 +13,10 @@ public class ShootLeftBasic : ShootBasic
     protected override void OnEnable()
     {
         base.OnEnable();
-        reloader = HUD.Instance.GetReload(HUD.Instance.SecondaryReloader);
-        IsInteractive = Handler?.Owner is MainPlayerBehaviour;
+        if (IsInteractive)
+        {
+            reloader = HUD.Instance.GetReload(HUD.Instance.SecondaryReloader);
+        }
     }
     protected override DamageInfo GetDamageValues()
     {
