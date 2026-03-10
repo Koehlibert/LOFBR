@@ -10,6 +10,7 @@ public class UltAttack : ShootBasic
     protected override HumanBodyBones Bone => HumanBodyBones.LeftLowerLeg;
     new void Start()
     {
+        base.Start();
         offset = new Vector3(0, 1, 0);
         loaded = true;
         reloadtime = 15f;
