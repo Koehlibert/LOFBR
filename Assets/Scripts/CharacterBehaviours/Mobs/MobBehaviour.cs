@@ -18,7 +18,6 @@ public abstract class MobBehaviour : DamageableEntity
     private Rigidbody bulletrig;
     Vector3 offset = new Vector3(0f, 0f, 1f);
     protected CombatUtils.Team EnemyTeam;
-    private GameObject closestCurrentEnemy;
     private ClosestFinder closestFinder;
     private float animSpeed;
     [SerializeField] Image healthbar;
@@ -30,7 +29,6 @@ public abstract class MobBehaviour : DamageableEntity
         LastHit = false;
         nmAgent = gameObject.GetComponent<NavMeshAgent>();
         EnemyTeam = CombatUtils.GetOpposingTeam(Team);
-        closestCurrentEnemy = null;
         enemybase = MasterScript.Instance.GetOpponentBase(EnemyTeam);
         closestFinder = new ClosestFinder(Team, this.gameObject);
         hpsys.Initialize(100, 0, 0, 0);

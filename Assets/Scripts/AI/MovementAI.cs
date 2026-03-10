@@ -12,6 +12,7 @@ public class MovementAI : Ability
     private float TeamDirectionMultiplier;
     public AIUtils.MovementState MovementState { get; set; }
     public bool MoveLock;
+    private bool LookLock;
     public bool CaresAboutHealth;
     public float Movementspeed { get; set; }
     public float Speedup;
@@ -103,11 +104,14 @@ public class MovementAI : Ability
     }
     public void HandleLook()
     {
-        Vector3 dir = Handler.LookDirection - transform.position;
-        dir.y = 0;
-        if (dir.sqrMagnitude > 0.001f)
+        if (!LookLock)
         {
-            transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
+            Vector3 dir = Handler.LookDirection - transform.position;
+            dir.y = 0;
+            if (dir.sqrMagnitude > 0.001f)
+            {
+                transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
+            }
         }
     }
     public IEnumerator LockMovement(float duration)
@@ -116,6 +120,12 @@ public class MovementAI : Ability
         yield return new WaitForSeconds(duration);
         Speedup = 1;
         MoveLock = false;
+    }
+    public IEnumerator LockView(float duration)
+    {
+        LookLock = true;
+        yield return new WaitForSeconds(duration);
+        LookLock = false;
     }
     protected override bool InputPressed()
     {

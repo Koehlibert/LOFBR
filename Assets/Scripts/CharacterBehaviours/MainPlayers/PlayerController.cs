@@ -15,7 +15,6 @@ public class PlayerController : MainPlayerBehaviour
     public EnemyPlayerBehaviour enemyPlayer;
     public Color flashcolor = new Color(1f, 0f, 0f, 0.1f);
     public AudioSource soundsource;
-    private bool lookLock;
     private int classID;
     private Skillset skillSet;
     private bool isDead = false;
@@ -95,12 +94,6 @@ public class PlayerController : MainPlayerBehaviour
     public float GetSpeed()
     {
         return movementspeed;
-    }
-    public IEnumerator LockView(float duration)
-    {
-        lookLock = true;
-        yield return new WaitForSeconds(duration);
-        lookLock = false;
     }
     protected override void Die()
     {

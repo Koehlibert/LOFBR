@@ -52,7 +52,7 @@ public class Melee : DamagingAbility
         duration = clipLength;
         StartCoroutine(player.aIHandler.movementAI.LockMovement(duration));
         StartCoroutine(player.aIHandler.SetForcemovement(duration));
-        StartCoroutine(player.LockView(duration));
+        StartCoroutine(player.aIHandler.movementAI.LockView(duration));
         player.aIHandler.movementAI.Speedup = speedup;
         StartCoroutine("resetanim");
     }

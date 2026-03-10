@@ -53,5 +53,6 @@
         "Temp/": true
     },
     "dotnet.preferCSharpExtension": true,
-    "dotnet.defaultSolution": "LOFBR.slnx"
+    "dotnet.defaultSolution": "LOFBR.slnx",
+    "FSharp.suggestGitignore": false
 }

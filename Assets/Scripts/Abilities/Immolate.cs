@@ -68,12 +68,10 @@ public class Immolate : DamagingAbility
     {
         if (isOnFire)
         {
-            Debug.Log("Fire Off :(");
             TurnOff();
         }
         else
         {
-            Debug.Log("Fire!");
             TurnOn();
         }
     }
