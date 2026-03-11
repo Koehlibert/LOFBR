@@ -5,18 +5,20 @@ using UnityEngine;
 public class ManaDrain : DamagingAbility
 {
     private LineRenderer lRend;
-    private EnemyPlayerBehaviour enemy;
+    private MainPlayerBehaviour enemy;
     private float durationTime = 4f;
     private Vector3 offset = new Vector3(0, 2, 0);
     private bool isDraining;
-    new void Start()
+    protected override void AdditionalInit()
     {
-        base.Start();
         lRend = GetComponent<LineRenderer>();
-        loaded = true;
-        enemy = FindAnyObjectByType<EnemyPlayerBehaviour>();
+        enemy = MasterScript.Instance.GetOpponentPlayer(Handler.Owner.Team);
         lRend.enabled = false;
         isDraining = false;
+    }
+    protected override AbilityInfo GetAbilityInfo()
+    {
+        return new AbilityInfo(25, 10, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
     }
     protected override void OnEnable()
     {
@@ -35,8 +37,8 @@ public class ManaDrain : DamagingAbility
             }
             lRend.SetPosition(0, player.transform.position + offset);
             lRend.SetPosition(1, enemy.transform.position + offset);
-            float actualDamage = enemy.manasys.drainMana((5 + player.levelsys.getLevel() * 2) * Time.deltaTime);
-            if (enemy.GetHealth().TakeDamage(actualDamage * (0.05f + 0.05f * player.levelsys.getLevel())))
+            float actualDamage = enemy.manasys.drainMana((5 + player.Levelsys.GetLevel() * 2) * Time.deltaTime);
+            if (enemy.GetHealth().TakeDamage(actualDamage * (0.05f + 0.05f * player.Levelsys.GetLevel())))
             {
                 enemy.Kill();
             }
@@ -51,7 +53,7 @@ public class ManaDrain : DamagingAbility
     {
         lRend.enabled = true;
         isDraining = true;
-        yield return new WaitForSeconds(durationTime + player.levelsys.getLevel() * 0.8f);
+        yield return new WaitForSeconds(durationTime + player.Levelsys.GetLevel() * 0.8f);
         lRend.enabled = false;
         isDraining = false;
     }

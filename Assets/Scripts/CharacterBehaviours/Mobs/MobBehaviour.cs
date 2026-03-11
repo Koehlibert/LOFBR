@@ -56,7 +56,7 @@ public abstract class MobBehaviour : DamageableEntity
         if (!hpsys.FullHP())
         {
             hpsys.Heal(damageComponent);
-            player.levelsys.gainExp(5);
+            player.Levelsys.GainExp(5);
             Destroy(bulletObject);
         }
     }
@@ -66,7 +66,7 @@ public abstract class MobBehaviour : DamageableEntity
         {
             if (player.gameObject.activeSelf)
             {
-                player.levelsys.gainExp(5);
+                player.Levelsys.GainExp(5);
             }
         }
         if (bulletinstance)

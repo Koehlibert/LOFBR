@@ -12,6 +12,10 @@ public class UltBladeFlurry : DamagingAbility
         base.OnEnable();
         reloader = HUD.Instance.GetReload(HUD.Instance.UltReloader);
     }
+    protected override AbilityInfo GetAbilityInfo()
+    {
+        return new AbilityInfo(225, 20, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
+    }
     private IEnumerator Flurry()
     {
         StartCoroutine(player.aIHandler.movementAI.LockMovement(duration * (flurryPos.Count + 1)));
@@ -66,7 +70,7 @@ public class UltBladeFlurry : DamagingAbility
     }
     protected override void AbilityAction()
     {
-        flurryPos = MasterScript.Instance.GetFlurryTargets(player.levelsys.getLevel() - 1);
+        flurryPos = MasterScript.Instance.GetFlurryTargets(player.Levelsys.GetLevel() - 1);
         if (flurryPos.Count > 0)
         {
             StartCoroutine("reload");
@@ -81,6 +85,6 @@ public class UltBladeFlurry : DamagingAbility
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(25 + (player.levelsys.getLevel() - 0) * 10, 0, CombatUtils.Team.Player, true, false);
+        return new DamageInfo(25 + (player.Levelsys.GetLevel() - 0) * 10, 0, CombatUtils.Team.Player, true, false);
     }
 }

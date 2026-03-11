@@ -15,6 +15,6 @@ public class LevelText : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Level.text = "Level "+player.levelsys.getLevel();
+        Level.text = "Level "+player.Levelsys.GetLevel();
     }
 }

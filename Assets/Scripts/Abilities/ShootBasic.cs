@@ -12,18 +12,16 @@ public abstract class ShootBasic : DamagingAbility
     protected float attackDistance;
     protected virtual GameObject CreateBullet()
     {
-        Debug.Log(Handler);
         return BulletFactory.Instance.CreateBullet(Handler.Owner, true, Bone);
     }
     protected abstract HumanBodyBones Bone { get; }
-    protected override void Start()
+    protected override AbilityInfo GetAbilityInfo()
     {
-        base.Start();
-        manaCost = 5;
-        loaded = false;
-        reloadtime = 1.5f;
+        return new AbilityInfo(5f, 1.5f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
+    }
+    protected override void AdditionalInit()
+    {
         attackDistance = 10f;
-        ActiveStates = new List<AIUtils.AIState> { AIUtils.AIState.CheckShoot, AIUtils.AIState.Attacking };
     }
     protected override void OnEnable()
     {
@@ -71,7 +69,7 @@ public abstract class ShootBasic : DamagingAbility
     {
         StartCoroutine(Shootanim());
         reloadCoroutine = StartCoroutine(Reload());
-        if (Handler.IsInteractive)
+        if (IsInteractive)
         {
             reloader.shoot();
             player.manasys.useMana(manaCost);

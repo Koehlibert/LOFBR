@@ -4,12 +4,8 @@ using UnityEngine;
 
 public class Stomp : DamagingAbility
 {
+    private HumanBodyBones Bone = HumanBodyBones.LeftLowerLeg;
     public GameObject bullet;
-    new void Start()
-    {
-        base.Start();
-        loaded = true;
-    }
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -24,12 +20,13 @@ public class Stomp : DamagingAbility
     protected override void AbilityAction()
     {
         StartCoroutine("Shootanim");
-        reloader.shoot();
         StartCoroutine("Reload");
-        player.manasys.useMana(manaCost);
-        StartCoroutine("Reload");
-        reloader.shoot();
-        player.manasys.useMana(manaCost);
+        if (IsInteractive)
+        {
+            reloader.shoot();
+            reloader.shoot();
+            player.manasys.useMana(manaCost);
+        }
     }
     protected override bool InputPressed()
     {
@@ -37,15 +34,19 @@ public class Stomp : DamagingAbility
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(70 + (player.levelsys.getLevel() - 2) * 6, 0, player.Team, true, false);
+        return new DamageInfo(70 + (player.Levelsys.GetLevel() - 2) * 6, 0, player.Team, true, false);
     }
     private IEnumerator Shootanim()
     {
         StartCoroutine(player.aIHandler.movementAI.LockMovement(0.95f));
         player.animator.Play("Stomp", 0, 0f);
         yield return new WaitForSeconds(0.7f);
-        GameObject wave = Instantiate(bullet, player.transform.position + new Vector3(0f, 0.4f, 0f), player.transform.rotation);
+        GameObject wave = BulletFactory.Instance.CreateShockwave(Handler.Owner, false, Bone);
         wave.GetComponent<Damage>().SetProperties(GetDamageValues());
         //soundsource.Play();
+    }
+    protected override AbilityInfo GetAbilityInfo()
+    {
+        return new AbilityInfo(80, 5, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills });
     }
 }

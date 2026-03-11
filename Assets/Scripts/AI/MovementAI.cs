@@ -20,10 +20,13 @@ public class MovementAI : Ability
     {
         base.OnEnable();
     }
+    protected override AbilityInfo GetAbilityInfo()
+    {
+        return new AbilityInfo(0, 0, new List<AIUtils.AIState>());
+    }
     public void Init(bool isInteractive, AIHandler aIHandler, float movementSpeed, bool caresAboutHealth)
     {
         base.Init(isInteractive, aIHandler);
-        Debug.Log(Handler);
         MoveLock = false;
         CaresAboutHealth = caresAboutHealth;
         Movementspeed = movementSpeed;

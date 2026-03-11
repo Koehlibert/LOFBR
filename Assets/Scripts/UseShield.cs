@@ -6,10 +6,9 @@ public class UseShield : Ability
 {
     public GameObject shield;
     private GameObject shieldInstance;
-    new void Start()
+    protected override AbilityInfo GetAbilityInfo()
     {
-        base.Start();
-        loaded = true;
+        return new AbilityInfo(50, 12, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
     }
     private IEnumerator destroyShield()
     {

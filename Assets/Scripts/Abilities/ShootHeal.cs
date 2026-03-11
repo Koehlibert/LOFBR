@@ -16,7 +16,7 @@ public class ShootHeal : ShootBasic
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(40 + 5 * player.levelsys.getLevel(), 0, CombatUtils.Team.Player, false, false);
+        return new DamageInfo(40 + 5 * player.Levelsys.GetLevel(), 0, CombatUtils.Team.Player, false, false);
     }
     protected override GameObject CreateBullet()
     {

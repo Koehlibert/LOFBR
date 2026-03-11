@@ -11,6 +11,11 @@ public class HUD : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        PrimaryReloader.SetActive(false);
+        SecondaryReloader.SetActive(false);
+        AltReloader.SetActive(false);
+        SkillReloader.SetActive(false);
+        UltReloader.SetActive(false);  
     }
     public Reload GetReload(GameObject gameObject)
     {

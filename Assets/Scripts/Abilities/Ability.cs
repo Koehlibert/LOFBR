@@ -35,32 +35,42 @@ public abstract class Ability : MonoBehaviour
     protected bool loaded;
     protected Reload reloader;
     public float manaCost;
-    protected virtual void Start()
-    {
-        loaded = true;
-        if (IsInteractive)
-        {
-            player = GetComponent<PlayerController>();
-        }
-    }
     protected virtual void OnEnable()
     {
         Reset();
         if (IsInteractive)
         {
-            player = GetComponent<PlayerController>();
+            player = MasterScript.Instance.player;
         }
     }
     public virtual void Init(bool isInteractive, AIHandler aIHandler)
     {
+        loaded = true;
+        SetAbilityInfo(GetAbilityInfo());
+        Debug.Log(reloadtime);
+        AdditionalInit();
         Handler = aIHandler;
         IsInteractive = isInteractive;
+    }
+    protected virtual void AdditionalInit()
+    {
+        
+    }
+    public virtual void Init(bool isInteractive, AIHandler aIHandler, GameObject reloadObject)
+    {
+        Init(isInteractive, aIHandler);
+        setReloader(HUD.Instance.GetReload(reloadObject));
+        reloadObject.SetActive(true);
+        if (isInteractive & reloader != null)
+        {
+            ActivateReloader();
+        }
     }
     protected virtual void InteractiveCheck()
     {
         if (!player)
         {
-            player = GetComponent<PlayerController>();
+            player = MasterScript.Instance.player;
         }
         if (InputPressed() && (loaded) && player.manasys.checkCost(manaCost))
         {
@@ -80,7 +90,7 @@ public abstract class Ability : MonoBehaviour
     }
     protected abstract bool InputPressed();
     protected abstract void AbilityAction();
-    public void Activate()
+    public void ActivateReloader()
     {
         reloader.Activate();
     }
@@ -97,10 +107,29 @@ public abstract class Ability : MonoBehaviour
     public void setReloader(Reload val)
     {
         reloader = val;
-        reloader.setAbility(this);
+        reloader.SetAbility(this);
+    }
+    protected abstract AbilityInfo GetAbilityInfo();
+    private void SetAbilityInfo(AbilityInfo abilityInfo)
+    {
+        this.manaCost = abilityInfo.ManaCost;
+        this.reloadtime = abilityInfo.Reloadtime;
+        this.ActiveStates = abilityInfo.ActiveStates;
     }
 }
 public abstract class DamagingAbility : Ability
 {
     protected abstract DamageInfo GetDamageValues();
+}
+public class AbilityInfo
+{
+    public float ManaCost;
+    public float Reloadtime;
+    public List<AIUtils.AIState> ActiveStates;
+    public AbilityInfo(float manaCost, float reloadtime, List<AIUtils.AIState> activeStates)
+    {
+        this.ManaCost = manaCost;
+        this.Reloadtime = reloadtime;
+        this.ActiveStates = activeStates;
+    }
 }

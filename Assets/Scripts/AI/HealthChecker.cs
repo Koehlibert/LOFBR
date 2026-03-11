@@ -10,7 +10,6 @@ public class HealthChecker : AIModule
     private float DamagedThreshold;
     public void Init(float healthyThreshold, float damagedThreshold)
     {
-
         this.HealthyThreshold = healthyThreshold;
         this.DamagedThreshold = damagedThreshold;
     }

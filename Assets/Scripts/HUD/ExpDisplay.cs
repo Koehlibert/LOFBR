@@ -17,13 +17,13 @@ public class ExpDisplay : MonoBehaviour
     {
         if (player.isActiveAndEnabled)
         {
-            if (player.levelsys.isMaxLevel())
+            if (player.Levelsys.IsMaxLevel())
             {
                 expslider.value = 1;
             }
             else
             {
-                expslider.value = player.levelsys.expPercentage();
+                expslider.value = player.Levelsys.ExpPercentage();
             }
         }
     }

@@ -7,7 +7,6 @@ using Extensions;
 
 public class PlayerController : MainPlayerBehaviour
 {
-    public Mana manasys;
     private float movementspeed;
     public int rotatespeed;
     private float flashspeed;
@@ -23,7 +22,6 @@ public class PlayerController : MainPlayerBehaviour
     {
         base.Start();
         enemyPlayer = FindAnyObjectByType<EnemyPlayerBehaviour>();
-        levelsys = GetComponent<Level>();
         manasys = GetComponent<Mana>();
         hpsys = GetComponent<Health>();
         LastHit = false;
@@ -31,19 +29,19 @@ public class PlayerController : MainPlayerBehaviour
         switch (classID)
         {
             case 1:
-                skillSet = GetComponent<SkillsetFighter>();
+                skillSet = gameObject.AddComponent<SkillsetFighter>();
                 break;
             case 2:
-                skillSet = GetComponent<SkillsetSupport>();
+                skillSet = gameObject.AddComponent<SkillsetSupport>();
                 break;
             case 3:
-                skillSet = GetComponent<SkillsetMelee>();
+                skillSet = gameObject.AddComponent<SkillsetMelee>();
                 break;
         }
-        skillSet.enabled = true;
-        skillSet.BaseUnlock();
         aIHandler = gameObject.AddComponent<AIHandler>();
         aIHandler.Init(this, new List<Ability>(), new List<AIModule>(), skillSet.GetSpeed());
+        skillSet.Init(aIHandler);
+        skillSet.LevelUnlock(1);
         var hpVals = skillSet.GetHPVals();
         hpsys.Initialize(hpVals.hpval, hpVals.regenval, hpVals.delay, hpVals.armorval);
         flashspeed = 2.5f;
@@ -62,8 +60,8 @@ public class PlayerController : MainPlayerBehaviour
         if (PlayerInputRouter.Instance.CheatedPressed)
         {
             hpsys.AddArmor(1000);
-            levelsys.gainExp(100);
-            enemyPlayer.levelsys.gainExp(100);
+            Levelsys.GainExp(100);
+            enemyPlayer.Levelsys.GainExp(100);
         }
         UpdateDamageImage();
     }
@@ -84,11 +82,11 @@ public class PlayerController : MainPlayerBehaviour
             soundsource.Play();
         }
     }
-    void LevelUp()
+    public override void LevelUp()
     {
-        skillSet.LevelUnlock(levelsys.getLevel());
-        hpsys.UpdateValues((levelsys.getLevel() - 1) * 25, 2);
-        manasys.UpdateValues(50, levelsys.getLevel() * 0.25f);
+        skillSet.LevelUnlock(Levelsys.GetLevel());
+        hpsys.UpdateValues((Levelsys.GetLevel() - 1) * 25, 2);
+        manasys.UpdateValues(50, Levelsys.GetLevel() * 0.25f);
     }
     public float GetSpeed()
     {
@@ -101,7 +99,7 @@ public class PlayerController : MainPlayerBehaviour
         damageimage.color = flashcolor;
         if (LastHit)
         {
-            enemyPlayer.levelsys.gainExp(5 + 5 * levelsys.getLevel());
+            enemyPlayer.Levelsys.GainExp(5 + 5 * Levelsys.GetLevel());
         }
         LastHit = false;
         base.Die();
@@ -116,6 +114,6 @@ public class PlayerController : MainPlayerBehaviour
     }
     public void OnHealXP()
     {
-        levelsys.gainExp(5);
+        Levelsys.GainExp(5);
     }
 }

@@ -10,12 +10,14 @@ public class Melee : DamagingAbility
     private Vector3 dir;
     private GameObject meleeCollider;
     private float speedup = 1.5f;
-    new void Start()
+    protected override void AdditionalInit()
     {
-        base.Start();
-        loaded = true;
         meleeCollider = FindAnyObjectByType<MeleeCollider>().gameObject;
         meleeCollider.SetActive(false);
+    }
+    protected override AbilityInfo GetAbilityInfo()
+    {
+        return new AbilityInfo(5, 2.5f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking });
     }
     protected override void OnEnable()
     {
@@ -78,6 +80,6 @@ public class Melee : DamagingAbility
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(35 + player.levelsys.getLevel() * 3, 0, player.Team, true, false);
+        return new DamageInfo(35 + player.Levelsys.GetLevel() * 3, 0, player.Team, true, false);
     }
 }

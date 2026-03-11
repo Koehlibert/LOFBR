@@ -8,19 +8,14 @@ public class UltAttack : ShootBasic
     private ShootRightBasic ShootRight;
     private ShootLeftBasic ShootLeft;
     protected override HumanBodyBones Bone => HumanBodyBones.LeftLowerLeg;
-    new void Start()
+    protected override void AdditionalInit()
     {
-        base.Start();
         offset = new Vector3(0, 1, 0);
-        loaded = true;
-        reloadtime = 15f;
-        manaCost = 250;
-        ActiveStates.Add(AIUtils.AIState.CheckDistSkills);
     }
     protected override void OnEnable()
     {
         base.OnEnable();
-        if (Handler.IsInteractive)
+        if (IsInteractive)
         {
             reloader = HUD.Instance.GetReload(HUD.Instance.UltReloader);
         }
@@ -61,7 +56,7 @@ public class UltAttack : ShootBasic
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(50 + (player.levelsys.getLevel() - 5) * 6.5f, 0, CombatUtils.Team.Player, true, true);
+        return new DamageInfo(50 + (player.Levelsys.GetLevel() - 5) * 6.5f, 0, CombatUtils.Team.Player, true, true);
     }
     protected override GameObject CreateBullet()
     {
@@ -78,5 +73,9 @@ public class UltAttack : ShootBasic
                 Handler.FinalAction = AbilityAction;
             }
         }
+    }
+    protected override AbilityInfo GetAbilityInfo()
+    {
+        return new AbilityInfo(15f, 250, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills});
     }
 }

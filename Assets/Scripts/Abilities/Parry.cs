@@ -6,14 +6,15 @@ public class Parry : Ability
 {
     private GameObject parryCollider;
     private float duration;
-    new void Start()
+    protected override void AdditionalInit()
     {
-        base.Start();
         duration = .6f;
-        loaded = true;
         parryCollider = FindAnyObjectByType<ParryColliderBehaviour>().gameObject;
         parryCollider.SetActive(false);
-        player = FindAnyObjectByType<PlayerController>();
+    }
+    protected override AbilityInfo GetAbilityInfo()
+    {
+        return new AbilityInfo(8, 3.5f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
     }
     protected override void OnEnable()
     {

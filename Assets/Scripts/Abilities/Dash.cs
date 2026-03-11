@@ -5,7 +5,10 @@ using UnityEngine;
 public class Dash : Ability
 {
     public GameObject shield;
-
+    protected override AbilityInfo GetAbilityInfo()
+    {
+        return new AbilityInfo(15, 2.5f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills, AIUtils.AIState.CheckGeneralSkills });
+    }
     private float dashDistance = 10;
     protected override void AbilityAction()
     {
@@ -27,12 +30,7 @@ public class Dash : Ability
         base.OnEnable();
         reloader = HUD.Instance.GetReload(HUD.Instance.AltReloader);
     }
-    new void Start()
-    {
-        base.Start();
-        loaded = true;
-    }
-        protected override bool InputPressed()
+    protected override bool InputPressed()
     {
         return PlayerInputRouter.Instance.AlternativePressed;
     }

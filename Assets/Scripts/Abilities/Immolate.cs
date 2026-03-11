@@ -8,14 +8,15 @@ public class Immolate : DamagingAbility
     private GameObject fire;
     private bool isOnFire;
     private float manaDrain;
-    new void Start()
+    protected override void AdditionalInit()
     {
-        base.Start();
-        loaded = true;
-        reloadtime = 8f;
         fire = FindAnyObjectByType<FireBehaviour>().gameObject;
         fire.SetActive(false);
         isOnFire = false;
+    }
+    protected override AbilityInfo GetAbilityInfo()
+    {
+        return new AbilityInfo(15, 8, new List<AIUtils.AIState> { AIUtils.AIState.Attacking });
     }
     protected override void OnEnable()
     {
@@ -81,7 +82,7 @@ public class Immolate : DamagingAbility
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(3.5f * player.levelsys.getLevel(), 0, player.Team, true, true);
+        return new DamageInfo(3.5f * player.Levelsys.GetLevel(), 0, player.Team, true, true);
     }
 
     public override void Checker()

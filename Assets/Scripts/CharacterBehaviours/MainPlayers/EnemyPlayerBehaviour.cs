@@ -49,14 +49,12 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
     public Image healthbar;
     public Image manaBar;
     private GameObject shieldInstance;
-    public Mana manasys;
     private ClosestFinder closestFinder;
     protected override void Start()
     {
         base.Start();
         attackdistance = 20;
         manasys = GetComponent<Mana>();
-        levelsys = GetComponent<Level>();
         hpsys.Initialize(300, 3, 4, 5);
         standarddirection = new Vector3(0f, 0f, -1f);
         nmAgent = gameObject.GetComponent<NavMeshAgent>();
@@ -98,13 +96,10 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
         loaded = true;
         bulletinstance = BulletFactory.Instance.CreateBullet(this, true, HumanBodyBones.RightLowerLeg);
         bulletrig = bulletinstance.GetComponent<Rigidbody>();
-        if (levelsys)
+        if (Levelsys.CheckLevel(4))
         {
-            if (levelsys.checkLevel(4))
-            {
-                bulletinstance2 = BulletFactory.Instance.CreateBullet(this, true, HumanBodyBones.LeftLowerLeg);
-                bulletrig2 = bulletinstance2.GetComponent<Rigidbody>();
-            }
+            bulletinstance2 = BulletFactory.Instance.CreateBullet(this, true, HumanBodyBones.LeftLowerLeg);
+            bulletrig2 = bulletinstance2.GetComponent<Rigidbody>();
         }
     }
     void LateUpdate()
@@ -120,7 +115,7 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
         {
             if (player.gameObject.activeSelf)
             {
-                player.levelsys.gainExp(5 + 5 * levelsys.getLevel());
+                player.Levelsys.GainExp(5 + 5 * Levelsys.GetLevel());
             }
         }
         if (bulletinstance)
@@ -276,14 +271,14 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
             manasys.useMana(5);
         }
     }
-    void LevelUp()
+    public override void LevelUp()
     {
         reloadtime *= 0.95f;
-        hpsys.UpdateValues((levelsys.getLevel() - 1) * 25, 0.5f);
+        hpsys.UpdateValues((Levelsys.GetLevel() - 1) * 25, 0.5f);
         movementSpeed++;
         nmAgent.speed += 2;
         manasys.UpdateValues(1.2f, 1.35f);
-        if (levelsys.checkLevel(2))
+        if (Levelsys.CheckLevel(2))
         {
             detector.enabled = true;
             detector2.enabled = true;
@@ -297,7 +292,7 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
         bulletinstance = BulletFactory.Instance.CreateBullet(this, true, HumanBodyBones.RightLowerLeg);
         bulletrig = bulletinstance.GetComponent<Rigidbody>();
         loaded = true;
-        if (levelsys.checkLevel(4))
+        if (Levelsys.CheckLevel(4))
         {
             bulletinstance2 = BulletFactory.Instance.CreateBullet(this, true, HumanBodyBones.LeftLowerLeg);
             bulletrig2 = bulletinstance2.GetComponent<Rigidbody>();
@@ -347,7 +342,7 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
     }
     public void UseShield()
     {
-        if ((levelsys.checkLevel(3)) && (loadedShield) && manasys.checkCost(120))
+        if ((Levelsys.CheckLevel(3)) && (loadedShield) && manasys.checkCost(120))
         {
             shieldInstance = Instantiate(shield, transform.position, transform.rotation);
             shieldInstance.GetComponent<Shield>().SetPlayer(this);
@@ -383,7 +378,7 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
     }
     private void MoveShockCheckColliders()
     {
-        if (levelsys.getLevel() > 1)
+        if (Levelsys.GetLevel() > 1)
         {
             GameObject[] closeEns = closestFinder.FindTwoClosest();
             if (closeEns[0])
@@ -428,14 +423,14 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
     }
     private DamageInfo GetMainAttackDamage()
     {
-        return new DamageInfo(34 + 7 * levelsys.getLevel(), 0, this.Team, true);
+        return new DamageInfo(34 + 7 * Levelsys.GetLevel(), 0, this.Team, true);
     }
     private DamageInfo GetShockDamage()
     {
-        return new DamageInfo(70 + (levelsys.getLevel() - 2) * 6, 0, this.Team, true);
+        return new DamageInfo(70 + (Levelsys.GetLevel() - 2) * 6, 0, this.Team, true);
     }
     private DamageInfo GetUltDamage()
     {
-        return new DamageInfo(50 + (levelsys.getLevel() - 5) * 4.5f, 0, this.Team, true, true);
+        return new DamageInfo(50 + (Levelsys.GetLevel() - 5) * 4.5f, 0, this.Team, true, true);
     }
 }

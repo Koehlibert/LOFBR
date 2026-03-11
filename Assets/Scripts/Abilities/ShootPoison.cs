@@ -17,7 +17,7 @@ public class ShootPoison : ShootBasic
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(16 + 4 * player.levelsys.getLevel(), 4f + 4f + 1.5f * player.levelsys.getLevel(), CombatUtils.Team.Player, true, false);
+        return new DamageInfo(16 + 4 * player.Levelsys.GetLevel(), 4f + 4f + 1.5f * player.Levelsys.GetLevel(), CombatUtils.Team.Player, true, false);
     }
     protected override GameObject CreateBullet()
     {

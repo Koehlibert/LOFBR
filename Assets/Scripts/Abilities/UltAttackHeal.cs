@@ -5,11 +5,9 @@ using UnityEngine;
 public class UltAttackHeal : Ability
 {
     public GameObject ultBullet;
-    new void Start()
+    protected override AbilityInfo GetAbilityInfo()
     {
-        base.Start();
-        loaded = true;
-        player = GetComponent<PlayerController>();
+        return new AbilityInfo(120, 15, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills });
     }
     private IEnumerator reload()
     {

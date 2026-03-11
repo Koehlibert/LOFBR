@@ -25,7 +25,7 @@ public class AIHandler : MonoBehaviour
     public bool ForceMovement;
     public GameObject closestEnemy;
     public float distanceToClosest;
-    public bool IsInteractive;
+    private bool IsInteractive;
     public virtual void Init(DamageableEntity owner, List<Ability> abilities, List<AIModule> aIModules, float movementSpeed, bool caresAboutHealth = false)
     {
         Owner = owner;
@@ -55,6 +55,16 @@ public class AIHandler : MonoBehaviour
         ForceMovement = false;
         MovementDirection = new Vector3();
         LookDirection = new Vector3();
+    }
+    public void AddAbility(Ability ability)
+    {
+        ability.Init(IsInteractive, this);
+        Abilities.Add(ability);
+    }
+    public void AddAbility(Ability ability, GameObject reloadObject)
+    {
+        ability.Init(IsInteractive, this, reloadObject);
+        Abilities.Add(ability);
     }
     private void Update()
     {
