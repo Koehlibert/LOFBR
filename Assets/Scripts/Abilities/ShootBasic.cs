@@ -9,6 +9,7 @@ public abstract class ShootBasic : DamagingAbility
     [SerializeField] AudioSource soundsource;
     protected GameObject bulletinstance;
     protected Coroutine reloadCoroutine;
+    protected float attackDistance;
     protected virtual GameObject CreateBullet()
     {
         return BulletFactory.Instance.CreateBullet(Handler.Owner, true, Bone);
@@ -20,6 +21,8 @@ public abstract class ShootBasic : DamagingAbility
         manaCost = 5;
         loaded = false;
         reloadtime = 1.5f;
+        attackDistance = 10f;
+        ActiveStates = new List<AIUtils.AIState> { AIUtils.AIState.CheckShoot, AIUtils.AIState.Attacking };
     }
     protected override void OnEnable()
     {
@@ -75,23 +78,20 @@ public abstract class ShootBasic : DamagingAbility
     }
     protected override void AICheck()
     {
-        if (Handler.AIState == AIUtils.AIState.CheckShoot || Handler.AIState == AIUtils.AIState.Attacking)
+        if (Handler.distanceToClosest < attackDistance)
         {
-            if (Handler.distanceToClosest < 10)
+            Handler.movementAI.MovementState = AIUtils.MovementState.IsStanding;
+            Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);
+            if (loaded)
             {
-                Handler.movementAI.MovementState = AIUtils.MovementState.IsStanding;
-                Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);
-                if (loaded)
-                {
-                    Handler.FinalAction = AbilityAction;
-                }
+                Handler.FinalAction = AbilityAction;
             }
-            else
-            {
-                Handler.movementAI.MovementState = AIUtils.MovementState.IsFollowingTarget;
-                Handler.movementAI.Speedup = 0.75f;
-                Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);
-            }
+        }
+        else
+        {
+            Handler.movementAI.MovementState = AIUtils.MovementState.IsFollowingTarget;
+            Handler.movementAI.Speedup = 0.75f;
+            Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);
         }
     }
 }

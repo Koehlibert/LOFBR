@@ -6,7 +6,7 @@ using System;
 
 public abstract class Ability : MonoBehaviour
 {
-    protected bool IsActive { get; set; }
+    protected List<AIUtils.AIState> ActiveStates;
     public bool IsInteractive { get; set; }
     protected AIHandler Handler { get; set; }
     public virtual void Checker()
@@ -17,10 +17,12 @@ public abstract class Ability : MonoBehaviour
         }
         else
         {
-            AICheck();
+            if (ActiveStates.Contains(Handler.AIState))
+            {
+                AICheck();
+            }
         }
     }
-    protected AIUtils.AIState ActiveState { get; set; }
     protected void SetFinalAction(Action action, Vector3 target, AIUtils.AIState aIState, float lockAITimer)
     {
         Handler.FinalAction = action;
