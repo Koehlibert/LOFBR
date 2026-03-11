@@ -81,6 +81,9 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
         detector2.enabled = false;
         bulletdetector = FindAnyObjectByType<DetectBullets>();
         loadedUlt = false;
+        aIHandler = gameObject.AddComponent<AIHandler>();
+        ShootRightBasic shooter = gameObject.AddComponent<ShootRightBasic>();
+        aIHandler.Init(this, new List<Ability> { shooter }, new List<AIModule>(), movementSpeed, true);
     }
     void OnEnable()
     {
@@ -139,13 +142,11 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
     {
         StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
         UpdateBars();
-        if (MasterScript.Instance.timeCounter % 150 == 0)
+        /* if (MasterScript.Instance.timeCounter % 150 == 0)
         {
             circledirection *= -1;
         }
-        UpdateBullets();
         closestCurrentEnemy = closestFinder.FindClosest();
-        CheckUlt();
         if (loadedShock)
         {
             MoveShockCheckColliders();
@@ -263,7 +264,7 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
             }
         }
         animator.SetFloat("moveX", 0);
-        animator.SetFloat("moveZ", animSpeed);
+        animator.SetFloat("moveZ", animSpeed); */
     }
     public void Attack(Vector3 target)
     {
@@ -361,17 +362,6 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
         healthbar.fillAmount = Mathf.Lerp(healthbar.fillAmount, hpval, 5f * Time.deltaTime);
         manaBar.fillAmount = manasys.getPercent();
     }
-    private void UpdateBullets()
-    {
-        if (bulletrig)
-        {
-            bulletrig.transform.position = animator.GetBoneTransform(HumanBodyBones.RightLowerLeg).position + offset;
-        }
-        if (bulletrig2)
-        {
-            bulletrig2.transform.position = animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + offset;
-        }
-    }
     private IEnumerator ReloadShield()
     {
         loadedShield = false;
@@ -390,16 +380,6 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
         yield return new WaitForSeconds(1.5f);
         hpsys.AddArmor(-100);
         GameObject.Destroy(shieldInstance);
-    }
-    private void CheckUlt()
-    {
-        /* if ((MasterScript.Instance.allFriendlies.Count >= 4) && (loadedUlt) && (levelsys.checkLevel(5)) && manasys.checkCost(250))
-        {
-            GameObject ultInstance = Instantiate(BulletUlt, transform.position + transform.forward + new Vector3(0, 2, 0), transform.rotation);
-            ultInstance.gameObject.GetComponent<Damage>().SetProperties(GetUltDamage());
-            StartCoroutine("ReloadUlt");
-            manasys.useMana(250);
-        } */
     }
     private void MoveShockCheckColliders()
     {

@@ -13,13 +13,20 @@ public class ShootLeftBasic : ShootBasic
     protected override void OnEnable()
     {
         base.OnEnable();
-        if (IsInteractive)
+        if (Handler.IsInteractive)
         {
             reloader = HUD.Instance.GetReload(HUD.Instance.SecondaryReloader);
         }
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(34 + 7 * player.levelsys.getLevel(), 0, CombatUtils.Team.Player, true);
+        if (Handler.IsInteractive)
+        {
+            return new DamageInfo(34 + 7 * player.levelsys.getLevel(), 0, Handler.Owner.Team, true);
+        }
+        else
+        {
+            return new DamageInfo(40, 0, Handler.Owner.Team, true);
+        }
     }
 }

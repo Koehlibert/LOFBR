@@ -5,14 +5,14 @@ using UnityEngine;
 public abstract class AIModule : MonoBehaviour
 {
     protected bool IsActive { get; set; }
-    protected bool IsInteractive { get; set; }
+    public bool IsInteractive;
     protected AIHandler Handler { get; set; }
     public abstract void Checker();
     protected AIUtils.AIState ActiveState { get; set; }
-    protected virtual void OnEnable()
+    public virtual void Init(bool isInteractive, AIHandler aIHandler)
     {
-        Handler = GetComponent<AIHandler>();
-        IsInteractive = Handler.Owner is MainPlayerBehaviour;
+        Handler = aIHandler;
+        IsInteractive = isInteractive;
     }
     protected void SetFinalAction(Action action, Vector3 target, AIUtils.AIState aIState, float lockAITimer)
     {

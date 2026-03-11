@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEditor.Search;
 using UnityEngine;
 
-public abstract class AIHandler : MonoBehaviour
+public class AIHandler : MonoBehaviour
 {
     protected List<Ability> Abilities;
     protected List<AIModule> AIModules;
@@ -25,11 +25,17 @@ public abstract class AIHandler : MonoBehaviour
     public bool ForceMovement;
     public GameObject closestEnemy;
     public float distanceToClosest;
-    public virtual void Init(DamageableEntity owner, List<Ability> abilities, List<AIModule> aIModules)
+    public bool IsInteractive;
+    public virtual void Init(DamageableEntity owner, List<Ability> abilities, List<AIModule> aIModules, float movementSpeed, bool caresAboutHealth = false)
     {
         Owner = owner;
-        AIModules = aIModules;
+        IsInteractive = Owner is PlayerController;
         Abilities = abilities;
+        foreach (Ability ability in Abilities)
+        {
+            ability.Init(IsInteractive, this);
+        }
+        AIModules = aIModules;
         ClosestFinder = new ClosestFinder(Owner.Team, Owner.gameObject);
         healthChecker = Owner.gameObject.AddComponent<HealthChecker>();
         healthChecker.Init(0.7f, 0.3f);
@@ -38,7 +44,11 @@ public abstract class AIHandler : MonoBehaviour
         distanceHandler.Init(50, 30, 25, 12);
         AIModules.Add(distanceHandler);
         movementAI = Owner.gameObject.AddComponent<MovementAI>();
-        movementAI.IsInteractive = owner is MainPlayerBehaviour;
+        movementAI.Init(IsInteractive, this, movementSpeed, caresAboutHealth);
+        foreach (AIModule aIModule in AIModules)
+        {
+            aIModule.Init(IsInteractive, this);
+        }
         LockAITimer = 0f;
         FinalAction = null;
         FallBackAction = null;

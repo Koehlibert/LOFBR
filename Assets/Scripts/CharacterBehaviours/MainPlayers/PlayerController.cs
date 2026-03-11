@@ -42,9 +42,8 @@ public class PlayerController : MainPlayerBehaviour
         }
         skillSet.enabled = true;
         skillSet.BaseUnlock();
-        aIHandler = gameObject.AddComponent<PlayerAIHandler>();
-        aIHandler.Init(this, new List<Ability>(), new List<AIModule>());
-        aIHandler.movementAI.Movementspeed = skillSet.GetSpeed();
+        aIHandler = gameObject.AddComponent<AIHandler>();
+        aIHandler.Init(this, new List<Ability>(), new List<AIModule>(), skillSet.GetSpeed());
         var hpVals = skillSet.GetHPVals();
         hpsys.Initialize(hpVals.hpval, hpVals.regenval, hpVals.delay, hpVals.armorval);
         flashspeed = 2.5f;

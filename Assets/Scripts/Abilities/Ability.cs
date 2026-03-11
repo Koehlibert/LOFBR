@@ -7,11 +7,11 @@ using System;
 public abstract class Ability : MonoBehaviour
 {
     protected List<AIUtils.AIState> ActiveStates;
-    public bool IsInteractive { get; set; }
     protected AIHandler Handler { get; set; }
+    public bool IsInteractive;
     public virtual void Checker()
     {
-        if(IsInteractive)
+        if (IsInteractive)
         {
             InteractiveCheck();
         }
@@ -37,9 +37,7 @@ public abstract class Ability : MonoBehaviour
     public float manaCost;
     protected virtual void Start()
     {
-        Handler = GetComponent<AIHandler>();
         loaded = true;
-        IsInteractive = Handler.Owner is MainPlayerBehaviour;
         if (IsInteractive)
         {
             player = GetComponent<PlayerController>();
@@ -52,15 +50,19 @@ public abstract class Ability : MonoBehaviour
         {
             player = GetComponent<PlayerController>();
         }
-        Handler = GetComponent<AIHandler>();
+    }
+    public virtual void Init(bool isInteractive, AIHandler aIHandler)
+    {
+        Handler = aIHandler;
+        IsInteractive = isInteractive;
     }
     protected virtual void InteractiveCheck()
     {
-        if(!player)
+        if (!player)
         {
             player = GetComponent<PlayerController>();
         }
-        if(InputPressed() && (loaded) && player.manasys.checkCost(manaCost))
+        if (InputPressed() && (loaded) && player.manasys.checkCost(manaCost))
         {
             AbilityAction();
         }

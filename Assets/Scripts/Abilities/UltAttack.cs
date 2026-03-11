@@ -15,12 +15,12 @@ public class UltAttack : ShootBasic
         loaded = true;
         reloadtime = 15f;
         manaCost = 250;
+        ActiveStates.Add(AIUtils.AIState.CheckDistSkills);
     }
     protected override void OnEnable()
     {
         base.OnEnable();
-        IsInteractive = Handler?.Owner is MainPlayerBehaviour;
-        if (IsInteractive)
+        if (Handler.IsInteractive)
         {
             reloader = HUD.Instance.GetReload(HUD.Instance.UltReloader);
         }
@@ -69,16 +69,13 @@ public class UltAttack : ShootBasic
     }
     protected override void AICheck()
     {
-        if (Handler.AIState == AIUtils.AIState.CheckShoot || Handler.AIState == AIUtils.AIState.Attacking || Handler.AIState == AIUtils.AIState.CheckDistSkills)
+        if (Handler.ClosestFinder.GetActiveEnemyNumber() >= 3)
         {
-            if (Handler.ClosestFinder.GetActiveEnemyNumber() >= 3)
+            Handler.movementAI.MovementState = AIUtils.MovementState.IsStanding;
+            Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);
+            if (loaded)
             {
-                Handler.movementAI.MovementState = AIUtils.MovementState.IsStanding;
-                Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);
-                if (loaded)
-                {
-                    Handler.FinalAction = AbilityAction;
-                }
+                Handler.FinalAction = AbilityAction;
             }
         }
     }

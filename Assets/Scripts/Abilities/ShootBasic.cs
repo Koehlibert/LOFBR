@@ -12,6 +12,7 @@ public abstract class ShootBasic : DamagingAbility
     protected float attackDistance;
     protected virtual GameObject CreateBullet()
     {
+        Debug.Log(Handler);
         return BulletFactory.Instance.CreateBullet(Handler.Owner, true, Bone);
     }
     protected abstract HumanBodyBones Bone { get; }
@@ -26,9 +27,9 @@ public abstract class ShootBasic : DamagingAbility
     }
     protected override void OnEnable()
     {
+        base.OnEnable();
         StartCoroutine(Firstbullet());
         Reset();
-        IsInteractive = Handler?.Owner is MainPlayerBehaviour;
     }
     void OnDisable()
     {
@@ -70,7 +71,7 @@ public abstract class ShootBasic : DamagingAbility
     {
         StartCoroutine(Shootanim());
         reloadCoroutine = StartCoroutine(Reload());
-        if (IsInteractive)
+        if (Handler.IsInteractive)
         {
             reloader.shoot();
             player.manasys.useMana(manaCost);

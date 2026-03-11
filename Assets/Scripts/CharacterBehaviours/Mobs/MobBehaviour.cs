@@ -47,9 +47,9 @@ public abstract class MobBehaviour : DamageableEntity
             offset.z *= -1;
             standarddirection.z *= -1;
         }
-        aIHandler = gameObject.AddComponent<MobAIHandler>();
-        aIHandler.Init(this, new List<Ability>(), new List<AIModule>());
-        aIHandler.movementAI.Movementspeed = movementSpeed;
+        aIHandler = gameObject.AddComponent<AIHandler>();
+        ShootRightBasic shooter = gameObject.AddComponent<ShootRightBasic>();
+        aIHandler.Init(this, new List<Ability>{shooter}, new List<AIModule>(), movementSpeed, false);
     }
     public void OnHealBulletHit(Damage damageComponent, GameObject bulletObject)
     {

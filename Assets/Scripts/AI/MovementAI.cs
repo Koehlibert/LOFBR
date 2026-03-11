@@ -19,8 +19,14 @@ public class MovementAI : Ability
     protected override void OnEnable()
     {
         base.OnEnable();
+    }
+    public void Init(bool isInteractive, AIHandler aIHandler, float movementSpeed, bool caresAboutHealth)
+    {
+        base.Init(isInteractive, aIHandler);
+        Debug.Log(Handler);
         MoveLock = false;
-        CaresAboutHealth = false;
+        CaresAboutHealth = caresAboutHealth;
+        Movementspeed = movementSpeed;
         TeamDirectionMultiplier = 1;
         if (Handler.Owner.Team == CombatUtils.Team.Enemy)
         {
