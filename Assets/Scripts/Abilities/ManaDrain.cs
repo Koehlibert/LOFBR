@@ -1,20 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class ManaDrain : DamagingAbility
 {
-    private LineRenderer lRend;
     private MainPlayerBehaviour enemy;
-    private float durationTime = 4f;
+    private float DurationTime = 2.5f;
     private Vector3 offset = new Vector3(0, 2, 0);
-    private bool isDraining;
+    private GameObject ManaDrainer;
     protected override void AdditionalInit()
     {
-        lRend = GetComponent<LineRenderer>();
         enemy = MasterScript.Instance.GetOpponentPlayer(Handler.Owner.Team);
-        lRend.enabled = false;
-        isDraining = false;
     }
     protected override AbilityInfo GetAbilityInfo()
     {
@@ -27,46 +24,24 @@ public class ManaDrain : DamagingAbility
     }
     protected override void InteractiveCheck()
     {
-        if (isDraining)
+        if (enemy.isActiveAndEnabled)
         {
-            float distance = Vector3.Distance(Handler.Owner.transform.position, enemy.transform.position);
-            if (distance >= 20 || !enemy.isActiveAndEnabled)
-            {
-                isDraining = false;
-                lRend.enabled = false;
-            }
-            lRend.SetPosition(0, Handler.Owner.transform.position + offset);
-            lRend.SetPosition(1, enemy.transform.position + offset);
-            float actualDamage = enemy.manasys.drainMana((5 + OwnerLevelSys.GetLevel() * 2) * Time.deltaTime);
-            if (enemy.GetHealth().TakeDamage(actualDamage * (0.05f + 0.05f * OwnerLevelSys.GetLevel())))
-            {
-                enemy.Kill();
-            }
-            OwnerManaSys.gainMana(actualDamage);
-        }
-        if (InputPressed() && (loaded) && OwnerManaSys.checkCost(manaCost) && enemy)
-        {
-            AbilityAction();
+            base.InteractiveCheck();
         }
     }
     private IEnumerator duration()
     {
-        lRend.enabled = true;
-        isDraining = true;
-        yield return new WaitForSeconds(durationTime + OwnerLevelSys.GetLevel() * 0.8f);
-        lRend.enabled = false;
-        isDraining = false;
-    }
-    private void OnDisable()
-    {
-        isDraining = false;
+        yield return new WaitForSeconds(DurationTime + OwnerLevelSys.GetLevel() * 0.8f);
+        Destroy(ManaDrainer);
     }
     protected override void AbilityAction()
     {
         float distance = Vector3.Distance(Handler.Owner.transform.position, enemy.transform.position);
         if (distance <= 20)
         {
-            OwnerManaSys.useMana(manaCost);
+            Debug.Log("Draining!");
+            base.AbilityAction();
+            ManaDrainer = BulletFactory.Instance.CreateManaDrainer(Handler.Owner);
             StartCoroutine("reload");
             StartCoroutine("duration");
             reloader.shoot();

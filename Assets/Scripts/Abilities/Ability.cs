@@ -43,9 +43,9 @@ public abstract class Ability : MonoBehaviour
     public virtual void Init(bool isInteractive, AIHandler aIHandler)
     {
         loaded = true;
+        Handler = aIHandler;
         SetAbilityInfo(GetAbilityInfo());
         AdditionalInit();
-        Handler = aIHandler;
         IsInteractive = isInteractive;
         if (IsInteractive)
         {

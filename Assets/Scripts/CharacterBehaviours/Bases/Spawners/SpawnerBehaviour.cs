@@ -4,7 +4,6 @@ using UnityEngine;
 
 public abstract class SpawnerBehaviour : MonoBehaviour
 {
-    public GameObject Mob;
     protected float spawntimer;
     private Vector3 pos1;
     private Vector3 pos2;
@@ -29,8 +28,8 @@ public abstract class SpawnerBehaviour : MonoBehaviour
         }
         else
         {
-            Instantiate(Mob,pos1, spawndirection);
-            Instantiate(Mob,pos2, spawndirection);
+            CharacterFactory.Instance.CreateTeamMob(Team, pos1, spawndirection);
+            CharacterFactory.Instance.CreateTeamMob(Team, pos2, spawndirection);
             timer = spawntimer;
         }
     }

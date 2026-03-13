@@ -173,7 +173,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  expslider: {fileID: 0}
+  expslider: {fileID: 25955754}
+  Level: {fileID: 1812477269}
 --- !u!114 &25955754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6281,6 +6282,7 @@ GameObject:
   - component: {fileID: 1772391474}
   - component: {fileID: 1772391475}
   - component: {fileID: 1772391476}
+  - component: {fileID: 1772391477}
   m_Layer: 0
   m_Name: GameController
   m_TagString: GameController
@@ -6621,6 +6623,22 @@ MonoBehaviour:
     type: 3}
   ParryCollider: {fileID: 7294617055500558246, guid: d28d1427378b1e04791d3b861120c105,
     type: 3}
+  ManaDrainer: {fileID: 2467711705439000614, guid: efb8e2df405f4a04c8151cb166d72ca7,
+    type: 3}
+--- !u!114 &1772391477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1772391467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4e1b0767ce2c2e418d4ef3837d8e32f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterFactory
+  Mob: {fileID: 1421225335743905642, guid: a16790b3d812c5f4cb9876f67b336f51, type: 3}
+  EnemyMob: {fileID: 752268847723358216, guid: cb00b9e74f73cef4da88b3a76ee2892a, type: 3}
 --- !u!1001 &1776057421
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7047,7 +7065,6 @@ GameObject:
   - component: {fileID: 1812477267}
   - component: {fileID: 1812477270}
   - component: {fileID: 1812477269}
-  - component: {fileID: 1812477268}
   m_Layer: 5
   m_Name: LevelText
   m_TagString: Untagged
@@ -7074,19 +7091,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 160, y: 14}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1812477268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1812477266}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70244287f6064fc4a93692d4425df453, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Level: {fileID: 1812477269}
 --- !u!114 &1812477269
 MonoBehaviour:
   m_ObjectHideFlags: 0

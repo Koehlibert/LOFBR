@@ -19,13 +19,6 @@ public class Parry : Ability
         base.OnEnable();
         reloader = HUD.Instance.GetReload(HUD.Instance.SecondaryReloader);
     }
-    protected override void InteractiveCheck()
-    {
-        if (InputPressed() && (loaded) && OwnerManaSys.checkCost(manaCost))
-        {
-            base.InteractiveCheck();
-        }
-    }
     private IEnumerator autoDisable()
     {
         yield return new WaitForSeconds(duration);

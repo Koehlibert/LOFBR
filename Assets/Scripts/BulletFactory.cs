@@ -11,6 +11,7 @@ public class BulletFactory : MonoBehaviour
     [SerializeField] GameObject Fire;
     [SerializeField] GameObject MeleeCollider;
     [SerializeField] GameObject ParryCollider;
+    [SerializeField] GameObject ManaDrainer;
     private void Awake()
     {
         Instance = this;
@@ -82,5 +83,11 @@ public class BulletFactory : MonoBehaviour
         GameObject parryCollider = Instantiate(ParryCollider);
         parryCollider.AddComponent<ParryColliderBehaviour>().Init(owner);
         return parryCollider;
+    }
+    public GameObject CreateManaDrainer(DamageableEntity owner)
+    {
+        GameObject manaDrainer = Instantiate(ManaDrainer);
+        manaDrainer.AddComponent<ManaDrainerBehaviour>().Init(owner);
+        return manaDrainer;
     }
 }

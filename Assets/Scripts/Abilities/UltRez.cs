@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class UltRez : Ability
 {
-    public GameObject Mob;
     private Quaternion spawndirection = new Quaternion(0, 0, 0, 0);
     protected override AbilityInfo GetAbilityInfo()
     {
@@ -12,10 +11,9 @@ public class UltRez : Ability
     }
     private void Rez(List<Vector3> locations)
     {
-        Debug.Log("Rezing");
         foreach (Vector3 pos in locations)
         {
-            Instantiate(Mob, pos, spawndirection);
+            CharacterFactory.Instance.CreateTeamMob(Handler.Owner.Team, pos, spawndirection);
         }
     }
     protected override void OnEnable()
@@ -26,7 +24,6 @@ public class UltRez : Ability
     protected override void AbilityAction()
     {
         List<Vector3> locations = MasterScript.Instance.GetRezPositions(OwnerLevelSys.GetLevel() - 2);
-        Debug.Log(locations.Count);
         if (locations.Count > 0)
         {
             StartCoroutine("reload");

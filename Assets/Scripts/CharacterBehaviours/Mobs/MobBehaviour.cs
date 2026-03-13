@@ -91,7 +91,7 @@ public abstract class MobBehaviour : DamageableEntity
         StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
         if (player == null)
         {
-            player = MasterScript.Instance.GetOpponentPlayer(EnemyTeam);
+            player = MasterScript.Instance.GetOpponentPlayer(Team);
         }
         animator.SetFloat("moveX", 0);
         animator.SetFloat("moveZ", animSpeed);

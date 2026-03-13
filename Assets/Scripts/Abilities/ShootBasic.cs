@@ -56,13 +56,13 @@ public abstract class ShootBasic : DamagingAbility
     }
     protected virtual IEnumerator Shootanim()
     {
+        Handler.Owner.animator.SetTrigger("Shoot");
+        yield return new WaitForSeconds(0.15f);
+        soundsource?.Play();
         if (bulletinstance == null)
         {
             yield break;
         }
-        Handler.Owner.animator.SetTrigger("Shoot");
-        yield return new WaitForSeconds(0.15f);
-        soundsource?.Play();
         bulletinstance.GetComponent<BulletBehaviour>().Shoot(GetDamageValues());
     }
     protected override void AbilityAction()

@@ -228,13 +228,13 @@ public class MasterScript : MonoBehaviour
             allFriendlies.Remove(Mob.gameObject);
         }
     }
-    public MainPlayerBehaviour GetOpponentPlayer(CombatUtils.Team enemyTeam)
+    public MainPlayerBehaviour GetOpponentPlayer(CombatUtils.Team Team)
     {
-        return enemyTeam == CombatUtils.Team.Enemy ? enemyPlayer : player;
+        return Team == CombatUtils.Team.Player ? enemyPlayer : player;
     }
-    public float GetOpponentSpawnZ(CombatUtils.Team enemyTeam)
+    public float GetOpponentSpawnZ(CombatUtils.Team Team)
     {
-        return enemyTeam == CombatUtils.Team.Enemy ? respawnpointEnemyPlayer.transform.position.z : respawnpointPlayer.transform.position.z;
+        return Team == CombatUtils.Team.Player ? respawnpointEnemyPlayer.transform.position.z : respawnpointPlayer.transform.position.z;
     }
     public List<Vector3> GetRezPositions(int count)
     {
