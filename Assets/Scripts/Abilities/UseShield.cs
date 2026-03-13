@@ -10,7 +10,7 @@ public class UseShield : Ability
     {
         return new AbilityInfo(50, 12, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
     }
-    private IEnumerator destroyShield()
+    private IEnumerator DestroyShield()
     {
         player.GetHealth().AddArmor(100);
         player.DisableDamageFlash();
@@ -22,10 +22,9 @@ public class UseShield : Ability
 
     protected override void AbilityAction()
     {
-        shieldInstance = Instantiate(shield, player.transform.position + new Vector3(0f, 2f, 0f), player.transform.rotation);
-        shieldInstance.GetComponent<Shield>().SetPlayer(FindAnyObjectByType<PlayerController>());
+        shieldInstance = BulletFactory.Instance.CreateShield(Handler.Owner);
         StartCoroutine("reload");
-        StartCoroutine("destroyShield");
+        StartCoroutine("DestroyShield");
         reloader.shoot();
         player.manasys.useMana(manaCost);
     }

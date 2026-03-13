@@ -7,6 +7,7 @@ public class BulletFactory : MonoBehaviour
     public static BulletFactory Instance;
     [SerializeField] GameObject BulletPrefab;
     [SerializeField] GameObject ShockwavePrefab;
+    [SerializeField] GameObject Shield;
     private void Awake()
     {
         Instance = this;
@@ -54,5 +55,11 @@ public class BulletFactory : MonoBehaviour
     private GameObject InstantiateShockwave(DamageableEntity owner, HumanBodyBones bone)
     {
         return Instantiate(ShockwavePrefab, owner.animator.GetBoneTransform(bone).position, owner.transform.rotation);
+    }
+    public GameObject CreateShield(DamageableEntity owner)
+    {
+        GameObject shieldInstance = Instantiate(Shield, owner.transform.position + new Vector3(0f, 2f, 0f), owner.transform.rotation);
+        shieldInstance.AddComponent<Shield>().SetOwner(owner);
+        return shieldInstance;
     }
 }

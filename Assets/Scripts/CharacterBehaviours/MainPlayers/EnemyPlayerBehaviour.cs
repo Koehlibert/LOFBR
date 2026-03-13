@@ -345,7 +345,7 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
         if ((Levelsys.CheckLevel(3)) && (loadedShield) && manasys.checkCost(120))
         {
             shieldInstance = Instantiate(shield, transform.position, transform.rotation);
-            shieldInstance.GetComponent<Shield>().SetPlayer(this);
+            shieldInstance.GetComponent<Shield>().SetOwner(this);
             manasys.useMana(120);
             StartCoroutine("ReloadShield");
             StartCoroutine("DestroyShield");

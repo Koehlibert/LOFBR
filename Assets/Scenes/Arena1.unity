@@ -6615,6 +6615,7 @@ MonoBehaviour:
     type: 3}
   ShockwavePrefab: {fileID: 3694283461505410077, guid: a89a13addfda961409c25be3a5305f5b,
     type: 3}
+  Shield: {fileID: 2421101970634836911, guid: 618496df5f302fa488d73a808204624d, type: 3}
 --- !u!1001 &1776057421
 PrefabInstance:
   m_ObjectHideFlags: 0
