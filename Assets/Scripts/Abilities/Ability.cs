@@ -47,7 +47,6 @@ public abstract class Ability : MonoBehaviour
     {
         loaded = true;
         SetAbilityInfo(GetAbilityInfo());
-        Debug.Log(reloadtime);
         AdditionalInit();
         Handler = aIHandler;
         IsInteractive = isInteractive;

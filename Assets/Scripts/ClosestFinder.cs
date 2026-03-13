@@ -64,7 +64,7 @@ public class ClosestFinder
             float closestDistance = Mathf.Infinity;
             foreach (GameObject currenemy in allEnemies)
             {
-                if ((!currenemy) || (onlyHurt && currenemy.GetComponent<Health>().FullHP()) || (!withPlayer && currenemy == player.gameObject))
+                if ((!currenemy.activeSelf) || (onlyHurt && currenemy.GetComponent<Health>().FullHP()) || (!withPlayer && currenemy == player.gameObject))
                 {
                     continue;
                 }
