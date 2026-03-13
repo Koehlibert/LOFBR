@@ -25,7 +25,7 @@ public class Stomp : DamagingAbility
         {
             reloader.shoot();
             reloader.shoot();
-            player.manasys.useMana(manaCost);
+            OwnerManaSys.useMana(manaCost);
         }
     }
     protected override bool InputPressed()
@@ -34,12 +34,12 @@ public class Stomp : DamagingAbility
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(70 + (player.Levelsys.GetLevel() - 2) * 6, 0, player.Team, true, false);
+        return new DamageInfo(70 + (OwnerLevelSys.GetLevel() - 2) * 6, 0, Handler.Owner.Team, true, false);
     }
     private IEnumerator Shootanim()
     {
-        StartCoroutine(player.aIHandler.movementAI.LockMovement(0.95f));
-        player.animator.Play("Stomp", 0, 0f);
+        StartCoroutine(Handler.movementAI.LockMovement(0.95f));
+        Handler.Owner.animator.Play("Stomp", 0, 0f);
         yield return new WaitForSeconds(0.7f);
         GameObject wave = BulletFactory.Instance.CreateShockwave(Handler.Owner, false, Bone);
         wave.GetComponent<Damage>().SetProperties(GetDamageValues());

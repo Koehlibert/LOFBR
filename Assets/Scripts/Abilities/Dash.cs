@@ -12,17 +12,17 @@ public class Dash : Ability
     private float dashDistance = 10;
     protected override void AbilityAction()
     {
-        Vector3 dir = player.aIHandler.MovementDirection.normalized;
+        Vector3 dir = Handler.MovementDirection.normalized;
         if (dir.magnitude > 0)
         {
-            float x = player.transform.position.x + dir.x * dashDistance;
-            float z = player.transform.position.z + dir.z * dashDistance;
+            float x = Handler.Owner.transform.position.x + dir.x * dashDistance;
+            float z = Handler.Owner.transform.position.z + dir.z * dashDistance;
             Vector3 moveDir = MasterScript.Instance.CorrectTarget(new Vector3(x, 0, z));
-            StartCoroutine(player.aIHandler.movementAI.LockMovement(0.2f));
-            player.transform.position = moveDir;
+            StartCoroutine(Handler.movementAI.LockMovement(0.2f));
+            Handler.Owner.transform.position = moveDir;
             StartCoroutine("reload");
             reloader.shoot();
-            player.manasys.useMana(manaCost);
+            OwnerManaSys.useMana(manaCost);
         }
     }
     protected override void OnEnable()

@@ -18,8 +18,8 @@ public class UltBladeFlurry : DamagingAbility
     }
     private IEnumerator Flurry()
     {
-        StartCoroutine(player.aIHandler.movementAI.LockMovement(duration * (flurryPos.Count + 1)));
-        StartCoroutine(player.aIHandler.movementAI.LockView(duration * (flurryPos.Count + 1)));
+        StartCoroutine(Handler.movementAI.LockMovement(duration * (flurryPos.Count + 1)));
+        StartCoroutine(Handler.movementAI.LockView(duration * (flurryPos.Count + 1)));
         damage = gameObject.AddComponent<Damage>();
         damage.SetProperties(GetDamageValues());
         yield return new WaitForSeconds(duration);
@@ -31,10 +31,10 @@ public class UltBladeFlurry : DamagingAbility
                 Vector3 offset = GetOffset(target.transform.position);
                 Vector3 targetPos = target.transform.position;
                 targetPos.y = 0;
-                player.transform.position = targetPos + offset;
+                Handler.Owner.transform.position = targetPos + offset;
                 Quaternion lookDir = Quaternion.LookRotation(-offset);
-                player.transform.rotation = lookDir;
-                player.animator.Play("Melee", 0, 0f);
+                Handler.Owner.transform.rotation = lookDir;
+                Handler.Owner.animator.Play("Melee", 0, 0f);
                 EnemyBehaviour enemyBehaviour = target?.GetComponent<EnemyBehaviour>();
                 enemyBehaviour?.getShanked(damage);
                 yield return new WaitForSeconds(duration);
@@ -45,7 +45,7 @@ public class UltBladeFlurry : DamagingAbility
             }
         }
         Destroy(damage);
-        player.animator.Play("Default", 0, 0f);
+        Handler.Owner.animator.Play("Default", 0, 0f);
     }
     private Vector3 GetOffset(Vector3 target)
     {
@@ -70,13 +70,13 @@ public class UltBladeFlurry : DamagingAbility
     }
     protected override void AbilityAction()
     {
-        flurryPos = MasterScript.Instance.GetFlurryTargets(player.Levelsys.GetLevel() - 1);
+        flurryPos = MasterScript.Instance.GetFlurryTargets(OwnerLevelSys.GetLevel() - 1);
         if (flurryPos.Count > 0)
         {
             StartCoroutine("reload");
             StartCoroutine("Flurry");
             reloader.shoot();
-            player.manasys.useMana(manaCost);
+            OwnerManaSys.useMana(manaCost);
         }
     }
     protected override bool InputPressed()
@@ -85,6 +85,6 @@ public class UltBladeFlurry : DamagingAbility
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(25 + (player.Levelsys.GetLevel() - 0) * 10, 0, CombatUtils.Team.Player, true, false);
+        return new DamageInfo(25 + (OwnerLevelSys.GetLevel() - 0) * 10, 0, CombatUtils.Team.Player, true, false);
     }
 }

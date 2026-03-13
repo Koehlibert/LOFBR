@@ -10,7 +10,7 @@ public class ExpDisplay : MonoBehaviour
     public Slider expslider;
     void Start()
     {
-        player = GameObject.FindAnyObjectByType<PlayerController>();
+        player = MasterScript.Instance.player;
         expslider = GetComponent<Slider>();
     }
     void Update()

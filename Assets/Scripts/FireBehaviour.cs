@@ -4,19 +4,14 @@ using UnityEngine;
 
 public class FireBehaviour : MonoBehaviour
 {
-    private PlayerController player;
-    private float manaCost;
-    private Damage dmg;
-    private Vector3 offset = new Vector3(0,4,0);
-    void Start()
+    private DamageableEntity Owner;
+    private Vector3 offset = new(0,4,0);
+    public void Init(DamageableEntity owner)
     {
-        player = FindAnyObjectByType<PlayerController>();
-        manaCost = 2;
-        dmg = gameObject.GetComponent<Damage>();
+        Owner = owner;
     }
     void Update()
     {
-        player.manasys.useMana(manaCost*Time.deltaTime);
-        transform.position = player.transform.position + offset;
+        transform.position = Owner.transform.position + offset;
     }
 }

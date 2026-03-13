@@ -8,6 +8,9 @@ public class BulletFactory : MonoBehaviour
     [SerializeField] GameObject BulletPrefab;
     [SerializeField] GameObject ShockwavePrefab;
     [SerializeField] GameObject Shield;
+    [SerializeField] GameObject Fire;
+    [SerializeField] GameObject MeleeCollider;
+    [SerializeField] GameObject ParryCollider;
     private void Awake()
     {
         Instance = this;
@@ -61,5 +64,23 @@ public class BulletFactory : MonoBehaviour
         GameObject shieldInstance = Instantiate(Shield, owner.transform.position + new Vector3(0f, 2f, 0f), owner.transform.rotation);
         shieldInstance.AddComponent<Shield>().SetOwner(owner);
         return shieldInstance;
+    }
+    public GameObject CreateFire(DamageableEntity owner)
+    {
+        GameObject fireInstance = Instantiate(Fire);
+        fireInstance.AddComponent<FireBehaviour>().Init(owner);
+        return fireInstance;
+    }
+    public GameObject CreateMeleeCollider(DamageableEntity owner)
+    {
+        GameObject meleeCollider = Instantiate(MeleeCollider);
+        meleeCollider.AddComponent<MeleeColliderBehaviour>().Init(owner);
+        return meleeCollider;
+    }
+    public GameObject CreateParryCollider(DamageableEntity owner)
+    {
+        GameObject parryCollider = Instantiate(ParryCollider);
+        parryCollider.AddComponent<ParryColliderBehaviour>().Init(owner);
+        return parryCollider;
     }
 }

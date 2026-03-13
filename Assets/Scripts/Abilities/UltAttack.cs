@@ -23,15 +23,15 @@ public class UltAttack : ShootBasic
     protected override IEnumerator Firstbullet()
     {
         yield return new WaitForSeconds(.2f);
-        ShootLeft = player?.GetComponent<ShootLeftBasic>();
-        ShootRight = player?.GetComponent<ShootRightBasic>();
+        ShootLeft = Handler.Owner?.GetComponent<ShootLeftBasic>();
+        ShootRight = Handler.Owner?.GetComponent<ShootRightBasic>();
     }
     protected override IEnumerator Shootanim()
     {
         ShootLeft.enabled = false;
         ShootRight.enabled = false;
-        StartCoroutine(player.aIHandler.movementAI.LockMovement(1.6f));
-        player.animator.Play("Backflip", 0, 0f);
+        StartCoroutine(Handler.movementAI.LockMovement(1.6f));
+        Handler.Owner.animator.Play("Backflip", 0, 0f);
         yield return new WaitForSeconds(0.6f);
         bulletinstance = CreateBullet();
         bulletinstance.GetComponent<BulletBehaviour>().Shoot(GetDamageValues());
@@ -46,7 +46,7 @@ public class UltAttack : ShootBasic
     private IEnumerator Resetanim()
     {
         yield return new WaitForSeconds(1f);
-        player.animator.Play("Default", 0, 0f);
+        Handler.Owner.animator.Play("Default", 0, 0f);
         ShootLeft.enabled = true;
         ShootRight.enabled = true;
     }
@@ -56,11 +56,11 @@ public class UltAttack : ShootBasic
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(50 + (player.Levelsys.GetLevel() - 5) * 6.5f, 0, CombatUtils.Team.Player, true, true);
+        return new DamageInfo(50 + (OwnerLevelSys.GetLevel() - 5) * 6.5f, 0, CombatUtils.Team.Player, true, true);
     }
     protected override GameObject CreateBullet()
     {
-        return BulletFactory.Instance.CreateUltBullet(player, false, Bone);
+        return BulletFactory.Instance.CreateUltBullet(Handler.Owner, false, Bone);
     }
     protected override void AICheck()
     {

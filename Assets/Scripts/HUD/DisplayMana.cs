@@ -21,7 +21,7 @@ public class DisplayMana : MonoBehaviour
     {
         if(!player)
         {
-            player = FindAnyObjectByType<PlayerController>();
+            player = MasterScript.Instance.player;
         }
         Reloadcircle.fillAmount = player.manasys.getPercent();
         Mana.text = player.manasys.getString();

@@ -42,9 +42,9 @@ public class UseArmorAura : Ability
             aura.SetActive(false);
             armorActive = false;
         }
-        else if ((loaded) && player.manasys.checkCost(manaCost))
+        else if ((loaded) && OwnerManaSys.checkCost(manaCost))
         {
-            player.manasys.useMana(manaCost);
+            OwnerManaSys.useMana(manaCost);
             aura.SetActive(true);
             armorActive = true;
         }

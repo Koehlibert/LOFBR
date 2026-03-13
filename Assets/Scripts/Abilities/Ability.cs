@@ -9,6 +9,12 @@ public abstract class Ability : MonoBehaviour
     protected List<AIUtils.AIState> ActiveStates;
     protected AIHandler Handler { get; set; }
     public bool IsInteractive;
+    protected Mana OwnerManaSys;
+    protected Level OwnerLevelSys;
+    public float reloadtime;
+    protected bool loaded;
+    protected Reload reloader;
+    public float manaCost;
     public virtual void Checker()
     {
         if (IsInteractive)
@@ -30,18 +36,9 @@ public abstract class Ability : MonoBehaviour
         Handler.SetAIState(aIState);
         Handler.LockAI(lockAITimer);
     }
-    public PlayerController player;
-    public float reloadtime;
-    protected bool loaded;
-    protected Reload reloader;
-    public float manaCost;
     protected virtual void OnEnable()
     {
         Reset();
-        if (IsInteractive)
-        {
-            player = MasterScript.Instance.player;
-        }
     }
     public virtual void Init(bool isInteractive, AIHandler aIHandler)
     {
@@ -50,6 +47,11 @@ public abstract class Ability : MonoBehaviour
         AdditionalInit();
         Handler = aIHandler;
         IsInteractive = isInteractive;
+        if (IsInteractive)
+        {
+            OwnerManaSys = (Handler.Owner as MainPlayerBehaviour).manasys;
+            OwnerLevelSys = (Handler.Owner as MainPlayerBehaviour).Levelsys;
+        }
     }
     protected virtual void AdditionalInit()
     {
@@ -67,11 +69,7 @@ public abstract class Ability : MonoBehaviour
     }
     protected virtual void InteractiveCheck()
     {
-        if (!player)
-        {
-            player = MasterScript.Instance.player;
-        }
-        if (InputPressed() && (loaded) && player.manasys.checkCost(manaCost))
+        if (InputPressed() && (loaded) && OwnerManaSys.checkCost(manaCost))
         {
             AbilityAction();
         }
@@ -80,15 +78,14 @@ public abstract class Ability : MonoBehaviour
     {
         throw new NotImplementedException();
     }
-    void Update()
+    protected abstract bool InputPressed();
+    protected virtual void AbilityAction()
     {
         if (IsInteractive)
         {
-            InteractiveCheck();
+            OwnerManaSys.useMana(manaCost);
         }
     }
-    protected abstract bool InputPressed();
-    protected abstract void AbilityAction();
     public void ActivateReloader()
     {
         reloader.Activate();

@@ -25,14 +25,14 @@ public class UltRez : Ability
     }
     protected override void AbilityAction()
     {
-        List<Vector3> locations = MasterScript.Instance.GetRezPositions(player.Levelsys.GetLevel() - 2);
+        List<Vector3> locations = MasterScript.Instance.GetRezPositions(OwnerLevelSys.GetLevel() - 2);
         Debug.Log(locations.Count);
         if (locations.Count > 0)
         {
             StartCoroutine("reload");
             Rez(locations);
             reloader.shoot();
-            player.manasys.useMana(manaCost);
+            OwnerManaSys.useMana(manaCost);
         }
     }
     protected override bool InputPressed()

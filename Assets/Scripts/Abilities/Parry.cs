@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class Parry : Ability
 {
-    private GameObject parryCollider;
+    private GameObject ParryCollider;
     private float duration;
     protected override void AdditionalInit()
     {
         duration = .6f;
-        parryCollider = FindAnyObjectByType<ParryColliderBehaviour>().gameObject;
-        parryCollider.SetActive(false);
     }
     protected override AbilityInfo GetAbilityInfo()
     {
-        return new AbilityInfo(8, 3.5f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
+        return new AbilityInfo(12, 1.75f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
     }
     protected override void OnEnable()
     {
@@ -23,11 +21,7 @@ public class Parry : Ability
     }
     protected override void InteractiveCheck()
     {
-        if (!player)
-        {
-            parryCollider.SetActive(false);
-        }
-        if (InputPressed() && (loaded) && player.manasys.checkCost(manaCost))
+        if (InputPressed() && (loaded) && OwnerManaSys.checkCost(manaCost))
         {
             base.InteractiveCheck();
         }
@@ -35,15 +29,15 @@ public class Parry : Ability
     private IEnumerator autoDisable()
     {
         yield return new WaitForSeconds(duration);
-        parryCollider.SetActive(false);
+        Destroy(ParryCollider);
     }
     protected override void AbilityAction()
     {
-        parryCollider.SetActive(true);
+        base.AbilityAction();
+        ParryCollider = BulletFactory.Instance.CreateParryCollider(Handler.Owner);
         StartCoroutine("autoDisable");
         reloader.shoot();
         StartCoroutine("reload");
-        player.manasys.useMana(manaCost);
     }
     protected override bool InputPressed()
     {

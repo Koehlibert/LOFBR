@@ -12,11 +12,17 @@ public class UseShield : Ability
     }
     private IEnumerator DestroyShield()
     {
-        player.GetHealth().AddArmor(100);
-        player.DisableDamageFlash();
+        Handler.Owner.GetHealth().AddArmor(100);
+        if (IsInteractive)
+        {
+            (Handler.Owner as PlayerController).DisableDamageFlash();
+        }
         yield return new WaitForSeconds(1.5f);
-        player.GetHealth().AddArmor(-100);
-        player.EnableDamageFlash();
+        Handler.Owner.GetHealth().AddArmor(-100);
+        if (IsInteractive)
+        {
+            (Handler.Owner as PlayerController).EnableDamageFlash();
+        }
         GameObject.Destroy(shieldInstance);
     }
 
@@ -26,7 +32,7 @@ public class UseShield : Ability
         StartCoroutine("reload");
         StartCoroutine("DestroyShield");
         reloader.shoot();
-        player.manasys.useMana(manaCost);
+        OwnerManaSys.useMana(manaCost);
     }
     protected override bool InputPressed()
     {

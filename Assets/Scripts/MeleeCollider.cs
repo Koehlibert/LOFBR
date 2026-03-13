@@ -2,21 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeCollider : MonoBehaviour
+public class MeleeColliderBehaviour : MonoBehaviour
 {
-    private PlayerController player;
+    private DamageableEntity Owner;
     private Vector3 offset = new Vector3(0, 1.5f,0);
-    void Start()
+    public void Init(DamageableEntity owner)
     {
-        player = FindAnyObjectByType<PlayerController>();
+        Owner = owner;
     }
-    void OnDestroy()
-    {
-        
-    }
-    // Update is called once per frame
     void Update()
     {
-        transform.position = player.transform.position + player.transform.forward*1.25f + offset;
+        transform.position = Owner.transform.position + Owner.transform.forward*1.25f + offset;
     }
 }

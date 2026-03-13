@@ -72,7 +72,7 @@ public abstract class ShootBasic : DamagingAbility
         if (IsInteractive)
         {
             reloader.shoot();
-            player.manasys.useMana(manaCost);
+            OwnerManaSys.useMana(manaCost);
         }
     }
     protected override void AICheck()

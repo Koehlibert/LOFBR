@@ -29,22 +29,22 @@ public class ManaDrain : DamagingAbility
     {
         if (isDraining)
         {
-            float distance = Vector3.Distance(player.transform.position, enemy.transform.position);
+            float distance = Vector3.Distance(Handler.Owner.transform.position, enemy.transform.position);
             if (distance >= 20 || !enemy.isActiveAndEnabled)
             {
                 isDraining = false;
                 lRend.enabled = false;
             }
-            lRend.SetPosition(0, player.transform.position + offset);
+            lRend.SetPosition(0, Handler.Owner.transform.position + offset);
             lRend.SetPosition(1, enemy.transform.position + offset);
-            float actualDamage = enemy.manasys.drainMana((5 + player.Levelsys.GetLevel() * 2) * Time.deltaTime);
-            if (enemy.GetHealth().TakeDamage(actualDamage * (0.05f + 0.05f * player.Levelsys.GetLevel())))
+            float actualDamage = enemy.manasys.drainMana((5 + OwnerLevelSys.GetLevel() * 2) * Time.deltaTime);
+            if (enemy.GetHealth().TakeDamage(actualDamage * (0.05f + 0.05f * OwnerLevelSys.GetLevel())))
             {
                 enemy.Kill();
             }
-            player.manasys.gainMana(actualDamage);
+            OwnerManaSys.gainMana(actualDamage);
         }
-        if (InputPressed() && (loaded) && player.manasys.checkCost(manaCost) && enemy)
+        if (InputPressed() && (loaded) && OwnerManaSys.checkCost(manaCost) && enemy)
         {
             AbilityAction();
         }
@@ -53,7 +53,7 @@ public class ManaDrain : DamagingAbility
     {
         lRend.enabled = true;
         isDraining = true;
-        yield return new WaitForSeconds(durationTime + player.Levelsys.GetLevel() * 0.8f);
+        yield return new WaitForSeconds(durationTime + OwnerLevelSys.GetLevel() * 0.8f);
         lRend.enabled = false;
         isDraining = false;
     }
@@ -63,10 +63,10 @@ public class ManaDrain : DamagingAbility
     }
     protected override void AbilityAction()
     {
-        float distance = Vector3.Distance(player.transform.position, enemy.transform.position);
+        float distance = Vector3.Distance(Handler.Owner.transform.position, enemy.transform.position);
         if (distance <= 20)
         {
-            player.manasys.useMana(manaCost);
+            OwnerManaSys.useMana(manaCost);
             StartCoroutine("reload");
             StartCoroutine("duration");
             reloader.shoot();

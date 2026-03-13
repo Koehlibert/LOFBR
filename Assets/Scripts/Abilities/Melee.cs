@@ -8,16 +8,11 @@ public class Melee : DamagingAbility
     private float duration = .5f;
     private bool attacking;
     private Vector3 dir;
-    private GameObject meleeCollider;
+    private GameObject MeleeCollider;
     private float speedup = 1.5f;
-    protected override void AdditionalInit()
-    {
-        meleeCollider = FindAnyObjectByType<MeleeCollider>().gameObject;
-        meleeCollider.SetActive(false);
-    }
     protected override AbilityInfo GetAbilityInfo()
     {
-        return new AbilityInfo(5, 2.5f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking });
+        return new AbilityInfo(5, 1.5f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking });
     }
     protected override void OnEnable()
     {
@@ -32,7 +27,7 @@ public class Melee : DamagingAbility
     {
         if (attacking)
         {
-            player.aIHandler.MovementDirection = dir;
+            Handler.MovementDirection = dir;
         }
     }
     private IEnumerator reload()
@@ -44,18 +39,18 @@ public class Melee : DamagingAbility
     private IEnumerator resetanim()
     {
         yield return new WaitForSeconds(duration);
-        meleeCollider.SetActive(false);
+        Destroy(MeleeCollider);
         attacking = false;
     }
     private void Shootanim()
     {
-        player.animator.SetTrigger("Melee");
+        Handler.Owner.animator.SetTrigger("Melee");
         float clipLength = 1 / 2f;
         duration = clipLength;
-        StartCoroutine(player.aIHandler.movementAI.LockMovement(duration));
-        StartCoroutine(player.aIHandler.SetForcemovement(duration));
-        StartCoroutine(player.aIHandler.movementAI.LockView(duration));
-        player.aIHandler.movementAI.Speedup = speedup;
+        StartCoroutine(Handler.movementAI.LockMovement(duration));
+        StartCoroutine(Handler.SetForcemovement(duration));
+        StartCoroutine(Handler.movementAI.LockView(duration));
+        Handler.movementAI.Speedup = speedup;
         StartCoroutine("resetanim");
     }
     public new void Reset()
@@ -65,14 +60,14 @@ public class Melee : DamagingAbility
     }
     protected override void AbilityAction()
     {
+        base.AbilityAction();
         Shootanim();
         reloader.shoot();
         StartCoroutine("reload");
-        player.manasys.useMana(manaCost);
-        dir = player.transform.forward;
+        dir = Handler.Owner.transform.forward;
         attacking = true;
-        meleeCollider.SetActive(true);
-        meleeCollider.GetComponent<Damage>().SetProperties(GetDamageValues());
+        MeleeCollider = BulletFactory.Instance.CreateMeleeCollider(Handler.Owner);
+        MeleeCollider.GetComponent<Damage>().SetProperties(GetDamageValues());
     }
     protected override bool InputPressed()
     {
@@ -80,6 +75,6 @@ public class Melee : DamagingAbility
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(35 + player.Levelsys.GetLevel() * 3, 0, player.Team, true, false);
+        return new DamageInfo(35 + OwnerLevelSys.GetLevel() * 3, 0, Handler.Owner.Team, true, false);
     }
 }

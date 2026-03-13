@@ -22,7 +22,7 @@ public class ShootRightBasic : ShootBasic
     {
         if (IsInteractive)
         {
-            return new DamageInfo(34 + 7 * player.Levelsys.GetLevel(), 0, Handler.Owner.Team, true);
+            return new DamageInfo(34 + 7 * OwnerLevelSys.GetLevel(), 0, Handler.Owner.Team, true);
         }
         else
         {
