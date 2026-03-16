@@ -81,9 +81,8 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
         loadedUlt = false;
         aIHandler = gameObject.AddComponent<AIHandler>();
         ShootRightBasic shooter = gameObject.AddComponent<ShootRightBasic>();
-        //UltAttack ultAttack = gameObject.AddComponent<UltAttack>();
-        //aIHandler.Init(this, new List<Ability> { shooter, ultAttack }, new List<AIModule>(), movementSpeed, true);
-        aIHandler.Init(this, new List<Ability> { shooter }, new List<AIModule>(), movementSpeed, true);
+        UltAttack ultAttack = gameObject.AddComponent<UltAttack>();
+        aIHandler.Init(this, new List<Ability> { shooter, ultAttack }, new List<AIModule>(), movementSpeed, true);
     }
     void OnEnable()
     {

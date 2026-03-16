@@ -47,10 +47,10 @@ public abstract class Ability : MonoBehaviour
         SetAbilityInfo(GetAbilityInfo());
         AdditionalInit();
         IsInteractive = isInteractive;
-        if (IsInteractive)
+        if (Handler.Owner is MainPlayerBehaviour mainPlayerBehaviour)
         {
-            OwnerManaSys = (Handler.Owner as MainPlayerBehaviour).manasys;
-            OwnerLevelSys = (Handler.Owner as MainPlayerBehaviour).Levelsys;
+            OwnerManaSys = mainPlayerBehaviour.manasys;
+            OwnerLevelSys = mainPlayerBehaviour.Levelsys;
         }
     }
     protected virtual void AdditionalInit()

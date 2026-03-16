@@ -24,19 +24,20 @@ public class AIHandler : MonoBehaviour
     public Vector3 LookDirection;
     public bool ForceMovement;
     public GameObject closestEnemy;
+    public GameObject closestEnemyNoTower;
     public float distanceToClosest;
     private bool IsInteractive;
     public virtual void Init(DamageableEntity owner, List<Ability> abilities, List<AIModule> aIModules, float movementSpeed, bool caresAboutHealth = false)
     {
         Owner = owner;
         IsInteractive = Owner is PlayerController;
+        ClosestFinder = new ClosestFinder(Owner.Team, Owner.gameObject);
         Abilities = abilities;
         foreach (Ability ability in Abilities)
         {
             ability.Init(IsInteractive, this);
         }
         AIModules = aIModules;
-        ClosestFinder = new ClosestFinder(Owner.Team, Owner.gameObject);
         healthChecker = Owner.gameObject.AddComponent<HealthChecker>();
         healthChecker.Init(0.7f, 0.3f);
         AIModules.Add(healthChecker);

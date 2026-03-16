@@ -7,9 +7,12 @@ public class UltAttack : ShootBasic
     public GameObject ultBullet;
     protected override HumanBodyBones Bone => HumanBodyBones.LeftLowerLeg;
     protected List<Ability> DisabledAbilities;
+    protected int NEnemiesToTrigger = 4;
+    protected float DistanceToCheck = 30;
     protected override void AdditionalInit()
     {
         offset = new Vector3(0, 1, 0);
+        Handler.ClosestFinder.StartTrackingDist(DistanceToCheck);
     }
     protected override void OnEnable()
     {
@@ -51,7 +54,7 @@ public class UltAttack : ShootBasic
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(50 + (OwnerLevelSys.GetLevel() - 5) * 6.5f, 0, CombatUtils.Team.Player, true, true);
+        return new DamageInfo(50 + (OwnerLevelSys.GetLevel() - 5) * 6.5f, 0, Handler.Owner.Team, true, true);
     }
     protected override GameObject CreateBullet()
     {
@@ -59,7 +62,8 @@ public class UltAttack : ShootBasic
     }
     protected override void AICheck()
     {
-        if (Handler.ClosestFinder.GetActiveEnemyNumber() >= 3)
+        Debug.Log(Handler.ClosestFinder.GetEnemiesInDist());
+        if (Handler.ClosestFinder.GetEnemiesInDist() >= NEnemiesToTrigger)
         {
             Handler.movementAI.MovementState = AIUtils.MovementState.IsStanding;
             Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);

@@ -19,7 +19,8 @@ public class DistanceHandler : AIModule
     }
     public override void Checker()
     {
-        Handler.closestEnemy = Handler?.ClosestFinder?.FindClosest();
+        Handler.closestEnemy = Handler.ClosestFinder.FindClosest();
+        Handler.closestEnemyNoTower = Handler.ClosestFinder.FindClosestNoTower();
         if (Handler.closestEnemy == null)
         {
             Handler.closestEnemy = Handler.Owner.enemyBase;

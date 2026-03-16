@@ -12,6 +12,12 @@ public class ClosestFinder
     private CombatUtils.Team targetTeam;
     private List<GameObject> AllObjects;
     private List<GameObject> AllObjectsNoTowers;
+    private float DistToCheck;
+    private int EnemiesInDistance;
+    private int LastFrameComputed = -1;
+    private int LastFrameComputedNoTower = -1;
+    private GameObject CachedClosest;
+    private GameObject CachedClosestNoTower;
     private MainPlayerBehaviour GetPlayer(CombatUtils.Team team)
     {
         return team == CombatUtils.Team.Enemy ? MasterScript.Instance.enemyPlayer : MasterScript.Instance.player;
@@ -21,6 +27,7 @@ public class ClosestFinder
         this.targetTeam = CombatUtils.GetOpposingTeam(team);
         this.selfObject = selfObject;
         this.player = GetPlayer(targetTeam);
+        this.DistToCheck = 0;
         AllObjects = targetTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemiesTowers : MasterScript.Instance.allFriendliesTowers;
         AddPlayer(AllObjects);
         AllObjectsNoTowers = targetTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemies : MasterScript.Instance.allFriendlies;
@@ -30,7 +37,7 @@ public class ClosestFinder
     {
         this.targetTeam = targetTeam;
         this.selfObject = selfObject;
-        this.player = GetPlayer(targetTeam);
+        this.DistToCheck = 0;
         AllObjects = targetTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemiesTowers : MasterScript.Instance.allFriendliesTowers;
         AddPlayer(AllObjects);
         AllObjectsNoTowers = targetTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemies : MasterScript.Instance.allFriendlies;
@@ -46,17 +53,28 @@ public class ClosestFinder
     }
     public GameObject FindClosest(bool withPlayer = true, bool onlyHurt = false)
     {
-        return FindClosest(AllObjects, withPlayer, onlyHurt);
+        if (LastFrameComputed != Time.frameCount)
+        {
+            CachedClosest = FindClosest(AllObjects, withPlayer, onlyHurt);
+            LastFrameComputed = Time.frameCount;
+        }
+        return CachedClosest;
     }
     public GameObject FindClosestNoTower(bool withPlayer = true, bool onlyHurt = false)
     {
-        return FindClosest(AllObjectsNoTowers, withPlayer, onlyHurt);
+        if (LastFrameComputedNoTower != Time.frameCount)
+        {
+            EnemiesInDistance = 0;
+            CachedClosestNoTower = FindClosest(AllObjectsNoTowers, withPlayer, onlyHurt, true);
+            LastFrameComputedNoTower = Time.frameCount;
+        }
+        return CachedClosestNoTower;
     }
     public GameObject[] FindTwoClosest(bool withPlayer = true)
     {
         return FindTwoClosest(AllObjects, withPlayer);
     }
-    private GameObject FindClosest(List<GameObject> allEnemies, bool withPlayer, bool onlyHurt = false)
+    private GameObject FindClosest(List<GameObject> allEnemies, bool withPlayer, bool onlyHurt = false, bool TrackNumber = false)
     {
         GameObject closestEnemy = null;
         if (allEnemies.Count != 0)
@@ -69,6 +87,11 @@ public class ClosestFinder
                     continue;
                 }
                 float distanceToEnemy = Vector3.Distance(currenemy.transform.position, selfObject.transform.position);
+                if (TrackNumber && distanceToEnemy < DistToCheck && currenemy != player.gameObject)
+                {
+                    Debug.Log(currenemy);
+                    EnemiesInDistance ++;
+                }
                 if (distanceToEnemy < closestDistance)
                 {
                     closestDistance = distanceToEnemy;
@@ -112,5 +135,17 @@ public class ClosestFinder
     public int GetActiveEnemyNumber()
     {
         return AllObjectsNoTowers.Count;
+    }
+    public void StartTrackingDist(float distToCheck)
+    {
+        DistToCheck = distToCheck;
+    }
+    public void StopTrackingDist()
+    {
+        DistToCheck = 0;
+    }
+    public int GetEnemiesInDist()
+    {
+        return EnemiesInDistance;
     }
 }
