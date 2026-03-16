@@ -128,4 +128,24 @@ public class AIHandler : MonoBehaviour
         yield return new WaitForSeconds(duration);
         ForceMovement = false;
     }
+    public List<Ability> DisableOtherAbilities(Ability abilityToKeep)
+    {
+        List<Ability> DisabledAbilities = new List<Ability>();
+        foreach (Ability ability in Abilities)
+        {
+            if (ability != abilityToKeep)
+            {
+                ability.enabled = false;
+                DisabledAbilities.Add(ability);
+            }
+        }
+        return DisabledAbilities;
+    }
+    public void ReenableOtherAbilities(List<Ability> abilities)
+    {
+        foreach (Ability ability in abilities)
+        {
+            ability.enabled = true;
+        }
+    }
 }
