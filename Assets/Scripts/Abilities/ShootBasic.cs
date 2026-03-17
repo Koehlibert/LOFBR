@@ -9,7 +9,7 @@ public abstract class ShootBasic : DamagingAbility
     [SerializeField] AudioSource soundsource;
     protected GameObject bulletinstance;
     protected Coroutine reloadCoroutine;
-    protected float attackDistance;
+    protected float AttackDistance;
     protected virtual GameObject CreateBullet()
     {
         return BulletFactory.Instance.CreateBullet(Handler.Owner, true, Bone);
@@ -21,7 +21,11 @@ public abstract class ShootBasic : DamagingAbility
     }
     protected override void AdditionalInit()
     {
-        attackDistance = 10f;
+        AttackDistance = 10f;
+    }
+    public void SetAttackDistance(float attackDistance)
+    {
+        AttackDistance = attackDistance;
     }
     protected override void OnEnable()
     {
@@ -77,7 +81,7 @@ public abstract class ShootBasic : DamagingAbility
     }
     protected override void AICheck()
     {
-        if (Handler.distanceToClosest < attackDistance)
+        if (Handler.distanceToClosest < AttackDistance)
         {
             Handler.movementAI.MovementState = AIUtils.MovementState.IsStanding;
             Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);

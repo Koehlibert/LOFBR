@@ -44,8 +44,6 @@ GameObject:
   - component: {fileID: 2151239496023180427}
   - component: {fileID: 8406012509699660718}
   - component: {fileID: 8815440969369717703}
-  - component: {fileID: 114399782748234378}
-  - component: {fileID: 114557537492603816}
   - component: {fileID: 870205920609445306}
   m_Layer: 0
   m_Name: EnemyPlayer
@@ -129,6 +127,7 @@ MonoBehaviour:
   enemyBase: {fileID: 0}
   yourbase: {fileID: 0}
   aIHandler: {fileID: 0}
+  manasys: {fileID: 0}
   reloadtime: 0
   enemybase: {fileID: 0}
   player: {fileID: 0}
@@ -145,31 +144,6 @@ MonoBehaviour:
   BulletUlt: {fileID: 0}
   healthbar: {fileID: 0}
   manaBar: {fileID: 0}
-  manasys: {fileID: 0}
---- !u!114 &114399782748234378
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7603685950216761004}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d6aa8f14c68ce4e9614868d90da106, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114557537492603816
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7603685950216761004}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55c96558630de7e4492cc7d64f9359f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &870205920609445306
 Rigidbody:
   m_ObjectHideFlags: 0

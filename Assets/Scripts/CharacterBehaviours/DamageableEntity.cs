@@ -14,7 +14,7 @@ public abstract class DamageableEntity : MonoBehaviour
     protected virtual void Start()
     {
         LastHit = false;
-        hpsys = GetComponent<Health>();
+        hpsys = this.gameObject.AddComponent<Health>();
         animator = GetComponentInChildren<Animator>();
         SetupCollisionHandler();
         enemyBase = MasterScript.Instance.GetOpponentBase(Team);

@@ -8,7 +8,6 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
 {
     public float reloadtime;
     public GameObject enemybase;
-    public PlayerController player;
     public float followdistance;
     private float attackdistance;
     private float playerdistance;
@@ -59,7 +58,6 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
         standarddirection = new Vector3(0f, 0f, -1f);
         nmAgent = gameObject.GetComponent<NavMeshAgent>();
         reloadtime = 1.5f;
-        player = GameObject.FindAnyObjectByType<PlayerController>();
         enemytype = "Friendly";
         healthbar.fillAmount = hpsys.healthDisplay();
         manaBar.fillAmount = manasys.getPercent();
@@ -81,6 +79,7 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
         loadedUlt = false;
         aIHandler = gameObject.AddComponent<AIHandler>();
         ShootRightBasic shooter = gameObject.AddComponent<ShootRightBasic>();
+        shooter.SetAttackDistance(15);
         UltAttack ultAttack = gameObject.AddComponent<UltAttack>();
         aIHandler.Init(this, new List<Ability> { shooter, ultAttack }, new List<AIModule>(), movementSpeed, true);
     }
@@ -112,11 +111,11 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
     public override CombatUtils.Team Team => CombatUtils.Team.Enemy;
     protected override void Die()
     {
-        if (player != null && LastHit)
+        if (EnemyPlayer != null && LastHit)
         {
-            if (player.gameObject.activeSelf)
+            if (EnemyPlayer.gameObject.activeSelf)
             {
-                player.Levelsys.GainExp(5 + 5 * Levelsys.GetLevel());
+                EnemyPlayer.Levelsys.GainExp(5 + 5 * Levelsys.GetLevel());
             }
         }
         if (bulletinstance)

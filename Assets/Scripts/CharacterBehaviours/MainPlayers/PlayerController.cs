@@ -11,7 +11,6 @@ public class PlayerController : MainPlayerBehaviour
     public int rotatespeed;
     private float flashspeed;
     public Image damageimage;
-    public EnemyPlayerBehaviour enemyPlayer;
     public Color flashcolor = new Color(1f, 0f, 0f, 0.1f);
     public AudioSource soundsource;
     private int classID;
@@ -21,9 +20,6 @@ public class PlayerController : MainPlayerBehaviour
     protected override void Start()
     {
         base.Start();
-        enemyPlayer = FindAnyObjectByType<EnemyPlayerBehaviour>();
-        manasys = GetComponent<Mana>();
-        hpsys = GetComponent<Health>();
         LastHit = false;
         classID = PlayerPrefs.GetInt("classID");
         switch (classID)
@@ -61,7 +57,7 @@ public class PlayerController : MainPlayerBehaviour
         {
             hpsys.AddArmor(1000);
             Levelsys.GainExp(100);
-            enemyPlayer.Levelsys.GainExp(100);
+            EnemyPlayer.Levelsys.GainExp(100);
         }
         UpdateDamageImage();
     }
@@ -99,7 +95,7 @@ public class PlayerController : MainPlayerBehaviour
         damageimage.color = flashcolor;
         if (LastHit)
         {
-            enemyPlayer.Levelsys.GainExp(5 + 5 * Levelsys.GetLevel());
+            EnemyPlayer.Levelsys.GainExp(5 + 5 * Levelsys.GetLevel());
         }
         LastHit = false;
         base.Die();
