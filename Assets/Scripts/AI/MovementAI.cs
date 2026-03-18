@@ -1,3 +1,4 @@
+using System;
 using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ public class MovementAI : Ability
     public bool CaresAboutHealth;
     public float Movementspeed { get; set; }
     public float Speedup;
+    private Vector3 MovementTarget;
+    public event Action OnTargetReached;
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -54,11 +57,12 @@ public class MovementAI : Ability
             }
             return;
         }
-        if (CaresAboutHealth)
+        else if (CaresAboutHealth)
         {
             if (Handler.HealthState == AIUtils.HealthState.Hurt)
             {
                 Handler.MovementDirection = GetDirection(new Vector3(0, 0, MasterScript.Instance.GetOpponentSpawnZ(CombatUtils.GetOpposingTeam(Handler.Owner.Team))));
+                Handler.ReenableOtherAbilities();
                 return;
             }
         }
@@ -80,9 +84,13 @@ public class MovementAI : Ability
         }
         if (MovementState == AIUtils.MovementState.IsGoingToPlace)
         {
-            //Move Handler towards Place; lock AI
+            Handler.MovementDirection = GetDirection(MovementTarget);
             return;
         }
+    }
+    public void SetMovementTarget(Vector3 movementTarget)
+    {
+        MovementTarget = movementTarget;
     }
     public void HandleMovement()
     {
@@ -92,7 +100,14 @@ public class MovementAI : Ability
             Speedup = 1;
         }
     }
-    public Vector3 GetDirection(Vector3 target) => (target - Handler.Owner.transform.position).normalized;
+    public Vector3 GetDirection(Vector3 target)
+    {
+        Vector3 direction = MasterScript.Instance.CorrectTarget(target) - Handler.Owner.transform.position;
+        direction.y = 0;
+        if (direction.magnitude > 1)
+            direction = direction.normalized;
+        return direction;
+    }
     public void MoveCharacter(Vector3 direction, bool bypass = false, float speedup = 1)
     {
         Handler.Owner.AnimSpeed = 0;
@@ -101,6 +116,11 @@ public class MovementAI : Ability
             Handler.Owner.AnimSpeed = direction.normalized.magnitude;
             Vector3 newPos = MasterScript.Instance.CorrectTarget(transform.position + Movementspeed * Time.deltaTime * direction);
             Handler.Owner.transform.position = newPos;
+            if (MovementState == AIUtils.MovementState.IsGoingToPlace && FlatDistance(newPos, MovementTarget) < 1)
+            {
+                Debug.Log("Target reached");
+                OnTargetReached?.Invoke();
+            }
             if (!bypass)
             {
                 Vector3 worldMove = new Vector3(direction.normalized.x, 0f, direction.normalized.z);
@@ -140,7 +160,10 @@ public class MovementAI : Ability
     {
         return false;
     }
-    protected override void AbilityAction()
+    private float FlatDistance(Vector3 pos1, Vector3 pos2)
     {
+        pos1.y = 0;
+        pos2.y = 0;
+        return Vector3.Distance(pos1, pos2);
     }
 }

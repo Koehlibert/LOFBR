@@ -7,14 +7,12 @@ using Extensions;
 public class EnemyPlayerBehaviour : MainPlayerBehaviour
 {
     public float reloadtime;
-    public GameObject enemybase;
     public float followdistance;
     private float attackdistance;
     private float playerdistance;
     private float distance;
     private GameObject enemy;
     private float movementSpeed = 12;
-    private Vector3 standarddirection;
     public NavMeshAgent nmAgent;
     public GameObject bullet;
     Vector3 offset = new Vector3(0, -0.5f, -1.5f);
@@ -30,14 +28,10 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
     private float circledirection;
     private float avoidDistance;
     private bool isShocking;
-    public checkShockWave detector;
-    public checkShockWave detector2;
     private DetectBullets bulletdetector;
     public GameObject shockwave;
     private float reloadtimeShock;
     private bool loadedShock;
-    private Vector3 closestposNoTower;
-    private Vector3 secondClosestposNoTower;
     private Vector3 target;
     public GameObject shield;
     private bool loadedShield;
@@ -48,23 +42,16 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
     public Image healthbar;
     public Image manaBar;
     private GameObject shieldInstance;
-    private ClosestFinder closestFinder;
     protected override void Start()
     {
         base.Start();
         attackdistance = 20;
-        manasys = GetComponent<Mana>();
         hpsys.Initialize(300, 3, 4, 5);
-        standarddirection = new Vector3(0f, 0f, -1f);
         nmAgent = gameObject.GetComponent<NavMeshAgent>();
         reloadtime = 1.5f;
         enemytype = "Friendly";
         healthbar.fillAmount = hpsys.healthDisplay();
         manaBar.fillAmount = manasys.getPercent();
-        closestCurrentEnemy = null;
-        enemybase = GameObject.FindWithTag(enemytype + "Base");
-        yourbase = GameObject.FindWithTag("EnemyBase");
-        closestFinder = new ClosestFinder(Team, this.gameObject);
         loaded = true;
         hurt = false;
         circledirection = 1;
@@ -73,15 +60,14 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
         loadedShock = true;
         loadedShield = true;
         reloadtimeShock = 6;
-        detector.enabled = false;
-        detector2.enabled = false;
         bulletdetector = FindAnyObjectByType<DetectBullets>();
         loadedUlt = false;
         aIHandler = gameObject.AddComponent<AIHandler>();
         ShootRightBasic shooter = gameObject.AddComponent<ShootRightBasic>();
-        shooter.SetAttackDistance(15);
+        shooter.SetAttackDistance(20);
         UltAttack ultAttack = gameObject.AddComponent<UltAttack>();
-        aIHandler.Init(this, new List<Ability> { shooter, ultAttack }, new List<AIModule>(), movementSpeed, true);
+        Stomp stomp = gameObject.AddComponent<Stomp>();
+        aIHandler.Init(this, new List<Ability> { shooter, ultAttack, stomp }, new List<AIModule>(), movementSpeed, true);
     }
     void OnEnable()
     {
@@ -101,12 +87,6 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
             bulletinstance2 = BulletFactory.Instance.CreateBullet(this, true, HumanBodyBones.LeftLowerLeg);
             bulletrig2 = bulletinstance2.GetComponent<Rigidbody>();
         }
-    }
-    void LateUpdate()
-    {
-        Vector3 pos = transform.position;
-        pos.y = 0f;
-        transform.position = pos;
     }
     public override CombatUtils.Team Team => CombatUtils.Team.Enemy;
     protected override void Die()
@@ -278,44 +258,6 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
         movementSpeed++;
         nmAgent.speed += 2;
         manasys.UpdateValues(1.2f, 1.35f);
-        if (Levelsys.CheckLevel(2))
-        {
-            detector.enabled = true;
-            detector2.enabled = true;
-            reloadtimeShock *= 0.9f;
-        }
-    }
-    private IEnumerator Reload()
-    {
-        loaded = false;
-        yield return new WaitForSeconds(reloadtime);
-        bulletinstance = BulletFactory.Instance.CreateBullet(this, true, HumanBodyBones.RightLowerLeg);
-        bulletrig = bulletinstance.GetComponent<Rigidbody>();
-        loaded = true;
-        if (Levelsys.CheckLevel(4))
-        {
-            bulletinstance2 = BulletFactory.Instance.CreateBullet(this, true, HumanBodyBones.LeftLowerLeg);
-            bulletrig2 = bulletinstance2.GetComponent<Rigidbody>();
-        }
-    }
-    private IEnumerator Resetanim()
-    {
-        yield return new WaitForSeconds(0.25f);
-        animator.Play("Default", 0, 0f);
-    }
-    private IEnumerator Shootanim()
-    {
-        animator.Play("Shoot", 0, 0f);
-        yield return new WaitForSeconds(0.1f);
-        bulletinstance?.GetComponent<BulletBehaviour>().Shoot(GetMainAttackDamage());
-        bulletrig = null;
-        if (bulletrig2)
-        {
-            bulletrig2.transform.position = animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg).position + offset;
-            bulletinstance2.GetComponent<BulletBehaviour>().Shoot(GetMainAttackDamage());
-            bulletrig2 = null;
-        }
-        StartCoroutine("Resetanim");
     }
     private IEnumerator ReloadShock()
     {
@@ -376,38 +318,6 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
         hpsys.AddArmor(-100);
         GameObject.Destroy(shieldInstance);
     }
-    private void MoveShockCheckColliders()
-    {
-        if (Levelsys.GetLevel() > 1)
-        {
-            GameObject[] closeEns = closestFinder.FindTwoClosest();
-            if (closeEns[0])
-            {
-                detector.enabled = true;
-                closestposNoTower = closeEns[0].transform.position;
-                detector.gameObject.transform.position = closestposNoTower;
-                if (closeEns[1])
-                {
-                    detector2.enabled = true;
-                    secondClosestposNoTower = closeEns[1].transform.position;
-                    detector2.gameObject.transform.position = secondClosestposNoTower;
-                }
-                else
-                {
-                    detector2.enabled = false;
-                }
-            }
-            else
-            {
-                detector.enabled = false;
-            }
-        }
-        else
-        {
-            detector.enabled = false;
-            detector2.enabled = false;
-        }
-    }
     private bool CheckHurt()
     {
         bool returnBool = hurt;
@@ -421,16 +331,8 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
         }
         return returnBool;
     }
-    private DamageInfo GetMainAttackDamage()
-    {
-        return new DamageInfo(34 + 7 * Levelsys.GetLevel(), 0, this.Team, true);
-    }
     private DamageInfo GetShockDamage()
     {
         return new DamageInfo(70 + (Levelsys.GetLevel() - 2) * 6, 0, this.Team, true);
-    }
-    private DamageInfo GetUltDamage()
-    {
-        return new DamageInfo(50 + (Levelsys.GetLevel() - 5) * 4.5f, 0, this.Team, true, true);
     }
 }

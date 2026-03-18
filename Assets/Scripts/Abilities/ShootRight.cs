@@ -26,7 +26,7 @@ public class ShootRightBasic : ShootBasic
         }
         else
         {
-            return new DamageInfo(40, 0, Handler.Owner.Team, true);
+            return new DamageInfo(40, 0, Handler.Owner.Team, Handler.Owner is MainPlayerBehaviour);
         }
     }
 }

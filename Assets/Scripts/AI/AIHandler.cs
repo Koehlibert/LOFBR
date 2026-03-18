@@ -27,6 +27,7 @@ public class AIHandler : MonoBehaviour
     public GameObject closestEnemyNoTower;
     public float distanceToClosest;
     private bool IsInteractive;
+    protected List<Ability> DisabledAbilities;
     public virtual void Init(DamageableEntity owner, List<Ability> abilities, List<AIModule> aIModules, float movementSpeed, bool caresAboutHealth = false)
     {
         Owner = owner;
@@ -56,6 +57,7 @@ public class AIHandler : MonoBehaviour
         ForceMovement = false;
         MovementDirection = new Vector3();
         LookDirection = new Vector3();
+        DisabledAbilities = new List<Ability>();
     }
     public void AddAbility(Ability ability)
     {
@@ -66,6 +68,10 @@ public class AIHandler : MonoBehaviour
     {
         ability.Init(IsInteractive, this, reloadObject);
         Abilities.Add(ability);
+    }
+    private void OnDisable()
+    {
+        ReenableOtherAbilities();
     }
     private void Update()
     {
@@ -80,6 +86,8 @@ public class AIHandler : MonoBehaviour
         {
             foreach (Ability ability in Abilities)
             {
+                if (!ability.enabled)
+                    continue;
                 ability.Checker();
                 if (FinalAction != null)
                 {
@@ -129,9 +137,8 @@ public class AIHandler : MonoBehaviour
         yield return new WaitForSeconds(duration);
         ForceMovement = false;
     }
-    public List<Ability> DisableOtherAbilities(Ability abilityToKeep)
+    public void DisableOtherAbilities(Ability abilityToKeep)
     {
-        List<Ability> DisabledAbilities = new List<Ability>();
         foreach (Ability ability in Abilities)
         {
             if (ability != abilityToKeep)
@@ -140,13 +147,13 @@ public class AIHandler : MonoBehaviour
                 DisabledAbilities.Add(ability);
             }
         }
-        return DisabledAbilities;
     }
-    public void ReenableOtherAbilities(List<Ability> abilities)
+    public void ReenableOtherAbilities()
     {
-        foreach (Ability ability in abilities)
+        foreach (Ability ability in DisabledAbilities)
         {
             ability.enabled = true;
         }
+        DisabledAbilities.Clear();
     }
 }

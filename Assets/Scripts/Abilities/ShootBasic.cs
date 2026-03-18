@@ -9,7 +9,7 @@ public abstract class ShootBasic : DamagingAbility
     [SerializeField] AudioSource soundsource;
     protected GameObject bulletinstance;
     protected Coroutine reloadCoroutine;
-    protected float AttackDistance;
+    protected float AttackDistance = 10f;
     protected virtual GameObject CreateBullet()
     {
         return BulletFactory.Instance.CreateBullet(Handler.Owner, true, Bone);
@@ -21,7 +21,6 @@ public abstract class ShootBasic : DamagingAbility
     }
     protected override void AdditionalInit()
     {
-        AttackDistance = 10f;
     }
     public void SetAttackDistance(float attackDistance)
     {

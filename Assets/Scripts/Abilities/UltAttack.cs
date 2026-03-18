@@ -6,7 +6,6 @@ public class UltAttack : ShootBasic
 {
     public GameObject ultBullet;
     protected override HumanBodyBones Bone => HumanBodyBones.LeftLowerLeg;
-    protected List<Ability> DisabledAbilities;
     protected int NEnemiesToTrigger = 4;
     protected float DistanceToCheck = 30;
     protected override void AdditionalInit()
@@ -28,7 +27,7 @@ public class UltAttack : ShootBasic
     }
     protected override IEnumerator Shootanim()
     {
-        DisabledAbilities = Handler.DisableOtherAbilities(this);
+        Handler.DisableOtherAbilities(this);
         StartCoroutine(Handler.movementAI.LockMovement(1.6f));
         Handler.Owner.animator.Play("Backflip", 0, 0f);
         yield return new WaitForSeconds(0.6f);
@@ -46,7 +45,7 @@ public class UltAttack : ShootBasic
     {
         yield return new WaitForSeconds(1f);
         Handler.Owner.animator.Play("Default", 0, 0f);
-        Handler.ReenableOtherAbilities(DisabledAbilities);
+        Handler.ReenableOtherAbilities();
     }
     protected override bool InputPressed()
     {
@@ -62,7 +61,6 @@ public class UltAttack : ShootBasic
     }
     protected override void AICheck()
     {
-        Debug.Log(Handler.ClosestFinder.GetEnemiesInDist());
         if (Handler.ClosestFinder.GetEnemiesInDist() >= NEnemiesToTrigger)
         {
             Handler.movementAI.MovementState = AIUtils.MovementState.IsStanding;
