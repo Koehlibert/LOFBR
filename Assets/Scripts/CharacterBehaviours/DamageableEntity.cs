@@ -11,6 +11,7 @@ public abstract class DamageableEntity : MonoBehaviour
     public GameObject enemyBase;
     public GameObject yourbase;
     public AIHandler aIHandler;
+    protected DamageCollisionHandler CollisionHandler;
     protected virtual void Start()
     {
         LastHit = false;
@@ -22,7 +23,8 @@ public abstract class DamageableEntity : MonoBehaviour
     }
     protected virtual void SetupCollisionHandler()
     {
-        DamageCollisionHandler handler = gameObject.AddComponent<DamageCollisionHandler>();
+        CollisionHandler = gameObject.AddComponent<DamageCollisionHandler>();
+        CollisionHandler.Init(this);
     }
     public virtual void SetLastHit(bool value)
     {

@@ -16,7 +16,6 @@ public class PlayerController : MainPlayerBehaviour
     private int classID;
     private Skillset skillSet;
     private bool isDead = false;
-    private DamageCollisionHandler handler;
     protected override void Start()
     {
         base.Start();
@@ -41,7 +40,6 @@ public class PlayerController : MainPlayerBehaviour
         var hpVals = skillSet.GetHPVals();
         hpsys.Initialize(hpVals.hpval, hpVals.regenval, hpVals.delay, hpVals.armorval);
         flashspeed = 2.5f;
-        handler = GetComponent<DamageCollisionHandler>();
         EnableDamageFlash();
     }
     public override CombatUtils.Team Team => CombatUtils.Team.Player;
@@ -102,11 +100,11 @@ public class PlayerController : MainPlayerBehaviour
     }
     public void DisableDamageFlash()
     {
-        handler.OnHitCallback -= OnTakeDamage;
+        CollisionHandler.OnHitCallback -= OnTakeDamage;
     }
     public void EnableDamageFlash()
     {
-        handler.OnHitCallback += OnTakeDamage;
+        CollisionHandler.OnHitCallback += OnTakeDamage;
     }
     public void OnHealXP()
     {

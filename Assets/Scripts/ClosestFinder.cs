@@ -12,12 +12,11 @@ public class ClosestFinder
     private CombatUtils.Team targetTeam;
     private List<GameObject> AllObjects;
     private List<GameObject> AllObjectsNoTowers;
-    private float DistToCheck;
-    private int EnemiesInDistance;
     private int LastFrameComputed = -1;
     private int LastFrameComputedNoTower = -1;
     private GameObject CachedClosest;
     private GameObject CachedClosestNoTower;
+    private List<InDistanceTracker> inDistanceTrackers;
     private MainPlayerBehaviour GetPlayer(CombatUtils.Team team)
     {
         return team == CombatUtils.Team.Enemy ? MasterScript.Instance.enemyPlayer : MasterScript.Instance.player;
@@ -31,7 +30,7 @@ public class ClosestFinder
         this.targetTeam = targetTeam;
         this.selfObject = selfObject;
         this.player = GetPlayer(targetTeam);
-        this.DistToCheck = 0;
+        inDistanceTrackers = new List<InDistanceTracker>();
         AllObjects = targetTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemiesTowers : MasterScript.Instance.allFriendliesTowers;
         AllObjectsNoTowers = targetTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemies : MasterScript.Instance.allFriendlies;
     }
@@ -48,7 +47,6 @@ public class ClosestFinder
     {
         if (LastFrameComputedNoTower != Time.frameCount)
         {
-            EnemiesInDistance = 0;
             CachedClosestNoTower = FindClosest(AllObjectsNoTowers, withPlayer, onlyHurt, true);
             LastFrameComputedNoTower = Time.frameCount;
         }
@@ -60,12 +58,20 @@ public class ClosestFinder
     }
     private GameObject FindClosest(List<GameObject> allEnemies, bool withPlayer, bool onlyHurt = false, bool TrackNumber = false)
     {
+        foreach (InDistanceTracker inDistanceTracker in inDistanceTrackers)
+        {
+            inDistanceTracker.ResetCounter();
+        }
         GameObject closestEnemy = null;
         float closestDistance = Mathf.Infinity;
         if (withPlayer && player.isActiveAndEnabled)
         {
             closestEnemy = player.gameObject;
             closestDistance = Vector3.Distance(player.transform.position, selfObject.transform.position);
+            foreach (InDistanceTracker inDistanceTracker in inDistanceTrackers)
+            {
+                inDistanceTracker.CheckInDistance(closestDistance, true);
+            }
         }
         foreach (GameObject currenemy in allEnemies)
         {
@@ -74,9 +80,9 @@ public class ClosestFinder
                 continue;
             }
             float distanceToEnemy = Vector3.Distance(currenemy.transform.position, selfObject.transform.position);
-            if (TrackNumber && distanceToEnemy < DistToCheck && currenemy != player.gameObject)
+            foreach (InDistanceTracker inDistanceTracker in inDistanceTrackers)
             {
-                EnemiesInDistance++;
+                inDistanceTracker.CheckInDistance(distanceToEnemy, false);
             }
             if (distanceToEnemy < closestDistance)
             {
@@ -105,16 +111,40 @@ public class ClosestFinder
     {
         return AllObjectsNoTowers.Count;
     }
-    public void StartTrackingDist(float distToCheck)
+    public InDistanceTracker StartTrackingDist(float distToCheck, bool withPlayer)
     {
-        DistToCheck = distToCheck;
+        InDistanceTracker inDistanceTracker = new InDistanceTracker(distToCheck, withPlayer, this);
+        inDistanceTrackers.Add(inDistanceTracker);
+        return inDistanceTracker;
     }
-    public void StopTrackingDist()
+    public void StopTrackingDist(InDistanceTracker inDistanceTracker)
     {
-        DistToCheck = 0;
+        inDistanceTrackers.Remove(inDistanceTracker);
     }
-    public int GetEnemiesInDist()
+}
+public class InDistanceTracker
+{
+    private float DistToCheck { get; }
+    private int EnemiesInDistance { get; set; }
+    private ClosestFinder ClosestFinder;
+    private bool withPlayer;
+    public InDistanceTracker(float distToCheck, bool withPlayer, ClosestFinder closestFinder)
     {
-        return EnemiesInDistance;
+        this.DistToCheck = distToCheck;
+        ClosestFinder = closestFinder;
+        EnemiesInDistance = 0;
+    }
+    public void ResetCounter()
+    {
+        EnemiesInDistance = 0;
+    }
+    public bool GetOverCount(int numberToCheck)
+    {
+        return EnemiesInDistance >= numberToCheck;
+    }
+    public void CheckInDistance(float distance, bool isPlayer)
+    {
+        if (distance < DistToCheck && (!isPlayer || (withPlayer & isPlayer)))
+            EnemiesInDistance++;
     }
 }

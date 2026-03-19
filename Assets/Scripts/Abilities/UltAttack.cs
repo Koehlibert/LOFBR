@@ -8,10 +8,11 @@ public class UltAttack : ShootBasic
     protected override HumanBodyBones Bone => HumanBodyBones.LeftLowerLeg;
     protected int NEnemiesToTrigger = 4;
     protected float DistanceToCheck = 30;
+    private InDistanceTracker inDistanceTracker;
     protected override void AdditionalInit()
     {
         offset = new Vector3(0, 1, 0);
-        Handler.ClosestFinder.StartTrackingDist(DistanceToCheck);
+        inDistanceTracker = Handler.ClosestFinder.StartTrackingDist(DistanceToCheck, true);
     }
     protected override void OnEnable()
     {
@@ -61,7 +62,7 @@ public class UltAttack : ShootBasic
     }
     protected override void AICheck()
     {
-        if (Handler.ClosestFinder.GetEnemiesInDist() >= NEnemiesToTrigger)
+        if (inDistanceTracker.GetOverCount(NEnemiesToTrigger))
         {
             Handler.movementAI.MovementState = AIUtils.MovementState.IsStanding;
             Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);

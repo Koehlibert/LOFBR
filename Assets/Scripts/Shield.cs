@@ -11,7 +11,6 @@ public class Shield : MonoBehaviour
     }
     void Update()
     {
-        this.transform.position = owner.transform.position + new Vector3(0f,2f,0f);
-        this.transform.rotation = owner.transform.rotation;
+        this.transform.SetPositionAndRotation(owner.transform.position + new Vector3(0f,2f,0f), owner.transform.rotation);
     }
 }

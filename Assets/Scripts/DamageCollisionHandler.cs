@@ -17,13 +17,11 @@ public class DamageCollisionHandler : MonoBehaviour
     public event Action OnHitCallback;
     public enum CollisionEventType { Enter, Stay, TriggerStay, TriggerEnter }
     private List<CollisionRule> collisionRules = new List<CollisionRule>();
-    private DamageableEntity damageableTarget;
-
-    private void OnEnable()
+    private DamageableEntity Owner;
+    public void Init(DamageableEntity owner)
     {
-        damageableTarget = GetComponent<DamageableEntity>();
+        Owner = owner;
     }
-
     public void AddRule(CollisionRule rule)
     {
         collisionRules.Add(rule);
@@ -41,7 +39,7 @@ public class DamageCollisionHandler : MonoBehaviour
         Damage damageComponent = collider.gameObject.GetComponent<Damage>();
         if (damageComponent?.isEnduring == true)
         {
-            if (CombatUtils.CanDamage(damageComponent, damageableTarget))
+            if (CombatUtils.CanDamage(damageComponent, Owner))
             {
                 if (collider.gameObject.GetComponent<BulletBehaviourFollowingUlt>() != null)
                 {
@@ -49,12 +47,12 @@ public class DamageCollisionHandler : MonoBehaviour
                 }
                 if (damageComponent.givesXP)
                 {
-                    damageableTarget.SetLastHit(true);
+                    Owner.SetLastHit(true);
                 }
                 OnHitCallback?.Invoke();
-                if (CombatUtils.DealDamage(damageComponent, damageableTarget))
+                if (CombatUtils.DealDamage(damageComponent, Owner))
                 {
-                    damageableTarget.Kill();
+                    Owner.Kill();
                 }
             }
         }
@@ -64,28 +62,30 @@ public class DamageCollisionHandler : MonoBehaviour
         Damage damageComponent = collider.gameObject.GetComponent<Damage>();
         if (damageComponent != null && !damageComponent.isEnduring)
         {
-            if (CombatUtils.CanDamage(damageComponent, damageableTarget) != damageComponent.isHealing)
+            Debug.Log(Owner);
+            Debug.Log(damageComponent);
+            if (CombatUtils.CanDamage(damageComponent, Owner) != damageComponent.isHealing)
             {
                 if (!damageComponent.isHealing)
                 {
                     if (damageComponent.givesXP)
                     {
-                        damageableTarget.SetLastHit(true);
+                        Owner.SetLastHit(true);
                     }
                     OnHitCallback?.Invoke();
-                    if (CombatUtils.DealDamage(damageComponent, damageableTarget))
+                    if (CombatUtils.DealDamage(damageComponent, Owner))
                     {
-                        damageableTarget.Kill();
+                        Owner.Kill();
                     }
                 }
                 else
                 {
                     DamageableEntity bulletOwner = collider.GetComponent<BulletBehaviourFollowing>()?.Owner;
-                    if (damageableTarget == bulletOwner)
+                    if (Owner == bulletOwner)
                     {
                         return;
                     }
-                    if (damageableTarget.GetHealth().Heal(damageComponent))
+                    if (Owner.GetHealth().Heal(damageComponent))
                     {
                         if(bulletOwner is MainPlayerBehaviour)
                         {

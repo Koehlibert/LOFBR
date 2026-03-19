@@ -1,40 +1,40 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DetectBullets : MonoBehaviour
 {
-    private EnemyPlayerBehaviour player;
+    private DamageableEntity Owner;
     private List<GameObject> objectList;
-    void Start()
+    private int NBulletsToTrigger;
+    public event Action BulletsDetected;
+    public void Init(DamageableEntity owner, int nBulletsToTrigger)
     {
-        player = FindAnyObjectByType<EnemyPlayerBehaviour>();
-        objectList = new List<GameObject>();
+        Owner = owner;
+        NBulletsToTrigger = nBulletsToTrigger;
     }
     void Update()
     {
-        transform.position = player.transform.position;
+        transform.position = Owner.transform.position;
         objectList.RemoveAll(item => item == null);
-        if (objectList.Count >= 2)
-        {
-            if(player.isActiveAndEnabled)
-            {
-                player.UseShield();   
-            }
-        }
     }
     void OnTriggerEnter(Collider other)
     {
-        if ((other.gameObject.CompareTag("Bullet"))||(other.gameObject.CompareTag("BulletPlayer")))
+        if (other.gameObject.CompareTag("Bullet") || other.gameObject.CompareTag("BulletPlayer"))
         {
             objectList.Add(other.gameObject);
         }
     }
     void OnTriggerExit(Collider other)
     {
-       if (objectList.Contains(other.gameObject))
-       {
-           objectList.Remove(other.gameObject);
-       } 
+        if (objectList.Contains(other.gameObject))
+        {
+            objectList.Remove(other.gameObject);
+        }
+    }
+    protected virtual void SetupCollisionHandler()
+    {
+        //DamageCollisionHandler handler = new DamageCollisionHandler(Owner);
     }
 }

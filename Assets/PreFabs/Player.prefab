@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 874059498112534172}
   - component: {fileID: 874059498112534173}
   - component: {fileID: 509411099847583325}
-  - component: {fileID: 5878975697936520375}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -303,18 +302,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5878975697936520375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 874059498112534175}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fed89685875a794b875606ac44d8809, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DamageCollisionHandler
 --- !u!1 &8930439011003035570
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ public class BulletFactory : MonoBehaviour
     [SerializeField] GameObject MeleeCollider;
     [SerializeField] GameObject ParryCollider;
     [SerializeField] GameObject ManaDrainer;
+    [SerializeField] GameObject BulletDetector;
     private void Awake()
     {
         Instance = this;

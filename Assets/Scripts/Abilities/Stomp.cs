@@ -11,6 +11,7 @@ public class Stomp : DamagingAbility
     protected float ShockRadiusToCheck = 8;
     protected List<Ability> DisabledAbilities;
     private bool IsShocking;
+    private InDistanceTracker inDistanceTracker;
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -68,7 +69,14 @@ public class Stomp : DamagingAbility
     {
         if (IsShocking)
         {
+            List<GameObject> closest2Enemies = Handler.ClosestFinder.FindNClosest(2, true);
+            (bool tmp, Vector3 ShockPoint) = ExistsPointWithinRadius(closest2Enemies, ShockRadiusToCheck * 0.75f);
             Handler.movementAI.MovementState = AIUtils.MovementState.IsGoingToPlace;
+            if (inDistanceTracker.GetOverCount(2))
+            {
+                Handler.movementAI.SetMovementTarget(Handler.Owner.transform.position);
+                Handler.ClosestFinder.StopTrackingDist(inDistanceTracker);
+            }
         }
         else
         {
@@ -80,6 +88,7 @@ public class Stomp : DamagingAbility
                 {
                     IsShocking = true;
                     Debug.Log("Ah");
+                    inDistanceTracker = Handler.ClosestFinder.StartTrackingDist(ShockRadiusToCheck, true);
                     Handler.movementAI.MovementState = AIUtils.MovementState.IsGoingToPlace;
                     Handler.movementAI.SetMovementTarget(ShockPoint);
                     /* DrawDebugCircle(ShockPoint, ShockRadiusToCheck);
