@@ -42,7 +42,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7603685950216729292}
   - component: {fileID: 2151239496023180427}
-  - component: {fileID: 8406012509699660718}
   - component: {fileID: 8815440969369717703}
   - component: {fileID: 870205920609445306}
   m_Layer: 0
@@ -89,28 +88,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 6, z: 1.5}
   m_Center: {x: 0, y: 3, z: -1}
---- !u!195 &8406012509699660718
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7603685950216761004}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 22
-  m_Acceleration: 12
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 1
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!114 &8815440969369717703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,20 +105,6 @@ MonoBehaviour:
   yourbase: {fileID: 0}
   aIHandler: {fileID: 0}
   manasys: {fileID: 0}
-  reloadtime: 0
-  enemybase: {fileID: 0}
-  player: {fileID: 0}
-  followdistance: 35
-  nmAgent: {fileID: 0}
-  bullet: {fileID: 3013956373289337006, guid: 4b5792511e065694eade0b3cb8adca22, type: 3}
-  enemytype: 
-  closestCurrentEnemy: {fileID: 0}
-  detector: {fileID: 0}
-  detector2: {fileID: 0}
-  shockwave: {fileID: 3694283461505410077, guid: cfe5ea75e0a895c4d9916b4b2c7f2525,
-    type: 3}
-  shield: {fileID: 0}
-  BulletUlt: {fileID: 0}
   healthbar: {fileID: 0}
   manaBar: {fileID: 0}
 --- !u!54 &870205920609445306

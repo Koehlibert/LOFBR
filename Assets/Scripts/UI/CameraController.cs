@@ -10,15 +10,11 @@ public class CameraController : MonoBehaviour
     private Vector3 velocity = Vector3.zero;
     void Start()
     {
-        player = GameObject.FindAnyObjectByType<PlayerController>().gameObject;
+        player = MasterScript.Instance.player.gameObject;
         offset = transform.position - player.transform.position;
     }
     void LateUpdate()
     {
-        if (!player)
-        {
-            player = GameObject.FindAnyObjectByType<PlayerController>().gameObject;
-        }
         transform.position = Vector3.SmoothDamp(transform.position, player.transform.position + offset, ref velocity, smooth);
     }
 }

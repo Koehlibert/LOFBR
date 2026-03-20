@@ -61,10 +61,14 @@ public class MovementAI : Ability
         {
             if (Handler.HealthState == AIUtils.HealthState.Hurt)
             {
-                Handler.MovementDirection = GetDirection(new Vector3(0, 0, MasterScript.Instance.GetOpponentSpawnZ(CombatUtils.GetOpposingTeam(Handler.Owner.Team))));
-                Handler.ReenableOtherAbilities();
-                return;
+                MovementState = AIUtils.MovementState.IsRetreating;
             }
+        }
+        if (MovementState == AIUtils.MovementState.IsRetreating)
+        {
+            Handler.MovementDirection = GetDirection(new Vector3(0, 0, MasterScript.Instance.GetOpponentSpawnZ(CombatUtils.GetOpposingTeam(Handler.Owner.Team))));
+            Handler.SetAIState(AIUtils.AIState.Retreating);
+            Handler.ReenableOtherAbilities();
         }
         if (MovementState == AIUtils.MovementState.IsStanding)
         {

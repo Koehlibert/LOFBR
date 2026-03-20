@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-using Extensions;
 using System;
 using UnityEditor.SceneManagement;
 public abstract class MainPlayerBehaviour : DamageableEntity

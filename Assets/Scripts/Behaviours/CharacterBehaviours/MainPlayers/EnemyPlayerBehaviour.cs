@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-using Extensions;
 public class EnemyPlayerBehaviour : MainPlayerBehaviour
 {
     Vector3 offset = new Vector3(0, -0.5f, -1.5f);

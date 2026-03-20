@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Extensions;
 public abstract class Base : DamageableEntity
 {
     public override void Init()

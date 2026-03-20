@@ -16,7 +16,8 @@ public static class AIUtils
         CheckGeneralSkills,
         CheckDistSkills,
         CheckShoot,
-        Attacking
+        Attacking,
+        Retreating
     }
     public enum HealthState
     {

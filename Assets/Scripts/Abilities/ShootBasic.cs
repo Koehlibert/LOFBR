@@ -17,7 +17,7 @@ public abstract class ShootBasic : DamagingAbility
     protected abstract HumanBodyBones Bone { get; }
     protected override AbilityInfo GetAbilityInfo()
     {
-        return new AbilityInfo(5f, 1.5f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
+        return new AbilityInfo(5f, 1.5f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.Retreating });
     }
     protected override void AdditionalInit()
     {

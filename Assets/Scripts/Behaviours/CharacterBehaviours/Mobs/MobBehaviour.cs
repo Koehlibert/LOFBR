@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-using Extensions;
 using System;
 public abstract class MobBehaviour : DamageableEntity
 {
@@ -13,7 +12,6 @@ public abstract class MobBehaviour : DamageableEntity
     protected float attackdistance = 10;
     private float movementSpeed = 12;
     private Vector3 standarddirection = new Vector3(0f, 0f, 1f);
-    private NavMeshAgent nmAgent;
     private GameObject bulletinstance;
     private Rigidbody bulletrig;
     Vector3 offset = new Vector3(0f, 0f, 1f);
@@ -27,7 +25,6 @@ public abstract class MobBehaviour : DamageableEntity
     {
         base.Init();
         LastHit = false;
-        nmAgent = gameObject.GetComponent<NavMeshAgent>();
         EnemyTeam = CombatUtils.GetOpposingTeam(Team);
         enemybase = MasterScript.Instance.GetOpponentBase(EnemyTeam);
         closestFinder = new ClosestFinder(Team, this.gameObject);

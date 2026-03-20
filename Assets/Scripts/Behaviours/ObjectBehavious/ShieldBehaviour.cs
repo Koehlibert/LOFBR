@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shield : MonoBehaviour
+public class ShieldBehaviour : MonoBehaviour
 {
     public DamageableEntity owner;
     public void SetOwner(DamageableEntity owner)

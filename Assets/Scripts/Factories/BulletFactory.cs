@@ -64,7 +64,7 @@ public class BulletFactory : MonoBehaviour
     public GameObject CreateShield(DamageableEntity owner)
     {
         GameObject shieldInstance = Instantiate(Shield, owner.transform.position + new Vector3(0f, 2f, 0f), owner.transform.rotation);
-        shieldInstance.AddComponent<Shield>().SetOwner(owner);
+        shieldInstance.AddComponent<ShieldBehaviour>().SetOwner(owner);
         return shieldInstance;
     }
     public GameObject CreateFire(DamageableEntity owner)
