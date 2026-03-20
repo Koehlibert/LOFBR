@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Skillset : MonoBehaviour
+public abstract class Skillset
 {
     protected float startingLife;
     protected float startingRegen;
@@ -11,10 +11,6 @@ public abstract class Skillset : MonoBehaviour
     protected float startingSpeed;
     public abstract void LevelUnlock(int lvl);
     public AIHandler Handler;
-    public void Init(AIHandler aIHandler)
-    {
-        Handler = aIHandler;
-    }
     public (float hpval, float regenval, float delay, float armorval) GetHPVals()
     {
         return (startingLife, startingRegen, regenDelay, startingArmor);
@@ -26,8 +22,9 @@ public abstract class Skillset : MonoBehaviour
 }
 public class SkillsetFighter : Skillset
 {
-    void OnEnable()
+    public SkillsetFighter(AIHandler handler)
     {
+        Handler = handler;
         startingLife = 300;
         startingRegen = 3;
         regenDelay = 4;
@@ -65,8 +62,9 @@ public class SkillsetFighter : Skillset
 }
 public class SkillsetSupport : Skillset
 {
-    void OnEnable()
+    public SkillsetSupport(AIHandler handler)
     {
+        Handler = handler;
         startingLife = 350;
         startingRegen = 7.5f;
         regenDelay = 2.5f;
@@ -106,8 +104,9 @@ public class SkillsetSupport : Skillset
 }
 public class SkillsetMelee : Skillset
 {
-    void OnEnable()
+    public SkillsetMelee(AIHandler handler)
     {
+        Handler = handler;
         startingLife = 400;
         startingRegen = 4;
         regenDelay = 5;

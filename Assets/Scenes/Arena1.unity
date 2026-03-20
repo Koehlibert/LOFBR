@@ -5022,6 +5022,7 @@ MonoBehaviour:
   AltReloader: {fileID: 1805395404}
   SkillReloader: {fileID: 1327135179}
   UltReloader: {fileID: 1988524061}
+  DamageImage: {fileID: 181606342}
 --- !u!1 &1398184973
 GameObject:
   m_ObjectHideFlags: 0
@@ -6514,6 +6515,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterFactory
   Mob: {fileID: 1421225335743905642, guid: a16790b3d812c5f4cb9876f67b336f51, type: 3}
   EnemyMob: {fileID: 752268847723358216, guid: cb00b9e74f73cef4da88b3a76ee2892a, type: 3}
+  Player: {fileID: 0}
+  EnemyPlayer: {fileID: 0}
 --- !u!1001 &1776057421
 PrefabInstance:
   m_ObjectHideFlags: 0

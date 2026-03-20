@@ -52,6 +52,14 @@ public class Health : MonoBehaviour
         regenTime = regenTimeVar;
         armor = armval;
     }
+    public void Initialize((float max, float regen, float regenTimeVar, float armval) var)
+    {
+        maxhp = var.max;
+        hp = maxhp;
+        healthRegen = var.regen;
+        regenTime = var.regenTimeVar;
+        armor = var.armval;
+    }
     public void UpdateValues(float gain, float regenGain)
     {
         maxhp += gain;

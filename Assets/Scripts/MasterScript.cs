@@ -108,13 +108,21 @@ public class MasterScript : MonoBehaviour
         GameOverMenu.SetActive(false);
         GameOverContinue.SetActive(false);
         continueBool = false;
+        player = FindAnyObjectByType<PlayerController>();
+        enemyPlayer = FindAnyObjectByType<EnemyPlayerBehaviour>();
         allEnemiesTowers = new List<GameObject>(GameObject.FindGameObjectsWithTag("EnemyTower"));
         allFriendliesTowers = new List<GameObject>(GameObject.FindGameObjectsWithTag("FriendlyTower"));
         allEnemies = new List<GameObject>();
         allFriendlies = new List<GameObject>();
         rezPoolFriendly = new List<Tombstone>();
-        player = FindAnyObjectByType<PlayerController>();
-        enemyPlayer = FindAnyObjectByType<EnemyPlayerBehaviour>();
+        friendlyBase.GetComponent<FriendlyBase>().Init();
+        enemyBase.GetComponent<EnemyBase>().Init();
+        player.Init();
+        enemyPlayer.Init();
+        foreach (GameObject enemyTower in allEnemiesTowers)
+            enemyTower.GetComponent<TowerBehaviourEnemy>().Init();
+        foreach (GameObject friendlyTower in allFriendliesTowers)
+            friendlyTower.GetComponent<TowerBehaviourFriendly>().Init();
     }
     void Update()
     {
@@ -158,12 +166,12 @@ public class MasterScript : MonoBehaviour
         if (team == CombatUtils.Team.Player)
         {
             StartCoroutine("RespawnCoroutine");
-            friendlySpawn.SpeedUpSpawner(0.85f);
+            friendlySpawn.SpeedUpSpawner(0.95f);
         }
         else
         {
             StartCoroutine("EnemyRespawnCoroutine");
-            enemySpawn.SpeedUpSpawner(0.85f);
+            enemySpawn.SpeedUpSpawner(0.95f);
         }
         MoveSpawner(team);
     }

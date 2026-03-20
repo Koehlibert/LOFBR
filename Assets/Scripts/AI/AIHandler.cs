@@ -26,7 +26,7 @@ public class AIHandler : MonoBehaviour
     public GameObject closestEnemy;
     public GameObject closestEnemyNoTower;
     public float distanceToClosest;
-    private bool IsInteractive;
+    public bool IsInteractive;
     protected List<Ability> DisabledAbilities;
     public virtual void Init(DamageableEntity owner, List<Ability> abilities, List<AIModule> aIModules, float movementSpeed, bool caresAboutHealth = false)
     {

@@ -23,9 +23,9 @@ public abstract class MobBehaviour : DamageableEntity
     [SerializeField] Image healthbar;
     [SerializeField] Image healthbarbg;
     protected HumanBodyBones Bone;
-    protected override void Start()
+    public override void Init()
     {
-        base.Start();
+        base.Init();
         LastHit = false;
         nmAgent = gameObject.GetComponent<NavMeshAgent>();
         EnemyTeam = CombatUtils.GetOpposingTeam(Team);

@@ -12,7 +12,7 @@ public abstract class DamageableEntity : MonoBehaviour
     public GameObject yourbase;
     public AIHandler aIHandler;
     protected DamageCollisionHandler CollisionHandler;
-    protected virtual void Start()
+    public virtual void Init()
     {
         LastHit = false;
         hpsys = this.gameObject.AddComponent<Health>();

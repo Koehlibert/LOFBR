@@ -14,12 +14,15 @@ public class UseShield : Ability
     }
     protected override void AdditionalInit()
     {
-        BulletDetector = BulletFactory.Instance.CreateBulletDetector(Handler.Owner, 3);
-        BulletDetector.GetComponent<DetectBulletsCollisionHandler>().BulletsDetected += TryUseShield;
+        if (!IsInteractive)
+        {
+            BulletDetector = BulletFactory.Instance.CreateBulletDetector(Handler.Owner, 3);
+            BulletDetector.GetComponent<DetectBulletsCollisionHandler>().BulletsDetected += TryUseShield;
+        }
     }
     public void TryUseShield()
     {
-        if (loaded)
+        if (loaded && Handler.Owner.isActiveAndEnabled)
         {
             AbilityAction();
         }
@@ -45,7 +48,10 @@ public class UseShield : Ability
         ShieldInstance = BulletFactory.Instance.CreateShield(Handler.Owner);
         StartCoroutine("reload");
         StartCoroutine("DestroyShield");
-        reloader.shoot();
+        if (IsInteractive)
+        {
+            reloader.shoot();
+        }
         OwnerManaSys.useMana(manaCost);
     }
     protected override bool InputPressed()

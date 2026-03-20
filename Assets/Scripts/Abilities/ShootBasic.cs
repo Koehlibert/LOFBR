@@ -21,6 +21,8 @@ public abstract class ShootBasic : DamagingAbility
     }
     protected override void AdditionalInit()
     {
+        if (Handler.Owner is MainPlayerBehaviour)
+            AttackDistance = 20f;
     }
     public void SetAttackDistance(float attackDistance)
     {

@@ -11,17 +11,48 @@ public abstract class MainPlayerBehaviour : DamageableEntity
     public Level Levelsys;
     public Mana manasys;
     protected MainPlayerBehaviour EnemyPlayer;
-    protected override void Start()
+    protected int ClassID;
+    protected Skillset skillSet;
+    public void Init(int classID)
     {
-        base.Start();
+        base.Init();
         EnemyPlayer = MasterScript.Instance.GetOpponentPlayer(Team);
         manasys = this.gameObject.AddComponent<Mana>();
         Levelsys = new Level();
         Levelsys.Init(this);
+        aIHandler = gameObject.AddComponent<AIHandler>();
+        switch (classID)
+        {
+            case 1:
+                skillSet = new SkillsetFighter(aIHandler);
+                break;
+            case 2:
+                skillSet = new SkillsetSupport(aIHandler);
+                break;
+            case 3:
+                skillSet = new SkillsetMelee(aIHandler);
+                break;
+        }
+        aIHandler.Init(this, new List<Ability>(), new List<AIModule>(), skillSet.GetSpeed(), this is EnemyPlayerBehaviour);
+        skillSet.LevelUnlock(1);
+        hpsys.Initialize(skillSet.GetHPVals());
+    }
+    public virtual void LevelUp()
+    {
+        skillSet.LevelUnlock(Levelsys.GetLevel());
+        hpsys.UpdateValues((Levelsys.GetLevel() - 1) * 25, 2);
+        manasys.UpdateValues(50, Levelsys.GetLevel() * 0.25f);
     }
     protected override void Die()
     {
         MasterScript.Instance.DieAndRespawn(Team);
+        if (EnemyPlayer != null && LastHit)
+        {
+            if (EnemyPlayer.gameObject.activeSelf)
+            {
+                EnemyPlayer.Levelsys.GainExp(5 + 5 * Levelsys.GetLevel());
+            }
+        }
+        LastHit = false;
     }
-    public abstract void LevelUp();
 }

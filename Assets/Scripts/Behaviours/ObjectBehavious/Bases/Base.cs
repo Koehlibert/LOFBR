@@ -4,7 +4,7 @@ using UnityEngine;
 using Extensions;
 public abstract class Base : DamageableEntity
 {
-    protected override void Start()
+    public override void Init()
     {
         hpsys = GetComponent<Health>();
         hpsys.Initialize(MasterScript.Instance.baseMaxHp,0,0,20);

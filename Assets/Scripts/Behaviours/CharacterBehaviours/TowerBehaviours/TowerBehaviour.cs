@@ -16,9 +16,9 @@ public abstract class TowerBehaviour : DamageableEntity
     protected GameObject bulletinstance;
     protected ClosestFinder closestFinder;
     private DamageInfo damageInfo;
-    protected override void Start()
+    public override void Init()
     {
-        base.Start();
+        base.Init();
         hpsys.Initialize(300, 0, 0, 20);
         closestFinder = new ClosestFinder(Team, this.gameObject);
         offset = new Vector3(0, 7, 0);
@@ -30,7 +30,11 @@ public abstract class TowerBehaviour : DamageableEntity
     }
     protected virtual void Update()
     {
-        currentenemy = closestFinder?.FindClosestNoTower();
+        currentenemy = closestFinder.FindClosestNoTower();
+        if (currentenemy == null)
+        {
+            return;
+        }
         float enemyDist = CombatUtils.GetDistance(this.gameObject, currentenemy);
         if (enemyDist <= lookRange)
         {
