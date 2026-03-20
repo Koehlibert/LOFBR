@@ -278,7 +278,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 455668325}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName: SetSkillSet, Assembly-CSharp
         m_MethodName: setSupportID
         m_Mode: 1
         m_Arguments:
@@ -801,9 +801,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 455668321}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 233149c2e7165e440a9d2858ff55aa04, type: 3}
+  m_Script: {fileID: 11500000, guid: 56b3b47a48d45b947a9e11dd56d14e4b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::SetSkillSet
 --- !u!1 &480260647
 GameObject:
   m_ObjectHideFlags: 0
@@ -2450,7 +2450,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 455668325}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName: SetSkillSet, Assembly-CSharp
         m_MethodName: setFighterID
         m_Mode: 1
         m_Arguments:
@@ -2796,7 +2796,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 455668325}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName: SetSkillSet, Assembly-CSharp
         m_MethodName: setMeleeID
         m_Mode: 1
         m_Arguments:

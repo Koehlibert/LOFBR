@@ -17,8 +17,6 @@ public class RegenAura : MonoBehaviour
         buff = player.Levelsys.GetLevel()*3 + 10;
         player.GetHealth().ActivateSuperRegen(buff);
     }
-
-    // Update is called once per frame
     void Update()
     {
         if(player.isActiveAndEnabled)
@@ -40,7 +38,7 @@ public class RegenAura : MonoBehaviour
     }
     void OnTriggerExit(Collider other)
     {
-       if ((objectList.Contains(other.gameObject))&&(!other.GetComponent<TowerBehaviourFriendly>()))
+       if (objectList.Contains(other.gameObject)&&(!other.GetComponent<TowerBehaviourFriendly>()))
        {
             other.gameObject.GetComponent<Health>().DeactivateSuperRegen();
             objectList.Remove(other.gameObject);
