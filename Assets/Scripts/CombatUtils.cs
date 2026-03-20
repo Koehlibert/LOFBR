@@ -10,8 +10,6 @@ public static class CombatUtils
     }
     public static bool CanDamage(Team source, Team target)
     {
-        Debug.Log("source:" + source);
-        Debug.Log("target:" + target);
         return source != target;
     }
     public static bool CanDamage(DamageableEntity sourceObject, DamageableEntity targetObject)

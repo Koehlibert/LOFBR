@@ -23,7 +23,7 @@ public class UseShield : Ability
         {
             (Handler.Owner as PlayerController).EnableDamageFlash();
         }
-        GameObject.Destroy(shieldInstance);
+        Destroy(shieldInstance);
     }
 
     protected override void AbilityAction()
@@ -38,22 +38,11 @@ public class UseShield : Ability
     {
         return PlayerInputRouter.Instance.SkillPressed;
     }
-    /* protected override void AICheck()
+    protected override void AICheck()
     {
         if (loaded)
         {
-            List<GameObject> closest3Enemies = Handler.ClosestFinder.FindNClosest(3, true);
-            (bool ShouldShock, Vector3 ShockPoint) = ExistsPointWithinRadius(closest3Enemies, ShockRadiusToCheck);
-            if (ShouldShock)
-            {
-                IsShocking = true;
-                Debug.Log("Shield");
-                inDistanceTracker = Handler.ClosestFinder.StartTrackingDist(ShockRadiusToCheck, true);
-                Handler.movementAI.MovementState = AIUtils.MovementState.IsGoingToPlace;
-                Handler.movementAI.SetMovementTarget(ShockPoint);
-                Handler.DisableOtherAbilities(this);
-                Handler.movementAI.OnTargetReached += AbilityAction;
-            }
+            
         }
-    } */
+    }
 }

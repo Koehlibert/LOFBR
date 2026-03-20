@@ -4,37 +4,9 @@ using Extensions;
 using System;
 using NUnit.Framework;
 
-public class DamageCollisionHandler : MonoBehaviour
+public class DamageCollisionHandler : CollisionHandler
 {
-    [System.Serializable]
-    public class CollisionRule
-    {
-        public List<string> tags = new List<string>();
-        public CollisionEventType eventType;
-        public bool destroyOnHit = false;
-        public bool setLastHit = false;
-    }
-    public event Action OnHitCallback;
-    public enum CollisionEventType { Enter, Stay, TriggerStay, TriggerEnter }
-    private List<CollisionRule> collisionRules = new List<CollisionRule>();
-    private DamageableEntity Owner;
-    public void Init(DamageableEntity owner)
-    {
-        Owner = owner;
-    }
-    public void AddRule(CollisionRule rule)
-    {
-        collisionRules.Add(rule);
-    }
-    private void OnTriggerEnter(Collider collider)
-    {
-        HandleDamageCollision(collider);
-    }
-    private void OnTriggerStay(Collider collider)
-    {
-        HandleEnduringDamage(collider);
-    }
-    private void HandleEnduringDamage(Collider collider)
+    protected override void HandleEnduringDamage(Collider collider)
     {
         Damage damageComponent = collider.gameObject.GetComponent<Damage>();
         if (damageComponent?.isEnduring == true)
@@ -49,7 +21,7 @@ public class DamageCollisionHandler : MonoBehaviour
                 {
                     Owner.SetLastHit(true);
                 }
-                OnHitCallback?.Invoke();
+                RaiseOnHitCallback();
                 if (CombatUtils.DealDamage(damageComponent, Owner))
                 {
                     Owner.Kill();
@@ -57,13 +29,11 @@ public class DamageCollisionHandler : MonoBehaviour
             }
         }
     }
-    private void HandleDamageCollision(Collider collider)
+    protected override void HandleDamageCollision(Collider collider)
     {
         Damage damageComponent = collider.gameObject.GetComponent<Damage>();
         if (damageComponent != null && !damageComponent.isEnduring)
         {
-            Debug.Log(Owner);
-            Debug.Log(damageComponent);
             if (CombatUtils.CanDamage(damageComponent, Owner) != damageComponent.isHealing)
             {
                 if (!damageComponent.isHealing)
@@ -72,7 +42,7 @@ public class DamageCollisionHandler : MonoBehaviour
                     {
                         Owner.SetLastHit(true);
                     }
-                    OnHitCallback?.Invoke();
+                    RaiseOnHitCallback();
                     if (CombatUtils.DealDamage(damageComponent, Owner))
                     {
                         Owner.Kill();
