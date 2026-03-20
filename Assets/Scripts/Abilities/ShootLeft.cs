@@ -6,17 +6,27 @@ using UnityEngine.InputSystem.XR;
 public class ShootLeftBasic : ShootBasic
 {
     protected override HumanBodyBones Bone => HumanBodyBones.LeftLowerLeg;
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        reloader = HUD.Instance.GetReload(HUD.Instance.SecondaryReloader);
-    }
     protected override bool InputPressed()
     {
         return PlayerInputRouter.Instance.SecondaryPressed;
     }
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        if (IsInteractive)
+        {
+            reloader = HUD.Instance.GetReload(HUD.Instance.SecondaryReloader);
+        }
+    }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(34 + 7 * player.levelsys.getLevel(), 0, CombatUtils.Team.Player, true);
+        if (IsInteractive)
+        {
+            return new DamageInfo(34 + 7 * OwnerLevelSys.GetLevel(), 0, Handler.Owner.Team, true);
+        }
+        else
+        {
+            return new DamageInfo(40, 0, Handler.Owner.Team, true);
+        }
     }
 }

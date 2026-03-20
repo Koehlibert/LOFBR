@@ -14,7 +14,7 @@ public class RegenAura : MonoBehaviour
         aura = GetComponent<CapsuleCollider>();
         objectList = new List<GameObject>();
         player = FindAnyObjectByType<PlayerController>();
-        buff = player.levelsys.getLevel()*3 + 10;
+        buff = player.Levelsys.GetLevel()*3 + 10;
         player.GetHealth().ActivateSuperRegen(buff);
     }
 

@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class Shield : MonoBehaviour
 {
-    public MainPlayerBehaviour player;
-    public void SetPlayer(MainPlayerBehaviour player)
+    public DamageableEntity owner;
+    public void SetOwner(DamageableEntity owner)
     {
-        this.player = player;
+        this.owner = owner;
     }
     void Update()
     {
-        this.transform.position = player.transform.position + new Vector3(0f,2f,0f);
-        this.transform.rotation = player.transform.rotation;
+        this.transform.SetPositionAndRotation(owner.transform.position + new Vector3(0f,2f,0f), owner.transform.rotation);
     }
 }

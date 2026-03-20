@@ -8,14 +8,13 @@ public class Immolate : DamagingAbility
     private GameObject fire;
     private bool isOnFire;
     private float manaDrain;
-    new void Start()
+    protected override void AdditionalInit()
     {
-        base.Start();
-        loaded = true;
-        reloadtime = 8f;
-        fire = FindAnyObjectByType<FireBehaviour>().gameObject;
-        fire.SetActive(false);
         isOnFire = false;
+    }
+    protected override AbilityInfo GetAbilityInfo()
+    {
+        return new AbilityInfo(15, 8, new List<AIUtils.AIState> { AIUtils.AIState.Attacking });
     }
     protected override void OnEnable()
     {
@@ -30,9 +29,9 @@ public class Immolate : DamagingAbility
     {
         if (isOnFire)
         {
-            if (player.manasys.checkCost(manaDrain * Time.deltaTime))
+            if (OwnerManaSys.checkCost(manaDrain * Time.deltaTime))
             {
-                player.manasys.useMana(manaDrain * Time.deltaTime);
+                OwnerManaSys.useMana(manaDrain * Time.deltaTime);
             }
             else
             {
@@ -53,41 +52,34 @@ public class Immolate : DamagingAbility
     private void TurnOn()
     {
         reloader.shoot();
-        player.manasys.useMana(manaCost);
-        fire.SetActive(true);
+        OwnerManaSys.useMana(manaCost);
+        fire = BulletFactory.Instance.CreateFire(Handler.Owner);
         fire.GetComponent<Damage>().SetProperties(GetDamageValues());
         isOnFire = true;
     }
     private void TurnOff()
     {
         StartCoroutine("reload");
-        fire.SetActive(false);
+        Destroy(fire);
         isOnFire = false;
     }
     protected override void AbilityAction()
     {
         if (isOnFire)
         {
-            Debug.Log("Fire Off :(");
             TurnOff();
         }
         else
         {
-            Debug.Log("Fire!");
             TurnOn();
         }
     }
     protected override bool InputPressed()
     {
-        return PlayerInputRouter.Instance.SkillPressedThisFrame;
+        return PlayerInputRouter.Instance.SkillToggledThisFrame;
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(3.5f * player.levelsys.getLevel(), 0, player.Team, true, true);
-    }
-
-    public override void Checker()
-    {
-        throw new System.NotImplementedException();
+        return new DamageInfo(3.5f * OwnerLevelSys.GetLevel(), 0, Handler.Owner.Team, true, true);
     }
 }

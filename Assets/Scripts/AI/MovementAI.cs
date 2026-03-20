@@ -1,3 +1,4 @@
+using System;
 using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,16 +11,28 @@ public class MovementAI : Ability
     public GameObject Target { get; set; }
     private Vector3 standarddirection = new Vector3(0f, 0f, 1f);
     private float TeamDirectionMultiplier;
-    public AIUtils.MovementState MovementState { get; }
+    public AIUtils.MovementState MovementState { get; set; }
     public bool MoveLock;
+    private bool LookLock;
     public bool CaresAboutHealth;
     public float Movementspeed { get; set; }
     public float Speedup;
+    private Vector3 MovementTarget;
+    public event Action OnTargetReached;
     protected override void OnEnable()
     {
         base.OnEnable();
+    }
+    protected override AbilityInfo GetAbilityInfo()
+    {
+        return new AbilityInfo(0, 0, new List<AIUtils.AIState>());
+    }
+    public void Init(bool isInteractive, AIHandler aIHandler, float movementSpeed, bool caresAboutHealth)
+    {
+        base.Init(isInteractive, aIHandler);
         MoveLock = false;
-        CaresAboutHealth = false;
+        CaresAboutHealth = caresAboutHealth;
+        Movementspeed = movementSpeed;
         TeamDirectionMultiplier = 1;
         if (Handler.Owner.Team == CombatUtils.Team.Enemy)
         {
@@ -35,31 +48,49 @@ public class MovementAI : Ability
             {
                 Handler.MovementDirection = new Vector3(-PlayerInputRouter.Instance.Move.y, 0, PlayerInputRouter.Instance.Move.x).normalized;
             }
+            Vector2 mouseScreenPosition = PlayerInputRouter.Instance.Look;
+            Plane playerPlane = new Plane(Vector3.up, transform.position);
+            Ray ray = Camera.main.ScreenPointToRay(mouseScreenPosition);
+            if (playerPlane.Raycast(ray, out float hitDist))
+            {
+                Handler.LookDirection = ray.GetPoint(hitDist);
+            }
             return;
         }
-        if (CaresAboutHealth)
+        else if (CaresAboutHealth)
         {
             if (Handler.HealthState == AIUtils.HealthState.Hurt)
             {
                 Handler.MovementDirection = GetDirection(new Vector3(0, 0, MasterScript.Instance.GetOpponentSpawnZ(CombatUtils.GetOpposingTeam(Handler.Owner.Team))));
+                Handler.ReenableOtherAbilities();
                 return;
             }
         }
+        if (MovementState == AIUtils.MovementState.IsStanding)
+        {
+            Handler.MovementDirection = new Vector3(0, 0, 0);
+            return;
+        }
         if (MovementState == AIUtils.MovementState.IsMovingForward)
         {
-            //Move Handler Forward
+            Handler.MovementDirection = standarddirection;
+            Handler.LookDirection = Handler.Owner.transform.position + standarddirection; ;
             return;
         }
         if (MovementState == AIUtils.MovementState.IsFollowingTarget)
         {
-            //Move Handler to target; don't lock AI
+            Handler.MovementDirection = GetDirection(Handler.closestEnemy.transform.position);
             return;
         }
         if (MovementState == AIUtils.MovementState.IsGoingToPlace)
         {
-            //Move Handler towards Place; lock AI
+            Handler.MovementDirection = GetDirection(MovementTarget);
             return;
         }
+    }
+    public void SetMovementTarget(Vector3 movementTarget)
+    {
+        MovementTarget = movementTarget;
     }
     public void HandleMovement()
     {
@@ -69,7 +100,14 @@ public class MovementAI : Ability
             Speedup = 1;
         }
     }
-    private Vector3 GetDirection(Vector3 target) => target - Handler.Owner.transform.position;
+    public Vector3 GetDirection(Vector3 target)
+    {
+        Vector3 direction = MasterScript.Instance.CorrectTarget(target) - Handler.Owner.transform.position;
+        direction.y = 0;
+        if (direction.magnitude > 1)
+            direction = direction.normalized;
+        return direction;
+    }
     public void MoveCharacter(Vector3 direction, bool bypass = false, float speedup = 1)
     {
         Handler.Owner.AnimSpeed = 0;
@@ -78,6 +116,10 @@ public class MovementAI : Ability
             Handler.Owner.AnimSpeed = direction.normalized.magnitude;
             Vector3 newPos = MasterScript.Instance.CorrectTarget(transform.position + Movementspeed * Time.deltaTime * direction);
             Handler.Owner.transform.position = newPos;
+            if (MovementState == AIUtils.MovementState.IsGoingToPlace && FlatDistance(newPos, MovementTarget) < 1)
+            {
+                OnTargetReached?.Invoke();
+            }
             if (!bypass)
             {
                 Vector3 worldMove = new Vector3(direction.normalized.x, 0f, direction.normalized.z);
@@ -88,6 +130,18 @@ public class MovementAI : Ability
             }
         }
     }
+    public void HandleLook()
+    {
+        if (!LookLock)
+        {
+            Vector3 dir = Handler.LookDirection - transform.position;
+            dir.y = 0;
+            if (dir.sqrMagnitude > 0.001f)
+            {
+                transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
+            }
+        }
+    }
     public IEnumerator LockMovement(float duration)
     {
         MoveLock = true;
@@ -95,11 +149,20 @@ public class MovementAI : Ability
         Speedup = 1;
         MoveLock = false;
     }
+    public IEnumerator LockView(float duration)
+    {
+        LookLock = true;
+        yield return new WaitForSeconds(duration);
+        LookLock = false;
+    }
     protected override bool InputPressed()
     {
         return false;
     }
-    protected override void AbilityAction()
+    private float FlatDistance(Vector3 pos1, Vector3 pos2)
     {
+        pos1.y = 0;
+        pos2.y = 0;
+        return Vector3.Distance(pos1, pos2);
     }
 }

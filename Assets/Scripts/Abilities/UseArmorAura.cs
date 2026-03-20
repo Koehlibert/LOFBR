@@ -6,16 +6,15 @@ public class UseArmorAura : Ability
 {
     private GameObject aura;
     private bool armorActive;
-    new void Start()
+    protected override void AdditionalInit()
     {
-        base.Start();
-        loaded = true;
-        reloadtime = 2f;
-        manaCost = 20;
-        player = GetComponent<PlayerController>();
         aura = FindAnyObjectByType<ArmorAura>().gameObject;
         aura.SetActive(false);
         armorActive = false;
+    }
+    protected override AbilityInfo GetAbilityInfo()
+    {
+        return new AbilityInfo(20, 2, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills });
     }
     void OnDisable()
     {
@@ -43,9 +42,9 @@ public class UseArmorAura : Ability
             aura.SetActive(false);
             armorActive = false;
         }
-        else if ((loaded) && player.manasys.checkCost(manaCost))
+        else if ((loaded) && OwnerManaSys.checkCost(manaCost))
         {
-            player.manasys.useMana(manaCost);
+            OwnerManaSys.useMana(manaCost);
             aura.SetActive(true);
             armorActive = true;
         }

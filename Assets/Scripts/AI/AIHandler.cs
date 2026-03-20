@@ -5,13 +5,13 @@ using System.Linq;
 using UnityEditor.Search;
 using UnityEngine;
 
-public abstract class AIHandler : MonoBehaviour
+public class AIHandler : MonoBehaviour
 {
     protected List<Ability> Abilities;
     protected List<AIModule> AIModules;
     public DamageableEntity Owner { get; set; }
-    public ClosestFinder ClosestFinder { get; }
-    private AIUtils.AIState AIState;
+    public ClosestFinder ClosestFinder { get; set; }
+    public AIUtils.AIState AIState;
     public AIUtils.HealthState HealthState { get; set; }
     public float LockAITimer;
     public MovementAI movementAI;
@@ -21,24 +21,57 @@ public abstract class AIHandler : MonoBehaviour
     public Action FinalAction;
     public Action FallBackAction;
     public Vector3 MovementDirection;
+    public Vector3 LookDirection;
     public bool ForceMovement;
-    public virtual void Init(DamageableEntity owner, List<Ability> abilities, List<AIModule> aIModules)
+    public GameObject closestEnemy;
+    public GameObject closestEnemyNoTower;
+    public float distanceToClosest;
+    public bool IsInteractive;
+    protected List<Ability> DisabledAbilities;
+    public virtual void Init(DamageableEntity owner, List<Ability> abilities, List<AIModule> aIModules, float movementSpeed, bool caresAboutHealth = false)
     {
         Owner = owner;
+        IsInteractive = Owner is PlayerController;
+        ClosestFinder = new ClosestFinder(Owner.Team, Owner.gameObject);
+        Abilities = abilities;
+        foreach (Ability ability in Abilities)
+        {
+            ability.Init(IsInteractive, this);
+        }
         AIModules = aIModules;
-        Abilities = abilities;        
         healthChecker = Owner.gameObject.AddComponent<HealthChecker>();
         healthChecker.Init(0.7f, 0.3f);
         AIModules.Add(healthChecker);
         distanceHandler = Owner.gameObject.AddComponent<DistanceHandler>();
+        distanceHandler.Init(50, 30, 25, 12);
         AIModules.Add(distanceHandler);
         movementAI = Owner.gameObject.AddComponent<MovementAI>();
-        Abilities.Add(movementAI);
+        movementAI.Init(IsInteractive, this, movementSpeed, caresAboutHealth);
+        foreach (AIModule aIModule in AIModules)
+        {
+            aIModule.Init(IsInteractive, this);
+        }
         LockAITimer = 0f;
         FinalAction = null;
         FallBackAction = null;
         ForceMovement = false;
         MovementDirection = new Vector3();
+        LookDirection = new Vector3();
+        DisabledAbilities = new List<Ability>();
+    }
+    public void AddAbility(Ability ability)
+    {
+        ability.Init(IsInteractive, this);
+        Abilities.Add(ability);
+    }
+    public void AddAbility(Ability ability, GameObject reloadObject)
+    {
+        ability.Init(IsInteractive, this, reloadObject);
+        Abilities.Add(ability);
+    }
+    private void OnDisable()
+    {
+        ReenableOtherAbilities();
     }
     private void Update()
     {
@@ -47,16 +80,39 @@ public abstract class AIHandler : MonoBehaviour
             LockAITimer -= Time.deltaTime;
             IsAILocked = LockAITimer > 0;
         }
-        foreach (Ability ability in Abilities)
+        distanceHandler.Checker();
+        movementAI.MovementState = AIUtils.MovementState.IsMovingForward;
+        if (AIState != AIUtils.AIState.MoveOnly)
         {
-            ability.Checker();
-            if (FinalAction != null)
+            foreach (Ability ability in Abilities)
             {
-                break;
+                if (!ability.enabled)
+                    continue;
+                ability.Checker();
+                if (FinalAction != null)
+                {
+                    break;
+                }
+            }
+            if (FinalAction == null)
+            {
+                
             }
         }
-        movementAI?.HandleMovement();
+        movementAI.Checker();
+        movementAI.HandleMovement();
+        movementAI.HandleLook();
+        if (FinalAction == null)
+        {
+            FinalAction = FallBackAction;
+        }
         FinalAction?.Invoke();
+        FinalAction = null;
+    }
+    public void SetEvenLookDirection(Vector3 direction)
+    {
+        direction.y = 0;
+        LookDirection = direction;
     }
     public void SetAIState(AIUtils.AIState aIState)
     {
@@ -80,5 +136,24 @@ public abstract class AIHandler : MonoBehaviour
         ForceMovement = true;
         yield return new WaitForSeconds(duration);
         ForceMovement = false;
+    }
+    public void DisableOtherAbilities(Ability abilityToKeep)
+    {
+        foreach (Ability ability in Abilities)
+        {
+            if (ability != abilityToKeep)
+            {
+                ability.enabled = false;
+                DisabledAbilities.Add(ability);
+            }
+        }
+    }
+    public void ReenableOtherAbilities()
+    {
+        foreach (Ability ability in DisabledAbilities)
+        {
+            ability.enabled = true;
+        }
+        DisabledAbilities.Clear();
     }
 }

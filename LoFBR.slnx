@@ -11,7 +11,6 @@
   <Project Path="UnityEngine.Advertisements.csproj" />
   <Project Path="UnityEngine.UI.csproj" />
   <Project Path="UnityEditor.TestRunner.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="UnityEngine.TestRunner.csproj" />
   <Project Path="Unity.2D.Tilemap.Editor.csproj" />
   <Project Path="Unity.Services.Core.Environments.Editor.csproj" />
@@ -32,6 +31,7 @@
   <Project Path="UnityEditor.UI.csproj" />
   <Project Path="Unity.TextMeshPro.csproj" />
   <Project Path="Unity.Services.Analytics.Editor.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.2D.Sprite.AIIntegration.Editor.csproj" />
   <Project Path="UnityEngine.Purchasing.AppleMacosStub.csproj" />
   <Project Path="Unity.AI.Navigation.Updater.csproj" />

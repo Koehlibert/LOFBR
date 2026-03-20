@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HUD : MonoBehaviour
 {
@@ -8,9 +9,15 @@ public class HUD : MonoBehaviour
     public GameObject AltReloader;
     public GameObject SkillReloader;
     public GameObject UltReloader;
+    public Image DamageImage;
     private void Awake()
     {
         Instance = this;
+        PrimaryReloader.SetActive(false);
+        SecondaryReloader.SetActive(false);
+        AltReloader.SetActive(false);
+        SkillReloader.SetActive(false);
+        UltReloader.SetActive(false);  
     }
     public Reload GetReload(GameObject gameObject)
     {

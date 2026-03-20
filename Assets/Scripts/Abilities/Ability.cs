@@ -6,17 +6,29 @@ using System;
 
 public abstract class Ability : MonoBehaviour
 {
-    protected bool IsActive { get; set; }
-    public bool IsInteractive { get; set; }
+    protected List<AIUtils.AIState> ActiveStates;
     protected AIHandler Handler { get; set; }
+    public bool IsInteractive;
+    protected Mana OwnerManaSys;
+    protected Level OwnerLevelSys;
+    public float reloadtime;
+    protected bool loaded;
+    protected Reload reloader;
+    public float manaCost;
     public virtual void Checker()
     {
-        if(IsInteractive)
+        if (IsInteractive)
         {
             InteractiveCheck();
         }
+        else
+        {
+            if (ActiveStates.Contains(Handler.AIState))
+            {
+                AICheck();
+            }
+        }
     }
-    protected AIUtils.AIState ActiveState { get; set; }
     protected void SetFinalAction(Action action, Vector3 target, AIUtils.AIState aIState, float lockAITimer)
     {
         Handler.FinalAction = action;
@@ -24,41 +36,57 @@ public abstract class Ability : MonoBehaviour
         Handler.SetAIState(aIState);
         Handler.LockAI(lockAITimer);
     }
-    public PlayerController player;
-    public float reloadtime;
-    protected bool loaded;
-    protected Reload reloader;
-    public float manaCost;
-    protected virtual void Start()
-    {
-        player = GetComponent<PlayerController>();
-        Handler = GetComponent<AIHandler>();
-        loaded = true;
-    }
     protected virtual void OnEnable()
     {
         Reset();
-        player = GetComponent<PlayerController>();
-        Handler = GetComponent<AIHandler>();
+    }
+    public virtual void Init(bool isInteractive, AIHandler aIHandler)
+    {
+        loaded = true;
+        Handler = aIHandler;
+        SetAbilityInfo(GetAbilityInfo());
+        AdditionalInit();
+        IsInteractive = isInteractive;
+        if (Handler.Owner is MainPlayerBehaviour mainPlayerBehaviour)
+        {
+            OwnerManaSys = mainPlayerBehaviour.manasys;
+            OwnerLevelSys = mainPlayerBehaviour.Levelsys;
+        }
+    }
+    protected virtual void AdditionalInit()
+    {
+        
+    }
+    public virtual void Init(bool isInteractive, AIHandler aIHandler, GameObject reloadObject)
+    {
+        Init(isInteractive, aIHandler);
+        setReloader(HUD.Instance.GetReload(reloadObject));
+        reloadObject.SetActive(true);
+        if (isInteractive & reloader != null)
+        {
+            ActivateReloader();
+        }
     }
     protected virtual void InteractiveCheck()
     {
-        if(!player)
-        {
-            player = GetComponent<PlayerController>();
-        }
-        if(InputPressed() && (loaded) && player.manasys.checkCost(manaCost))
+        if (InputPressed() && (loaded) && OwnerManaSys.checkCost(manaCost))
         {
             AbilityAction();
         }
     }
-    void Update()
+    protected virtual void AICheck()
     {
-        InteractiveCheck();
+        throw new NotImplementedException();
     }
     protected abstract bool InputPressed();
-    protected abstract void AbilityAction();
-    public void Activate()
+    protected virtual void AbilityAction()
+    {
+        if (IsInteractive)
+        {
+            OwnerManaSys.useMana(manaCost);
+        }
+    }
+    public void ActivateReloader()
     {
         reloader.Activate();
     }
@@ -75,10 +103,29 @@ public abstract class Ability : MonoBehaviour
     public void setReloader(Reload val)
     {
         reloader = val;
-        reloader.setAbility(this);
+        reloader.SetAbility(this);
+    }
+    protected abstract AbilityInfo GetAbilityInfo();
+    private void SetAbilityInfo(AbilityInfo abilityInfo)
+    {
+        this.manaCost = abilityInfo.ManaCost;
+        this.reloadtime = abilityInfo.Reloadtime;
+        this.ActiveStates = abilityInfo.ActiveStates;
     }
 }
 public abstract class DamagingAbility : Ability
 {
     protected abstract DamageInfo GetDamageValues();
+}
+public class AbilityInfo
+{
+    public float ManaCost;
+    public float Reloadtime;
+    public List<AIUtils.AIState> ActiveStates;
+    public AbilityInfo(float manaCost, float reloadtime, List<AIUtils.AIState> activeStates)
+    {
+        this.ManaCost = manaCost;
+        this.Reloadtime = reloadtime;
+        this.ActiveStates = activeStates;
+    }
 }

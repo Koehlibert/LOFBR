@@ -1,0 +1,100 @@
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+
+public class BulletFactory : MonoBehaviour
+{
+    public static BulletFactory Instance;
+    [SerializeField] GameObject BulletPrefab;
+    [SerializeField] GameObject ShockwavePrefab;
+    [SerializeField] GameObject Shield;
+    [SerializeField] GameObject Fire;
+    [SerializeField] GameObject MeleeCollider;
+    [SerializeField] GameObject ParryCollider;
+    [SerializeField] GameObject ManaDrainer;
+    [SerializeField] GameObject BulletDetector;
+    private void Awake()
+    {
+        Instance = this;
+    }
+    public GameObject CreateBullet(DamageableEntity owner, bool destroyOnHit, HumanBodyBones bone, float timer = 1.5f)
+    {
+        GameObject BulletInstance = InstantiateBullet(owner, bone);
+        BulletBehaviour bulletBehaviour = BulletInstance.AddComponent<BulletBehaviour>();
+        bulletBehaviour.Init(owner, destroyOnHit, bone, timer);
+        return BulletInstance;
+    }
+    public GameObject CreatePoisonBullet(DamageableEntity owner, bool destroyOnHit, HumanBodyBones bone, float timer = 1.5f)
+    {
+        GameObject BulletInstance = InstantiateBullet(owner, bone);
+        BulletBehaviourFollowing bulletBehaviourPoison = BulletInstance.AddComponent<BulletBehaviourFollowing>();
+        bulletBehaviourPoison.Init(owner, destroyOnHit, bone, false, true, CombatUtils.GetOpposingTeam(owner.Team));
+        return BulletInstance;
+    }
+    public GameObject CreateHealingBullet(DamageableEntity owner, bool destroyOnHit, HumanBodyBones bone, float timer = 1.5f)
+    {
+        GameObject BulletInstance = InstantiateBullet(owner, bone);
+        BulletBehaviourFollowing bulletBehaviourHeal = BulletInstance.AddComponent<BulletBehaviourFollowing>();
+        bulletBehaviourHeal.Init(owner, destroyOnHit, bone, true, false, owner.Team);
+        BulletInstance.GetComponent<Damage>().MakeHealing();
+        return BulletInstance;
+    }
+    public GameObject CreateUltBullet(DamageableEntity owner, bool destroyOnHit, HumanBodyBones bone, float timer = 1.5f)
+    {
+        GameObject BulletInstance = InstantiateBullet(owner, bone);
+        BulletBehaviourFollowing bulletBehaviourUlt = BulletInstance.AddComponent<BulletBehaviourFollowingUlt>();
+        BulletInstance.transform.localScale *= 2;
+        bulletBehaviourUlt.Init(owner, destroyOnHit, bone, false, false, CombatUtils.GetOpposingTeam(owner.Team), 40, 25, 5, 10);
+        return BulletInstance;
+    }
+    private GameObject InstantiateBullet(DamageableEntity owner, HumanBodyBones bone)
+    {
+        return Instantiate(BulletPrefab, owner.animator.GetBoneTransform(bone).position, owner.transform.rotation);
+    }
+    public GameObject CreateShockwave(DamageableEntity owner, bool destroyOnHit, HumanBodyBones bone)
+    {
+        GameObject Shockwave = InstantiateShockwave(owner, bone);
+        Shock shock = Shockwave.AddComponent<Shock>();
+        return Shockwave;
+    }
+    private GameObject InstantiateShockwave(DamageableEntity owner, HumanBodyBones bone)
+    {
+        return Instantiate(ShockwavePrefab, owner.animator.GetBoneTransform(bone).position, owner.transform.rotation);
+    }
+    public GameObject CreateShield(DamageableEntity owner)
+    {
+        GameObject shieldInstance = Instantiate(Shield, owner.transform.position + new Vector3(0f, 2f, 0f), owner.transform.rotation);
+        shieldInstance.AddComponent<Shield>().SetOwner(owner);
+        return shieldInstance;
+    }
+    public GameObject CreateFire(DamageableEntity owner)
+    {
+        GameObject fireInstance = Instantiate(Fire);
+        fireInstance.AddComponent<FireBehaviour>().Init(owner);
+        return fireInstance;
+    }
+    public GameObject CreateMeleeCollider(DamageableEntity owner)
+    {
+        GameObject meleeCollider = Instantiate(MeleeCollider);
+        meleeCollider.AddComponent<MeleeColliderBehaviour>().Init(owner);
+        return meleeCollider;
+    }
+    public GameObject CreateParryCollider(DamageableEntity owner)
+    {
+        GameObject parryCollider = Instantiate(ParryCollider);
+        parryCollider.AddComponent<ParryColliderBehaviour>().Init(owner);
+        return parryCollider;
+    }
+    public GameObject CreateManaDrainer(DamageableEntity owner)
+    {
+        GameObject manaDrainer = Instantiate(ManaDrainer);
+        manaDrainer.AddComponent<ManaDrainerBehaviour>().Init(owner);
+        return manaDrainer;
+    }
+    public GameObject CreateBulletDetector(DamageableEntity owner, int nBulletsToTrigger)
+    {
+        GameObject bulletDetector = Instantiate(BulletDetector);
+        bulletDetector.AddComponent<DetectBulletsCollisionHandler>().Init(owner, nBulletsToTrigger);
+        return bulletDetector;
+    }
+}

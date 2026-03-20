@@ -12,101 +12,139 @@ public class ClosestFinder
     private CombatUtils.Team targetTeam;
     private List<GameObject> AllObjects;
     private List<GameObject> AllObjectsNoTowers;
+    private int LastFrameComputed = -1;
+    private int LastFrameComputedNoTower = -1;
+    private GameObject CachedClosest;
+    private GameObject CachedClosestNoTower;
+    private List<InDistanceTracker> inDistanceTrackers;
     private MainPlayerBehaviour GetPlayer(CombatUtils.Team team)
     {
         return team == CombatUtils.Team.Enemy ? MasterScript.Instance.enemyPlayer : MasterScript.Instance.player;
     }
     public ClosestFinder(CombatUtils.Team team, GameObject selfObject)
+        : this(team, CombatUtils.GetOpposingTeam(team), selfObject)
     {
-        this.targetTeam = CombatUtils.GetOpposingTeam(team);
-        this.selfObject = selfObject;
-        this.player = GetPlayer(targetTeam);
-        AllObjects = targetTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemiesTowers : MasterScript.Instance.allFriendliesTowers;
-        AddPlayer(AllObjects);
-        AllObjectsNoTowers = targetTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemies : MasterScript.Instance.allFriendlies;
-        AddPlayer(AllObjectsNoTowers);
     }
     public ClosestFinder(CombatUtils.Team team, CombatUtils.Team targetTeam, GameObject selfObject)
     {
         this.targetTeam = targetTeam;
         this.selfObject = selfObject;
         this.player = GetPlayer(targetTeam);
+        inDistanceTrackers = new List<InDistanceTracker>();
         AllObjects = targetTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemiesTowers : MasterScript.Instance.allFriendliesTowers;
-        AddPlayer(AllObjects);
         AllObjectsNoTowers = targetTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemies : MasterScript.Instance.allFriendlies;
-        AddPlayer(AllObjectsNoTowers);
-    }
-    private void AddPlayer(List<GameObject> gameObjects)
-    {
-        if (player == null)
-        {
-            player = GetPlayer(targetTeam);
-        }
-        gameObjects.Add(player.gameObject);
     }
     public GameObject FindClosest(bool withPlayer = true, bool onlyHurt = false)
     {
-        return FindClosest(AllObjects, withPlayer, onlyHurt);
+        if (LastFrameComputed != Time.frameCount)
+        {
+            CachedClosest = FindClosest(AllObjects, withPlayer, onlyHurt);
+            LastFrameComputed = Time.frameCount;
+        }
+        return CachedClosest;
     }
     public GameObject FindClosestNoTower(bool withPlayer = true, bool onlyHurt = false)
     {
-        return FindClosest(AllObjectsNoTowers, withPlayer, onlyHurt);
-    }
-    public GameObject[] FindTwoClosest(bool withPlayer = true)
-    {
-        return FindTwoClosest(AllObjects, withPlayer);
-    }
-    private GameObject FindClosest(List<GameObject> allEnemies, bool withPlayer, bool onlyHurt = false)
-    {
-        GameObject closestEnemy = null;
-        if (allEnemies.Count != 0)
+        if (LastFrameComputedNoTower != Time.frameCount)
         {
-            float closestDistance = Mathf.Infinity;
-            foreach (GameObject currenemy in allEnemies)
+            CachedClosestNoTower = FindClosest(AllObjectsNoTowers, withPlayer, onlyHurt, true);
+            LastFrameComputedNoTower = Time.frameCount;
+        }
+        return CachedClosestNoTower;
+    }
+    public List<GameObject> FindNClosest(int n, bool withPlayer)
+    {
+        return FindClosestN(AllObjectsNoTowers, n, withPlayer);
+    }
+    private GameObject FindClosest(List<GameObject> allEnemies, bool withPlayer, bool onlyHurt = false, bool TrackNumber = false)
+    {
+        foreach (InDistanceTracker inDistanceTracker in inDistanceTrackers)
+        {
+            inDistanceTracker.ResetCounter();
+        }
+        GameObject closestEnemy = null;
+        float closestDistance = Mathf.Infinity;
+        if (withPlayer && player.isActiveAndEnabled)
+        {
+            closestEnemy = player.gameObject;
+            closestDistance = Vector3.Distance(player.transform.position, selfObject.transform.position);
+            foreach (InDistanceTracker inDistanceTracker in inDistanceTrackers)
             {
-                if ((!currenemy) || (onlyHurt && currenemy.GetComponent<Health>().FullHP()) || (!withPlayer && currenemy == player.gameObject))
-                {
-                    continue;
-                }
-                float distanceToEnemy = Vector3.Distance(currenemy.transform.position, selfObject.transform.position);
-                if (distanceToEnemy < closestDistance)
-                {
-                    closestDistance = distanceToEnemy;
-                    closestEnemy = currenemy;
-                }
+                inDistanceTracker.CheckInDistance(closestDistance, true);
+            }
+        }
+        foreach (GameObject currenemy in allEnemies)
+        {
+            if (!currenemy || (onlyHurt && currenemy.GetComponent<Health>().FullHP()))
+            {
+                continue;
+            }
+            float distanceToEnemy = Vector3.Distance(currenemy.transform.position, selfObject.transform.position);
+            foreach (InDistanceTracker inDistanceTracker in inDistanceTrackers)
+            {
+                inDistanceTracker.CheckInDistance(distanceToEnemy, false);
+            }
+            if (distanceToEnemy < closestDistance)
+            {
+                closestDistance = distanceToEnemy;
+                closestEnemy = currenemy;
             }
         }
         return closestEnemy;
     }
-    private GameObject[] FindTwoClosest(List<GameObject> allEnemies, bool withPlayer)
+    private List<GameObject> FindClosestN(List<GameObject> allEnemies, int n, bool withPlayer)
     {
-        GameObject[] closeEnemies = new GameObject[2];
-        if (allEnemies.Count != 0)
+        var validEnemies = new List<GameObject>(allEnemies);
+        if (withPlayer && player.isActiveAndEnabled)
         {
-            float secondclosestDistance = Mathf.Infinity;
-            float closestDistance = Mathf.Infinity;
-            foreach (GameObject currenemy in allEnemies)
-            {
-                if (!currenemy || !withPlayer && currenemy == player.gameObject)
-                {
-                    continue;
-                }
-                float distanceToEnemy = Vector3.Distance(currenemy.transform.position, selfObject.transform.position);
-                if (distanceToEnemy < closestDistance)
-                {
-                    secondclosestDistance = closestDistance;
-                    closestDistance = distanceToEnemy;
-                    closeEnemies[1] = closeEnemies[0];
-                    closeEnemies[0] = currenemy;
-                }
-            }
-            if ((player != null) && player.gameObject.activeSelf && (Vector3.Distance(selfObject.transform.position, player.transform.position) < closestDistance))
-            {
-                closeEnemies[1] = closeEnemies[0];
-                closeEnemies[0] = player.gameObject;
-            }
-            return closeEnemies;
+            validEnemies.Add(player.gameObject);
         }
-        return closeEnemies;
+        validEnemies.Sort((a, b) =>
+        {
+            float distA = Vector3.Distance(a.transform.position, selfObject.transform.position);
+            float distB = Vector3.Distance(b.transform.position, selfObject.transform.position);
+            return distA.CompareTo(distB);
+        });
+        return validEnemies.Take(n).ToList();
+    }
+    public int GetActiveEnemyNumber()
+    {
+        return AllObjectsNoTowers.Count;
+    }
+    public InDistanceTracker StartTrackingDist(float distToCheck, bool withPlayer)
+    {
+        InDistanceTracker inDistanceTracker = new InDistanceTracker(distToCheck, withPlayer, this);
+        inDistanceTrackers.Add(inDistanceTracker);
+        return inDistanceTracker;
+    }
+    public void StopTrackingDist(InDistanceTracker inDistanceTracker)
+    {
+        inDistanceTrackers.Remove(inDistanceTracker);
+    }
+}
+public class InDistanceTracker
+{
+    private float DistToCheck { get; }
+    private int EnemiesInDistance { get; set; }
+    private ClosestFinder ClosestFinder;
+    private bool withPlayer;
+    public InDistanceTracker(float distToCheck, bool withPlayer, ClosestFinder closestFinder)
+    {
+        this.DistToCheck = distToCheck;
+        ClosestFinder = closestFinder;
+        EnemiesInDistance = 0;
+    }
+    public void ResetCounter()
+    {
+        EnemiesInDistance = 0;
+    }
+    public bool GetOverCount(int numberToCheck)
+    {
+        return EnemiesInDistance >= numberToCheck;
+    }
+    public void CheckInDistance(float distance, bool isPlayer)
+    {
+        if (distance < DistToCheck && (!isPlayer || (withPlayer & isPlayer)))
+            EnemiesInDistance++;
     }
 }

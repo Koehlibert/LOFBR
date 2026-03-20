@@ -4,20 +4,16 @@ using UnityEngine;
 
 public class UltRez : Ability
 {
-    public GameObject Mob;
     private Quaternion spawndirection = new Quaternion(0, 0, 0, 0);
-    new void Start()
+    protected override AbilityInfo GetAbilityInfo()
     {
-        base.Start();
-        loaded = true;
-        player = GetComponent<PlayerController>();
+        return new AbilityInfo(200, 20, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills, AIUtils.AIState.CheckGeneralSkills });
     }
     private void Rez(List<Vector3> locations)
     {
-        Debug.Log("Rezing");
         foreach (Vector3 pos in locations)
         {
-            Instantiate(Mob, pos, spawndirection);
+            CharacterFactory.Instance.CreateTeamMob(Handler.Owner.Team, pos, spawndirection);
         }
     }
     protected override void OnEnable()
@@ -27,14 +23,13 @@ public class UltRez : Ability
     }
     protected override void AbilityAction()
     {
-        List<Vector3> locations = MasterScript.Instance.GetRezPositions(player.levelsys.getLevel() - 2);
-        Debug.Log(locations.Count);
+        List<Vector3> locations = MasterScript.Instance.GetRezPositions(OwnerLevelSys.GetLevel() - 2);
         if (locations.Count > 0)
         {
             StartCoroutine("reload");
             Rez(locations);
             reloader.shoot();
-            player.manasys.useMana(manaCost);
+            OwnerManaSys.useMana(manaCost);
         }
     }
     protected override bool InputPressed()

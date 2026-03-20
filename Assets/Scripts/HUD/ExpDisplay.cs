@@ -7,24 +7,23 @@ using UnityEngine.UI;
 public class ExpDisplay : MonoBehaviour
 {
     public PlayerController player;
-    public Slider expslider;
+    [SerializeField] Slider expslider;
+    [SerializeField] Text Level;
     void Start()
     {
-        player = GameObject.FindAnyObjectByType<PlayerController>();
+        player = MasterScript.Instance.player;
         expslider = GetComponent<Slider>();
     }
     void Update()
     {
-        if (player.isActiveAndEnabled)
+        Level.text = "Level " + player.Levelsys.GetLevel();
+        if (player.Levelsys.IsMaxLevel())
         {
-            if (player.levelsys.isMaxLevel())
-            {
-                expslider.value = 1;
-            }
-            else
-            {
-                expslider.value = player.levelsys.expPercentage();
-            }
+            expslider.value = 1;
+        }
+        else
+        {
+            expslider.value = player.Levelsys.ExpPercentage();
         }
     }
 }

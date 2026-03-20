@@ -8,21 +8,30 @@ public abstract class ShootBasic : DamagingAbility
     protected Vector3 offset = new Vector3(0, -0.5f, 1.5f);
     [SerializeField] AudioSource soundsource;
     protected GameObject bulletinstance;
+    protected Coroutine reloadCoroutine;
+    protected float AttackDistance = 10f;
     protected virtual GameObject CreateBullet()
     {
-        return BulletFactory.Instance.CreateBullet(player, true, Bone);
+        return BulletFactory.Instance.CreateBullet(Handler.Owner, true, Bone);
     }
     protected abstract HumanBodyBones Bone { get; }
-    protected override void Start()
+    protected override AbilityInfo GetAbilityInfo()
     {
-        base.Start();
-        manaCost = 5;
-        loaded = false;
-        reloadtime = 1.5f;
+        return new AbilityInfo(5f, 1.5f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
+    }
+    protected override void AdditionalInit()
+    {
+        if (Handler.Owner is MainPlayerBehaviour)
+            AttackDistance = 20f;
+    }
+    public void SetAttackDistance(float attackDistance)
+    {
+        AttackDistance = attackDistance;
     }
     protected override void OnEnable()
     {
-        StartCoroutine("Firstbullet");
+        base.OnEnable();
+        StartCoroutine(Firstbullet());
         Reset();
     }
     void OnDisable()
@@ -31,8 +40,12 @@ public abstract class ShootBasic : DamagingAbility
         {
             Destroy(bulletinstance);
         }
+        if (reloadCoroutine != null)
+        {
+            StopCoroutine(reloadCoroutine);
+        }
     }
-    private IEnumerator Firstbullet()
+    protected virtual IEnumerator Firstbullet()
     {
         yield return new WaitForSeconds(.2f);
         bulletinstance = CreateBullet();
@@ -42,25 +55,47 @@ public abstract class ShootBasic : DamagingAbility
     {
         loaded = false;
         yield return new WaitForSeconds(reloadtime);
+        yield return new WaitUntil(() => Handler.movementAI.MoveLock == false);
         bulletinstance = CreateBullet();
         loaded = true;
     }
-    private IEnumerator Shootanim()
+    protected virtual IEnumerator Shootanim()
     {
+        Handler.Owner.animator.SetTrigger("Shoot");
+        yield return new WaitForSeconds(0.15f);
+        soundsource?.Play();
         if (bulletinstance == null)
         {
             yield break;
         }
-        player.animator.SetTrigger("Shoot");
-        yield return new WaitForSeconds(0.15f);
-        soundsource.Play();
         bulletinstance.GetComponent<BulletBehaviour>().Shoot(GetDamageValues());
     }
     protected override void AbilityAction()
     {
-        StartCoroutine("Shootanim");
-        reloader.shoot();
-        StartCoroutine("Reload");
-        player.manasys.useMana(manaCost);
+        StartCoroutine(Shootanim());
+        reloadCoroutine = StartCoroutine(Reload());
+        if (IsInteractive)
+        {
+            reloader.shoot();
+            OwnerManaSys.useMana(manaCost);
+        }
+    }
+    protected override void AICheck()
+    {
+        if (Handler.distanceToClosest < AttackDistance)
+        {
+            Handler.movementAI.MovementState = AIUtils.MovementState.IsStanding;
+            Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);
+            if (loaded)
+            {
+                Handler.FinalAction = AbilityAction;
+            }
+        }
+        else
+        {
+            Handler.movementAI.MovementState = AIUtils.MovementState.IsFollowingTarget;
+            Handler.movementAI.Speedup = 0.75f;
+            Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);
+        }
     }
 }

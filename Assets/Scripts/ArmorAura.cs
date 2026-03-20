@@ -6,11 +6,11 @@ public class ArmorAura : MonoBehaviour
 {
     private CapsuleCollider aura;
     private List<GameObject> objectList;
-    private PlayerController player;
+    private DamageableEntity Owner;
     void Start()
     {
         aura = GetComponent<CapsuleCollider>();
-        player = FindAnyObjectByType<PlayerController>();
+        Owner = FindAnyObjectByType<PlayerController>();
     }
     void OnEnable()
     {
@@ -20,9 +20,9 @@ public class ArmorAura : MonoBehaviour
     {
         if (this.gameObject)
         {
-           if(player.isActiveAndEnabled)
+           if(Owner.isActiveAndEnabled)
             {
-                transform.position = player.transform.position;
+                transform.position = Owner.transform.position;
             }
             else
             {
@@ -36,14 +36,14 @@ public class ArmorAura : MonoBehaviour
         if (other.gameObject.CompareTag("Friendly")&&(!other.GetComponent<TowerBehaviourFriendly>()))
         {
             objectList.Add(other.gameObject);
-            other.gameObject.GetComponent<Health>().AddArmor(5+player.levelsys.getLevel());
+            //other.gameObject.GetComponent<Health>().AddArmor(5+OwnerLevelSys.GetLevel());
         }
     }
     void OnTriggerExit(Collider other)
     {
        if (objectList.Contains(other.gameObject))
        {
-            other.gameObject.GetComponent<Health>().AddArmor(-(5+player.levelsys.getLevel()));
+            //other.gameObject.GetComponent<Health>().AddArmor(-(5+OwnerLevelSys.GetLevel()));
             objectList.Remove(other.gameObject);
        } 
     }
@@ -52,7 +52,7 @@ public class ArmorAura : MonoBehaviour
         objectList.RemoveAll(item => item == null);
         foreach (GameObject minion in objectList)
         {
-            minion.gameObject.GetComponent<Health>().AddArmor(-(5+player.levelsys.getLevel()));
+            //minion.gameObject.GetComponent<Health>().AddArmor(-(5+OwnerLevelSys.GetLevel()));
         }
     }
 }

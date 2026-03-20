@@ -1,79 +1,16 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Skillset : MonoBehaviour
+public abstract class Skillset
 {
-    public Ability primary;
-    public Ability secondary;
-    public Ability alternative;
-    public Ability skill;
-    public Ability ultimate;
-    private int classID;
-    protected float manaCostPrimary;
-    protected float manaCostSecondary;
-    protected float manaCostAlternative;
-    protected float manaCostSkill;
-    protected float manaCostUltimate;
-    private PlayerController player;
-    private Mana manasys;
-    private List<Ability> abilities;
-    private List<Reload> reloadList;
-    private LineRenderer lRend;
-    protected bool wasCalled = false;
-    protected GameObject meleeCol;
-    protected GameObject parryCol;
-    protected GameObject fire;
-    protected GameObject aura;
-    protected LineRenderer manaLineRend;
     protected float startingLife;
     protected float startingRegen;
     protected float startingArmor;
     protected float regenDelay;
     protected float startingSpeed;
-    protected virtual void StartManually()
-    {
-        if (!wasCalled)
-        {
-            meleeCol =  FindAnyObjectByType<MeleeCollider>().gameObject;
-            meleeCol.SetActive(false);
-            parryCol = FindAnyObjectByType<ParryColliderBehaviour>().gameObject;
-            parryCol.SetActive(false);
-            fire =  FindAnyObjectByType<FireBehaviour>().gameObject;
-            fire.SetActive(false);
-            aura = FindAnyObjectByType<ArmorAura>().gameObject;
-            aura.SetActive(false);
-            manaLineRend = GetComponent<LineRenderer>();
-            manaLineRend.enabled = false;
-            abilities = new List<Ability>();
-            abilities.Add(primary);
-            abilities.Add(secondary);
-            abilities.Add(alternative);
-            abilities.Add(skill);
-            abilities.Add(ultimate);
-            reloadList = new List<Reload>();
-            reloadList.Add(GameObject.Find("PrimaryReloader").GetComponent<Reload>());
-            reloadList.Add(GameObject.Find("SecondaryReloader").GetComponent<Reload>());
-            reloadList.Add(GameObject.Find("AltReloader").GetComponent<Reload>());
-            reloadList.Add(GameObject.Find("SkillReloader").GetComponent<Reload>());
-            reloadList.Add(GameObject.Find("UltReloader").GetComponent<Reload>());
-            player = FindAnyObjectByType<PlayerController>();
-            manasys = player.manasys;
-            for (int i = 0; i<5; i++)
-            {
-                reloadList[i].setPlayer(player, manasys);
-                abilities[i].setReloader(reloadList[i]);
-                reloadList[i].enabled = false;
-            }
-            wasCalled = true;
-        }
-    }
-    public virtual void BaseUnlock()
-    {
-    }
-    public virtual void LevelUnlock(int lvl)
-    {
-    }
+    public abstract void LevelUnlock(int lvl);
+    public AIHandler Handler;
     public (float hpval, float regenval, float delay, float armorval) GetHPVals()
     {
         return (startingLife, startingRegen, regenDelay, startingArmor);
@@ -82,12 +19,124 @@ public class Skillset : MonoBehaviour
     {
         return startingSpeed;
     }
-    void Update()
+}
+public class SkillsetFighter : Skillset
+{
+    public SkillsetFighter(AIHandler handler)
     {
-        
+        Handler = handler;
+        startingLife = 300;
+        startingRegen = 3;
+        regenDelay = 4;
+        startingArmor = 5;
+        startingSpeed = 12;
     }
-    public void SetID(int val)
+    public override void LevelUnlock(int lvl)
     {
-        classID = val;
+        switch (lvl)
+        {
+            case 1:
+                Ability shooter = Handler.gameObject.AddComponent<ShootRightBasic>();
+                Handler.AddAbility(shooter, HUD.Instance.PrimaryReloader);
+                break;
+            case 2:
+                Ability stomper = Handler.gameObject.AddComponent<Stomp>();
+                Handler.AddAbility(stomper, HUD.Instance.AltReloader);
+                break;
+            case 3:
+                Ability shield = Handler.gameObject.AddComponent<UseShield>();
+                Handler.AddAbility(shield, HUD.Instance.SkillReloader);
+                break;
+            case 4:
+                Ability secondShooter = Handler.gameObject.AddComponent<ShootLeftBasic>();
+                Handler.AddAbility(secondShooter, HUD.Instance.SecondaryReloader);
+                break;
+            case 5:
+                Ability ultAttack = Handler.gameObject.AddComponent<UltAttack>();
+                Handler.AddAbility(ultAttack, HUD.Instance.UltReloader);
+                break;
+            default:
+                break;
+        }
+    }
+}
+public class SkillsetSupport : Skillset
+{
+    public SkillsetSupport(AIHandler handler)
+    {
+        Handler = handler;
+        startingLife = 350;
+        startingRegen = 7.5f;
+        regenDelay = 2.5f;
+        startingArmor = 35;
+        startingSpeed = 16;
+    }
+    public override void LevelUnlock(int lvl)
+    {
+        switch (lvl)
+        {
+            case 1:
+                Ability shooterPoison = Handler.gameObject.AddComponent<ShootPoison>();
+                Handler.AddAbility(shooterPoison, HUD.Instance.PrimaryReloader);
+                Ability shooterHeal = Handler.gameObject.AddComponent<ShootHeal>();
+                Handler.AddAbility(shooterHeal, HUD.Instance.SecondaryReloader);
+                break;
+            case 2:
+                Ability armorAura = Handler.gameObject.AddComponent<UseArmorAura>();
+                Handler.AddAbility(armorAura);
+                break;
+            case 3:
+                Ability manaDrain = Handler.gameObject.AddComponent<ManaDrain>();
+                Handler.AddAbility(manaDrain, HUD.Instance.AltReloader);
+                break;
+            case 4:
+                Ability healAura = Handler.gameObject.AddComponent<UltAttackHeal>();
+                Handler.AddAbility(healAura, HUD.Instance.SkillReloader);
+                break;
+            case 5:
+                Ability ultRes = Handler.gameObject.AddComponent<UltRez>();
+                Handler.AddAbility(ultRes, HUD.Instance.UltReloader);
+                break;
+            default:
+                break;
+        }
+    }
+}
+public class SkillsetMelee : Skillset
+{
+    public SkillsetMelee(AIHandler handler)
+    {
+        Handler = handler;
+        startingLife = 400;
+        startingRegen = 4;
+        regenDelay = 5;
+        startingArmor = 8;
+        startingSpeed = 14;
+    }
+    public override void LevelUnlock(int lvl)
+    {
+        switch (lvl)
+        {
+            case 1:
+                Ability melee = Handler.gameObject.AddComponent<Melee>();
+                Handler.AddAbility(melee, HUD.Instance.PrimaryReloader);
+                Ability parry = Handler.gameObject.AddComponent<Parry>();
+                Handler.AddAbility(parry, HUD.Instance.SecondaryReloader);
+                break;
+            case 2:
+                Ability dash = Handler.gameObject.AddComponent<Dash>();
+                Handler.AddAbility(dash, HUD.Instance.AltReloader);
+                break;
+            case 4:
+                Ability immolate = Handler.gameObject.AddComponent<Immolate>();
+                Handler.AddAbility(immolate, HUD.Instance.SkillReloader);
+                break;
+            case 5:
+                Ability bladeFlurry = Handler.gameObject.AddComponent<UltBladeFlurry>();
+                Handler.AddAbility(bladeFlurry, HUD.Instance.UltReloader);
+                break;
+            default:
+                break;
+        }
     }
 }

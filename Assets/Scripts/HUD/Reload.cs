@@ -13,9 +13,9 @@ public class Reload : MonoBehaviour
     public bool reloading;
     public float timer;
     private PlayerController player;
-    private Mana playerMana;
     void Start()
     {
+        player = MasterScript.Instance.player;
         this.ReloadParent = GetComponent<Image>(); 
         Reloadcircle.fillAmount = 0;
         reloading = false;
@@ -31,8 +31,8 @@ public class Reload : MonoBehaviour
     {
         if (reloading)
         {
-            timer = timer - Time.deltaTime;
-            Reloadcircle.fillAmount = (timer/reloadtime);
+            timer -= Time.deltaTime;
+            Reloadcircle.fillAmount = timer/reloadtime;
             if (timer <= 0)
             {
                 reloading = false;
@@ -40,15 +40,15 @@ public class Reload : MonoBehaviour
         }
         if(player.isActiveAndEnabled)
         {
-            setManaMet(playerMana.checkCost(ability.manaCost));
+            setManaMet(player.manasys.checkCost(ability.manaCost));
         }
     }
     public void Activate()
     {
+        this.enabled = true;
         Reloadcircle.enabled = true;
         ReloadParent.enabled = true;
         manaCostMet.enabled = true;
-        this.enabled = true;
     }
     public void setManaMet(bool val)
     {
@@ -62,14 +62,9 @@ public class Reload : MonoBehaviour
             reloading = true;
         }
     }
-    public void setAbility(Ability val)
+    public void SetAbility(Ability val)
     {
         ability = val;
         reloadtime = ability.reloadtime;
-    }
-    public void setPlayer(PlayerController playerval, Mana manasysval)
-    {
-        player = playerval;
-        playerMana = manasysval;
     }
 }

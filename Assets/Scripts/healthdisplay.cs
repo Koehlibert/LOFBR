@@ -8,7 +8,7 @@ public class healthdisplay : MonoBehaviour
     private Slider healthslider;
     void Start()
     {
-        player = GameObject.FindAnyObjectByType<PlayerController>();
+        player = MasterScript.Instance.player;
         healthslider = GetComponent<Slider>();
     }
     void Update()

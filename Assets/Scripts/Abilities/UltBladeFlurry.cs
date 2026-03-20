@@ -12,27 +12,31 @@ public class UltBladeFlurry : DamagingAbility
         base.OnEnable();
         reloader = HUD.Instance.GetReload(HUD.Instance.UltReloader);
     }
+    protected override AbilityInfo GetAbilityInfo()
+    {
+        return new AbilityInfo(225, 20, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
+    }
     private IEnumerator Flurry()
     {
-        StartCoroutine(player.aIHandler.movementAI.LockMovement(duration * (flurryPos.Count + 1)));
-        StartCoroutine(player.LockView(duration * (flurryPos.Count + 1)));
+        StartCoroutine(Handler.movementAI.LockMovement(duration * (flurryPos.Count + 1)));
+        StartCoroutine(Handler.movementAI.LockView(duration * (flurryPos.Count + 1)));
         damage = gameObject.AddComponent<Damage>();
         damage.SetProperties(GetDamageValues());
         yield return new WaitForSeconds(duration);
         foreach (ObjectWithDist enemy in flurryPos)
         {
             GameObject target = enemy.GetObject();
-            if (target)
+            if (target != null)
             {
                 Vector3 offset = GetOffset(target.transform.position);
-                player.transform.position = target.transform.position + offset;
+                Vector3 targetPos = target.transform.position;
+                targetPos.y = 0;
+                Handler.Owner.transform.position = targetPos + offset;
                 Quaternion lookDir = Quaternion.LookRotation(-offset);
-                player.transform.rotation = lookDir;
-                player.animator.Play("Melee", 0, 0f);
-                if (target != null)
-                {
-                    target?.GetComponent<EnemyBehaviour>().getShanked(damage);
-                }
+                Handler.Owner.transform.rotation = lookDir;
+                Handler.Owner.animator.Play("Melee", 0, 0f);
+                EnemyBehaviour enemyBehaviour = target?.GetComponent<EnemyBehaviour>();
+                enemyBehaviour?.getShanked(damage);
                 yield return new WaitForSeconds(duration);
             }
             else
@@ -41,7 +45,7 @@ public class UltBladeFlurry : DamagingAbility
             }
         }
         Destroy(damage);
-        player.animator.Play("Default", 0, 0f);
+        Handler.Owner.animator.Play("Default", 0, 0f);
     }
     private Vector3 GetOffset(Vector3 target)
     {
@@ -66,13 +70,13 @@ public class UltBladeFlurry : DamagingAbility
     }
     protected override void AbilityAction()
     {
-        flurryPos = MasterScript.Instance.GetFlurryTargets(player.levelsys.getLevel() - 1);
+        flurryPos = MasterScript.Instance.GetFlurryTargets(OwnerLevelSys.GetLevel() - 1);
         if (flurryPos.Count > 0)
         {
             StartCoroutine("reload");
             StartCoroutine("Flurry");
             reloader.shoot();
-            player.manasys.useMana(manaCost);
+            OwnerManaSys.useMana(manaCost);
         }
     }
     protected override bool InputPressed()
@@ -81,6 +85,6 @@ public class UltBladeFlurry : DamagingAbility
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(25 + (player.levelsys.getLevel() - 0) * 10, 0, CombatUtils.Team.Player, true, false);
+        return new DamageInfo(25 + (OwnerLevelSys.GetLevel() - 0) * 10, 0, CombatUtils.Team.Player, true, false);
     }
 }
