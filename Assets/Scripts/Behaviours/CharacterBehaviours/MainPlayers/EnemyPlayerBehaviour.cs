@@ -28,7 +28,6 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
     private float circledirection;
     private float avoidDistance;
     private bool isShocking;
-    private DetectBullets bulletdetector;
     public GameObject shockwave;
     private float reloadtimeShock;
     private bool loadedShock;
@@ -60,14 +59,16 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
         loadedShock = true;
         loadedShield = true;
         reloadtimeShock = 6;
-        bulletdetector = FindAnyObjectByType<DetectBullets>();
         loadedUlt = false;
         aIHandler = gameObject.AddComponent<AIHandler>();
-        ShootRightBasic shooter = gameObject.AddComponent<ShootRightBasic>();
-        shooter.SetAttackDistance(20);
+        ShootRightBasic shooterRight = gameObject.AddComponent<ShootRightBasic>();
+        shooterRight.SetAttackDistance(attackdistance);
         UltAttack ultAttack = gameObject.AddComponent<UltAttack>();
         Stomp stomp = gameObject.AddComponent<Stomp>();
-        aIHandler.Init(this, new List<Ability> { shooter, ultAttack, stomp }, new List<AIModule>(), movementSpeed, true);
+        UseShield useShield = gameObject.AddComponent<UseShield>();
+        ShootLeftBasic shooterLeft = gameObject.AddComponent<ShootLeftBasic>();
+        shooterLeft.SetAttackDistance(attackdistance);
+        aIHandler.Init(this, new List<Ability> { shooterRight, ultAttack, stomp, shooterLeft, useShield }, new List<AIModule>(), movementSpeed, true);
     }
     void OnEnable()
     {

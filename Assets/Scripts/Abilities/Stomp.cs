@@ -87,7 +87,6 @@ public class Stomp : DamagingAbility
                 if (ShouldShock)
                 {
                     IsShocking = true;
-                    Debug.Log("Ah");
                     inDistanceTracker = Handler.ClosestFinder.StartTrackingDist(ShockRadiusToCheck, true);
                     Handler.movementAI.MovementState = AIUtils.MovementState.IsGoingToPlace;
                     Handler.movementAI.SetMovementTarget(ShockPoint);

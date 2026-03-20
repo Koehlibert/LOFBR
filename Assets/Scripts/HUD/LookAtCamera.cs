@@ -9,8 +9,6 @@ public class LookAtCamera : MonoBehaviour
     {
         cam = Camera.main;
     }
-
-    // Update is called once per frame
     void Update()
     {
         Vector3 looktarget = new Vector3(cam.transform.position.x,cam.transform.position.y,transform.position.z);

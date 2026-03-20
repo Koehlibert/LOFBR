@@ -39,7 +39,6 @@ public class ManaDrain : DamagingAbility
         float distance = Vector3.Distance(Handler.Owner.transform.position, enemy.transform.position);
         if (distance <= 20)
         {
-            Debug.Log("Draining!");
             base.AbilityAction();
             ManaDrainer = BulletFactory.Instance.CreateManaDrainer(Handler.Owner);
             StartCoroutine("reload");

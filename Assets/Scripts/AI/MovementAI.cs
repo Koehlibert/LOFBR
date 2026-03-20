@@ -118,7 +118,6 @@ public class MovementAI : Ability
             Handler.Owner.transform.position = newPos;
             if (MovementState == AIUtils.MovementState.IsGoingToPlace && FlatDistance(newPos, MovementTarget) < 1)
             {
-                Debug.Log("Target reached");
                 OnTargetReached?.Invoke();
             }
             if (!bypass)

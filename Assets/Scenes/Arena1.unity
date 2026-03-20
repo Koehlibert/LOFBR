@@ -6498,7 +6498,8 @@ MonoBehaviour:
     type: 3}
   ManaDrainer: {fileID: 2467711705439000614, guid: efb8e2df405f4a04c8151cb166d72ca7,
     type: 3}
-  BulletDetector: {fileID: 0}
+  BulletDetector: {fileID: 3810197781808718972, guid: c47a5df3017470e4d885f7d09b3cf9d9,
+    type: 3}
 --- !u!114 &1772391477
 MonoBehaviour:
   m_ObjectHideFlags: 0

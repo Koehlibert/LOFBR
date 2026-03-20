@@ -91,4 +91,10 @@ public class BulletFactory : MonoBehaviour
         manaDrainer.AddComponent<ManaDrainerBehaviour>().Init(owner);
         return manaDrainer;
     }
+    public GameObject CreateBulletDetector(DamageableEntity owner, int nBulletsToTrigger)
+    {
+        GameObject bulletDetector = Instantiate(BulletDetector);
+        bulletDetector.AddComponent<DetectBulletsCollisionHandler>().Init(owner, nBulletsToTrigger);
+        return bulletDetector;
+    }
 }

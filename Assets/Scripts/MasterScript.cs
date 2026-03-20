@@ -328,7 +328,6 @@ public class MasterScript : MonoBehaviour
         }
         else
         {
-            Debug.Log("Invalid Team String: " + playerTeam);
             area = null;
             direction = 0;
             respawnPoint = null;

@@ -28,7 +28,6 @@ public class ManaDrainerBehaviour : MonoBehaviour
             lRend.SetPosition(0, Owner.transform.position + offset);
             lRend.SetPosition(1, Enemy.transform.position + offset);
             float actualDamage = Enemy.manasys.drainMana((15 + OwnerLevelSys.GetLevel() * 5) * Time.deltaTime);
-            Debug.Log(actualDamage);
             OwnerManaSys.gainMana(actualDamage);
             if (Enemy.GetHealth().TakeDamage(actualDamage * (0.05f + 0.05f * OwnerLevelSys.GetLevel())))
             {

@@ -68,12 +68,10 @@ public class Immolate : DamagingAbility
         if (isOnFire)
         {
             TurnOff();
-            Debug.Log(Time.frameCount);
         }
         else
         {
             TurnOn();
-            Debug.Log(Time.frameCount);
         }
     }
     protected override bool InputPressed()

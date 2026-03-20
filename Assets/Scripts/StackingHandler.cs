@@ -12,7 +12,6 @@ public static class StackingHandler
         {
             if (hit == null || hit.gameObject == gameObject) continue;
             if (!hit.gameObject.GetComponent<Health>()) continue;
-            //Debug.Log("Pushing away from " + hit.gameObject.tag);
             Vector3 dir = transform.position - hit.transform.position;
             dir.y = 0f;
             float dist = dir.magnitude;

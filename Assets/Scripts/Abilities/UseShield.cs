@@ -1,14 +1,28 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class UseShield : Ability
 {
-    public GameObject shield;
-    private GameObject shieldInstance;
+    public GameObject Shield;
+    private GameObject ShieldInstance;
+    private GameObject BulletDetector;
     protected override AbilityInfo GetAbilityInfo()
     {
         return new AbilityInfo(50, 12, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
+    }
+    protected override void AdditionalInit()
+    {
+        BulletDetector = BulletFactory.Instance.CreateBulletDetector(Handler.Owner, 3);
+        BulletDetector.GetComponent<DetectBulletsCollisionHandler>().BulletsDetected += TryUseShield;
+    }
+    public void TryUseShield()
+    {
+        if (loaded)
+        {
+            AbilityAction();
+        }
     }
     private IEnumerator DestroyShield()
     {
@@ -23,12 +37,12 @@ public class UseShield : Ability
         {
             (Handler.Owner as PlayerController).EnableDamageFlash();
         }
-        Destroy(shieldInstance);
+        Destroy(ShieldInstance);
     }
 
     protected override void AbilityAction()
     {
-        shieldInstance = BulletFactory.Instance.CreateShield(Handler.Owner);
+        ShieldInstance = BulletFactory.Instance.CreateShield(Handler.Owner);
         StartCoroutine("reload");
         StartCoroutine("DestroyShield");
         reloader.shoot();
@@ -40,9 +54,5 @@ public class UseShield : Ability
     }
     protected override void AICheck()
     {
-        if (loaded)
-        {
-            
-        }
     }
 }

@@ -11,7 +11,7 @@ public class PlayerController : MainPlayerBehaviour
     public int rotatespeed;
     private float flashspeed;
     public Image damageimage;
-    public Color flashcolor = new Color(1f, 0f, 0f, 0.1f);
+    public Color flashcolor = new(1f, 0f, 0f, 0.1f);
     public AudioSource soundsource;
     private int classID;
     private Skillset skillSet;
@@ -19,7 +19,6 @@ public class PlayerController : MainPlayerBehaviour
     protected override void Start()
     {
         base.Start();
-        LastHit = false;
         classID = PlayerPrefs.GetInt("classID");
         switch (classID)
         {
