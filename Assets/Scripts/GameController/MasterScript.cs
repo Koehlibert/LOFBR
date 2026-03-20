@@ -151,27 +151,17 @@ public class MasterScript : MonoBehaviour
             Mathf.Clamp(target.z, friendlySpawn.GetZPos(), enemySpawn.GetZPos())
         );
     }
-    public IEnumerator EnemyRespawnCoroutine()
-    {
-        enemyPlayer.gameObject.SetActive(false);
-        yield return new WaitForSeconds(respawntime);
-        if ((!gameOver) || GameOverContinue)
-        {
-            enemyPlayer.transform.position = respawnpointEnemyPlayer.transform.position;
-            enemyPlayer.gameObject.SetActive(true);
-        }
-    }
     public void DieAndRespawn(CombatUtils.Team team)
     {
         if (team == CombatUtils.Team.Player)
         {
-            StartCoroutine("RespawnCoroutine");
-            friendlySpawn.SpeedUpSpawner(0.95f);
+            StartCoroutine(RespawnCoroutine());
+            friendlySpawn.SpeedUpSpawner(1f);
         }
         else
         {
-            StartCoroutine("EnemyRespawnCoroutine");
-            enemySpawn.SpeedUpSpawner(0.95f);
+            StartCoroutine(EnemyRespawnCoroutine());
+            enemySpawn.SpeedUpSpawner(1f);
         }
         MoveSpawner(team);
     }
@@ -184,7 +174,17 @@ public class MasterScript : MonoBehaviour
         {
             player.transform.position = respawnpointPlayer.transform.position;
             player.gameObject.SetActive(true);
-            player.flashcolor = new Color(1f, 0f, 0f, 0.1f);
+            //player.flashcolor = new Color(1f, 0f, 0f, 0.1f);
+        }
+    }
+    public IEnumerator EnemyRespawnCoroutine()
+    {
+        enemyPlayer.gameObject.SetActive(false);
+        yield return new WaitForSeconds(respawntime);
+        if ((!gameOver) || GameOverContinue)
+        {
+            enemyPlayer.transform.position = respawnpointEnemyPlayer.transform.position;
+            enemyPlayer.gameObject.SetActive(true);
         }
     }
     public void ToMenu()

@@ -5,7 +5,7 @@ public abstract class Base : DamageableEntity
 {
     public override void Init()
     {
-        hpsys = GetComponent<Health>();
+        base.Init();
         hpsys.Initialize(MasterScript.Instance.baseMaxHp,0,0,20);
     }
     protected override void Die()
