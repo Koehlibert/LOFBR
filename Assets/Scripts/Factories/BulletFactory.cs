@@ -13,6 +13,7 @@ public class BulletFactory : MonoBehaviour
     [SerializeField] GameObject ParryCollider;
     [SerializeField] GameObject ManaDrainer;
     [SerializeField] GameObject BulletDetector;
+    [SerializeField] GameObject ArmorAura;
     private void Awake()
     {
         Instance = this;
@@ -96,5 +97,11 @@ public class BulletFactory : MonoBehaviour
         GameObject bulletDetector = Instantiate(BulletDetector);
         bulletDetector.AddComponent<DetectBulletsCollisionHandler>().Init(owner, nBulletsToTrigger);
         return bulletDetector;
+    }
+    public GameObject CreateArmorAura(DamageableEntity owner)
+    {
+        GameObject armorAura = Instantiate(ArmorAura);
+        armorAura.AddComponent<ArmorAura>().Init(owner);
+        return armorAura;
     }
 }

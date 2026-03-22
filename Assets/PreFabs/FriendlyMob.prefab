@@ -87,7 +87,6 @@ GameObject:
   - component: {fileID: 1421225335743800074}
   - component: {fileID: 5673947234323424765}
   - component: {fileID: 3373012909900017056}
-  - component: {fileID: 114913186735371650}
   - component: {fileID: 5904192553447335138}
   m_Layer: 0
   m_Name: FriendlyMob
@@ -153,18 +152,6 @@ MonoBehaviour:
   aIHandler: {fileID: 0}
   healthbar: {fileID: 6544769053701136603}
   healthbarbg: {fileID: 864819667386964637}
---- !u!114 &114913186735371650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1421225335743905642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d6aa8f14c68ce4e9614868d90da106, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &5904192553447335138
 Rigidbody:
   m_ObjectHideFlags: 0

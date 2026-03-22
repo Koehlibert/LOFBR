@@ -115,8 +115,8 @@ public class MasterScript : MonoBehaviour
         allEnemies = new List<GameObject>();
         allFriendlies = new List<GameObject>();
         rezPoolFriendly = new List<Tombstone>();
-        friendlyBase.GetComponent<FriendlyBase>().Init();
-        enemyBase.GetComponent<EnemyBase>().Init();
+        friendlyBase.AddComponent<FriendlyBase>().Init();
+        enemyBase.AddComponent<EnemyBase>().Init();
         player.Init();
         enemyPlayer.Init();
         foreach (GameObject enemyTower in allEnemiesTowers)

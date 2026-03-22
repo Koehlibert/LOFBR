@@ -5,12 +5,9 @@ using UnityEngine;
 public class UseArmorAura : Ability
 {
     private GameObject aura;
-    private bool armorActive;
     protected override void AdditionalInit()
     {
-        aura = FindAnyObjectByType<ArmorAura>().gameObject;
-        aura.SetActive(false);
-        armorActive = false;
+        aura = BulletFactory.Instance.CreateArmorAura(Handler.Owner);
     }
     protected override AbilityInfo GetAbilityInfo()
     {
@@ -20,15 +17,6 @@ public class UseArmorAura : Ability
     {
         Reset();
     }
-    public new void Reset()
-    {
-        loaded = true;
-        armorActive = false;
-        if (aura)
-        {
-            aura.SetActive(false);
-        }
-    }
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -36,21 +24,9 @@ public class UseArmorAura : Ability
     }
     protected override void AbilityAction()
     {
-        if (armorActive)
-        {
-            StartCoroutine("reload");
-            aura.SetActive(false);
-            armorActive = false;
-        }
-        else if ((loaded) && OwnerManaSys.checkCost(manaCost))
-        {
-            OwnerManaSys.useMana(manaCost);
-            aura.SetActive(true);
-            armorActive = true;
-        }
     }
     protected override bool InputPressed()
     {
-        return PlayerInputRouter.Instance.AlternativePressed;
+        return false;
     }
 }

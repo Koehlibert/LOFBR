@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 752268847723263080}
   - component: {fileID: 752268848267846746}
   - component: {fileID: 752268848267846744}
-  - component: {fileID: 114486160304598380}
   - component: {fileID: -7637401918836164277}
   m_Layer: 0
   m_Name: EnemyMob
@@ -77,18 +76,6 @@ MonoBehaviour:
   aIHandler: {fileID: 0}
   healthbar: {fileID: 6349946008277320679}
   healthbarbg: {fileID: 5630666503110785088}
---- !u!114 &114486160304598380
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 752268847723358216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d6aa8f14c68ce4e9614868d90da106, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &-7637401918836164277
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -9,7 +9,6 @@ public class ClosestFinder
 {
     private MainPlayerBehaviour player;
     private GameObject selfObject;
-    private CombatUtils.Team targetTeam;
     private List<GameObject> AllObjects;
     private List<GameObject> AllObjectsNoTowers;
     private int LastFrameComputed = -1;
@@ -27,7 +26,6 @@ public class ClosestFinder
     }
     public ClosestFinder(CombatUtils.Team team, CombatUtils.Team targetTeam, GameObject selfObject)
     {
-        this.targetTeam = targetTeam;
         this.selfObject = selfObject;
         this.player = GetPlayer(targetTeam);
         inDistanceTrackers = new List<InDistanceTracker>();
@@ -47,7 +45,7 @@ public class ClosestFinder
     {
         if (LastFrameComputedNoTower != Time.frameCount)
         {
-            CachedClosestNoTower = FindClosest(AllObjectsNoTowers, withPlayer, onlyHurt, true);
+            CachedClosestNoTower = FindClosest(AllObjectsNoTowers, withPlayer, onlyHurt);
             LastFrameComputedNoTower = Time.frameCount;
         }
         return CachedClosestNoTower;
@@ -56,7 +54,7 @@ public class ClosestFinder
     {
         return FindClosestN(AllObjectsNoTowers, n, withPlayer);
     }
-    private GameObject FindClosest(List<GameObject> allEnemies, bool withPlayer, bool onlyHurt = false, bool TrackNumber = false)
+    private GameObject FindClosest(List<GameObject> allEnemies, bool withPlayer, bool onlyHurt = false)
     {
         foreach (InDistanceTracker inDistanceTracker in inDistanceTrackers)
         {
