@@ -76,9 +76,6 @@ public class MasterScript : MonoBehaviour
     public GameObject friendlyBase;
     public GameObject friendlyFloor;
     public GameObject enemyFloor;
-    public AudioClip death;
-    public AudioSource soundsource;
-    public AudioSource ambientsource;
     public GameObject moverFriendly;
     public GameObject moverEnemy;
     public List<GameObject> allEnemies;
@@ -96,7 +93,6 @@ public class MasterScript : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        ambientsource.Play();
         friendlyArea = GameObject.FindGameObjectWithTag("FriendlyArea");
         enemyArea = GameObject.FindGameObjectWithTag("EnemyArea");
         friendlyBase = GameObject.FindGameObjectWithTag("FriendlyBase");
@@ -167,7 +163,7 @@ public class MasterScript : MonoBehaviour
     }
     public IEnumerator RespawnCoroutine()
     {
-        soundsource.Play();
+        AudioManager.Instance.PlayerDies();
         player.gameObject.SetActive(false);
         yield return new WaitForSeconds(respawntime);
         if ((!gameOver) || GameOverContinue)

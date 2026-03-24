@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MainPlayerBehaviour
 {
-    public AudioSource soundsource;
     public override void Init()
     {
         ClassID = PlayerPrefs.GetInt("classID");
@@ -27,8 +26,7 @@ public class PlayerController : MainPlayerBehaviour
     private void OnTakeDamage()
     {
         HUD.Instance.SetDamageImage(1 - hpsys.healthDisplay());
-        soundsource.time = 0.4f;
-        soundsource.Play();
+        AudioManager.Instance.PlayerHurt();
     }
     public void DisableDamageFlash()
     {

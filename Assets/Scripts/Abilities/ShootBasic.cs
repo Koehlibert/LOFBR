@@ -23,6 +23,7 @@ public abstract class ShootBasic : DamagingAbility
     {
         if (Handler.Owner is MainPlayerBehaviour)
             AttackDistance = 20f;
+        soundType = AbilitySoundType.Shoot;
     }
     public void SetAttackDistance(float attackDistance)
     {
@@ -77,8 +78,8 @@ public abstract class ShootBasic : DamagingAbility
         if (IsInteractive)
         {
             reloader.shoot();
-            OwnerManaSys.useMana(manaCost);
         }
+        base.AbilityAction();
     }
     protected override void AICheck()
     {

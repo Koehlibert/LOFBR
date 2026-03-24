@@ -15,6 +15,7 @@ public abstract class Ability : MonoBehaviour
     protected bool loaded;
     protected Reload reloader;
     public float manaCost;
+    protected AbilitySoundType soundType = AbilitySoundType.None;
     public virtual void Checker()
     {
         if (IsInteractive)
@@ -55,7 +56,7 @@ public abstract class Ability : MonoBehaviour
     }
     protected virtual void AdditionalInit()
     {
-        
+
     }
     public virtual void Init(bool isInteractive, AIHandler aIHandler, GameObject reloadObject)
     {
@@ -84,6 +85,11 @@ public abstract class Ability : MonoBehaviour
         if (IsInteractive)
         {
             OwnerManaSys.useMana(manaCost);
+        }
+        if (soundType != AbilitySoundType.None)
+        {
+            AudioClip clip = AudioManager.Instance.GetClip(soundType);
+            AudioManager.Instance.PlaySound(clip, Handler.Owner.transform.position);
         }
     }
     public void ActivateReloader()
@@ -128,4 +134,10 @@ public class AbilityInfo
         this.Reloadtime = reloadtime;
         this.ActiveStates = activeStates;
     }
+}
+public enum AbilitySoundType
+{
+    None,
+    Shoot,
+    Stomp
 }

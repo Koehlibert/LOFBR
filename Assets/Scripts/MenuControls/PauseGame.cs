@@ -10,8 +10,8 @@ public class PauseGame : MonoBehaviour
     bool isPaused;
     public GameObject GameOverMenu;
     public GameObject GameOverContinue;
-    public GameObject AudioSlider;
-
+    public GameObject backgroundAudioSlider;
+    public GameObject sfxAudioSlider;
     void Awake()
     {
         Instance = this;
@@ -19,20 +19,21 @@ public class PauseGame : MonoBehaviour
     void Start()
     {
         isPaused = false;
-        AudioSlider.SetActive(false);
+        backgroundAudioSlider.SetActive(false);
+        sfxAudioSlider.SetActive(false);
         GameOverMenu.SetActive(false);
         GameOverContinue.SetActive(false);
     }
     public void TogglePause()
     {
         if (!isPaused)
-            {
-                Stop();
-            }
-            else
-            {
-                ContinueGame();
-            }
+        {
+            Stop();
+        }
+        else
+        {
+            ContinueGame();
+        }
     }
     public void Stop()
     {
@@ -40,7 +41,8 @@ public class PauseGame : MonoBehaviour
         isPaused = true;
         GameOverMenu.SetActive(true);
         GameOverContinue.SetActive(true);
-        AudioSlider.SetActive(true);
+        backgroundAudioSlider.SetActive(true);
+        sfxAudioSlider.SetActive(true);
     }
     public void ContinueGame()
     {
@@ -48,6 +50,7 @@ public class PauseGame : MonoBehaviour
         isPaused = false;
         GameOverMenu.SetActive(false);
         GameOverContinue.SetActive(false);
-        AudioSlider.SetActive(false);
+        backgroundAudioSlider.SetActive(false);
+        sfxAudioSlider.SetActive(false);
     }
 }
