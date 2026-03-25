@@ -120,7 +120,7 @@ public abstract class Ability : MonoBehaviour
     {
         loaded = true;
     }
-    private IEnumerator Reload()
+    protected virtual IEnumerator Reload()
     {
         loaded = false;
         yield return new WaitForSeconds(reloadtime);

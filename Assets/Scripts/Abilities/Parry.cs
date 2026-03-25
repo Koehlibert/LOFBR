@@ -6,9 +6,22 @@ public class Parry : Ability
 {
     private GameObject ParryCollider;
     private float duration;
+    private GameObject BulletDetector;
     protected override void AdditionalInit()
     {
         duration = .6f;
+        if (!IsInteractive)
+        {
+            BulletDetector = BulletFactory.Instance.CreateBulletDetector(Handler.Owner, 1);
+            BulletDetector.GetComponent<DetectBulletsCollisionHandler>().BulletsDetected += TryParry;
+        }
+    }
+    public void TryParry()
+    {
+        if (loaded && Handler.Owner.isActiveAndEnabled)
+        {
+            AbilityAction();
+        }
     }
     protected override AbilityInfo GetAbilityInfo()
     {
@@ -36,5 +49,8 @@ public class Parry : Ability
     protected override bool InputPressed()
     {
         return PlayerInputRouter.Instance.SecondaryPressed;
+    }
+    protected override void AICheck()
+    {
     }
 }

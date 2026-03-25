@@ -5,13 +5,11 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 public class EnemyPlayerBehaviour : MainPlayerBehaviour
 {
-    Vector3 offset = new Vector3(0, -0.5f, -1.5f);
-    private Vector3 target;
     public Image healthbar;
     public Image manaBar;
     public override void Init()
     {
-        base.Init(2);
+        base.Init(3);
         healthbar.fillAmount = hpsys.healthDisplay();
         manaBar.fillAmount = manasys.getPercent();
     }

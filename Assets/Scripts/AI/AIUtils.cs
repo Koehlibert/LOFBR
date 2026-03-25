@@ -8,7 +8,8 @@ public static class AIUtils
         IsMovingForward,
         IsFollowingTarget,
         IsGoingToPlace,
-        IsRetreating
+        IsRetreating,
+        IsCircling
     }
     public enum AIState
     {

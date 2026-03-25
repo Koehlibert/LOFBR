@@ -10,9 +10,11 @@ public class Melee : DamagingAbility
     private Vector3 dir;
     private GameObject MeleeCollider;
     private float speedup = 1.5f;
+    private bool IsAttacking = false;
+    private float AttackDistance = 8.5f;
     protected override AbilityInfo GetAbilityInfo()
     {
-        return new AbilityInfo(5, 1.5f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking });
+        return new AbilityInfo(5, 1.5f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
     }
     protected override void OnEnable()
     {
@@ -30,20 +32,17 @@ public class Melee : DamagingAbility
             Handler.MovementDirection = dir;
         }
     }
-    private IEnumerator reload()
-    {
-        loaded = false;
-        yield return new WaitForSeconds(reloadtime);
-        loaded = true;
-    }
-    private IEnumerator resetanim()
+    private IEnumerator Resetanim()
     {
         yield return new WaitForSeconds(duration);
         Destroy(MeleeCollider);
         attacking = false;
+        Handler.ReenableOtherAbilities();
+        IsAttacking = false;
     }
     private void Shootanim()
     {
+        Handler.DisableOtherAbilities(this);
         Handler.Owner.animator.SetTrigger("Melee");
         float clipLength = 1 / 2f;
         duration = clipLength;
@@ -51,7 +50,7 @@ public class Melee : DamagingAbility
         StartCoroutine(Handler.SetForcemovement(duration));
         StartCoroutine(Handler.movementAI.LockView(duration));
         Handler.movementAI.Speedup = speedup;
-        StartCoroutine("resetanim");
+        StartCoroutine("Resetanim");
     }
     public new void Reset()
     {
@@ -61,6 +60,7 @@ public class Melee : DamagingAbility
     protected override void AbilityAction()
     {
         base.AbilityAction();
+        IsAttacking = true;
         MeleeCollider = BulletFactory.Instance.CreateMeleeCollider(Handler.Owner);
         MeleeCollider.GetComponent<Damage>().SetProperties(GetDamageValues());
         Shootanim();
@@ -75,5 +75,28 @@ public class Melee : DamagingAbility
     protected override DamageInfo GetDamageValues()
     {
         return new DamageInfo(35 + OwnerLevelSys.GetLevel() * 3, 0, Handler.Owner.Team, true, false);
+    }
+    protected override void AICheck()
+    {
+        if (Handler.distanceToClosest < AttackDistance)
+        {
+            Handler.SetEvenLookDirection(Handler.closestEnemyNoTower.transform.position);
+            if (loaded)
+            {
+                Handler.movementAI.MovementState = AIUtils.MovementState.IsFollowingTarget;    
+                Handler.FinalAction = AbilityAction;
+            }
+            else if (!IsAttacking)
+            {
+                Handler.movementAI.MovementState = AIUtils.MovementState.IsCircling;
+                Handler.movementAI.Speedup = 0.9f;
+            }
+        }
+        else
+        {
+            Handler.movementAI.MovementState = AIUtils.MovementState.IsFollowingTarget;
+            Handler.movementAI.Speedup = 1.25f;
+            Handler.SetEvenLookDirection(Handler.closestEnemyNoTower.transform.position);
+        }
     }
 }

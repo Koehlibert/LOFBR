@@ -9,16 +9,16 @@ public abstract class SpawnerBehaviour : MonoBehaviour
     private Vector3 pos2;
     private Quaternion spawndirection;
     private float timer;
-    protected abstract CombatUtils.Team Team {get;}
+    protected abstract CombatUtils.Team Team { get; }
     protected float Direction;
     void Start()
     {
         spawntimer = 3.5f;
         timer = spawntimer;
         Direction = Team == CombatUtils.Team.Player ? -1 : 1;
-        pos1 = new Vector3(-10,1.5f,Direction * 99);
-        pos2 = new Vector3(10,1.5f, Direction * 99);
-        spawndirection = Team == CombatUtils.Team.Player ? new Quaternion(0,0,0,0) : new Quaternion(0,180,0,0);
+        pos1 = new Vector3(-10, 1.5f, Direction * 99);
+        pos2 = new Vector3(10, 1.5f, Direction * 99);
+        spawndirection = Team == CombatUtils.Team.Player ? new Quaternion(0, 0, 0, 0) : new Quaternion(0, 180, 0, 0);
     }
     void Update()
     {

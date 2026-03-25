@@ -50,7 +50,7 @@ public abstract class ShootBasic : DamagingAbility
         bulletinstance = CreateBullet();
         loaded = true;
     }
-    protected virtual IEnumerator Reload()
+    protected override IEnumerator Reload()
     {
         loaded = false;
         yield return new WaitForSeconds(reloadtime);

@@ -25,12 +25,6 @@ public class Stomp : DamagingAbility
         IsShocking = false;
         soundType = AbilitySoundType.Stomp;
     }
-    private IEnumerator Reload()
-    {
-        loaded = false;
-        yield return new WaitForSeconds(reloadtime);
-        loaded = true;
-    }
     protected override void AbilityAction()
     {
         StartCoroutine("Shootanim");

@@ -12,6 +12,7 @@ public class MovementAI : Ability
     private Vector3 standarddirection = new Vector3(0f, 0f, 1f);
     private float TeamDirectionMultiplier;
     public AIUtils.MovementState MovementState { get; set; }
+    private AIUtils.MovementState LastMovementState { get; set; }
     public bool MoveLock;
     private bool LookLock;
     public bool CaresAboutHealth;
@@ -19,6 +20,10 @@ public class MovementAI : Ability
     public float Speedup;
     private Vector3 MovementTarget;
     public event Action OnTargetReached;
+    private float CircleDirection = 1;
+    private float CircleRadius = 7.5f;
+    private float CircleSpeed = 2f;
+    private float Angle = 0;
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -30,6 +35,7 @@ public class MovementAI : Ability
     public void Init(bool isInteractive, AIHandler aIHandler, float movementSpeed, bool caresAboutHealth)
     {
         base.Init(isInteractive, aIHandler);
+        Speedup = 1;
         MoveLock = false;
         CaresAboutHealth = caresAboutHealth;
         Movementspeed = movementSpeed;
@@ -39,9 +45,21 @@ public class MovementAI : Ability
             TeamDirectionMultiplier *= -1;
         }
         standarddirection.z *= TeamDirectionMultiplier;
+        LastMovementState = AIUtils.MovementState.IsMovingForward;
     }
     public override void Checker()
     {
+        if (MoveLock)
+            return;
+        if (LastMovementState != MovementState)
+        {
+            //Debug.Log("Changed Movementstate from " + LastMovementState + " to " + MovementState);
+            Speedup = 1;
+            CircleDirection *= -1;
+            if (Handler.closestEnemyNoTower != null)
+                Angle = Mathf.Atan2(transform.position.z - Handler.closestEnemyNoTower.transform.position.z, transform.position.x - Handler.closestEnemyNoTower.transform.position.x);
+            LastMovementState = MovementState;
+        }
         if (IsInteractive)
         {
             if (!MoveLock)
@@ -70,26 +88,27 @@ public class MovementAI : Ability
             Handler.SetAIState(AIUtils.AIState.Retreating);
             Handler.ReenableOtherAbilities();
         }
+        if (MovementState == AIUtils.MovementState.IsCircling)
+        {
+            Handler.MovementDirection = GetDirection(GetCircularTarget(Handler.closestEnemyNoTower));
+            //Debug.Log(Handler.MovementDirection);
+        }
         if (MovementState == AIUtils.MovementState.IsStanding)
         {
             Handler.MovementDirection = new Vector3(0, 0, 0);
-            return;
         }
         if (MovementState == AIUtils.MovementState.IsMovingForward)
         {
             Handler.MovementDirection = standarddirection;
             Handler.LookDirection = Handler.Owner.transform.position + standarddirection; ;
-            return;
         }
         if (MovementState == AIUtils.MovementState.IsFollowingTarget)
         {
             Handler.MovementDirection = GetDirection(Handler.closestEnemy.transform.position);
-            return;
         }
         if (MovementState == AIUtils.MovementState.IsGoingToPlace)
         {
             Handler.MovementDirection = GetDirection(MovementTarget);
-            return;
         }
     }
     public void SetMovementTarget(Vector3 movementTarget)
@@ -99,10 +118,6 @@ public class MovementAI : Ability
     public void HandleMovement()
     {
         MoveCharacter(Handler.MovementDirection, Handler.ForceMovement, Speedup);
-        if (!MoveLock)
-        {
-            Speedup = 1;
-        }
     }
     public Vector3 GetDirection(Vector3 target)
     {
@@ -112,13 +127,20 @@ public class MovementAI : Ability
             direction = direction.normalized;
         return direction;
     }
+    private Vector3 GetCircularTarget(GameObject objectToCircle)
+    {
+        Angle += CircleSpeed * CircleDirection * Time.deltaTime;
+        float x = Mathf.Cos(Angle) * CircleRadius;
+        float z = Mathf.Sin(Angle) * CircleRadius;
+        return objectToCircle.transform.position + new Vector3(x, 0f, z);
+    }
     public void MoveCharacter(Vector3 direction, bool bypass = false, float speedup = 1)
     {
-        Handler.Owner.AnimSpeed = 0;
+        Handler.Owner.AnimSpeed = 0; //still necessary?
         if (!MoveLock || bypass)
         {
-            Handler.Owner.AnimSpeed = direction.normalized.magnitude;
-            Vector3 newPos = MasterScript.Instance.CorrectTarget(transform.position + Movementspeed * Time.deltaTime * direction);
+            Handler.Owner.AnimSpeed = direction.normalized.magnitude;//still necessary?
+            Vector3 newPos = MasterScript.Instance.CorrectTarget(transform.position + Movementspeed * Time.deltaTime * direction * speedup);
             Handler.Owner.transform.position = newPos;
             if (MovementState == AIUtils.MovementState.IsGoingToPlace && FlatDistance(newPos, MovementTarget) < 1)
             {
