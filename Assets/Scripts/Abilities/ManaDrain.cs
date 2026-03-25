@@ -41,7 +41,7 @@ public class ManaDrain : DamagingAbility
         {
             base.AbilityAction();
             ManaDrainer = BulletFactory.Instance.CreateManaDrainer(Handler.Owner);
-            StartCoroutine("reload");
+            StartCoroutine("Reload");
             StartCoroutine("duration");
         }
     }

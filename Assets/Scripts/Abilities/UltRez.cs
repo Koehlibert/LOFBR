@@ -26,7 +26,7 @@ public class UltRez : Ability
         List<Vector3> locations = MasterScript.Instance.GetRezPositions(OwnerLevelSys.GetLevel() - 2);
         if (locations.Count > 0)
         {
-            StartCoroutine("reload");
+            StartCoroutine("Reload");
             Rez(locations);
             base.AbilityAction();
         }

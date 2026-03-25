@@ -46,7 +46,7 @@ public class UseShield : Ability
     protected override void AbilityAction()
     {
         ShieldInstance = BulletFactory.Instance.CreateShield(Handler.Owner);
-        StartCoroutine("reload");
+        StartCoroutine("Reload");
         StartCoroutine("DestroyShield");
         base.AbilityAction();
     }

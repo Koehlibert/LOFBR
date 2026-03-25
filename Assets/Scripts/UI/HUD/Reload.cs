@@ -40,7 +40,7 @@ public class Reload : MonoBehaviour
         }
         if(player.isActiveAndEnabled)
         {
-            setManaMet(player.manasys.checkCost(ability.manaCost));
+            SetManaMet(player.manasys.checkCost(ability.manaCost));
         }
     }
     public void Activate()
@@ -50,11 +50,11 @@ public class Reload : MonoBehaviour
         ReloadParent.enabled = true;
         manaCostMet.enabled = true;
     }
-    public void setManaMet(bool val)
+    public void SetManaMet(bool val)
     {
         manaCostMet.enabled = val;
     }
-    public void shoot()
+    public void Shoot()
     {
         if(!reloading)
         {

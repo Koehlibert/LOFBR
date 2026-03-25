@@ -39,7 +39,7 @@ public abstract class MainPlayerBehaviour : DamageableEntity
     public virtual void LevelUp()
     {
         skillSet.LevelUnlock(Levelsys.GetLevel());
-        hpsys.UpdateValues((Levelsys.GetLevel() - 1) * 25, 2);
+        hpsys.UpdateValues((Levelsys.GetLevel() - 1) * 25, Levelsys.GetLevel());
         manasys.UpdateValues(50, Levelsys.GetLevel() * 0.25f);
     }
     protected override void Die()

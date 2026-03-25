@@ -61,7 +61,7 @@ public abstract class Ability : MonoBehaviour
     public virtual void Init(bool isInteractive, AIHandler aIHandler, GameObject reloadObject)
     {
         Init(isInteractive, aIHandler);
-        setReloader(HUD.Instance.GetReload(reloadObject));
+        SetReloader(HUD.Instance.GetReload(reloadObject));
         reloadObject.SetActive(true);
         if (isInteractive & reloader != null)
         {
@@ -84,7 +84,7 @@ public abstract class Ability : MonoBehaviour
     {
         if (IsInteractive)
         {
-            reloader.shoot();
+            reloader.Shoot();
         }
         if (OwnerManaSys != null)
         {
@@ -119,13 +119,13 @@ public abstract class Ability : MonoBehaviour
     {
         loaded = true;
     }
-    private IEnumerator reload()
+    private IEnumerator Reload()
     {
         loaded = false;
         yield return new WaitForSeconds(reloadtime);
         loaded = true;
     }
-    public void setReloader(Reload val)
+    public void SetReloader(Reload val)
     {
         reloader = val;
         reloader.SetAbility(this);

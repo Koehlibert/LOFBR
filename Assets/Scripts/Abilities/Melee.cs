@@ -64,7 +64,7 @@ public class Melee : DamagingAbility
         MeleeCollider = BulletFactory.Instance.CreateMeleeCollider(Handler.Owner);
         MeleeCollider.GetComponent<Damage>().SetProperties(GetDamageValues());
         Shootanim();
-        StartCoroutine("reload");
+        StartCoroutine("Reload");
         dir = Handler.Owner.transform.forward;
         attacking = true;
     }

@@ -51,7 +51,7 @@ public class Immolate : DamagingAbility
     }
     private void TurnOn()
     {
-        reloader.shoot();
+        reloader.Shoot();
         OwnerManaSys.useMana(manaCost);
         fire = BulletFactory.Instance.CreateFire(Handler.Owner);
         fire.GetComponent<Damage>().SetProperties(GetDamageValues());
@@ -59,7 +59,7 @@ public class Immolate : DamagingAbility
     }
     private void TurnOff()
     {
-        StartCoroutine("reload");
+        StartCoroutine("Reload");
         Destroy(fire);
         isOnFire = false;
     }

@@ -25,10 +25,10 @@ public class SkillsetFighter : Skillset
     public SkillsetFighter(AIHandler handler)
     {
         Handler = handler;
-        startingLife = 300;
-        startingRegen = 3;
+        startingLife = 350;
+        startingRegen = 7.5f;
         regenDelay = 4;
-        startingArmor = 5;
+        startingArmor = 15;
         startingSpeed = 12;
     }
     public override void LevelUnlock(int lvl)
@@ -68,8 +68,8 @@ public class SkillsetSupport : Skillset
         startingLife = 350;
         startingRegen = 7.5f;
         regenDelay = 2.5f;
-        startingArmor = 35;
-        startingSpeed = 16;
+        startingArmor = 8;
+        startingSpeed = 15;
     }
     public override void LevelUnlock(int lvl)
     {
@@ -108,10 +108,10 @@ public class SkillsetMelee : Skillset
     {
         Handler = handler;
         startingLife = 400;
-        startingRegen = 4;
-        regenDelay = 5;
-        startingArmor = 8;
-        startingSpeed = 14;
+        startingRegen = 12;
+        regenDelay = 1.5f;
+        startingArmor = 35;
+        startingSpeed = 17.5f;
     }
     public override void LevelUnlock(int lvl)
     {

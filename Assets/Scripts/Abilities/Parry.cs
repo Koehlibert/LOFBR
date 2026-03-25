@@ -27,9 +27,11 @@ public class Parry : Ability
     protected override void AbilityAction()
     {
         base.AbilityAction();
+        StartCoroutine(Handler.movementAI.LockMovement(duration));
         ParryCollider = BulletFactory.Instance.CreateParryCollider(Handler.Owner);
+        Handler.Owner.animator.SetTrigger("Parry");
         StartCoroutine("autoDisable");
-        StartCoroutine("reload");
+        StartCoroutine("Reload");
     }
     protected override bool InputPressed()
     {

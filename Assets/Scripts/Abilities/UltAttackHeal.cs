@@ -22,7 +22,7 @@ public class UltAttackHeal : Ability
     protected override void AbilityAction()
     {
         BulletFactory.Instance.CreateSuperRegenAura(Handler.Owner);
-        StartCoroutine("reload");
+        StartCoroutine("Reload");
         base.AbilityAction();
     }
     protected override bool InputPressed()
