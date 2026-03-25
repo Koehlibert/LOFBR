@@ -24,17 +24,16 @@ public class ArmorAuraCollisionHandler : CollisionHandler
     }
     void OnTriggerExit(Collider collider)
     {
-        var item = ArmoredAllies.Find(x => x.ArmoredObject = collider.gameObject);
+        var item = ArmoredAllies.Find(x => x.ArmoredEntity = collider.gameObject.GetComponent<DamageableEntity>());
         if (item != null)
         {
-            Debug.Log(item);
             RemoveArmorFromTarget(item);
         }
     }
     void Update()
     {
         this.transform.SetPositionAndRotation(Owner.transform.position + new Vector3(0f,2f,0f), Owner.transform.rotation);
-        ArmoredAllies.RemoveAll(item => item.ArmoredObject == null);
+        ArmoredAllies.RemoveAll(item => item.ArmoredEntity == null);
     }
     void OnDestroy()
     {
@@ -48,11 +47,11 @@ public class ArmorAuraCollisionHandler : CollisionHandler
     {
         float addedArmor = GetArmorToAdd();
         damageableEntity.GetComponent<Health>().AddArmor(addedArmor);
-        ArmoredAllies.Add(new ObjectWithAddedArmor(gameObject, addedArmor));
+        ArmoredAllies.Add(new ObjectWithAddedArmor(damageableEntity, addedArmor));
     }
     private void RemoveArmorFromTarget(ObjectWithAddedArmor objectWithAddedArmor)
     {
-        objectWithAddedArmor.ArmoredObject.GetComponent<Health>().AddArmor(-objectWithAddedArmor.AddedArmor);
+        objectWithAddedArmor.ArmoredEntity.GetComponent<Health>().AddArmor(-objectWithAddedArmor.AddedArmor);
         ArmoredAllies.Remove(objectWithAddedArmor);
     }
     private float GetArmorToAdd()
@@ -66,11 +65,11 @@ public class ArmorAuraCollisionHandler : CollisionHandler
 }
 public class ObjectWithAddedArmor
 {
-    public GameObject ArmoredObject;
+    public DamageableEntity ArmoredEntity;
     public float AddedArmor;
-    public ObjectWithAddedArmor(GameObject armoredObject, float addedArmor)
+    public ObjectWithAddedArmor(DamageableEntity armoredEntity, float addedArmor)
     {
-        ArmoredObject = armoredObject;
+        ArmoredEntity = armoredEntity;
         AddedArmor = addedArmor;
     }
 }

@@ -1791,9 +1791,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   sounds:
   - type: 0
-    clip: {fileID: 8300000, guid: 6874ddb95ae71e84e8b95a93c21c5d7d, type: 3}
+    clip: {fileID: 0}
   - type: 1
     clip: {fileID: 8300000, guid: 6874ddb95ae71e84e8b95a93c21c5d7d, type: 3}
+  - type: 2
+    clip: {fileID: 8300000, guid: c25931306d1525d458de35c424396134, type: 3}
   HurtClip: {fileID: 8300000, guid: d5194009b44b0fb4687d16659612c76a, type: 3}
   DeathClip: {fileID: 8300000, guid: 662c3d66de3967149910b3f6a40eaad3, type: 3}
   ambientsource: {fileID: 404800011}
@@ -5430,8 +5432,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1772391474}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: continueGame
+        m_TargetAssemblyTypeName: PauseGame, Assembly-CSharp
+        m_MethodName: ContinueGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6824,6 +6826,8 @@ MonoBehaviour:
   BulletDetector: {fileID: 3810197781808718972, guid: c47a5df3017470e4d885f7d09b3cf9d9,
     type: 3}
   ArmorAura: {fileID: 6884554792350047658, guid: 0354a933fd4f19c498aeb0aa2493a497,
+    type: 3}
+  SuperRegenAura: {fileID: 6884554792350047658, guid: ddaa851987b90da4facd897601f61ce9,
     type: 3}
 --- !u!114 &1772391477
 MonoBehaviour:

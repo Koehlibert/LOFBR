@@ -19,7 +19,11 @@ public class Stomp : DamagingAbility
         {
             reloader = HUD.Instance.GetReload(HUD.Instance.AltReloader);
         }
+    }
+    protected override void AdditionalInit()
+    {
         IsShocking = false;
+        soundType = AbilitySoundType.Stomp;
     }
     private IEnumerator Reload()
     {
@@ -31,14 +35,11 @@ public class Stomp : DamagingAbility
     {
         StartCoroutine("Shootanim");
         StartCoroutine("Reload");
-        if (IsInteractive)
+        base.AbilityAction();
+        if (!IsInteractive)
         {
-            reloader.shoot();
-            reloader.shoot();
-            OwnerManaSys.useMana(manaCost);
-        }
-        else
             Handler.movementAI.OnTargetReached -= AbilityAction;
+        }           
     }
     protected override bool InputPressed()
     {
@@ -59,7 +60,7 @@ public class Stomp : DamagingAbility
         wave.GetComponent<Damage>().SetProperties(GetDamageValues());
         Handler.ReenableOtherAbilities();
         IsShocking = false;
-        //soundsource.Play();
+        PlaySound();
     }
     protected override AbilityInfo GetAbilityInfo()
     {

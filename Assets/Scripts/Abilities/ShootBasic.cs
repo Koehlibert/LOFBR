@@ -4,9 +4,7 @@ using UnityEngine;
 
 public abstract class ShootBasic : DamagingAbility
 {
-    [SerializeField] GameObject bullet;
     protected Vector3 offset = new Vector3(0, -0.5f, 1.5f);
-    [SerializeField] AudioSource soundsource;
     protected GameObject bulletinstance;
     protected Coroutine reloadCoroutine;
     protected float AttackDistance = 10f;
@@ -64,7 +62,6 @@ public abstract class ShootBasic : DamagingAbility
     {
         Handler.Owner.animator.SetTrigger("Shoot");
         yield return new WaitForSeconds(0.15f);
-        soundsource?.Play();
         if (bulletinstance == null)
         {
             yield break;
@@ -75,11 +72,8 @@ public abstract class ShootBasic : DamagingAbility
     {
         StartCoroutine(Shootanim());
         reloadCoroutine = StartCoroutine(Reload());
-        if (IsInteractive)
-        {
-            reloader.shoot();
-        }
         base.AbilityAction();
+        PlaySound();
     }
     protected override void AICheck()
     {

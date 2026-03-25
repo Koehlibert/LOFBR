@@ -38,17 +38,15 @@ public class AudioManager : MonoBehaviour
     }
     public void PlaySound(AudioClip clip, Vector3 position)
     {
-        Debug.Log("Ah");
         if (clip != null)
         {
-            Debug.Log(clip);
             GameObject obj = new("Audio");
             obj.transform.position = position;
 
             var source = obj.AddComponent<AudioSource>();
             source.clip = clip;
             source.spatialBlend = 1f;
-            source.minDistance = 20f;
+            source.minDistance = 10f;
             source.maxDistance = 50f;
             source.outputAudioMixerGroup = mixer.FindMatchingGroups("Sfx")[0];
 
@@ -66,12 +64,12 @@ public class AudioManager : MonoBehaviour
     }
     public void SetSFXVolume(float slidervalue)
     {
-        mixer.SetFloat("SfxVolume", Mathf.Log10(slidervalue) * 20);
+        mixer.SetFloat("SfxVolume", Mathf.Log10(slidervalue) * 20 - 0.01f);
         PlayerPrefs.SetFloat("SfxVolume", slidervalue);
     }
     public void SetBackgroundVolume(float slidervalue)
     {
-        mixer.SetFloat("BackgroundVolume", Mathf.Log10(slidervalue) * 20);
+        mixer.SetFloat("BackgroundVolume", Mathf.Log10(slidervalue) * 20 - 0.01f);
         PlayerPrefs.SetFloat("BackgroundVolume", slidervalue);
     }
 }

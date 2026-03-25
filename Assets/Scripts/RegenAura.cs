@@ -2,55 +2,64 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RegenAura : MonoBehaviour
+public class RegenAura : CollisionHandler
 {
-    private CapsuleCollider aura;
-    private List<GameObject> objectList;
-    private PlayerController player;
-    private float buff;
-    void Start()
+    private List<DamageableEntity> RegeningObjectList;
+    public override void Init(DamageableEntity owner)
     {
-        Destroy(this.gameObject,8f);
-        aura = GetComponent<CapsuleCollider>();
-        objectList = new List<GameObject>();
-        player = FindAnyObjectByType<PlayerController>();
-        buff = player.Levelsys.GetLevel()*3 + 10;
-        player.GetHealth().ActivateSuperRegen(buff);
+        base.Init(owner);
+        Destroy(this.gameObject,6f);
+        RegeningObjectList = new List<DamageableEntity>();
+        owner.GetHealth().ActivateSuperRegen(GetBuffValue());
     }
     void Update()
     {
-        if(player.isActiveAndEnabled)
+        this.transform.SetPositionAndRotation(Owner.transform.position + new Vector3(0f,2f,0f), Owner.transform.rotation);
+    }
+    protected override void HandleEnduringDamage(Collider collider)
+    {
+    }
+    protected override void HandleDamageCollision(Collider collider)
+    {
+        DamageableEntity damageableEntity = collider.gameObject.GetComponent<DamageableEntity>();
+        if (damageableEntity != null && damageableEntity.Team == Owner.Team)
         {
-            transform.position = player.transform.position;
-        }
-        else
-        {
-            Destroy(this.gameObject);
+            ActivateSuperRegen(damageableEntity);
         }
     }
-    void OnTriggerEnter(Collider other)
+    private void ActivateSuperRegen(DamageableEntity damageableEntity)
     {
-        if (other.gameObject.CompareTag("Friendly")&&(!other.GetComponent<TowerBehaviourFriendly>()))
-        {
-            objectList.Add(other.gameObject);
-            other.gameObject.GetComponent<Health>().ActivateSuperRegen(buff);
-        }
+        damageableEntity.GetComponent<Health>().ActivateSuperRegen(GetBuffValue());
+        RegeningObjectList.Add(damageableEntity);
     }
-    void OnTriggerExit(Collider other)
+    private void DeactivateSuperRegen(DamageableEntity damageableEntity)
     {
-       if (objectList.Contains(other.gameObject)&&(!other.GetComponent<TowerBehaviourFriendly>()))
-       {
-            other.gameObject.GetComponent<Health>().DeactivateSuperRegen();
-            objectList.Remove(other.gameObject);
-       } 
+        damageableEntity.GetComponent<Health>().DeactivateSuperRegen();
+        RegeningObjectList.Remove(damageableEntity);
+    }
+    void OnTriggerExit(Collider collider)
+    {
+        var item = RegeningObjectList.Find(x => x = collider.gameObject.GetComponent<DamageableEntity>());
+        if (item != null)
+        {   
+            DeactivateSuperRegen(item.GetComponent<DamageableEntity>());
+        }
     }
     void OnDestroy()
     {
-        objectList.RemoveAll(item => item == null);
-        foreach (GameObject minion in objectList)
+        RegeningObjectList.RemoveAll(item => item == null);
+        foreach (DamageableEntity character in RegeningObjectList)
         {
-            minion.gameObject.GetComponent<Health>().DeactivateSuperRegen();
+            character.GetComponent<Health>().DeactivateSuperRegen();
         }
-        player.GetHealth().DeactivateSuperRegen();
+        Owner.GetHealth().DeactivateSuperRegen();
+    }
+    public float GetBuffValue()
+    {
+        if (Owner is MainPlayerBehaviour mainPlayerBehaviour)
+        {
+            return mainPlayerBehaviour.Levelsys.GetLevel()*3 + 10;
+        }
+        else return 10;
     }
 }

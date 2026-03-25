@@ -84,8 +84,12 @@ public abstract class Ability : MonoBehaviour
     {
         if (IsInteractive)
         {
+            reloader.shoot();
             OwnerManaSys.useMana(manaCost);
         }
+    }
+    protected void PlaySound()
+    {
         if (soundType != AbilitySoundType.None)
         {
             AudioClip clip = AudioManager.Instance.GetClip(soundType);

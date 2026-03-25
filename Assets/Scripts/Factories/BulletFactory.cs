@@ -14,6 +14,7 @@ public class BulletFactory : MonoBehaviour
     [SerializeField] GameObject ManaDrainer;
     [SerializeField] GameObject BulletDetector;
     [SerializeField] GameObject ArmorAura;
+    [SerializeField] GameObject SuperRegenAura;
     private void Awake()
     {
         Instance = this;
@@ -103,5 +104,11 @@ public class BulletFactory : MonoBehaviour
         GameObject armorAura = Instantiate(ArmorAura);
         armorAura.AddComponent<ArmorAura>().Init(owner);
         return armorAura;
+    }
+    public GameObject CreateSuperRegenAura(DamageableEntity owner)
+    {
+        GameObject superRegenAura = Instantiate(SuperRegenAura);
+        superRegenAura.AddComponent<RegenAura>().Init(owner);
+        return superRegenAura;
     }
 }

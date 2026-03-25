@@ -74,6 +74,6 @@ public class UltAttack : ShootBasic
     }
     protected override AbilityInfo GetAbilityInfo()
     {
-        return new AbilityInfo(15f, 250, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills});
+        return new AbilityInfo(15f, 60, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills});
     }
 }

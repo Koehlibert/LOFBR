@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class ArmorAura : MonoBehaviour
 {
-    private CapsuleCollider aura;
     private DamageableEntity Owner;
     public void Init(DamageableEntity owner)
     {
-        aura = GetComponent<CapsuleCollider>();
         Owner = owner;
         ArmorAuraCollisionHandler armorAuraCollisionHandler = gameObject.AddComponent<ArmorAuraCollisionHandler>();
         armorAuraCollisionHandler.Init(owner);
