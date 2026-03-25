@@ -75,6 +75,8 @@ public class AIHandler : MonoBehaviour
     }
     private void Update()
     {
+        if (PauseGame.Instance.isPaused)
+            return;
         if (IsAILocked)
         {
             LockAITimer -= Time.deltaTime;

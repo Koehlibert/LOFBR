@@ -123,7 +123,7 @@ public class MasterScript : MonoBehaviour
     void Update()
     {
         timeCounter++;
-        if ((gameOver) && (!continueBool))
+        if (gameOver && (!continueBool))
         {
             GameOverMenu.SetActive(true);
             GameOverContinue.SetActive(true);
@@ -170,7 +170,6 @@ public class MasterScript : MonoBehaviour
         {
             player.transform.position = respawnpointPlayer.transform.position;
             player.gameObject.SetActive(true);
-            //player.flashcolor = new Color(1f, 0f, 0f, 0.1f);
         }
     }
     public IEnumerator EnemyRespawnCoroutine()
