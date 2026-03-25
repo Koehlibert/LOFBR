@@ -75,8 +75,7 @@ public class UltBladeFlurry : DamagingAbility
         {
             StartCoroutine("reload");
             StartCoroutine("Flurry");
-            reloader.shoot();
-            OwnerManaSys.useMana(manaCost);
+            base.AbilityAction();
         }
     }
     protected override bool InputPressed()

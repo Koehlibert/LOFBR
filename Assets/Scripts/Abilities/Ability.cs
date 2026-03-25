@@ -85,8 +85,23 @@ public abstract class Ability : MonoBehaviour
         if (IsInteractive)
         {
             reloader.shoot();
+        }
+        if (OwnerManaSys != null)
+        {
             OwnerManaSys.useMana(manaCost);
         }
+    }
+    protected bool CheckManaCost(float manaCostToCheck)
+    {
+        if (OwnerManaSys != null)
+        {
+            return OwnerManaSys.checkCost(manaCostToCheck);
+        }
+        else return true;
+    }
+    protected bool CheckManaCost()
+    {
+        return CheckManaCost(manaCost);
     }
     protected void PlaySound()
     {

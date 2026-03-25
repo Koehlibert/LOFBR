@@ -43,7 +43,6 @@ public class ManaDrain : DamagingAbility
             ManaDrainer = BulletFactory.Instance.CreateManaDrainer(Handler.Owner);
             StartCoroutine("reload");
             StartCoroutine("duration");
-            reloader.shoot();
         }
     }
     protected override bool InputPressed()

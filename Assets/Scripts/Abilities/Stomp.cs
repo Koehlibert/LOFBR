@@ -81,7 +81,7 @@ public class Stomp : DamagingAbility
         }
         else
         {
-            if (loaded)
+            if (loaded && CheckManaCost())
             {
                 List<GameObject> closest3Enemies = Handler.ClosestFinder.FindNClosest(3, true);
                 (bool ShouldShock, Vector3 ShockPoint) = ExistsPointWithinRadius(closest3Enemies, ShockRadiusToCheck);
@@ -91,8 +91,6 @@ public class Stomp : DamagingAbility
                     inDistanceTracker = Handler.ClosestFinder.StartTrackingDist(ShockRadiusToCheck, true);
                     Handler.movementAI.MovementState = AIUtils.MovementState.IsGoingToPlace;
                     Handler.movementAI.SetMovementTarget(ShockPoint);
-                    /* DrawDebugCircle(ShockPoint, ShockRadiusToCheck);
-                    PauseGame.Instance.Stop();*/
                     Handler.DisableOtherAbilities(this);
                     Handler.movementAI.OnTargetReached += AbilityAction;
                 }

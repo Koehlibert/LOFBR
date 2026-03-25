@@ -21,8 +21,7 @@ public class Dash : Ability
             StartCoroutine(Handler.movementAI.LockMovement(0.2f));
             Handler.Owner.transform.position = moveDir;
             StartCoroutine("reload");
-            reloader.shoot();
-            OwnerManaSys.useMana(manaCost);
+            base.AbilityAction();
         }
     }
     protected override void OnEnable()

@@ -28,8 +28,7 @@ public class UltRez : Ability
         {
             StartCoroutine("reload");
             Rez(locations);
-            reloader.shoot();
-            OwnerManaSys.useMana(manaCost);
+            base.AbilityAction();
         }
     }
     protected override bool InputPressed()

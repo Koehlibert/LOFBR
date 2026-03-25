@@ -29,7 +29,6 @@ public class Parry : Ability
         base.AbilityAction();
         ParryCollider = BulletFactory.Instance.CreateParryCollider(Handler.Owner);
         StartCoroutine("autoDisable");
-        reloader.shoot();
         StartCoroutine("reload");
     }
     protected override bool InputPressed()

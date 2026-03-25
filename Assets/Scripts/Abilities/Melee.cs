@@ -61,13 +61,12 @@ public class Melee : DamagingAbility
     protected override void AbilityAction()
     {
         base.AbilityAction();
+        MeleeCollider = BulletFactory.Instance.CreateMeleeCollider(Handler.Owner);
+        MeleeCollider.GetComponent<Damage>().SetProperties(GetDamageValues());
         Shootanim();
-        reloader.shoot();
         StartCoroutine("reload");
         dir = Handler.Owner.transform.forward;
         attacking = true;
-        MeleeCollider = BulletFactory.Instance.CreateMeleeCollider(Handler.Owner);
-        MeleeCollider.GetComponent<Damage>().SetProperties(GetDamageValues());
     }
     protected override bool InputPressed()
     {

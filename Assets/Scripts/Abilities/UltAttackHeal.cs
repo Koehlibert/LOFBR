@@ -21,10 +21,9 @@ public class UltAttackHeal : Ability
     }
     protected override void AbilityAction()
     {
-        GameObject ultInstance = BulletFactory.Instance.CreateSuperRegenAura(Handler.Owner);
+        BulletFactory.Instance.CreateSuperRegenAura(Handler.Owner);
         StartCoroutine("reload");
-        reloader.shoot();
-        OwnerManaSys.useMana(manaCost);
+        base.AbilityAction();
     }
     protected override bool InputPressed()
     {

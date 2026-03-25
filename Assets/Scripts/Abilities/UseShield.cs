@@ -48,11 +48,7 @@ public class UseShield : Ability
         ShieldInstance = BulletFactory.Instance.CreateShield(Handler.Owner);
         StartCoroutine("reload");
         StartCoroutine("DestroyShield");
-        if (IsInteractive)
-        {
-            reloader.shoot();
-        }
-        OwnerManaSys.useMana(manaCost);
+        base.AbilityAction();
     }
     protected override bool InputPressed()
     {
