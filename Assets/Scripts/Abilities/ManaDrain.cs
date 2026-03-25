@@ -9,6 +9,7 @@ public class ManaDrain : DamagingAbility
     private float DurationTime = 2.5f;
     private Vector3 offset = new Vector3(0, 2, 0);
     private GameObject ManaDrainer;
+    private float rangeToStartDraining = 22.5f;
     protected override void AdditionalInit()
     {
         enemy = MasterScript.Instance.GetOpponentPlayer(Handler.Owner.Team);
@@ -44,6 +45,11 @@ public class ManaDrain : DamagingAbility
             StartCoroutine("Reload");
             StartCoroutine("duration");
         }
+    }
+    protected override void AICheck()
+    {
+        if (loaded && CombatUtils.InRange(MasterScript.Instance.GetOpponentPlayer(Handler.Owner.Team).gameObject, Handler.Owner.gameObject, rangeToStartDraining))
+            Handler.FinalAction = AbilityAction;
     }
     protected override bool InputPressed()
     {

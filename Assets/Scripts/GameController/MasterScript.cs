@@ -88,6 +88,7 @@ public class MasterScript : MonoBehaviour
     public float timeCounter;
     private bool continueBool;
     private List<Tombstone> rezPoolFriendly;
+    private List<Tombstone> rezPoolEnemy;
     public float upperAreaLimitX = 18;
     public float lowerAreaLimitX = -18;
     private void Awake()
@@ -111,6 +112,7 @@ public class MasterScript : MonoBehaviour
         allEnemies = new List<GameObject>();
         allFriendlies = new List<GameObject>();
         rezPoolFriendly = new List<Tombstone>();
+        rezPoolEnemy = new List<Tombstone>();
         friendlyBase.AddComponent<FriendlyBase>().Init();
         enemyBase.AddComponent<EnemyBase>().Init();
         player.Init();
@@ -216,12 +218,16 @@ public class MasterScript : MonoBehaviour
     {
         if (Mob.Team == CombatUtils.Team.Enemy)
         {
+            rezPoolEnemy.Add(new Tombstone(Mob.transform.position));
+            if (rezPoolEnemy.Count > 10)
+            {
+                rezPoolEnemy.RemoveAt(0);
+            }
             allEnemiesTowers.Remove(Mob.gameObject);
             allEnemies.Remove(Mob.gameObject);
         }
         else
         {
-            //TOFIX:: ADD FOR ENEMY
             rezPoolFriendly.Add(new Tombstone(Mob.transform.position));
             if (rezPoolFriendly.Count > 10)
             {
@@ -231,25 +237,30 @@ public class MasterScript : MonoBehaviour
             allFriendlies.Remove(Mob.gameObject);
         }
     }
-    public MainPlayerBehaviour GetOpponentPlayer(CombatUtils.Team Team)
+    public MainPlayerBehaviour GetOpponentPlayer(CombatUtils.Team team)
     {
-        return Team == CombatUtils.Team.Player ? enemyPlayer : player;
+        return GetPlayer(CombatUtils.GetOpposingTeam(team));
+    }
+    public MainPlayerBehaviour GetPlayer(CombatUtils.Team team)
+    {
+        return team == CombatUtils.Team.Player ? player : enemyPlayer;
     }
     public float GetOpponentSpawnZ(CombatUtils.Team Team)
     {
         return Team == CombatUtils.Team.Player ? respawnpointEnemyPlayer.transform.position.z : respawnpointPlayer.transform.position.z;
     }
-    public List<Vector3> GetRezPositions(int count)
+    public List<Vector3> GetRezPositions(int count, CombatUtils.Team team)
     {
-        if (rezPoolFriendly.Count == 0)
+        List<Tombstone> rezPool = team == CombatUtils.Team.Player ? rezPoolFriendly : rezPoolEnemy;
+        if (rezPool.Count == 0)
         {
             return new List<Vector3>();
         }
         else
         {
-            count = Mathf.Min(count, rezPoolFriendly.Count);
+            count = Mathf.Min(count, rezPool.Count);
             List<Tombstone> tempList = new List<Tombstone>();
-            foreach (Tombstone tomb in rezPoolFriendly)
+            foreach (Tombstone tomb in rezPool)
             {
                 tempList.Add(tomb.Clone());
             }
@@ -262,10 +273,14 @@ public class MasterScript : MonoBehaviour
             for (int i = 0; i < count; i++)
             {
                 posList.Add(tempList[i].GetPos());
-                rezPoolFriendly.Remove(tempList[i]);
+                rezPool.Remove(tempList[i]);
             }
             return posList;
         }
+    }
+    public int GetRezPoolCount(CombatUtils.Team team)
+    {
+        return (team == CombatUtils.Team.Player ? rezPoolFriendly : rezPoolEnemy).Count;
     }
     static int SortByDistanceTomb(Tombstone t1, Tombstone t2)
     {

@@ -28,6 +28,8 @@ public class AIHandler : MonoBehaviour
     public float distanceToClosest;
     public bool IsInteractive;
     protected List<Ability> DisabledAbilities;
+    internal GameObject closestHurtFriendly;
+
     public virtual void Init(DamageableEntity owner, List<Ability> abilities, List<AIModule> aIModules, float movementSpeed, bool caresAboutHealth = false)
     {
         Owner = owner;

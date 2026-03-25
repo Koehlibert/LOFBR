@@ -11,25 +11,25 @@ public class ClosestFinder
     private GameObject selfObject;
     private List<GameObject> AllObjects;
     private List<GameObject> AllObjectsNoTowers;
+    private List<GameObject> AllFriendlyObjectsNoTowers;
     private int LastFrameComputed = -1;
     private int LastFrameComputedNoTower = -1;
     private GameObject CachedClosest;
     private GameObject CachedClosestNoTower;
     private List<InDistanceTracker> inDistanceTrackers;
-    private MainPlayerBehaviour GetPlayer(CombatUtils.Team team)
-    {
-        return team == CombatUtils.Team.Enemy ? MasterScript.Instance.enemyPlayer : MasterScript.Instance.player;
-    }
+    private CombatUtils.Team OwnerTeam;
     public ClosestFinder(CombatUtils.Team team, GameObject selfObject)
         : this(team, CombatUtils.GetOpposingTeam(team), selfObject)
     {
     }
     public ClosestFinder(CombatUtils.Team team, CombatUtils.Team targetTeam, GameObject selfObject)
     {
+        this.OwnerTeam = team;
         this.selfObject = selfObject;
-        this.player = GetPlayer(targetTeam);
+        this.player = MasterScript.Instance.GetPlayer(targetTeam);
         inDistanceTrackers = new List<InDistanceTracker>();
         AllObjects = targetTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemiesTowers : MasterScript.Instance.allFriendliesTowers;
+        AllFriendlyObjectsNoTowers = targetTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allFriendlies : MasterScript.Instance.allEnemies;
         AllObjectsNoTowers = targetTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemies : MasterScript.Instance.allFriendlies;
     }
     public GameObject FindClosest(bool withPlayer = true, bool onlyHurt = false)
@@ -49,6 +49,10 @@ public class ClosestFinder
             LastFrameComputedNoTower = Time.frameCount;
         }
         return CachedClosestNoTower;
+    }
+    public GameObject FindClosestHurtFriendlies()
+    {
+        return FindClosest(AllFriendlyObjectsNoTowers, false, true);
     }
     public List<GameObject> FindNClosest(int n, bool withPlayer)
     {
@@ -80,7 +84,10 @@ public class ClosestFinder
             float distanceToEnemy = Vector3.Distance(currenemy.transform.position, selfObject.transform.position);
             foreach (InDistanceTracker inDistanceTracker in inDistanceTrackers)
             {
-                inDistanceTracker.CheckInDistance(distanceToEnemy, false);
+                if (currenemy.GetComponent<DamageableEntity>().Team == inDistanceTracker.team)
+                {
+                    inDistanceTracker.CheckInDistance(distanceToEnemy, false);
+                }
             }
             if (distanceToEnemy < closestDistance)
             {
@@ -111,7 +118,13 @@ public class ClosestFinder
     }
     public InDistanceTracker StartTrackingDist(float distToCheck, bool withPlayer)
     {
-        InDistanceTracker inDistanceTracker = new InDistanceTracker(distToCheck, withPlayer, this);
+        InDistanceTracker inDistanceTracker = new InDistanceTracker(distToCheck, withPlayer, OwnerTeam);
+        inDistanceTrackers.Add(inDistanceTracker);
+        return inDistanceTracker;
+    }
+    public InDistanceTracker StartTrackingDist(float distToCheck, bool withPlayer, CombatUtils.Team team)
+    {
+        InDistanceTracker inDistanceTracker = new InDistanceTracker(distToCheck, withPlayer, team);
         inDistanceTrackers.Add(inDistanceTracker);
         return inDistanceTracker;
     }
@@ -124,12 +137,12 @@ public class InDistanceTracker
 {
     private float DistToCheck { get; }
     private int EnemiesInDistance { get; set; }
-    private ClosestFinder ClosestFinder;
     private bool withPlayer;
-    public InDistanceTracker(float distToCheck, bool withPlayer, ClosestFinder closestFinder)
+    public CombatUtils.Team team;
+    public InDistanceTracker(float distToCheck, bool withPlayer, CombatUtils.Team teamToCount)
     {
         this.DistToCheck = distToCheck;
-        ClosestFinder = closestFinder;
+        team = teamToCount;
         EnemiesInDistance = 0;
     }
     public void ResetCounter()

@@ -20,7 +20,6 @@ public abstract class MobBehaviour : DamageableEntity
     private float animSpeed;
     [SerializeField] Image healthbar;
     [SerializeField] Image healthbarbg;
-    protected HumanBodyBones Bone;
     public override void Init()
     {
         base.Init();
@@ -29,7 +28,6 @@ public abstract class MobBehaviour : DamageableEntity
         enemybase = MasterScript.Instance.GetOpponentBase(EnemyTeam);
         closestFinder = new ClosestFinder(Team, this.gameObject);
         hpsys.Initialize(100, 0, 0, 0);
-        Bone = HumanBodyBones.RightLowerLeg;
         healthbar.gameObject.SetActive(false);
         healthbarbg.gameObject.SetActive(false);
         MasterScript.Instance.AddMob(this);
@@ -53,7 +51,7 @@ public abstract class MobBehaviour : DamageableEntity
         if (!hpsys.FullHP())
         {
             hpsys.Heal(damageComponent);
-            player.Levelsys.GainExp(5);
+            MasterScript.Instance.GetPlayer(Team).Levelsys.GainExp(5);
             Destroy(bulletObject);
         }
     }

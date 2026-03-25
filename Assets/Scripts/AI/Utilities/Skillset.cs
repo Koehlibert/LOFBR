@@ -108,7 +108,7 @@ public class SkillsetMelee : Skillset
     {
         Handler = handler;
         startingLife = 400;
-        startingRegen = 12;
+        startingRegen = 20;
         regenDelay = 1.5f;
         startingArmor = 35;
         startingSpeed = 17.5f;

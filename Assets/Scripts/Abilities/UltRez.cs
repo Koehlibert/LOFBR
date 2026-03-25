@@ -5,6 +5,7 @@ using UnityEngine;
 public class UltRez : Ability
 {
     private Quaternion spawndirection = new Quaternion(0, 0, 0, 0);
+    private int TombsToTrigger = 4;
     protected override AbilityInfo GetAbilityInfo()
     {
         return new AbilityInfo(200, 20, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills, AIUtils.AIState.CheckGeneralSkills });
@@ -23,7 +24,7 @@ public class UltRez : Ability
     }
     protected override void AbilityAction()
     {
-        List<Vector3> locations = MasterScript.Instance.GetRezPositions(OwnerLevelSys.GetLevel() - 2);
+        List<Vector3> locations = MasterScript.Instance.GetRezPositions(OwnerLevelSys.GetLevel() - 2, Handler.Owner.Team);
         if (locations.Count > 0)
         {
             StartCoroutine("Reload");
@@ -34,5 +35,10 @@ public class UltRez : Ability
     protected override bool InputPressed()
     {
         return PlayerInputRouter.Instance.UltPressed;
+    }
+    protected override void AICheck()
+    {
+        if (loaded && MasterScript.Instance.GetRezPoolCount(Handler.Owner.Team) >= TombsToTrigger)
+            Handler.FinalAction = AbilityAction;
     }
 }

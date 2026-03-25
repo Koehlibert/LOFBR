@@ -15,6 +15,12 @@ public class ShootPoison : ShootBasic
         base.OnEnable();
         reloader = HUD.Instance.GetReload(HUD.Instance.PrimaryReloader);
     }
+    protected override void AdditionalInit()
+    {
+        if (Handler.Owner is MainPlayerBehaviour)
+            AttackDistance = 25f;
+        soundType = AbilitySoundType.Shoot;
+    }
     protected override DamageInfo GetDamageValues()
     {
         return new DamageInfo(16 + 4 * OwnerLevelSys.GetLevel(), 4f + 4f + 1.5f * OwnerLevelSys.GetLevel(), Handler.Owner.Team, true, false);

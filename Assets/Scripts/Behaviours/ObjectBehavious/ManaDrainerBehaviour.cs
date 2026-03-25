@@ -21,7 +21,7 @@ public class ManaDrainerBehaviour : MonoBehaviour
     void Update()
     {
         float distance = Vector3.Distance(Owner.transform.position, Enemy.transform.position);
-            if (distance >= 20 || !Enemy.isActiveAndEnabled)
+            if (distance >= 25 || !Enemy.isActiveAndEnabled)
             {
                 Disable();
             }

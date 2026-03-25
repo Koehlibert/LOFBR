@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class UseArmorAura : Ability
 {
+    protected override void AdditionalInit()
+    {
+        BulletFactory.Instance.CreateArmorAura(Handler.Owner);
+    }
     protected override AbilityInfo GetAbilityInfo()
     {
         return new AbilityInfo(20, 2, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills });
@@ -23,5 +27,8 @@ public class UseArmorAura : Ability
     protected override bool InputPressed()
     {
         return false;
+    }
+    protected override void AICheck()
+    {
     }
 }

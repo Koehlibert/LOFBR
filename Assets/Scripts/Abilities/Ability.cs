@@ -77,6 +77,7 @@ public abstract class Ability : MonoBehaviour
     }
     protected virtual void AICheck()
     {
+        Debug.Log(this);
         throw new NotImplementedException();
     }
     protected abstract bool InputPressed();
