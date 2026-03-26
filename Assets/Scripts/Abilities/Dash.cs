@@ -6,6 +6,7 @@ public class Dash : Ability
 {
     public GameObject shield;
     private float dashDistance = 10;
+    private bool IsSubscribed = false;
     protected override AbilityInfo GetAbilityInfo()
     {
         return new AbilityInfo(15, 2.5f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills, AIUtils.AIState.CheckGeneralSkills });
@@ -23,6 +24,11 @@ public class Dash : Ability
             StartCoroutine("Reload");
             base.AbilityAction();
         }
+        if (!IsInteractive)
+        {
+            Handler.movementAI.OnTargetReached -= AbilityAction;
+            IsSubscribed = false;
+        }
     }
     protected override void OnEnable()
     {
@@ -35,5 +41,13 @@ public class Dash : Ability
     protected override bool InputPressed()
     {
         return PlayerInputRouter.Instance.AlternativePressed;
+    }
+    protected override void AICheck()
+    {
+        if (loaded && !IsSubscribed)
+        {
+            IsSubscribed = true;
+            Handler.movementAI.CouldDash += AbilityAction;
+        }
     }
 }

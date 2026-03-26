@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -16,8 +17,10 @@ public class ClosestFinder
     private int LastFrameComputedNoTower = -1;
     private GameObject CachedClosest;
     private GameObject CachedClosestNoTower;
+    private GameObject CachedFurthestNoTower;
     private List<InDistanceTracker> inDistanceTrackers;
     private CombatUtils.Team OwnerTeam;
+    private float TeamDirectionMultiplier = 1;
     public ClosestFinder(CombatUtils.Team team, GameObject selfObject)
         : this(team, CombatUtils.GetOpposingTeam(team), selfObject)
     {
@@ -31,6 +34,8 @@ public class ClosestFinder
         AllObjects = targetTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemiesTowers : MasterScript.Instance.allFriendliesTowers;
         AllFriendlyObjectsNoTowers = targetTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allFriendlies : MasterScript.Instance.allEnemies;
         AllObjectsNoTowers = targetTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemies : MasterScript.Instance.allFriendlies;
+        if (team == CombatUtils.Team.Enemy)
+            TeamDirectionMultiplier *= -1;
     }
     public GameObject FindClosest(bool withPlayer = true, bool onlyHurt = false)
     {
@@ -50,6 +55,15 @@ public class ClosestFinder
         }
         return CachedClosestNoTower;
     }
+    public GameObject GetFurthestNoTower()
+    {
+        if (LastFrameComputedNoTower != Time.frameCount)
+        {
+            FindClosest(AllObjectsNoTowers, false);
+            LastFrameComputedNoTower = Time.frameCount;
+        }
+        return CachedFurthestNoTower;
+    }
     public GameObject FindClosestHurtFriendlies()
     {
         return FindClosest(AllFriendlyObjectsNoTowers, false, true);
@@ -66,6 +80,7 @@ public class ClosestFinder
         }
         GameObject closestEnemy = null;
         float closestDistance = Mathf.Infinity;
+        float furthestZ = -1 * Mathf.Infinity * TeamDirectionMultiplier;
         if (withPlayer && player.isActiveAndEnabled)
         {
             closestEnemy = player.gameObject;
@@ -74,12 +89,19 @@ public class ClosestFinder
             {
                 inDistanceTracker.CheckInDistance(closestDistance, true);
             }
+            CachedFurthestNoTower = closestEnemy;
+            furthestZ = closestEnemy.transform.position.z;
         }
         foreach (GameObject currenemy in allEnemies)
         {
-            if (!currenemy || (onlyHurt && currenemy.GetComponent<Health>().FullHP()))
+            if (currenemy == null || (onlyHurt && currenemy.GetComponent<Health>().FullHP()))
             {
                 continue;
+            }
+            if (currenemy.transform.position.z * TeamDirectionMultiplier < furthestZ && !(currenemy.gameObject.GetComponent<DamageableEntity>() is TowerBehaviour))
+            {
+                CachedFurthestNoTower = currenemy;
+                furthestZ = currenemy.transform.position.z;
             }
             float distanceToEnemy = Vector3.Distance(currenemy.transform.position, selfObject.transform.position);
             foreach (InDistanceTracker inDistanceTracker in inDistanceTrackers)

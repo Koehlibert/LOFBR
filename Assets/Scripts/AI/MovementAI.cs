@@ -24,6 +24,10 @@ public class MovementAI : Ability
     private float CircleRadius = 7.5f;
     private float CircleSpeed = 2f;
     private float Angle = 0;
+    private bool IsDefensive;
+    private float DefensiveDistance = 8;
+    private float DistanceToDash = 8;
+    public event Action CouldDash;
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -49,6 +53,7 @@ public class MovementAI : Ability
     }
     public override void Checker()
     {
+        IsDefensive = false;
         if (MoveLock)
             return;
         if (LastMovementState != MovementState)
@@ -62,10 +67,7 @@ public class MovementAI : Ability
         }
         if (IsInteractive)
         {
-            if (!MoveLock)
-            {
-                Handler.MovementDirection = new Vector3(-PlayerInputRouter.Instance.Move.y, 0, PlayerInputRouter.Instance.Move.x).normalized;
-            }
+            Handler.MovementDirection = new Vector3(-PlayerInputRouter.Instance.Move.y, 0, PlayerInputRouter.Instance.Move.x).normalized;
             Vector2 mouseScreenPosition = PlayerInputRouter.Instance.Look;
             Plane playerPlane = new Plane(Vector3.up, transform.position);
             Ray ray = Camera.main.ScreenPointToRay(mouseScreenPosition);
@@ -75,40 +77,46 @@ public class MovementAI : Ability
             }
             return;
         }
-        else if (CaresAboutHealth)
+        else
         {
-            if (Handler.HealthState == AIUtils.HealthState.Hurt)
+            if (CaresAboutHealth)
             {
-                MovementState = AIUtils.MovementState.IsRetreating;
+                if (Handler.HealthState == AIUtils.HealthState.Hurt)
+                {
+                    MovementState = AIUtils.MovementState.IsRetreating;
+                }
+                if (Handler.HealthState == AIUtils.HealthState.PartiallyDamaged)
+                {
+                    IsDefensive = true;
+                }
             }
-        }
-        if (MovementState == AIUtils.MovementState.IsRetreating)
-        {
-            Handler.MovementDirection = GetDirection(new Vector3(0, 0, MasterScript.Instance.GetOpponentSpawnZ(CombatUtils.GetOpposingTeam(Handler.Owner.Team))));
-            Handler.SetAIState(AIUtils.AIState.Retreating);
-            Handler.ReenableOtherAbilities();
-        }
-        if (MovementState == AIUtils.MovementState.IsCircling)
-        {
-            Handler.MovementDirection = GetDirection(GetCircularTarget(Handler.closestEnemyNoTower));
-            //Debug.Log(Handler.MovementDirection);
-        }
-        if (MovementState == AIUtils.MovementState.IsStanding)
-        {
-            Handler.MovementDirection = new Vector3(0, 0, 0);
-        }
-        if (MovementState == AIUtils.MovementState.IsMovingForward)
-        {
-            Handler.MovementDirection = standarddirection;
-            Handler.LookDirection = Handler.Owner.transform.position + standarddirection; ;
-        }
-        if (MovementState == AIUtils.MovementState.IsFollowingTarget)
-        {
-            Handler.MovementDirection = GetDirection(Handler.closestEnemy.transform.position);
-        }
-        if (MovementState == AIUtils.MovementState.IsGoingToPlace)
-        {
-            Handler.MovementDirection = GetDirection(MovementTarget);
+            if (MovementState == AIUtils.MovementState.IsRetreating)
+            {
+                Handler.MovementDirection = GetDirection(new Vector3(0, 0, MasterScript.Instance.GetOpponentSpawnZ(CombatUtils.GetOpposingTeam(Handler.Owner.Team))));
+                Handler.SetAIState(AIUtils.AIState.Retreating);
+                Handler.ReenableOtherAbilities();
+            }
+            if (MovementState == AIUtils.MovementState.IsCircling)
+            {
+                Handler.MovementDirection = GetDirection(GetCircularTarget(Handler.closestEnemyNoTower));
+            }
+            if (MovementState == AIUtils.MovementState.IsStanding)
+            {
+                Handler.MovementDirection = new Vector3(0, 0, 0);
+            }
+            if (MovementState == AIUtils.MovementState.IsMovingForward)
+            {
+                Handler.MovementDirection = standarddirection;
+                Handler.LookDirection = Handler.Owner.transform.position + standarddirection; ;
+            }
+            if (MovementState == AIUtils.MovementState.IsFollowingTarget)
+            {
+                Handler.MovementDirection = GetDirection(Handler.closestEnemy.transform.position);
+            }
+            if (MovementState == AIUtils.MovementState.IsGoingToPlace)
+            {
+                Handler.MovementDirection = GetDirection(MovementTarget);
+            }
         }
     }
     public void SetMovementTarget(Vector3 movementTarget)
@@ -122,7 +130,15 @@ public class MovementAI : Ability
     public Vector3 GetDirection(Vector3 target)
     {
         Vector3 direction = MasterScript.Instance.CorrectTarget(target) - Handler.Owner.transform.position;
+        if (IsDefensive)
+        {
+            direction.z = GetDefensiveZ(direction.z);
+        }
         direction.y = 0;
+        if (direction.magnitude > DistanceToDash)
+        {
+            CouldDash?.Invoke();
+        }
         if (direction.magnitude > 1)
             direction = direction.normalized;
         return direction;
@@ -133,6 +149,16 @@ public class MovementAI : Ability
         float x = Mathf.Cos(Angle) * CircleRadius;
         float z = Mathf.Sin(Angle) * CircleRadius;
         return objectToCircle.transform.position + new Vector3(x, 0f, z);
+    }
+    private float GetDefensiveZ(float z)
+    {
+        GameObject furthestEnemy = Handler.ClosestFinder.GetFurthestNoTower();
+        if (furthestEnemy != null)
+        {
+            return furthestEnemy.transform.position.z + DefensiveDistance;
+        }
+        else
+            return z;
     }
     public void MoveCharacter(Vector3 direction, bool bypass = false, float speedup = 1)
     {
@@ -148,7 +174,7 @@ public class MovementAI : Ability
             }
             if (!bypass)
             {
-                Vector3 worldMove = new Vector3(direction.normalized.x, 0f, direction.normalized.z);
+                Vector3 worldMove = new(direction.normalized.x, 0f, direction.normalized.z);
                 worldMove = Vector3.ClampMagnitude(worldMove, 1f);
                 Vector3 localMove = transform.InverseTransformDirection(worldMove);
                 Handler.Owner.animator.SetFloat("moveX", localMove.x);
