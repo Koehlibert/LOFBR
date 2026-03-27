@@ -79,11 +79,11 @@ public abstract class TowerBehaviour : DamageableEntity
     {
         if (Team == CombatUtils.Team.Enemy)
         {
-            MasterScript.Instance.allEnemiesTowers.Remove(this.gameObject);
+            CharacterTracker.Instance.allEnemiesTowers.Remove(this.gameObject);
         }
         else
         {
-            MasterScript.Instance.allFriendliesTowers.Remove(this.gameObject);
+            CharacterTracker.Instance.allFriendliesTowers.Remove(this.gameObject);
         }
         Destroy(this.gameObject);
     }

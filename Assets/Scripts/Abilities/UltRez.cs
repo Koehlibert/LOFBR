@@ -24,7 +24,7 @@ public class UltRez : Ability
     }
     protected override void AbilityAction()
     {
-        List<Vector3> locations = MasterScript.Instance.GetRezPositions(OwnerLevelSys.GetLevel() - 2, Handler.Owner.Team);
+        List<Vector3> locations = CharacterTracker.Instance.GetRezPositions(OwnerLevelSys.GetLevel() - 2, Handler.Owner.Team);
         if (locations.Count > 0)
         {
             StartCoroutine("Reload");
@@ -38,7 +38,7 @@ public class UltRez : Ability
     }
     protected override void AICheck()
     {
-        if (loaded && MasterScript.Instance.GetRezPoolCount(Handler.Owner.Team) >= TombsToTrigger)
+        if (loaded && CharacterTracker.Instance.GetRezPoolCount(Handler.Owner.Team) >= TombsToTrigger)
             Handler.FinalAction = AbilityAction;
     }
 }

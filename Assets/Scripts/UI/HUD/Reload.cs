@@ -15,7 +15,7 @@ public class Reload : MonoBehaviour
     private PlayerController player;
     void Start()
     {
-        player = MasterScript.Instance.player;
+        player = CharacterTracker.Instance.player;
         this.ReloadParent = GetComponent<Image>(); 
         Reloadcircle.fillAmount = 0;
         reloading = false;

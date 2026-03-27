@@ -36,8 +36,4 @@ public class PlayerController : MainPlayerBehaviour
     {
         CollisionHandler.OnHitCallback += OnTakeDamage;
     }
-    public void OnHealXP()
-    {
-        Levelsys.GainExp(5);
-    }
 }

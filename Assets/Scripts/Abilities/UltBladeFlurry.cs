@@ -70,7 +70,7 @@ public class UltBladeFlurry : DamagingAbility
     }
     protected override void AbilityAction()
     {
-        flurryPos = MasterScript.Instance.GetFlurryTargets(OwnerLevelSys.GetLevel() - 1);
+        flurryPos = CharacterTracker.Instance.GetFlurryTargets(OwnerLevelSys.GetLevel() - 1);
         if (flurryPos.Count > 0)
         {
             StartCoroutine("Reload");

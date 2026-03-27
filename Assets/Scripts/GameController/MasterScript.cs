@@ -3,62 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-public class ObjectWithDist
-{
-    GameObject thing;
-    float distToPlayer;
-    public ObjectWithDist(GameObject stuff)
-    {
-        thing = stuff;
-        distToPlayer = 0;
-    }
-    public GameObject GetObject()
-    {
-        return thing;
-    }
-    public void SetDistance(Transform pos2)
-    {
-        distToPlayer = Vector3.Distance(thing.transform.position, pos2.position);
-    }
-    public float GetDistance()
-    {
-        return distToPlayer;
-    }
-    public ObjectWithDist Clone()
-    {
-        return new ObjectWithDist(this.thing);
-    }
-}
-public class Tombstone
-{
-    Vector3 pos;
-    float distToPlayer;
-    public Tombstone(Vector3 position)
-    {
-        pos = position;
-        distToPlayer = 0;
-    }
-    public Vector3 GetPos()
-    {
-        return pos;
-    }
-    public void SetDistance(Transform pos2)
-    {
-        distToPlayer = Vector3.Distance(pos, pos2.position);
-    }
-    public float GetDistance()
-    {
-        return distToPlayer;
-    }
-    public Tombstone Clone()
-    {
-        return new Tombstone(this.pos);
-    }
-}
+using System;
 public class MasterScript : MonoBehaviour
 {
     public static MasterScript Instance;
-    public PlayerController player;
     public EnemySpawner enemySpawn;
     public FriendlySpawner friendlySpawn;
     public int respawntime;
@@ -67,7 +15,6 @@ public class MasterScript : MonoBehaviour
     public bool gameOver;
     public bool victory;
     public int baseMaxHp;
-    public EnemyPlayerBehaviour enemyPlayer;
     public RawImage defeatImage;
     public RawImage victoryImage;
     public GameObject friendlyArea;
@@ -78,17 +25,11 @@ public class MasterScript : MonoBehaviour
     public GameObject enemyFloor;
     public GameObject moverFriendly;
     public GameObject moverEnemy;
-    public List<GameObject> allEnemies;
-    public List<GameObject> allFriendlies;
-    public List<GameObject> allEnemiesTowers;
-    public List<GameObject> allFriendliesTowers;
     public GameObject HUD;
     public GameObject GameOverMenu;
     public GameObject GameOverContinue;
     public float timeCounter;
     private bool continueBool;
-    private List<Tombstone> rezPoolFriendly;
-    private List<Tombstone> rezPoolEnemy;
     public float upperAreaLimitX = 18;
     public float lowerAreaLimitX = -18;
     private void Awake()
@@ -105,22 +46,7 @@ public class MasterScript : MonoBehaviour
         GameOverMenu.SetActive(false);
         GameOverContinue.SetActive(false);
         continueBool = false;
-        player = FindAnyObjectByType<PlayerController>();
-        enemyPlayer = FindAnyObjectByType<EnemyPlayerBehaviour>();
-        allEnemiesTowers = new List<GameObject>(GameObject.FindGameObjectsWithTag("EnemyTower"));
-        allFriendliesTowers = new List<GameObject>(GameObject.FindGameObjectsWithTag("FriendlyTower"));
-        allEnemies = new List<GameObject>();
-        allFriendlies = new List<GameObject>();
-        rezPoolFriendly = new List<Tombstone>();
-        rezPoolEnemy = new List<Tombstone>();
-        friendlyBase.AddComponent<FriendlyBase>().Init();
-        enemyBase.AddComponent<EnemyBase>().Init();
-        player.Init();
-        enemyPlayer.Init();
-        foreach (GameObject enemyTower in allEnemiesTowers)
-            enemyTower.GetComponent<TowerBehaviourEnemy>().Init();
-        foreach (GameObject friendlyTower in allFriendliesTowers)
-            friendlyTower.GetComponent<TowerBehaviourFriendly>().Init();
+        CharacterTracker.Instance.Init();
     }
     void Update()
     {
@@ -166,22 +92,22 @@ public class MasterScript : MonoBehaviour
     public IEnumerator RespawnCoroutine()
     {
         AudioManager.Instance.PlayerDies();
-        player.gameObject.SetActive(false);
+        CharacterTracker.Instance.player.gameObject.SetActive(false);
         yield return new WaitForSeconds(respawntime);
         if ((!gameOver) || GameOverContinue)
         {
-            player.transform.position = respawnpointPlayer.transform.position;
-            player.gameObject.SetActive(true);
+            CharacterTracker.Instance.player.transform.position = respawnpointPlayer.transform.position;
+            CharacterTracker.Instance.player.gameObject.SetActive(true);
         }
     }
     public IEnumerator EnemyRespawnCoroutine()
     {
-        enemyPlayer.gameObject.SetActive(false);
+        CharacterTracker.Instance.enemyPlayer.gameObject.SetActive(false);
         yield return new WaitForSeconds(respawntime);
         if ((!gameOver) || GameOverContinue)
         {
-            enemyPlayer.transform.position = respawnpointEnemyPlayer.transform.position;
-            enemyPlayer.gameObject.SetActive(true);
+            CharacterTracker.Instance.enemyPlayer.transform.position = respawnpointEnemyPlayer.transform.position;
+            CharacterTracker.Instance.enemyPlayer.gameObject.SetActive(true);
         }
     }
     public void ToMenu()
@@ -201,115 +127,9 @@ public class MasterScript : MonoBehaviour
         defeatImage.enabled = false;
         victoryImage.enabled = false;
     }
-    public void AddMob(MobBehaviour Mob)
-    {
-        if (Mob.Team == CombatUtils.Team.Enemy)
-        {
-            allEnemiesTowers.Add(Mob.gameObject);
-            allEnemies.Add(Mob.gameObject);
-        }
-        else
-        {
-            allFriendliesTowers.Add(Mob.gameObject);
-            allFriendlies.Add(Mob.gameObject);
-        }
-    }
-    public void RemoveMob(MobBehaviour Mob)
-    {
-        if (Mob.Team == CombatUtils.Team.Enemy)
-        {
-            rezPoolEnemy.Add(new Tombstone(Mob.transform.position));
-            if (rezPoolEnemy.Count > 10)
-            {
-                rezPoolEnemy.RemoveAt(0);
-            }
-            allEnemiesTowers.Remove(Mob.gameObject);
-            allEnemies.Remove(Mob.gameObject);
-        }
-        else
-        {
-            rezPoolFriendly.Add(new Tombstone(Mob.transform.position));
-            if (rezPoolFriendly.Count > 10)
-            {
-                rezPoolFriendly.RemoveAt(0);
-            }
-            allFriendliesTowers.Remove(Mob.gameObject);
-            allFriendlies.Remove(Mob.gameObject);
-        }
-    }
-    public MainPlayerBehaviour GetOpponentPlayer(CombatUtils.Team team)
-    {
-        return GetPlayer(CombatUtils.GetOpposingTeam(team));
-    }
-    public MainPlayerBehaviour GetPlayer(CombatUtils.Team team)
-    {
-        return team == CombatUtils.Team.Player ? player : enemyPlayer;
-    }
     public float GetOpponentSpawnZ(CombatUtils.Team Team)
     {
         return Team == CombatUtils.Team.Player ? respawnpointEnemyPlayer.transform.position.z : respawnpointPlayer.transform.position.z;
-    }
-    public List<Vector3> GetRezPositions(int count, CombatUtils.Team team)
-    {
-        List<Tombstone> rezPool = team == CombatUtils.Team.Player ? rezPoolFriendly : rezPoolEnemy;
-        if (rezPool.Count == 0)
-        {
-            return new List<Vector3>();
-        }
-        else
-        {
-            count = Mathf.Min(count, rezPool.Count);
-            List<Tombstone> tempList = new List<Tombstone>();
-            foreach (Tombstone tomb in rezPool)
-            {
-                tempList.Add(tomb.Clone());
-            }
-            foreach (Tombstone tomb in tempList)
-            {
-                tomb.SetDistance(player.transform);
-            }
-            tempList.Sort(SortByDistanceTomb);
-            List<Vector3> posList = new List<Vector3>();
-            for (int i = 0; i < count; i++)
-            {
-                posList.Add(tempList[i].GetPos());
-                rezPool.Remove(tempList[i]);
-            }
-            return posList;
-        }
-    }
-    public int GetRezPoolCount(CombatUtils.Team team)
-    {
-        return (team == CombatUtils.Team.Player ? rezPoolFriendly : rezPoolEnemy).Count;
-    }
-    static int SortByDistanceTomb(Tombstone t1, Tombstone t2)
-    {
-        return t1.GetDistance().CompareTo(t2.GetDistance());
-    }
-    static int SortByDistanceObj(ObjectWithDist t1, ObjectWithDist t2)
-    {
-        return t1.GetDistance().CompareTo(t2.GetDistance());
-    }
-    public List<ObjectWithDist> GetFlurryTargets(int count)
-    {
-        List<ObjectWithDist> damagedEnemies = new List<ObjectWithDist>();
-        foreach (GameObject enemy in allEnemies)
-        {
-            if (enemy.gameObject.GetComponent<Health>().healthDisplay() <= 0.9f)
-            {
-                damagedEnemies.Add(new ObjectWithDist(enemy));
-            }
-        }
-        if (damagedEnemies.Count > 0)
-        {
-            foreach (ObjectWithDist enemy in damagedEnemies)
-            {
-                enemy.SetDistance(player.transform);
-            }
-            damagedEnemies.Sort(SortByDistanceObj);
-        }
-        count = Mathf.Min(count, damagedEnemies.Count);
-        return damagedEnemies.GetRange(0, count);
     }
     public GameObject GetOpponentBase(CombatUtils.Team enemyTeam)
     {
@@ -362,5 +182,16 @@ public class MasterScript : MonoBehaviour
             floor.transform.localScale = floor.transform.localScale + new Vector3(-10, 0, 0);
             spawner.MoveSpawner();
         }
+    }
+    internal void InitializeCharacters()
+    {
+        friendlyBase.AddComponent<FriendlyBase>().Init();
+        enemyBase.AddComponent<EnemyBase>().Init();
+        CharacterTracker.Instance.player.Init();
+        CharacterTracker.Instance.enemyPlayer.Init();
+        foreach (GameObject enemyTower in CharacterTracker.Instance.allEnemiesTowers)
+            enemyTower.GetComponent<TowerBehaviourEnemy>().Init();
+        foreach (GameObject friendlyTower in CharacterTracker.Instance.allFriendliesTowers)
+            friendlyTower.GetComponent<TowerBehaviourFriendly>().Init();
     }
 }

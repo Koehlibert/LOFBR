@@ -15,7 +15,7 @@ public class ManaDrainerBehaviour : MonoBehaviour
         Owner = owner;
         OwnerManaSys = (Owner as MainPlayerBehaviour).manasys;
         OwnerLevelSys = (Owner as MainPlayerBehaviour).Levelsys;
-        Enemy = MasterScript.Instance.GetOpponentPlayer(Owner.Team);
+        Enemy = CharacterTracker.Instance.GetOpponentPlayer(Owner.Team);
         lRend = GetComponent<LineRenderer>();
     }
     void Update()

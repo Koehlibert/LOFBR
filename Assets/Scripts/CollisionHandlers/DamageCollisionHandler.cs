@@ -58,7 +58,7 @@ public class DamageCollisionHandler : CollisionHandler
                     {
                         if(bulletOwner is MainPlayerBehaviour)
                         {
-                            MasterScript.Instance.player.OnHealXP();
+                            CharacterTracker.Instance.GetPlayer(Owner.Team).OnHealXP();
                         }
                         Destroy(collider.gameObject);
                     }

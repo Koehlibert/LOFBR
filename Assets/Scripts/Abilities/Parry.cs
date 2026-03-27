@@ -18,9 +18,9 @@ public class Parry : Ability
     }
     public void TryParry()
     {
-        if (loaded && Handler.Owner.isActiveAndEnabled)
+        if (loaded && Handler.Owner.isActiveAndEnabled && CheckManaCost())
         {
-            AbilityAction();
+            Handler.FinalAction = AbilityAction;
         }
     }
     protected override AbilityInfo GetAbilityInfo()

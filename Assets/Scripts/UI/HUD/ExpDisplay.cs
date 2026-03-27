@@ -11,7 +11,7 @@ public class ExpDisplay : MonoBehaviour
     [SerializeField] Text Level;
     void Start()
     {
-        player = MasterScript.Instance.player;
+        player = CharacterTracker.Instance.player;
         expslider = GetComponent<Slider>();
     }
     void Update()

@@ -16,13 +16,10 @@ public class DisplayMana : MonoBehaviour
         this.ReloadParent = GetComponent<Image>(); 
         Reloadcircle.fillAmount = 0;
         reloading = false;
+        player = CharacterTracker.Instance.player;
     }
     void Update()
     {
-        if(!player)
-        {
-            player = MasterScript.Instance.player;
-        }
         Reloadcircle.fillAmount = player.manasys.getPercent();
         Mana.text = player.manasys.getString();
     }

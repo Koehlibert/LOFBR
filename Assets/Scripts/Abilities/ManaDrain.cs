@@ -12,7 +12,7 @@ public class ManaDrain : DamagingAbility
     private float rangeToStartDraining = 22.5f;
     protected override void AdditionalInit()
     {
-        enemy = MasterScript.Instance.GetOpponentPlayer(Handler.Owner.Team);
+        enemy = CharacterTracker.Instance.GetOpponentPlayer(Handler.Owner.Team);
     }
     protected override AbilityInfo GetAbilityInfo()
     {
@@ -48,7 +48,7 @@ public class ManaDrain : DamagingAbility
     }
     protected override void AICheck()
     {
-        if (loaded && CombatUtils.InRange(MasterScript.Instance.GetOpponentPlayer(Handler.Owner.Team).gameObject, Handler.Owner.gameObject, rangeToStartDraining))
+        if (loaded && CombatUtils.InRange(CharacterTracker.Instance.GetOpponentPlayer(Handler.Owner.Team).gameObject, Handler.Owner.gameObject, rangeToStartDraining))
             Handler.FinalAction = AbilityAction;
     }
     protected override bool InputPressed()

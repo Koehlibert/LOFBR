@@ -29,11 +29,11 @@ public class ClosestFinder
     {
         this.OwnerTeam = team;
         this.selfObject = selfObject;
-        this.player = MasterScript.Instance.GetPlayer(targetTeam);
+        this.player = CharacterTracker.Instance.GetPlayer(targetTeam);
         inDistanceTrackers = new List<InDistanceTracker>();
-        AllObjects = targetTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemiesTowers : MasterScript.Instance.allFriendliesTowers;
-        AllFriendlyObjectsNoTowers = targetTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allFriendlies : MasterScript.Instance.allEnemies;
-        AllObjectsNoTowers = targetTeam == CombatUtils.Team.Enemy ? MasterScript.Instance.allEnemies : MasterScript.Instance.allFriendlies;
+        AllObjects = targetTeam == CombatUtils.Team.Enemy ? CharacterTracker.Instance.allEnemiesTowers : CharacterTracker.Instance.allFriendliesTowers;
+        AllFriendlyObjectsNoTowers = targetTeam == CombatUtils.Team.Enemy ? CharacterTracker.Instance.allFriendlies : CharacterTracker.Instance.allEnemies;
+        AllObjectsNoTowers = targetTeam == CombatUtils.Team.Enemy ? CharacterTracker.Instance.allEnemies : CharacterTracker.Instance.allFriendlies;
         if (team == CombatUtils.Team.Enemy)
             TeamDirectionMultiplier *= -1;
     }

@@ -8,7 +8,7 @@ public class healthdisplay : MonoBehaviour
     private Slider healthslider;
     void Start()
     {
-        player = MasterScript.Instance.player;
+        player = CharacterTracker.Instance.player;
         healthslider = GetComponent<Slider>();
     }
     void Update()

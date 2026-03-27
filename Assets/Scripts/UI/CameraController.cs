@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour
     private Vector3 velocity = Vector3.zero;
     void Start()
     {
-        player = MasterScript.Instance.player.gameObject;
+        player = CharacterTracker.Instance.player.gameObject;
         offset = transform.position - player.transform.position;
     }
     void LateUpdate()

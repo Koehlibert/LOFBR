@@ -45,9 +45,9 @@ public abstract class Ability : MonoBehaviour
     {
         loaded = true;
         Handler = aIHandler;
+        IsInteractive = isInteractive;
         SetAbilityInfo(GetAbilityInfo());
         AdditionalInit();
-        IsInteractive = isInteractive;
         if (Handler.Owner is MainPlayerBehaviour mainPlayerBehaviour)
         {
             OwnerManaSys = mainPlayerBehaviour.manasys;

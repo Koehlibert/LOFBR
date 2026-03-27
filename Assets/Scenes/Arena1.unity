@@ -6681,6 +6681,7 @@ GameObject:
   - component: {fileID: 1772391475}
   - component: {fileID: 1772391476}
   - component: {fileID: 1772391477}
+  - component: {fileID: 1772391478}
   m_Layer: 0
   m_Name: GameController
   m_TagString: GameController
@@ -6746,10 +6747,6 @@ MonoBehaviour:
     type: 3}
   moverEnemy: {fileID: 7835543102903678058, guid: 50ee6ef313b6ca04a8017f5feca96dca,
     type: 3}
-  allEnemies: []
-  allFriendlies: []
-  allEnemiesTowers: []
-  allFriendliesTowers: []
   HUD: {fileID: 1360865144}
   GameOverMenu: {fileID: 93099281}
   GameOverContinue: {fileID: 947494441}
@@ -6783,6 +6780,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 971ff048658cc7648a69fac807abf768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPaused: 0
   GameOverMenu: {fileID: 2056277156}
   GameOverContinue: {fileID: 1330237192}
   backgroundAudioSlider: {fileID: 485770959}
@@ -6845,6 +6843,24 @@ MonoBehaviour:
   EnemyMob: {fileID: 752268847723358216, guid: cb00b9e74f73cef4da88b3a76ee2892a, type: 3}
   Player: {fileID: 0}
   EnemyPlayer: {fileID: 0}
+--- !u!114 &1772391478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1772391467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47269b1a79697934d8e36c7551236652, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterTracker
+  player: {fileID: 0}
+  enemyPlayer: {fileID: 0}
+  allEnemies: []
+  allFriendlies: []
+  allEnemiesTowers: []
+  allFriendliesTowers: []
 --- !u!1001 &1776057421
 PrefabInstance:
   m_ObjectHideFlags: 0

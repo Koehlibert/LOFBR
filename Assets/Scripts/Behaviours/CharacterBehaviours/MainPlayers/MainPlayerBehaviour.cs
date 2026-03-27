@@ -15,7 +15,7 @@ public abstract class MainPlayerBehaviour : DamageableEntity
     public void Init(int classID)
     {
         base.Init();
-        EnemyPlayer = MasterScript.Instance.GetOpponentPlayer(Team);
+        EnemyPlayer = CharacterTracker.Instance.GetOpponentPlayer(Team);
         manasys = this.gameObject.AddComponent<Mana>();
         Levelsys = new Level();
         Levelsys.Init(this);
@@ -53,5 +53,9 @@ public abstract class MainPlayerBehaviour : DamageableEntity
             }
         }
         LastHit = false;
+    }
+    public void OnHealXP()
+    {
+        Levelsys.GainExp(5);
     }
 }

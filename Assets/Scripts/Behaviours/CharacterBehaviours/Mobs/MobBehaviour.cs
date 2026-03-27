@@ -30,7 +30,7 @@ public abstract class MobBehaviour : DamageableEntity
         hpsys.Initialize(100, 0, 0, 0);
         healthbar.gameObject.SetActive(false);
         healthbarbg.gameObject.SetActive(false);
-        MasterScript.Instance.AddMob(this);
+        CharacterTracker.Instance.AddMob(this);
         hpsys.OnHealthChanged += (healthPercent) =>
         {
             healthbar.gameObject.SetActive(true);
@@ -51,7 +51,7 @@ public abstract class MobBehaviour : DamageableEntity
         if (!hpsys.FullHP())
         {
             hpsys.Heal(damageComponent);
-            MasterScript.Instance.GetPlayer(Team).Levelsys.GainExp(5);
+            CharacterTracker.Instance.GetPlayer(Team).Levelsys.GainExp(5);
             Destroy(bulletObject);
         }
     }
@@ -69,7 +69,7 @@ public abstract class MobBehaviour : DamageableEntity
             bulletinstance.GetComponent<BulletBehaviour>().DelayedDestroy();
         }
         Destroy(this.gameObject);
-        MasterScript.Instance.RemoveMob(this);
+        CharacterTracker.Instance.RemoveMob(this);
     }
     public override Health GetHealth()
     {
@@ -86,7 +86,7 @@ public abstract class MobBehaviour : DamageableEntity
         StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
         if (player == null)
         {
-            player = MasterScript.Instance.GetOpponentPlayer(Team);
+            player = CharacterTracker.Instance.GetOpponentPlayer(Team);
         }
         animator.SetFloat("moveX", 0);
         animator.SetFloat("moveZ", animSpeed);
