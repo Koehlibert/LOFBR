@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class CharacterTracker : MonoBehaviour
 {
@@ -15,6 +16,10 @@ public class CharacterTracker : MonoBehaviour
     public List<GameObject> allFriendliesTowers;
     private List<Tombstone> rezPoolFriendly;
     private List<Tombstone> rezPoolEnemy;
+    private int LFCEnemy = -1;
+    private int LFCFriendly = -1;
+    private List<GameObject> COrderedEnemies;
+    private List<GameObject> COrderedFriendlies;
     private void Awake()
     {
         Instance = this;
@@ -66,6 +71,30 @@ public class CharacterTracker : MonoBehaviour
             allFriendliesTowers.Remove(Mob.gameObject);
             allFriendlies.Remove(Mob.gameObject);
         }
+    }
+    public List<GameObject> GetOrderedEnemies(CombatUtils.Team team)
+    {
+        if (team == CombatUtils.Team.Enemy)
+        {
+            if (LFCEnemy != Time.frameCount)
+            {
+                COrderedEnemies = allEnemies.Append(GetPlayer(team).gameObject).OrderBy(obj => obj.transform.position.z).ToList();
+            }
+            return COrderedEnemies;
+        }
+        else
+        {
+            if (LFCFriendly != Time.frameCount)
+            {
+                COrderedFriendlies = allFriendlies.Append(GetPlayer(team).gameObject).OrderByDescending(obj => obj.transform.position.z).ToList();
+            }
+            return COrderedFriendlies;
+        }
+    }
+    public GameObject GetFurthestEnemy(CombatUtils.Team team)
+    {
+        List<GameObject> orderedEnemies = GetOrderedEnemies(team);
+        return orderedEnemies.Count > 0 ? GetOrderedEnemies(team)[0] : null;
     }
     public MainPlayerBehaviour GetOpponentPlayer(CombatUtils.Team team)
     {

@@ -23,6 +23,12 @@ public class ManaDrain : DamagingAbility
         base.OnEnable();
         reloader = HUD.Instance.GetReload(HUD.Instance.AltReloader);
     }
+    public override void Deactivate()
+    {
+        base.Deactivate();
+        if (ManaDrainer != null)
+            Destroy(ManaDrainer);
+    }
     protected override void InteractiveCheck()
     {
         if (enemy.isActiveAndEnabled)
@@ -30,7 +36,7 @@ public class ManaDrain : DamagingAbility
             base.InteractiveCheck();
         }
     }
-    private IEnumerator duration()
+    private IEnumerator Duration()
     {
         yield return new WaitForSeconds(DurationTime + OwnerLevelSys.GetLevel() * 0.8f);
         Destroy(ManaDrainer);
@@ -42,14 +48,14 @@ public class ManaDrain : DamagingAbility
         {
             base.AbilityAction();
             ManaDrainer = BulletFactory.Instance.CreateManaDrainer(Handler.Owner);
-            StartCoroutine("Reload");
-            StartCoroutine("duration");
+            StartCoroutine(Reload());
+            StartCoroutine(Duration());
         }
     }
     protected override void AICheck()
     {
         if (loaded && CombatUtils.InRange(CharacterTracker.Instance.GetOpponentPlayer(Handler.Owner.Team).gameObject, Handler.Owner.gameObject, rangeToStartDraining))
-            Handler.FinalAction = AbilityAction;
+            SetFinalAction();
     }
     protected override bool InputPressed()
     {

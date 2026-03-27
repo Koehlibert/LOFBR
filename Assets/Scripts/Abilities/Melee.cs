@@ -5,16 +5,15 @@ using UnityEngine;
 public class Melee : DamagingAbility
 {
     public GameObject bullet;
-    private float duration = .5f;
+    private float duration = .6f;
     private bool attacking;
     private Vector3 dir;
     private GameObject MeleeCollider;
     private float speedup = 1.5f;
-    private bool IsAttacking = false;
     private float AttackDistance = 8.5f;
     protected override AbilityInfo GetAbilityInfo()
     {
-        return new AbilityInfo(5, 1.5f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
+        return new AbilityInfo(8, 2.5f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
     }
     protected override void OnEnable()
     {
@@ -25,46 +24,51 @@ public class Melee : DamagingAbility
     {
         Reset();
     }
-    void FixedUpdate()
+    public override void Activate()
+    {
+        base.Activate();
+        attacking = false;
+    }
+    public override void Deactivate()
+    {
+        base.Deactivate();
+        if (MeleeCollider != null)
+            Destroy(MeleeCollider);
+    }
+    protected override void InteractiveCheck()
     {
         if (attacking)
         {
-            Handler.MovementDirection = dir;
+            movementAI.SetMovementDirection(dir);
         }
+        else
+            base.InteractiveCheck();
     }
     private IEnumerator Resetanim()
     {
         yield return new WaitForSeconds(duration);
         Destroy(MeleeCollider);
         attacking = false;
-        Handler.ReenableOtherAbilities();
-        IsAttacking = false;
-    }
-    private void Shootanim()
-    {
-        Handler.DisableOtherAbilities(this);
-        Handler.Owner.animator.SetTrigger("Melee");
-        float clipLength = 1 / 2f;
-        duration = clipLength;
-        StartCoroutine(Handler.movementAI.LockMovement(duration));
-        StartCoroutine(Handler.SetForcemovement(duration));
-        StartCoroutine(Handler.movementAI.LockView(duration));
-        Handler.movementAI.Speedup = speedup;
-        StartCoroutine("Resetanim");
     }
     public new void Reset()
     {
+        if (MeleeCollider != null)
+            Destroy(MeleeCollider);
         loaded = true;
         attacking = false;
     }
     protected override void AbilityAction()
     {
         base.AbilityAction();
-        IsAttacking = true;
         MeleeCollider = BulletFactory.Instance.CreateMeleeCollider(Handler.Owner);
         MeleeCollider.GetComponent<Damage>().SetProperties(GetDamageValues());
-        Shootanim();
-        StartCoroutine("Reload");
+        StartCoroutine(Handler.DisableOtherAbilities(duration, this));
+        Handler.Owner.animator.SetTrigger("Melee");
+        movementAI.LockMovementAI(duration);
+        movementAI.Speedup = speedup;
+        StartCoroutine(movementAI.SetForcemovement(duration));
+        StartCoroutine(Resetanim());
+        StartCoroutine(Reload());
         dir = Handler.Owner.transform.forward;
         attacking = true;
     }
@@ -78,25 +82,32 @@ public class Melee : DamagingAbility
     }
     protected override void AICheck()
     {
-        if (Handler.distanceToClosest < AttackDistance)
+        if (attacking)
         {
-            Handler.SetEvenLookDirection(Handler.closestEnemyNoTower.transform.position);
-            if (loaded)
-            {
-                Handler.movementAI.MovementState = AIUtils.MovementState.IsFollowingTarget;    
-                Handler.FinalAction = AbilityAction;
-            }
-            else if (!IsAttacking)
-            {
-                Handler.movementAI.MovementState = AIUtils.MovementState.IsCircling;
-                Handler.movementAI.Speedup = 0.9f;
-            }
+            movementAI.SetMovementDirection(dir);
+            //movementAI.SetMovementState(AIUtils.MovementState.IsFollowingTarget);
         }
         else
         {
-            Handler.movementAI.MovementState = AIUtils.MovementState.IsFollowingTarget;
-            Handler.movementAI.Speedup = 1.25f;
-            Handler.SetEvenLookDirection(Handler.closestEnemyNoTower.transform.position);
+            movementAI.SetEvenLookDirection(Handler.closestEnemyNoTower.transform.position);
+            if (Handler.distanceToClosest < AttackDistance)
+            {
+                if (loaded)
+                {
+                    movementAI.SetMovementState(AIUtils.MovementState.IsFollowingTarget);
+                    SetFinalAction();
+                }
+                else
+                {
+                    movementAI.SetMovementState(AIUtils.MovementState.IsCircling);
+                    movementAI.Speedup = 0.9f;
+                }
+            }
+            else
+            {
+                movementAI.SetMovementState(AIUtils.MovementState.IsFollowingTarget);
+                movementAI.Speedup = 1.25f;
+            }
         }
     }
 }

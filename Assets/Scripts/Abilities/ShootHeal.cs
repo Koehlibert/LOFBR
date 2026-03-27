@@ -36,18 +36,18 @@ public class ShootHeal : ShootBasic
             return;
         if (CombatUtils.InRange(Handler.Owner.gameObject, closestHurtFriendly, AttackDistance))
         {
-            Handler.movementAI.MovementState = AIUtils.MovementState.IsStanding;
-            Handler.SetEvenLookDirection(closestHurtFriendly.transform.position);
+            movementAI.SetMovementState(AIUtils.MovementState.IsStanding);
+            movementAI.SetEvenLookDirection(closestHurtFriendly.transform.position);
             if (loaded)
             {
-                Handler.FinalAction = AbilityAction;
+                SetFinalAction();
             }
         }
         else
         {
-            Handler.movementAI.MovementState = AIUtils.MovementState.IsFollowingTarget;
-            Handler.movementAI.Speedup = 0.75f;
-            Handler.SetEvenLookDirection(closestHurtFriendly.transform.position);
+            movementAI.SetMovementState(AIUtils.MovementState.IsFollowingTarget);
+            movementAI.Speedup = 0.75f;
+            movementAI.SetEvenLookDirection(closestHurtFriendly.transform.position);
         }
     }
 }

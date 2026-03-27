@@ -40,6 +40,6 @@ public class UltAttackHeal : Ability
     protected override void AICheck()
     {
         if(loaded && inDistanceTracker.GetOverCount(HurtFriendliesToTrigger))
-            Handler.FinalAction = AbilityAction;
+            SetFinalAction();
     }
 }

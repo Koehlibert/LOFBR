@@ -28,8 +28,8 @@ public class UltAttack : ShootBasic
     }
     protected override IEnumerator Shootanim()
     {
-        Handler.DisableOtherAbilities(this);
-        StartCoroutine(Handler.movementAI.LockMovement(1.6f));
+        StartCoroutine(Handler.DisableOtherAbilities(1.6f, this));
+        movementAI.LockMovementAI(1.6f);
         Handler.Owner.animator.Play("Backflip", 0, 0f);
         yield return new WaitForSeconds(0.6f);
         bulletinstance = CreateBullet();
@@ -46,7 +46,6 @@ public class UltAttack : ShootBasic
     {
         yield return new WaitForSeconds(1f);
         Handler.Owner.animator.Play("Default", 0, 0f);
-        Handler.ReenableOtherAbilities();
     }
     protected override bool InputPressed()
     {
@@ -64,11 +63,11 @@ public class UltAttack : ShootBasic
     {
         if (inDistanceTracker.GetOverCount(NEnemiesToTrigger))
         {
-            Handler.movementAI.MovementState = AIUtils.MovementState.IsStanding;
-            Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);
+            movementAI.SetMovementState(AIUtils.MovementState.IsStanding);
+            movementAI.SetEvenLookDirection(Handler.closestEnemy.transform.position);
             if (loaded)
             {
-                Handler.FinalAction = AbilityAction;
+                SetFinalAction();
             }
         }
     }

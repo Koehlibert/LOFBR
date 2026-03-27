@@ -14,14 +14,4 @@ public abstract class AIModule : MonoBehaviour
         Handler = aIHandler;
         IsInteractive = isInteractive;
     }
-    protected void SetFinalAction(Action action, Vector3 target, AIUtils.AIState aIState, float lockAITimer)
-    {
-        Handler.FinalAction = action;
-        Handler.MovementDirection = target;
-        Handler.SetAIState(aIState);
-        Handler.LockAI(lockAITimer);
-    }
-    protected void Skip()
-    {
-    }
 }

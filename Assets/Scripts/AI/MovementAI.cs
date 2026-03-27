@@ -6,12 +6,12 @@ using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.XR;
 
-public class MovementAI : Ability
+public class MovementAI : AIModule
 {
     public GameObject Target { get; set; }
     private Vector3 standarddirection = new Vector3(0f, 0f, 1f);
     private float TeamDirectionMultiplier;
-    public AIUtils.MovementState MovementState { get; set; }
+    private AIUtils.MovementState MovementState { get; set; }
     private AIUtils.MovementState LastMovementState { get; set; }
     public bool MoveLock;
     private bool LookLock;
@@ -21,35 +21,34 @@ public class MovementAI : Ability
     private Vector3 MovementTarget;
     public event Action OnTargetReached;
     private float CircleDirection = 1;
-    private float CircleRadius = 7.5f;
+    private float CircleRadius = 5;
     private float CircleSpeed = 2f;
     private float Angle = 0;
     private bool IsDefensive;
-    private float DefensiveDistance = 8;
-    private float DistanceToDash = 8;
+    private float DefensiveDistance = 12;
+    private float DistanceToDash = 7.5f;
+    public bool ForceMovement;
     public event Action CouldDash;
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-    }
-    protected override AbilityInfo GetAbilityInfo()
-    {
-        return new AbilityInfo(0, 0, new List<AIUtils.AIState>());
-    }
+    private Vector3 MovementDirection;
+    public Vector3 LookDirection;
     public void Init(bool isInteractive, AIHandler aIHandler, float movementSpeed, bool caresAboutHealth)
     {
         base.Init(isInteractive, aIHandler);
+        MovementDirection = new Vector3();
         Speedup = 1;
         MoveLock = false;
         CaresAboutHealth = caresAboutHealth;
         Movementspeed = movementSpeed;
         TeamDirectionMultiplier = 1;
+        ForceMovement = false;
         if (Handler.Owner.Team == CombatUtils.Team.Enemy)
         {
             TeamDirectionMultiplier *= -1;
         }
         standarddirection.z *= TeamDirectionMultiplier;
+        MovementState = AIUtils.MovementState.IsMovingForward;
         LastMovementState = AIUtils.MovementState.IsMovingForward;
+        LookDirection = new Vector3();
     }
     public override void Checker()
     {
@@ -67,13 +66,13 @@ public class MovementAI : Ability
         }
         if (IsInteractive)
         {
-            Handler.MovementDirection = new Vector3(-PlayerInputRouter.Instance.Move.y, 0, PlayerInputRouter.Instance.Move.x).normalized;
+            MovementDirection = new Vector3(-PlayerInputRouter.Instance.Move.y, 0, PlayerInputRouter.Instance.Move.x).normalized;
             Vector2 mouseScreenPosition = PlayerInputRouter.Instance.Look;
             Plane playerPlane = new Plane(Vector3.up, transform.position);
             Ray ray = Camera.main.ScreenPointToRay(mouseScreenPosition);
             if (playerPlane.Raycast(ray, out float hitDist))
             {
-                Handler.LookDirection = ray.GetPoint(hitDist);
+                LookDirection = ray.GetPoint(hitDist);
             }
             return;
         }
@@ -92,30 +91,30 @@ public class MovementAI : Ability
             }
             if (MovementState == AIUtils.MovementState.IsRetreating)
             {
-                Handler.MovementDirection = GetDirection(new Vector3(0, 0, MasterScript.Instance.GetOpponentSpawnZ(CombatUtils.GetOpposingTeam(Handler.Owner.Team))));
+                SetMovementDirection(GetDirection(new Vector3(0, 0, MasterScript.Instance.GetOpponentSpawnZ(CombatUtils.GetOpposingTeam(Handler.Owner.Team)))));
                 Handler.SetAIState(AIUtils.AIState.Retreating);
-                Handler.ReenableOtherAbilities();
+                //Handler.ReenableOtherAbilities();
             }
             if (MovementState == AIUtils.MovementState.IsCircling)
             {
-                Handler.MovementDirection = GetDirection(GetCircularTarget(Handler.closestEnemyNoTower));
+                SetMovementDirection(GetDirection(GetCircularTarget(Handler.closestEnemyNoTower)));
             }
             if (MovementState == AIUtils.MovementState.IsStanding)
             {
-                Handler.MovementDirection = new Vector3(0, 0, 0);
+                SetMovementDirection(new Vector3(0, 0, 0));
             }
             if (MovementState == AIUtils.MovementState.IsMovingForward)
             {
-                Handler.MovementDirection = standarddirection;
-                Handler.LookDirection = Handler.Owner.transform.position + standarddirection; ;
+                SetMovementDirection(GetDirection(Handler.transform.position + standarddirection));
+                LookDirection = Handler.Owner.transform.position + standarddirection;
             }
             if (MovementState == AIUtils.MovementState.IsFollowingTarget)
             {
-                Handler.MovementDirection = GetDirection(Handler.closestEnemy.transform.position);
+                SetMovementDirection(GetDirection(Handler.closestEnemy.transform.position));
             }
             if (MovementState == AIUtils.MovementState.IsGoingToPlace)
             {
-                Handler.MovementDirection = GetDirection(MovementTarget);
+                SetMovementDirection(GetDirection(MovementTarget));
             }
         }
     }
@@ -125,20 +124,24 @@ public class MovementAI : Ability
     }
     public void HandleMovement()
     {
-        MoveCharacter(Handler.MovementDirection, Handler.ForceMovement, Speedup);
+        MoveCharacter(MovementDirection, ForceMovement, Speedup);
     }
     public Vector3 GetDirection(Vector3 target)
     {
         Vector3 direction = MasterScript.Instance.CorrectTarget(target) - Handler.Owner.transform.position;
         if (IsDefensive)
         {
-            direction.z = GetDefensiveZ(direction.z);
+            direction = GetDefensiveDirection(direction);
         }
         direction.y = 0;
         if (direction.magnitude > DistanceToDash)
         {
+            MovementDirection = direction;
             CouldDash?.Invoke();
+            CouldDash = null;
         }
+        if (IsDefensive && direction.z < 1)
+            direction.z = 0;
         if (direction.magnitude > 1)
             direction = direction.normalized;
         return direction;
@@ -150,15 +153,15 @@ public class MovementAI : Ability
         float z = Mathf.Sin(Angle) * CircleRadius;
         return objectToCircle.transform.position + new Vector3(x, 0f, z);
     }
-    private float GetDefensiveZ(float z)
+    private Vector3 GetDefensiveDirection(Vector3 direction)
     {
-        GameObject furthestEnemy = Handler.ClosestFinder.GetFurthestNoTower();
+        GameObject furthestEnemy = CharacterTracker.Instance.GetFurthestEnemy(Handler.Owner.Team);
         if (furthestEnemy != null)
         {
-            return furthestEnemy.transform.position.z + DefensiveDistance;
+            float safeZ = furthestEnemy.transform.position.z - TeamDirectionMultiplier * DefensiveDistance - Handler.Owner.transform.position.z;
+            direction.z = Handler.Owner.Team == CombatUtils.Team.Player ? Mathf.Min(direction.z, safeZ) : Mathf.Max(direction.z, safeZ);
         }
-        else
-            return z;
+        return direction;
     }
     public void MoveCharacter(Vector3 direction, bool bypass = false, float speedup = 1)
     {
@@ -166,11 +169,13 @@ public class MovementAI : Ability
         if (!MoveLock || bypass)
         {
             Handler.Owner.AnimSpeed = direction.normalized.magnitude;//still necessary?
-            Vector3 newPos = MasterScript.Instance.CorrectTarget(transform.position + Movementspeed * Time.deltaTime * direction * speedup);
+            direction = Movementspeed * speedup * Time.deltaTime * direction;
+            Vector3 newPos = MasterScript.Instance.CorrectTarget(transform.position + direction);
             Handler.Owner.transform.position = newPos;
             if (MovementState == AIUtils.MovementState.IsGoingToPlace && FlatDistance(newPos, MovementTarget) < 1)
             {
                 OnTargetReached?.Invoke();
+                OnTargetReached = null;
             }
             if (!bypass)
             {
@@ -186,7 +191,7 @@ public class MovementAI : Ability
     {
         if (!LookLock)
         {
-            Vector3 dir = Handler.LookDirection - transform.position;
+            Vector3 dir = LookDirection - transform.position;
             dir.y = 0;
             if (dir.sqrMagnitude > 0.001f)
             {
@@ -207,14 +212,38 @@ public class MovementAI : Ability
         yield return new WaitForSeconds(duration);
         LookLock = false;
     }
-    protected override bool InputPressed()
+    public void LockMovementAI(float duration)
     {
-        return false;
+        StartCoroutine(LockMovement(duration));
+        StartCoroutine(LockView(duration));
     }
     private float FlatDistance(Vector3 pos1, Vector3 pos2)
     {
         pos1.y = 0;
         pos2.y = 0;
         return Vector3.Distance(pos1, pos2);
+    }
+    public void SetMovementState(AIUtils.MovementState movementState)
+    {
+        MovementState = movementState;
+    }
+    public void SetMovementDirection(Vector3 direction)
+    {
+        MovementDirection = direction;
+    }
+    public Vector3 GetMovementDirection()
+    {
+        return MovementDirection;
+    }
+    public void SetEvenLookDirection(Vector3 direction)
+    {
+        direction.y = 0;
+        LookDirection = direction;
+    }
+    public IEnumerator SetForcemovement(float duration)
+    {
+        ForceMovement = true;
+        yield return new WaitForSeconds(duration);
+        ForceMovement = false;
     }
 }

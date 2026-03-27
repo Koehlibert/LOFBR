@@ -1,33 +1,36 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class Dash : Ability
 {
     public GameObject shield;
-    private float dashDistance = 10;
+    private float dashDistance = 12;
     private bool IsSubscribed = false;
     protected override AbilityInfo GetAbilityInfo()
     {
-        return new AbilityInfo(15, 2.5f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills, AIUtils.AIState.CheckGeneralSkills });
+        return new AbilityInfo(15, 2f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills, AIUtils.AIState.CheckGeneralSkills });
     }
     protected override void AbilityAction()
     {
-        Vector3 dir = Handler.MovementDirection.normalized;
+        Vector3 dir = movementAI.GetMovementDirection();
+        /* if (!IsInteractive)
+        {
+            Debug.Log(dir);
+            Debug.Break();
+        } */
         if (dir.magnitude > 0)
         {
-            float x = Handler.Owner.transform.position.x + dir.x * dashDistance;
-            float z = Handler.Owner.transform.position.z + dir.z * dashDistance;
-            Vector3 moveDir = MasterScript.Instance.CorrectTarget(new Vector3(x, 0, z));
-            StartCoroutine(Handler.movementAI.LockMovement(0.2f));
-            Handler.Owner.transform.position = moveDir;
+            if (dir.magnitude > dashDistance || IsInteractive)
+                dir = dir.normalized * dashDistance;
+            Handler.Owner.transform.position += dir;
             StartCoroutine("Reload");
             base.AbilityAction();
-        }
-        if (!IsInteractive)
-        {
-            Handler.movementAI.OnTargetReached -= AbilityAction;
-            IsSubscribed = false;
+            if (!IsInteractive)
+            {
+                IsSubscribed = false;
+            }
         }
     }
     protected override void OnEnable()
@@ -44,10 +47,10 @@ public class Dash : Ability
     }
     protected override void AICheck()
     {
-        if (loaded && !IsSubscribed)
+        if (loaded && !IsSubscribed && CheckManaCost())
         {
             IsSubscribed = true;
-            Handler.movementAI.CouldDash += AbilityAction;
+            movementAI.CouldDash += AbilityAction;
         }
     }
 }

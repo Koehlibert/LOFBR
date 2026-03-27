@@ -29,11 +29,7 @@ public class Stomp : DamagingAbility
     {
         StartCoroutine("Shootanim");
         StartCoroutine("Reload");
-        base.AbilityAction();
-        if (!IsInteractive)
-        {
-            Handler.movementAI.OnTargetReached -= AbilityAction;
-        }           
+        base.AbilityAction();           
     }
     protected override bool InputPressed()
     {
@@ -47,7 +43,7 @@ public class Stomp : DamagingAbility
     {
         if (IsInteractive)
             Handler.DisableOtherAbilities(this);
-        StartCoroutine(Handler.movementAI.LockMovement(0.95f));
+        movementAI.LockMovementAI(0.95f);
         Handler.Owner.animator.Play("Stomp", 0, 0f);
         yield return new WaitForSeconds(0.7f);
         GameObject wave = BulletFactory.Instance.CreateShockwave(Handler.Owner, false, Bone);
@@ -66,10 +62,10 @@ public class Stomp : DamagingAbility
         {
             List<GameObject> closest2Enemies = Handler.ClosestFinder.FindNClosest(2, true);
             (bool tmp, Vector3 ShockPoint) = ExistsPointWithinRadius(closest2Enemies, ShockRadiusToCheck * 0.75f);
-            Handler.movementAI.MovementState = AIUtils.MovementState.IsGoingToPlace;
+            movementAI.SetMovementState(AIUtils.MovementState.IsGoingToPlace);
             if (inDistanceTracker.GetOverCount(2))
             {
-                Handler.movementAI.SetMovementTarget(Handler.Owner.transform.position);
+                movementAI.SetMovementTarget(Handler.Owner.transform.position);
                 Handler.ClosestFinder.StopTrackingDist(inDistanceTracker);
             }
         }
@@ -83,10 +79,10 @@ public class Stomp : DamagingAbility
                 {
                     IsShocking = true;
                     inDistanceTracker = Handler.ClosestFinder.StartTrackingDist(ShockRadiusToCheck, true);
-                    Handler.movementAI.MovementState = AIUtils.MovementState.IsGoingToPlace;
-                    Handler.movementAI.SetMovementTarget(ShockPoint);
+                    movementAI.SetMovementState(AIUtils.MovementState.IsGoingToPlace);
+                    movementAI.SetMovementTarget(ShockPoint);
                     Handler.DisableOtherAbilities(this);
-                    Handler.movementAI.OnTargetReached += AbilityAction;
+                    movementAI.OnTargetReached += AbilityAction;
                 }
             }
         }

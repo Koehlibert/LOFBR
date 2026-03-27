@@ -31,7 +31,6 @@ public abstract class ShootBasic : DamagingAbility
     {
         base.OnEnable();
         StartCoroutine(Firstbullet());
-        Reset();
     }
     void OnDisable()
     {
@@ -39,10 +38,19 @@ public abstract class ShootBasic : DamagingAbility
         {
             Destroy(bulletinstance);
         }
-        if (reloadCoroutine != null)
+        /* if (reloadCoroutine != null)
         {
             StopCoroutine(reloadCoroutine);
-        }
+        } */
+    }
+    public override void Activate()
+    {
+        base.Activate();
+        StartCoroutine(Firstbullet());
+    }
+    public override void Deactivate()
+    {
+        OnDisable();
     }
     protected virtual IEnumerator Firstbullet()
     {
@@ -54,7 +62,7 @@ public abstract class ShootBasic : DamagingAbility
     {
         loaded = false;
         yield return new WaitForSeconds(reloadtime);
-        yield return new WaitUntil(() => Handler.movementAI.MoveLock == false);
+        yield return new WaitUntil(() => movementAI.MoveLock == false);
         bulletinstance = CreateBullet();
         loaded = true;
     }
@@ -79,18 +87,18 @@ public abstract class ShootBasic : DamagingAbility
     {
         if (Handler.distanceToClosest < AttackDistance)
         {
-            Handler.movementAI.MovementState = AIUtils.MovementState.IsStanding;
-            Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);
+            movementAI.SetMovementState(AIUtils.MovementState.IsStanding);
+            movementAI.SetEvenLookDirection(Handler.closestEnemy.transform.position);
             if (loaded)
             {
-                Handler.FinalAction = AbilityAction;
+                SetFinalAction();
             }
         }
         else
         {
-            Handler.movementAI.MovementState = AIUtils.MovementState.IsFollowingTarget;
-            Handler.movementAI.Speedup = 0.75f;
-            Handler.SetEvenLookDirection(Handler.closestEnemy.transform.position);
+            movementAI.SetMovementState(AIUtils.MovementState.IsFollowingTarget);
+            movementAI.Speedup = 0.75f;
+            movementAI.SetEvenLookDirection(Handler.closestEnemy.transform.position);
         }
     }
 }

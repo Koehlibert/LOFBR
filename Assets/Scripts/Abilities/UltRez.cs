@@ -39,6 +39,6 @@ public class UltRez : Ability
     protected override void AICheck()
     {
         if (loaded && CharacterTracker.Instance.GetRezPoolCount(Handler.Owner.Team) >= TombsToTrigger)
-            Handler.FinalAction = AbilityAction;
+            SetFinalAction();
     }
 }

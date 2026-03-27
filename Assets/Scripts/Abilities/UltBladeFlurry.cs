@@ -18,8 +18,7 @@ public class UltBladeFlurry : DamagingAbility
     }
     private IEnumerator Flurry()
     {
-        StartCoroutine(Handler.movementAI.LockMovement(duration * (flurryPos.Count + 1)));
-        StartCoroutine(Handler.movementAI.LockView(duration * (flurryPos.Count + 1)));
+        movementAI.LockMovementAI(duration * (flurryPos.Count + 1));
         damage = gameObject.AddComponent<Damage>();
         damage.SetProperties(GetDamageValues());
         yield return new WaitForSeconds(duration);
@@ -85,5 +84,9 @@ public class UltBladeFlurry : DamagingAbility
     protected override DamageInfo GetDamageValues()
     {
         return new DamageInfo(25 + (OwnerLevelSys.GetLevel() - 0) * 10, 0, CombatUtils.Team.Player, true, false);
+    }
+    protected override void AICheck()
+    {
+        
     }
 }

@@ -5,11 +5,10 @@ using UnityEngine;
 public class Parry : Ability
 {
     private GameObject ParryCollider;
-    private float duration;
+    private float duration = .6f;
     private GameObject BulletDetector;
     protected override void AdditionalInit()
     {
-        duration = .6f;
         if (!IsInteractive)
         {
             BulletDetector = BulletFactory.Instance.CreateBulletDetector(Handler.Owner, 1);
@@ -20,8 +19,13 @@ public class Parry : Ability
     {
         if (loaded && Handler.Owner.isActiveAndEnabled && CheckManaCost())
         {
-            Handler.FinalAction = AbilityAction;
+            SetFinalAction();
         }
+    }
+    public void OnDisable()
+    {
+        if (ParryCollider != null)
+            Destroy(ParryCollider);
     }
     protected override AbilityInfo GetAbilityInfo()
     {
@@ -32,19 +36,30 @@ public class Parry : Ability
         base.OnEnable();
         reloader = HUD.Instance.GetReload(HUD.Instance.SecondaryReloader);
     }
-    private IEnumerator autoDisable()
+    private IEnumerator AutoDisable()
     {
         yield return new WaitForSeconds(duration);
         Destroy(ParryCollider);
     }
+    public override void Activate()
+    {
+        base.Activate();
+    }
+    public override void Deactivate()
+    {
+        base.Deactivate();
+        if (ParryCollider != null)
+            Destroy(ParryCollider);
+    }
     protected override void AbilityAction()
     {
         base.AbilityAction();
-        StartCoroutine(Handler.movementAI.LockMovement(duration));
+        movementAI.LockMovementAI(duration);
+        StartCoroutine(Handler.DisableOtherAbilities(duration, this));
         ParryCollider = BulletFactory.Instance.CreateParryCollider(Handler.Owner);
         Handler.Owner.animator.SetTrigger("Parry");
-        StartCoroutine("autoDisable");
-        StartCoroutine("Reload");
+        StartCoroutine(AutoDisable());
+        StartCoroutine(Reload());
     }
     protected override bool InputPressed()
     {

@@ -14,7 +14,7 @@ public class Immolate : DamagingAbility
     }
     protected override AbilityInfo GetAbilityInfo()
     {
-        return new AbilityInfo(15, 8, new List<AIUtils.AIState> { AIUtils.AIState.Attacking });
+        return new AbilityInfo(15, 8, new List<AIUtils.AIState> { AIUtils.AIState.Attacking }, true);
     }
     protected override void OnEnable()
     {
@@ -81,5 +81,8 @@ public class Immolate : DamagingAbility
     protected override DamageInfo GetDamageValues()
     {
         return new DamageInfo(3.5f * OwnerLevelSys.GetLevel(), 0, Handler.Owner.Team, true, true);
+    }
+    protected override void AICheck()
+    {
     }
 }
