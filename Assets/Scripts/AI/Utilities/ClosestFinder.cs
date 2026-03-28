@@ -146,7 +146,8 @@ public class InDistanceTracker
     public InDistanceTracker(float distToCheck, bool withPlayer, CombatUtils.Team teamToCount)
     {
         this.DistToCheck = distToCheck;
-        team = teamToCount;
+        this.withPlayer = withPlayer;
+        this.team = teamToCount;
         EnemiesInDistance = 0;
     }
     public void ResetCounter()

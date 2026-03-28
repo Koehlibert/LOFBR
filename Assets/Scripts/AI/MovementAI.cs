@@ -21,8 +21,8 @@ public class MovementAI : AIModule
     private Vector3 MovementTarget;
     public event Action OnTargetReached;
     private float CircleDirection = 1;
-    private float CircleRadius = 5;
-    private float CircleSpeed = 2f;
+    private float CircleRadius = 7.5f;
+    private float CircleSpeed = 1.5f;
     private float Angle = 0;
     private bool IsDefensive;
     private float DefensiveDistance = 12;

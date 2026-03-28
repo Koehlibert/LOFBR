@@ -37,7 +37,7 @@ public class Stomp : DamagingAbility
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(70 + (OwnerLevelSys.GetLevel() - 2) * 6, 0, Handler.Owner.Team, true, false);
+        return new DamageInfo(70 + (OwnerLevelSys.GetLevel() - 2) * 6, 0, Handler.Owner.Team, true, false, false);
     }
     private IEnumerator Shootanim()
     {

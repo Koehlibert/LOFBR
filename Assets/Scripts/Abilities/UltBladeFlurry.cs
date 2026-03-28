@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class UltBladeFlurry : DamagingAbility
 {
@@ -18,10 +19,12 @@ public class UltBladeFlurry : DamagingAbility
     }
     private IEnumerator Flurry()
     {
+        Debug.Break();
         movementAI.LockMovementAI(duration * (flurryPos.Count + 1));
+        Handler.DisableOtherAbilities(duration * (flurryPos.Count + 1), this);
         damage = gameObject.AddComponent<Damage>();
         damage.SetProperties(GetDamageValues());
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(0.2f * duration);
         foreach (ObjectWithDist enemy in flurryPos)
         {
             GameObject target = enemy.GetObject();
@@ -34,7 +37,7 @@ public class UltBladeFlurry : DamagingAbility
                 Quaternion lookDir = Quaternion.LookRotation(-offset);
                 Handler.Owner.transform.rotation = lookDir;
                 Handler.Owner.animator.Play("Melee", 0, 0f);
-                EnemyBehaviour enemyBehaviour = target?.GetComponent<EnemyBehaviour>();
+                MobBehaviour enemyBehaviour = target?.GetComponent<MobBehaviour>();
                 enemyBehaviour?.getShanked(damage);
                 yield return new WaitForSeconds(duration);
             }
@@ -69,7 +72,8 @@ public class UltBladeFlurry : DamagingAbility
     }
     protected override void AbilityAction()
     {
-        flurryPos = CharacterTracker.Instance.GetFlurryTargets(OwnerLevelSys.GetLevel() - 1);
+        if (IsInteractive)
+            flurryPos = CharacterTracker.Instance.GetFlurryTargets(OwnerLevelSys.GetLevel() - 1, CombatUtils.GetOpposingTeam(Handler.Owner.Team));
         if (flurryPos.Count > 0)
         {
             StartCoroutine("Reload");
@@ -83,10 +87,17 @@ public class UltBladeFlurry : DamagingAbility
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(25 + (OwnerLevelSys.GetLevel() - 0) * 10, 0, CombatUtils.Team.Player, true, false);
+        return new DamageInfo(25 + (OwnerLevelSys.GetLevel() - 0) * 10, 0, CombatUtils.Team.Player, true, false, false);
     }
     protected override void AICheck()
     {
-        
+        if (loaded && CheckManaCost())
+        {
+            flurryPos = CharacterTracker.Instance.GetFlurryTargets(OwnerLevelSys.GetLevel() - 1, CombatUtils.GetOpposingTeam(Handler.Owner.Team));
+            if (flurryPos.Count > 2)
+            {
+                SetFinalAction();
+            }
+        }
     }
 }

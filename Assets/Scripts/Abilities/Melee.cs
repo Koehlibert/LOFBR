@@ -78,7 +78,7 @@ public class Melee : DamagingAbility
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(35 + OwnerLevelSys.GetLevel() * 3, 0, Handler.Owner.Team, true, false);
+        return new DamageInfo(35 + OwnerLevelSys.GetLevel() * 3, 0, Handler.Owner.Team, true, false, false);
     }
     protected override void AICheck()
     {

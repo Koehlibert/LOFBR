@@ -20,11 +20,13 @@ public class ParryColliderBehaviour : MonoBehaviour
         Damage damageComponent = col.gameObject.GetComponent<Damage>();
         if (damageComponent != null)
         {
-            if (CombatUtils.CanDamage(damageComponent, Owner))
+            if (CombatUtils.CanDamage(damageComponent, Owner) && damageComponent.CanBeParried)
             {
                 Rigidbody rb = col.GetComponent<Rigidbody>();
+                /* Vector3 OldVelocity = rb.linearVelocity;
                 rb.linearVelocity = Vector3.zero;
-                rb.AddForce(Owner.transform.forward * 2000);
+                rb.AddForce(-125f * OldVelocity); */
+                rb.linearVelocity = -rb.linearVelocity;
                 col.gameObject.GetComponent<Damage>().sourceTeam = CombatUtils.Team.Player;
                 col.gameObject.GetComponent<Damage>().givesXP = true;
             }

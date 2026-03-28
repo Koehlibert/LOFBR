@@ -12,7 +12,8 @@ public class UltAttack : ShootBasic
     protected override void AdditionalInit()
     {
         offset = new Vector3(0, 1, 0);
-        inDistanceTracker = Handler.ClosestFinder.StartTrackingDist(DistanceToCheck, true);
+        if (!IsInteractive)
+            inDistanceTracker = Handler.ClosestFinder.StartTrackingDist(DistanceToCheck, true);
     }
     protected override void OnEnable()
     {
@@ -53,7 +54,7 @@ public class UltAttack : ShootBasic
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(50 + (OwnerLevelSys.GetLevel() - 5) * 6.5f, 0, Handler.Owner.Team, true, true);
+        return new DamageInfo(50 + (OwnerLevelSys.GetLevel() - 5) * 6.5f, 0, Handler.Owner.Team, true, true, false);
     }
     protected override GameObject CreateBullet()
     {
@@ -61,18 +62,15 @@ public class UltAttack : ShootBasic
     }
     protected override void AICheck()
     {
-        if (inDistanceTracker.GetOverCount(NEnemiesToTrigger))
+        if (loaded && inDistanceTracker.GetOverCount(NEnemiesToTrigger))
         {
             movementAI.SetMovementState(AIUtils.MovementState.IsStanding);
             movementAI.SetEvenLookDirection(Handler.closestEnemy.transform.position);
-            if (loaded)
-            {
-                SetFinalAction();
-            }
+            SetFinalAction();
         }
     }
     protected override AbilityInfo GetAbilityInfo()
     {
-        return new AbilityInfo(15f, 60, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills});
+        return new AbilityInfo(15f, 60, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills });
     }
 }

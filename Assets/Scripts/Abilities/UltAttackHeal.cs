@@ -10,7 +10,8 @@ public class UltAttackHeal : Ability
     private InDistanceTracker inDistanceTracker;
     protected override void AdditionalInit()
     {
-        inDistanceTracker = Handler.ClosestFinder.StartTrackingDist(HealRadiusToCheck, true, Handler.Owner.Team);
+        if (!IsInteractive)
+            inDistanceTracker = Handler.ClosestFinder.StartTrackingDist(HealRadiusToCheck, true, Handler.Owner.Team);
     }
     protected override AbilityInfo GetAbilityInfo()
     {

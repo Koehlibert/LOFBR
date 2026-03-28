@@ -7,13 +7,15 @@ public class DamageInfo
     public CombatUtils.Team sourceTeamValue;
     public bool lastHit = false;
     public bool enduring = false;
-    public DamageInfo(float damageValue, float poisonValue, CombatUtils.Team sourceTeamValue, bool lastHit = false, bool enduring = false)
+    public bool CanBeParried = false;
+    public DamageInfo(float damageValue, float poisonValue, CombatUtils.Team sourceTeamValue, bool lastHit = false, bool enduring = false, bool canBeParried = true)
     {
         this.damageValue = damageValue;
         this.poisonValue = poisonValue;
         this.sourceTeamValue = sourceTeamValue;
         this.lastHit = lastHit;
         this.enduring = enduring;
+        this.CanBeParried = canBeParried;
     }
 }
 public class Damage : MonoBehaviour
@@ -25,6 +27,7 @@ public class Damage : MonoBehaviour
     public bool isEnduring;
     public event Action DamageDealt;
     public bool isHealing = false;
+    public bool CanBeParried = false;
     public void SetDamage(float damageValue)
     {
         damage = damageValue;
@@ -46,6 +49,7 @@ public class Damage : MonoBehaviour
         sourceTeam = damageInfo.sourceTeamValue;
         givesXP = damageInfo.lastHit;
         isEnduring = damageInfo.enduring;
+        CanBeParried = damageInfo.CanBeParried;
     }
     public void MakeHealing()
     {

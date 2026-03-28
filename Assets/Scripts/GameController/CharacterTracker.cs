@@ -145,12 +145,13 @@ public class CharacterTracker : MonoBehaviour
     {
         return t1.GetDistance().CompareTo(t2.GetDistance());
     }
-    public List<ObjectWithDist> GetFlurryTargets(int count)
+    public List<ObjectWithDist> GetFlurryTargets(int count, CombatUtils.Team targetTeam)
     {
+        List<GameObject> ListToCheck = targetTeam == CombatUtils.Team.Enemy ? allEnemies : allFriendlies;
         List<ObjectWithDist> damagedEnemies = new List<ObjectWithDist>();
-        foreach (GameObject enemy in allEnemies)
+        foreach (GameObject enemy in ListToCheck)
         {
-            if (enemy.gameObject.GetComponent<Health>().healthDisplay() <= 0.9f)
+            if (enemy.gameObject.GetComponent<Health>().healthDisplay() <= 0.95f)
             {
                 damagedEnemies.Add(new ObjectWithDist(enemy));
             }
