@@ -5,11 +5,6 @@ using UnityEngine;
 
 public class ShootHeal : ShootBasic
 {
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        reloader = HUD.Instance.GetReload(HUD.Instance.SecondaryReloader);
-    }
     protected override void AdditionalInit()
     {
         if (Handler.Owner is MainPlayerBehaviour)

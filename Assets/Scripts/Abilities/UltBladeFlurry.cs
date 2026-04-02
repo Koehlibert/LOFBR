@@ -8,11 +8,6 @@ public class UltBladeFlurry : DamagingAbility
     private float duration = .4f;
     private List<ObjectWithDist> flurryPos;
     private Damage damage;
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        reloader = HUD.Instance.GetReload(HUD.Instance.UltReloader);
-    }
     protected override AbilityInfo GetAbilityInfo()
     {
         return new AbilityInfo(225, 20, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });

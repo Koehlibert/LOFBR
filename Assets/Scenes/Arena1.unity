@@ -1017,8 +1017,6 @@ MonoBehaviour:
   ReloadParent: {fileID: 145698120}
   manaCostMet: {fileID: 452202680}
   Icon: {fileID: 452202680}
-  reloading: 0
-  timer: 0
 --- !u!1 &167064150
 GameObject:
   m_ObjectHideFlags: 0
@@ -2067,8 +2065,6 @@ MonoBehaviour:
   ReloadParent: {fileID: 412893702}
   manaCostMet: {fileID: 1802013745}
   Icon: {fileID: 1802013745}
-  reloading: 0
-  timer: 0
 --- !u!114 &412893702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5308,8 +5304,6 @@ MonoBehaviour:
   ReloadParent: {fileID: 1327135182}
   manaCostMet: {fileID: 812986481}
   Icon: {fileID: 812986481}
-  reloading: 0
-  timer: 0
 --- !u!114 &1327135182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6102,7 +6096,7 @@ GameObject:
   - component: {fileID: 1640204643}
   - component: {fileID: 1640204642}
   m_Layer: 5
-  m_Name: ReloadCirclePrimary
+  m_Name: ReloadCircleSecondary
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6725,7 +6719,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ea3fd84289558f4cb9f993d8b17d499, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   enemySpawn: {fileID: 0}
   friendlySpawn: {fileID: 0}
   respawntime: 5
@@ -6734,7 +6727,6 @@ MonoBehaviour:
   gameOver: 0
   victory: 0
   baseMaxHp: 1600
-  enemyPlayer: {fileID: 0}
   defeatImage: {fileID: 647974827}
   victoryImage: {fileID: 1820571087}
   friendlyArea: {fileID: 0}
@@ -7053,7 +7045,7 @@ GameObject:
   - component: {fileID: 1802013746}
   - component: {fileID: 1802013745}
   m_Layer: 5
-  m_Name: PrimaryIcon
+  m_Name: SecondaryIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7236,8 +7228,6 @@ MonoBehaviour:
   ReloadParent: {fileID: 1805395407}
   manaCostMet: {fileID: 1451187229}
   Icon: {fileID: 1451187229}
-  reloading: 0
-  timer: 0
 --- !u!114 &1805395407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8094,8 +8084,6 @@ MonoBehaviour:
   ReloadParent: {fileID: 1988524064}
   manaCostMet: {fileID: 1730409369}
   Icon: {fileID: 1730409369}
-  reloading: 0
-  timer: 0
 --- !u!114 &1988524064
 MonoBehaviour:
   m_ObjectHideFlags: 0

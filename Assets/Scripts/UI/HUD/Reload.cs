@@ -10,8 +10,8 @@ public class Reload : MonoBehaviour
     public RawImage Icon;
     private Ability ability;
     private float reloadtime;
-    public bool reloading;
-    public float timer;
+    private bool reloading;
+    private float timer;
     private PlayerController player;
     void Start()
     {

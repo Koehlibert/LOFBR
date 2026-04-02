@@ -15,14 +15,6 @@ public class UltAttack : ShootBasic
         if (!IsInteractive)
             inDistanceTracker = Handler.ClosestFinder.StartTrackingDist(DistanceToCheck, true);
     }
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        if (IsInteractive)
-        {
-            reloader = HUD.Instance.GetReload(HUD.Instance.UltReloader);
-        }
-    }
     protected override IEnumerator Firstbullet()
     {
         yield return new WaitForSeconds(.2f);

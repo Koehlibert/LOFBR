@@ -15,11 +15,6 @@ public class Melee : DamagingAbility
     {
         return new AbilityInfo(8, 2.5f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
     }
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        reloader = HUD.Instance.GetReload(HUD.Instance.PrimaryReloader);
-    }
     void OnDisable()
     {
         Reset();

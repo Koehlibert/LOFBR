@@ -33,14 +33,6 @@ public class Dash : Ability
             }
         }
     }
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        if (IsInteractive)
-        {
-            reloader = HUD.Instance.GetReload(HUD.Instance.AltReloader);
-        }
-    }
     protected override bool InputPressed()
     {
         return PlayerInputRouter.Instance.AlternativePressed;

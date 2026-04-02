@@ -12,14 +12,6 @@ public class Stomp : DamagingAbility
     protected List<Ability> DisabledAbilities;
     private bool IsShocking;
     private InDistanceTracker inDistanceTracker;
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        if (IsInteractive)
-        {
-            reloader = HUD.Instance.GetReload(HUD.Instance.AltReloader);
-        }
-    }
     protected override void AdditionalInit()
     {
         IsShocking = false;

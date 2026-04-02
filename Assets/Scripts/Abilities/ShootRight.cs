@@ -10,14 +10,6 @@ public class ShootRightBasic : ShootBasic
     {
         return PlayerInputRouter.Instance.PrimaryPressed;
     }
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        if (IsInteractive)
-        {
-            reloader = HUD.Instance.GetReload(HUD.Instance.PrimaryReloader);
-        }
-    }
     protected override DamageInfo GetDamageValues()
     {
         if (IsInteractive)

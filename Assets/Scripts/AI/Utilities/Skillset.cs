@@ -29,7 +29,7 @@ public class SkillsetFighter : Skillset
         startingRegen = 7.5f;
         regenDelay = 4;
         startingArmor = 15;
-        startingSpeed = 12;
+        startingSpeed = 18;
     }
     public override void LevelUnlock(int lvl)
     {
@@ -108,10 +108,10 @@ public class SkillsetMelee : Skillset
     {
         Handler = handler;
         startingLife = 400;
-        startingRegen = 20;
+        startingRegen = 25;
         regenDelay = 1.5f;
-        startingArmor = 35;
-        startingSpeed = 17.5f;
+        startingArmor = 30;
+        startingSpeed = 20f;
     }
     public override void LevelUnlock(int lvl)
     {

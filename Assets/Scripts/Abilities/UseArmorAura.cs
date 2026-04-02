@@ -16,11 +16,6 @@ public class UseArmorAura : Ability
     {
         Reset();
     }
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        reloader = HUD.Instance.GetReload(HUD.Instance.AltReloader);
-    }
     protected override void AbilityAction()
     {
     }

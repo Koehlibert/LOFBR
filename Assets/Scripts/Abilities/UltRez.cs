@@ -17,11 +17,6 @@ public class UltRez : Ability
             CharacterFactory.Instance.CreateTeamMob(Handler.Owner.Team, pos, spawndirection);
         }
     }
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        reloader = HUD.Instance.GetReload(HUD.Instance.UltReloader);
-    }
     protected override void AbilityAction()
     {
         List<Vector3> locations = CharacterTracker.Instance.GetRezPositions(OwnerLevelSys.GetLevel() - 2, Handler.Owner.Team);

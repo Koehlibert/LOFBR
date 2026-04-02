@@ -10,14 +10,6 @@ public class ShootLeftBasic : ShootBasic
     {
         return PlayerInputRouter.Instance.SecondaryPressed;
     }
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        if (IsInteractive)
-        {
-            reloader = HUD.Instance.GetReload(HUD.Instance.SecondaryReloader);
-        }
-    }
     protected override DamageInfo GetDamageValues()
     {
         if (IsInteractive)

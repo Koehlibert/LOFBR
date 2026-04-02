@@ -9,7 +9,7 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
     public Image manaBar;
     public override void Init()
     {
-        base.Init(3);
+        base.Init(2);
         healthbar.fillAmount = hpsys.healthDisplay();
         manaBar.fillAmount = manasys.getPercent();
     }

@@ -9,7 +9,7 @@ public abstract class Ability : MonoBehaviour
     protected List<AIUtils.AIState> ActiveStates;
     protected AIHandler Handler { get; set; }
     protected MovementAI movementAI;
-    public bool IsInteractive;
+    public bool IsInteractive = false;
     protected Mana OwnerManaSys;
     protected Level OwnerLevelSys;
     public float reloadtime;
@@ -99,9 +99,9 @@ public abstract class Ability : MonoBehaviour
     {
         Init(isInteractive, aIHandler, handlerMovementAI);
         SetReloader(HUD.Instance.GetReload(reloadObject));
-        reloadObject.SetActive(true);
         if (isInteractive & reloader != null)
         {
+            reloadObject.SetActive(true);
             ActivateReloader();
         }
     }

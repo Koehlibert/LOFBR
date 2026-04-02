@@ -18,11 +18,6 @@ public class ManaDrain : DamagingAbility
     {
         return new AbilityInfo(25, 10, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
     }
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        reloader = HUD.Instance.GetReload(HUD.Instance.AltReloader);
-    }
     public override void Deactivate()
     {
         base.Deactivate();

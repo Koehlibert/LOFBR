@@ -38,10 +38,6 @@ public abstract class ShootBasic : DamagingAbility
         {
             Destroy(bulletinstance);
         }
-        /* if (reloadCoroutine != null)
-        {
-            StopCoroutine(reloadCoroutine);
-        } */
     }
     public override void Activate()
     {

@@ -31,11 +31,6 @@ public class Parry : Ability
     {
         return new AbilityInfo(12, 1.75f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
     }
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        reloader = HUD.Instance.GetReload(HUD.Instance.SecondaryReloader);
-    }
     private IEnumerator AutoDisable()
     {
         yield return new WaitForSeconds(duration);

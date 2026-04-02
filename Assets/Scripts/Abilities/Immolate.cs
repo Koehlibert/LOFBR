@@ -22,11 +22,6 @@ public class Immolate : DamagingAbility
     {
         return new AbilityInfo(15, 8, new List<AIUtils.AIState> { AIUtils.AIState.Attacking }, true);
     }
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        reloader = HUD.Instance.GetReload(HUD.Instance.SkillReloader);
-    }
     void OnDisable()
     {
         Reset();
