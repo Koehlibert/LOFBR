@@ -22,10 +22,19 @@ public class UltRez : Ability
         List<Vector3> locations = CharacterTracker.Instance.GetRezPositions(OwnerLevelSys.GetLevel() - 2, Handler.Owner.Team);
         if (locations.Count > 0)
         {
-            StartCoroutine("Reload");
-            Rez(locations);
+            StartCoroutine(ShootAnim(locations));
+            StartCoroutine(Reload());
             base.AbilityAction();
         }
+    }
+    private IEnumerator ShootAnim(List<Vector3> locations)
+    {
+        Handler.DisableOtherAbilities(this);
+        movementAI.LockMovementAI(1.5f);
+        Handler.Owner.animator.SetTrigger("Res");
+        yield return new WaitForSeconds(0.4f);
+        Rez(locations);
+        Handler.ReenableOtherAbilities();
     }
     protected override bool InputPressed()
     {

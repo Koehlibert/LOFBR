@@ -19,8 +19,8 @@ public class Stomp : DamagingAbility
     }
     protected override void AbilityAction()
     {
-        StartCoroutine("Shootanim");
-        StartCoroutine("Reload");
+        StartCoroutine(Shootanim());
+        StartCoroutine(Reload());
         base.AbilityAction();           
     }
     protected override bool InputPressed()
@@ -33,10 +33,9 @@ public class Stomp : DamagingAbility
     }
     private IEnumerator Shootanim()
     {
-        if (IsInteractive)
-            Handler.DisableOtherAbilities(this);
+        Handler.DisableOtherAbilities(this);
         movementAI.LockMovementAI(0.95f);
-        Handler.Owner.animator.Play("Stomp", 0, 0f);
+        Handler.Owner.animator.SetTrigger("Stomp");
         yield return new WaitForSeconds(0.7f);
         GameObject wave = BulletFactory.Instance.CreateShockwave(Handler.Owner, false, Bone);
         wave.GetComponent<Damage>().SetProperties(GetDamageValues());
