@@ -14,7 +14,7 @@ public class UltRez : Ability
     {
         foreach (Vector3 pos in locations)
         {
-            CharacterFactory.Instance.CreateTeamMob(Handler.Owner.Team, pos, spawndirection);
+            CharacterFactory.Instance.RezMob(Handler.Owner.Team, pos, spawndirection);
         }
     }
     protected override void AbilityAction()

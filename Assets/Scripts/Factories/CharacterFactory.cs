@@ -33,4 +33,10 @@ public class CharacterFactory : MonoBehaviour
     {
         return Instantiate(mob, pos, rot);
     }
+    public GameObject RezMob(CombatUtils.Team team, Vector3 pos, Quaternion rot)
+    {
+        GameObject mob = CreateTeamMob(team, pos, rot);
+        mob.GetComponent<MobBehaviour>().GetRezd();
+        return mob;
+    }
 }

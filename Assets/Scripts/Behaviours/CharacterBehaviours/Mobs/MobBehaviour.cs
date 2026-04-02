@@ -71,6 +71,11 @@ public abstract class MobBehaviour : DamageableEntity
         Destroy(this.gameObject);
         CharacterTracker.Instance.RemoveMob(this);
     }
+    public void GetRezd()
+    {
+        aIHandler.LockAI(0.6f);
+        animator.SetTrigger("GetRezd");
+    }
     public override Health GetHealth()
     {
         return hpsys;
@@ -88,8 +93,8 @@ public abstract class MobBehaviour : DamageableEntity
         {
             player = CharacterTracker.Instance.GetOpponentPlayer(Team);
         }
-        animator.SetFloat("moveX", 0);
-        animator.SetFloat("moveZ", animSpeed);
+        /* animator.SetFloat("moveX", 0);
+        animator.SetFloat("moveZ", animSpeed); */
     }
     public void getShanked(Damage damage)
     {

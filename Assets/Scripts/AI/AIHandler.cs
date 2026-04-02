@@ -82,7 +82,7 @@ public class AIHandler : MonoBehaviour
         movementAI.SetMovementState(AIUtils.MovementState.IsMovingForward);
         if (IsAILocked)
         {
-            
+            return;
         }
         else if (AIState != AIUtils.AIState.MoveOnly)
         {
