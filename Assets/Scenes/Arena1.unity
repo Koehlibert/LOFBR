@@ -6801,7 +6801,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dbf4d7708f45374f8cc8d210ac113ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BulletFactory
-  BulletPrefab: {fileID: 3013956373289337006, guid: 4b5792511e065694eade0b3cb8adca22,
+  BulletPrefab: {fileID: 5337218744844487129, guid: e133520ad2aa38d4eb45737ca833419f,
     type: 3}
   ShockwavePrefab: {fileID: 3694283461505410077, guid: a89a13addfda961409c25be3a5305f5b,
     type: 3}
