@@ -21,9 +21,6 @@ public class MobBehaviour : DamageableEntity
     {
         base.Init();
         rend = GetComponentInChildren<SkinnedMeshRenderer>();
-        Debug.Log(rend);
-        var tmp = MaterialLibrary.Instance;
-        Debug.Log(tmp);
         rend.material = Team == CombatUtils.Team.Player 
             ? MaterialLibrary.Instance.playerMaterial
             : MaterialLibrary.Instance.enemyMaterial;
