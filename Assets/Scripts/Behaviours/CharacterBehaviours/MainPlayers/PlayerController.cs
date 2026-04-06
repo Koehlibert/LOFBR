@@ -8,11 +8,11 @@ public class PlayerController : MainPlayerBehaviour
 {
     public override void Init()
     {
+        this.Team = CombatUtils.Team.Player;
         ClassID = PlayerPrefs.GetInt("classID");
         base.Init(ClassID);
         EnableDamageFlash();
     }
-    public override CombatUtils.Team Team => CombatUtils.Team.Player;
     void FixedUpdate()
     {
         StackingHandler.PushAwayFromNearbyObjects(this.gameObject);

@@ -3,5 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 public class EnemyBase : Base
 {
-    public override CombatUtils.Team Team => CombatUtils.Team.Enemy;
+    public override void Init()
+    {
+        this.Team = CombatUtils.Team.Enemy;
+        base.Init();
+    }
 }

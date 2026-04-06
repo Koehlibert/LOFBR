@@ -9,11 +9,11 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
     public Image manaBar;
     public override void Init()
     {
+        this.Team = CombatUtils.Team.Enemy;
         base.Init(2);
         healthbar.fillAmount = hpsys.healthDisplay();
         manaBar.fillAmount = manasys.getPercent();
     }
-    public override CombatUtils.Team Team => CombatUtils.Team.Enemy;
     void FixedUpdate()
     {
         StackingHandler.PushAwayFromNearbyObjects(this.gameObject);

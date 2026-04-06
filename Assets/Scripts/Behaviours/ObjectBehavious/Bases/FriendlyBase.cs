@@ -3,5 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 public class FriendlyBase : Base
 {
-    public override CombatUtils.Team Team => CombatUtils.Team.Enemy;
+    public override void Init()
+    {
+        this.Team = CombatUtils.Team.Player;
+        base.Init();
+    }
 }

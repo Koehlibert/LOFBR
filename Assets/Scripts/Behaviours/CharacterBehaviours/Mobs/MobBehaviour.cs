@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 using System;
-public abstract class MobBehaviour : DamageableEntity
+public class MobBehaviour : DamageableEntity
 {
     protected GameObject enemybase;
     protected MainPlayerBehaviour player;
@@ -12,21 +12,24 @@ public abstract class MobBehaviour : DamageableEntity
     protected float attackdistance = 10;
     private float movementSpeed = 12;
     private Vector3 standarddirection = new Vector3(0f, 0f, 1f);
-    private GameObject bulletinstance;
-    private Rigidbody bulletrig;
     Vector3 offset = new Vector3(0f, 0f, 1f);
+    private Renderer rend;
     protected CombatUtils.Team EnemyTeam;
-    private ClosestFinder closestFinder;
-    private float animSpeed;
     [SerializeField] Image healthbar;
     [SerializeField] Image healthbarbg;
     public override void Init()
     {
         base.Init();
+        rend = GetComponentInChildren<SkinnedMeshRenderer>();
+        Debug.Log(rend);
+        var tmp = MaterialLibrary.Instance;
+        Debug.Log(tmp);
+        rend.material = Team == CombatUtils.Team.Player 
+            ? MaterialLibrary.Instance.playerMaterial
+            : MaterialLibrary.Instance.enemyMaterial;
         LastHit = false;
         EnemyTeam = CombatUtils.GetOpposingTeam(Team);
         enemybase = MasterScript.Instance.GetOpponentBase(EnemyTeam);
-        closestFinder = new ClosestFinder(Team, this.gameObject);
         hpsys.Initialize(100, 0, 0, 0);
         healthbar.gameObject.SetActive(false);
         healthbarbg.gameObject.SetActive(false);
@@ -46,6 +49,11 @@ public abstract class MobBehaviour : DamageableEntity
         ShootRightBasic shooter = gameObject.AddComponent<ShootRightBasic>();
         aIHandler.Init(this, new List<Ability>{shooter}, new List<AIModule>(), movementSpeed, false);
     }
+    public void Init(CombatUtils.Team team)
+    {
+        this.Team = team;
+        Init();
+    }
     public void OnHealBulletHit(Damage damageComponent, GameObject bulletObject)
     {
         if (!hpsys.FullHP())
@@ -64,12 +72,8 @@ public abstract class MobBehaviour : DamageableEntity
                 player.Levelsys.GainExp(5);
             }
         }
-        if (bulletinstance)
-        {
-            bulletinstance.GetComponent<BulletBehaviour>().DelayedDestroy();
-        }
-        Destroy(this.gameObject);
         CharacterTracker.Instance.RemoveMob(this);
+        Destroy(this.gameObject);
     }
     public void GetRezd()
     {
@@ -93,8 +97,6 @@ public abstract class MobBehaviour : DamageableEntity
         {
             player = CharacterTracker.Instance.GetOpponentPlayer(Team);
         }
-        /* animator.SetFloat("moveX", 0);
-        animator.SetFloat("moveZ", animSpeed); */
     }
     public void getShanked(Damage damage)
     {

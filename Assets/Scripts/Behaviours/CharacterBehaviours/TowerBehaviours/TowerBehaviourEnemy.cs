@@ -4,5 +4,9 @@ using UnityEngine;
 
 public class TowerBehaviourEnemy : TowerBehaviour
 {
-    public override CombatUtils.Team Team => CombatUtils.Team.Enemy;
+    public override void Init()
+    {
+        this.Team = CombatUtils.Team.Enemy;
+        base.Init();
+    }
 }

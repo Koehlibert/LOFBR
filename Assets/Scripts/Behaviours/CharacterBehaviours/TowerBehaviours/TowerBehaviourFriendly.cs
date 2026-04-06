@@ -4,5 +4,9 @@ using UnityEngine;
 
 public class TowerBehaviourFriendly : TowerBehaviour
 {
-    public override CombatUtils.Team Team => CombatUtils.Team.Player;
+    public override void Init()
+    {
+        this.Team = CombatUtils.Team.Player;
+        base.Init();
+    }
 }

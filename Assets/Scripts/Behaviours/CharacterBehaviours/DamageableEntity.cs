@@ -5,7 +5,7 @@ public abstract class DamageableEntity : MonoBehaviour
 {
     public Health hpsys { get; set; }
     protected bool LastHit;
-    public abstract CombatUtils.Team Team { get; }
+    public CombatUtils.Team Team;
     public Animator animator;
     public float AnimSpeed { get; set; }
     public GameObject enemyBase;
