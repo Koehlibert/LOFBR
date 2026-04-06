@@ -818,6 +818,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e26584bce8d0b9b48b9c0f6fe01b1603, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Team: 0
   animator: {fileID: 0}
   enemyBase: {fileID: 0}
   yourbase: {fileID: 0}
@@ -5018,6 +5019,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b395bec906446d7479bff1d3d4459778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Team: 0
   animator: {fileID: 0}
   enemyBase: {fileID: 0}
   yourbase: {fileID: 0}
@@ -6831,8 +6833,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4e1b0767ce2c2e418d4ef3837d8e32f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterFactory
-  Mob: {fileID: 1421225335743905642, guid: a16790b3d812c5f4cb9876f67b336f51, type: 3}
-  EnemyMob: {fileID: 752268847723358216, guid: cb00b9e74f73cef4da88b3a76ee2892a, type: 3}
+  Mob: {fileID: 752268847723358216, guid: cf7d82ff8049f054a877d6e1422a5f86, type: 3}
   Player: {fileID: 0}
   EnemyPlayer: {fileID: 0}
 --- !u!114 &1772391478

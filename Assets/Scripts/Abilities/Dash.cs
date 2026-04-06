@@ -15,11 +15,6 @@ public class Dash : Ability
     protected override void AbilityAction()
     {
         Vector3 dir = movementAI.GetMovementDirection();
-        /* if (!IsInteractive)
-        {
-            Debug.Log(dir);
-            Debug.Break();
-        } */
         if (dir.magnitude > 0)
         {
             if (dir.magnitude > dashDistance || IsInteractive)
