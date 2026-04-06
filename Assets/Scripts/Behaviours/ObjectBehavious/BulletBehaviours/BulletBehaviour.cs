@@ -20,6 +20,7 @@ public class BulletBehaviour : MonoBehaviour
     {
         this.col = GetComponent<SphereCollider>();
         this.rb = GetComponent<Rigidbody>();
+        rb.useGravity = false;
         this.damage = GetComponent<Damage>();
         col.enabled = false;
         this.Owner = owner;
@@ -51,6 +52,7 @@ public class BulletBehaviour : MonoBehaviour
     public virtual void Shoot(DamageInfo damageInfo, float force)
     {
         damage.SetProperties(damageInfo);
+        rb.useGravity = true;
         rb?.AddForce(Owner.transform.forward * force);
         DelayedDestroy();
         rb = null;
