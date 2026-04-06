@@ -70,8 +70,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afdce3e10d924c345ba0750f3f569747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerBehaviourEnemy
+  Team: 0
   animator: {fileID: 0}
-  bullet: {fileID: 3013956373289337006, guid: 4b5792511e065694eade0b3cb8adca22, type: 3}
+  enemyBase: {fileID: 0}
+  yourbase: {fileID: 0}
+  aIHandler: {fileID: 0}
 --- !u!114 &-7066719942265957342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,6 +175,11 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 4dd289918326a7042b32146dc028f56c,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5117700066308340382, guid: 4dd289918326a7042b32146dc028f56c,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4dd289918326a7042b32146dc028f56c,
