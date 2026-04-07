@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public abstract class Base : DamageableEntity
+public class Base : DamageableEntity
 {
     public override void Init()
     {
         base.Init();
         hpsys.Initialize(MasterScript.Instance.baseMaxHp,0,0,20);
+    }
+    public void Init(CombatUtils.Team team)
+    {
+        this.Team = team;
+        Init();
     }
     protected override void Die()
     {

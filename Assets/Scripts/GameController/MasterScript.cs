@@ -32,6 +32,17 @@ public class MasterScript : MonoBehaviour
     private bool continueBool;
     public float upperAreaLimitX = 18;
     public float lowerAreaLimitX = -18;
+    public Vector3[] TowerPos = new Vector3[]
+    {
+    new Vector3(20, 0, 25),
+    new Vector3(20, 0, 50),
+    new Vector3(20, 0, 75),
+    new Vector3(20, 0, 100),
+    new Vector3(-20, 0, 25),
+    new Vector3(-20, 0, 50),
+    new Vector3(-20, 0, 75),
+    new Vector3(-20, 0, 100)
+    };
     private void Awake()
     {
         Instance = this;
@@ -70,8 +81,8 @@ public class MasterScript : MonoBehaviour
     public Vector3 CorrectTarget(Vector3 target)
     {
         return new Vector3(
-            Mathf.Clamp(target.x, lowerAreaLimitX, upperAreaLimitX), 
-                        target.y, 
+            Mathf.Clamp(target.x, lowerAreaLimitX, upperAreaLimitX),
+                        target.y,
             Mathf.Clamp(target.z, friendlySpawn.GetZPos(), enemySpawn.GetZPos()));
     }
     public void DieAndRespawn(CombatUtils.Team team)
@@ -184,13 +195,9 @@ public class MasterScript : MonoBehaviour
     }
     internal void InitializeCharacters()
     {
-        friendlyBase.AddComponent<FriendlyBase>().Init();
-        enemyBase.AddComponent<EnemyBase>().Init();
+        friendlyBase.GetComponent<Base>().Init(CombatUtils.Team.Player);
+        enemyBase.GetComponent<Base>().Init(CombatUtils.Team.Enemy);
         CharacterTracker.Instance.player.Init();
         CharacterTracker.Instance.enemyPlayer.Init();
-        foreach (GameObject enemyTower in CharacterTracker.Instance.allEnemiesTowers)
-            enemyTower.GetComponent<TowerBehaviourEnemy>().Init();
-        foreach (GameObject friendlyTower in CharacterTracker.Instance.allFriendliesTowers)
-            friendlyTower.GetComponent<TowerBehaviourFriendly>().Init();
     }
 }

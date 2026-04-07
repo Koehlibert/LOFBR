@@ -10,7 +10,6 @@ public class DisplayMana : MonoBehaviour
     public PlayerController player;
     public bool reloading;
     public Text Mana;
-    // Start is called before the first frame update
     void Start()
     {
         this.ReloadParent = GetComponent<Image>(); 

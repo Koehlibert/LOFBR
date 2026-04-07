@@ -6,6 +6,7 @@ public class CharacterFactory : MonoBehaviour
 {
     public static CharacterFactory Instance;
     [SerializeField] GameObject Mob;
+    [SerializeField] GameObject Thrower;
     [SerializeField] GameObject Player;
     [SerializeField] GameObject EnemyPlayer;
     private void Awake()
@@ -14,11 +15,11 @@ public class CharacterFactory : MonoBehaviour
     }
     public GameObject CreateTeamMob(CombatUtils.Team team, Vector3 pos, Quaternion rot)
     {
-        GameObject mob = InstantiateMob(Mob, pos, rot);
+        GameObject mob = InstantiateCharacter(Mob, pos, rot);
         mob.GetComponent<MobBehaviour>().Init(team);
         return mob;
     }
-    private GameObject InstantiateMob(GameObject mob, Vector3 pos, Quaternion rot)
+    private GameObject InstantiateCharacter(GameObject mob, Vector3 pos, Quaternion rot)
     {
         return Instantiate(mob, pos, rot);
     }
@@ -27,5 +28,11 @@ public class CharacterFactory : MonoBehaviour
         GameObject mob = CreateTeamMob(team, pos, rot);
         mob.GetComponent<MobBehaviour>().GetRezd();
         return mob;
+    }
+    public GameObject CreateTeamTower(CombatUtils.Team team, Vector3 pos, Quaternion rot)
+    {
+        GameObject tower = InstantiateCharacter(Thrower, pos, rot);
+        tower.GetComponent<TowerBehaviour>().Init(team);
+        return tower;
     }
 }

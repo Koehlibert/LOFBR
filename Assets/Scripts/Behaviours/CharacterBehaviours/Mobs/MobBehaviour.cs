@@ -17,9 +17,7 @@ public class MobBehaviour : DamageableEntity
     Vector3 offset = new Vector3(0f, 0f, 1f);
     private Renderer rend;
     protected CombatUtils.Team EnemyTeam;
-    [SerializeField] Image healthbar;
     [SerializeField] Image healthbarbg;
-    [SerializeField] Outline healthbarOutline;
     public override void Init()
     {
         base.Init();
@@ -120,24 +118,6 @@ public class MobBehaviour : DamageableEntity
     {
         healthbar.gameObject.SetActive(true);
         healthbarbg.gameObject.SetActive(true);
-        IsMarked = true;
-        ResetMarked = false;
-        ChangeOutlineAlpha(0.5f);
-    }
-    private void ChangeOutlineAlpha(float alpha)
-    {
-        var tmp = healthbarOutline.effectColor;
-        tmp.a = alpha;
-        healthbarOutline.effectColor = tmp;
-    }
-    public override void MarkThisForDeath()
-    {
-        base.MarkThisForDeath();
-        IsMarked = false;
-        ChangeOutlineAlpha(1);
-    }
-    protected override IEnumerator ResetMark()
-    {
-        yield return base.ResetMark();
+        base.MarkHealthbar();
     }
 }

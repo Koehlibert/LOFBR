@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using System;
 
 public class CharacterTracker : MonoBehaviour
 {
@@ -30,8 +31,19 @@ public class CharacterTracker : MonoBehaviour
     {
         player = FindAnyObjectByType<PlayerController>();
         enemyPlayer = FindAnyObjectByType<EnemyPlayerBehaviour>();
-        allEnemiesTowers = new List<GameObject>(GameObject.FindGameObjectsWithTag("EnemyTower"));
-        allFriendliesTowers = new List<GameObject>(GameObject.FindGameObjectsWithTag("FriendlyTower"));
+        allEnemiesTowers = new List<GameObject>();
+        allFriendliesTowers = new List<GameObject>();
+        foreach (Vector3 pos in MasterScript.Instance.TowerPos)
+        {
+            GameObject tower = CharacterFactory.Instance.CreateTeamTower(CombatUtils.Team.Enemy, pos, Quaternion.identity);
+            tower.transform.LookAt(new Vector3(0, 0, pos.z));
+            Vector3 altPos = pos;
+            altPos.z *= -1;
+            GameObject altTower = CharacterFactory.Instance.CreateTeamTower(CombatUtils.Team.Player, altPos, Quaternion.identity);
+            altTower.transform.LookAt(new Vector3(0, 0, altPos.z));
+            allEnemiesTowers.Add(tower);
+            allFriendliesTowers.Add(altTower);
+        }
         allEnemies = new List<GameObject>();
         allFriendlies = new List<GameObject>();
         rezPoolFriendly = new List<Tombstone>();

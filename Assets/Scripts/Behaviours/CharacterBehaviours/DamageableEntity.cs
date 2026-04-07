@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public abstract class DamageableEntity : MonoBehaviour
@@ -15,6 +15,8 @@ public abstract class DamageableEntity : MonoBehaviour
     protected bool IsMarked = false;
     protected bool ResetMarked = false;
     protected DamageCollisionHandler CollisionHandler;
+    [SerializeField] protected Outline healthbarOutline;
+    [SerializeField] protected Image healthbar;
     public virtual void Init()
     {
         LastHit = false;
@@ -42,19 +44,28 @@ public abstract class DamageableEntity : MonoBehaviour
     {
         Die();
     }
-    public virtual void MarkHealthbar()
-    {
-        IsMarked = true;
-    }
     public virtual void MarkThisForDeath()
     {
         CharacterTracker.Instance.SetMarkedEnemy(this);
-        Debug.Log("Marked!");
+        IsMarked = false;
+        ChangeOutlineAlpha(1);
         StartCoroutine(ResetMark());
     }
     protected virtual IEnumerator ResetMark()
     {
         yield return new WaitForSeconds(4f);
         CharacterTracker.Instance.UnSetMarkedEnemy(this);
+    }
+    public virtual void MarkHealthbar()
+    {
+        IsMarked = true;
+        ResetMarked = false;
+        ChangeOutlineAlpha(0.5f);
+    }
+    protected void ChangeOutlineAlpha(float alpha)
+    {
+        var tmp = healthbarOutline.effectColor;
+        tmp.a = alpha;
+        healthbarOutline.effectColor = tmp;
     }
 }

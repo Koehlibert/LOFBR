@@ -49,6 +49,7 @@ public class MarkForDeath : Ability
     private void ToggleSelecting()
     {
         IsSelecting = !IsSelecting;
+        Time.timeScale = IsSelecting ? 0.35f : 1;
     }
     protected override void AbilityAction()
     {
