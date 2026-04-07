@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 using System;
+using TMPro;
+using Unity.Services.Analytics;
 public class MobBehaviour : DamageableEntity
 {
     protected GameObject enemybase;
@@ -17,11 +19,12 @@ public class MobBehaviour : DamageableEntity
     protected CombatUtils.Team EnemyTeam;
     [SerializeField] Image healthbar;
     [SerializeField] Image healthbarbg;
+    [SerializeField] Outline healthbarOutline;
     public override void Init()
     {
         base.Init();
         rend = GetComponentInChildren<SkinnedMeshRenderer>();
-        rend.material = Team == CombatUtils.Team.Player 
+        rend.material = Team == CombatUtils.Team.Player
             ? MaterialLibrary.Instance.playerMaterial
             : MaterialLibrary.Instance.enemyMaterial;
         LastHit = false;
@@ -44,7 +47,7 @@ public class MobBehaviour : DamageableEntity
         }
         aIHandler = gameObject.AddComponent<AIHandler>();
         ShootRightBasic shooter = gameObject.AddComponent<ShootRightBasic>();
-        aIHandler.Init(this, new List<Ability>{shooter}, new List<AIModule>(), movementSpeed, false);
+        aIHandler.Init(this, new List<Ability> { shooter }, new List<AIModule>(), movementSpeed, false);
     }
     public void Init(CombatUtils.Team team)
     {
@@ -86,6 +89,16 @@ public class MobBehaviour : DamageableEntity
         Vector3 pos = transform.position;
         pos.y = 0f;
         transform.position = pos;
+        if (ResetMarked)
+        {
+            ChangeOutlineAlpha(0);
+            ResetMarked = false;
+        }
+        if (IsMarked)
+        {
+            IsMarked = false;
+            ResetMarked = true;
+        }
     }
     protected void FixedUpdate()
     {
@@ -103,9 +116,28 @@ public class MobBehaviour : DamageableEntity
             Die();
         }
     }
-    private IEnumerator Resetanim()
+    public override void MarkHealthbar()
     {
-        yield return new WaitForSeconds(0.25f);
-        animator.Play("Default", 0, 0f);
+        healthbar.gameObject.SetActive(true);
+        healthbarbg.gameObject.SetActive(true);
+        IsMarked = true;
+        ResetMarked = false;
+        ChangeOutlineAlpha(0.5f);
+    }
+    private void ChangeOutlineAlpha(float alpha)
+    {
+        var tmp = healthbarOutline.effectColor;
+        tmp.a = alpha;
+        healthbarOutline.effectColor = tmp;
+    }
+    public override void MarkThisForDeath()
+    {
+        base.MarkThisForDeath();
+        IsMarked = false;
+        ChangeOutlineAlpha(1);
+    }
+    protected override IEnumerator ResetMark()
+    {
+        yield return base.ResetMark();
     }
 }

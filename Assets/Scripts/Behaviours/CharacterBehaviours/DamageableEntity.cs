@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ public abstract class DamageableEntity : MonoBehaviour
     public GameObject enemyBase;
     public GameObject yourbase;
     public AIHandler aIHandler;
+    protected bool IsMarked = false;
+    protected bool ResetMarked = false;
     protected DamageCollisionHandler CollisionHandler;
     public virtual void Init()
     {
@@ -38,5 +41,20 @@ public abstract class DamageableEntity : MonoBehaviour
     public virtual void Kill()
     {
         Die();
+    }
+    public virtual void MarkHealthbar()
+    {
+        IsMarked = true;
+    }
+    public virtual void MarkThisForDeath()
+    {
+        CharacterTracker.Instance.SetMarkedEnemy(this);
+        Debug.Log("Marked!");
+        StartCoroutine(ResetMark());
+    }
+    protected virtual IEnumerator ResetMark()
+    {
+        yield return new WaitForSeconds(4f);
+        CharacterTracker.Instance.UnSetMarkedEnemy(this);
     }
 }

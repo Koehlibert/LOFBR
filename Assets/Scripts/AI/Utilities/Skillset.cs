@@ -76,10 +76,12 @@ public class SkillsetSupport : Skillset
         switch (lvl)
         {
             case 1:
-                Ability shooterPoison = Handler.gameObject.AddComponent<ShootPoison>();
-                Handler.AddAbility(shooterPoison, HUD.Instance.PrimaryReloader);
                 Ability shooterHeal = Handler.gameObject.AddComponent<ShootHeal>();
-                Handler.AddAbility(shooterHeal, HUD.Instance.SecondaryReloader);
+                Handler.AddAbility(shooterHeal, HUD.Instance.PrimaryReloader);
+                Ability markForDeath = Handler.gameObject.AddComponent<MarkForDeath>();
+                Handler.AddAbility(markForDeath, HUD.Instance.SecondaryReloader);
+                /* Ability shooterPoison = Handler.gameObject.AddComponent<ShootPoison>();
+                Handler.AddAbility(shooterPoison, HUD.Instance.PrimaryReloader); */
                 break;
             case 2:
                 Ability armorAura = Handler.gameObject.AddComponent<UseArmorAura>();

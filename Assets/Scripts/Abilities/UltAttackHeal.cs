@@ -17,16 +17,10 @@ public class UltAttackHeal : Ability
     {
         return new AbilityInfo(120, 15, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills });
     }
-    private IEnumerator reload()
-    {
-        loaded = false;
-        yield return new WaitForSeconds(reloadtime);
-        loaded = true;
-    }
     protected override void AbilityAction()
     {
         BulletFactory.Instance.CreateSuperRegenAura(Handler.Owner);
-        StartCoroutine("Reload");
+        StartCoroutine(Reload());
         base.AbilityAction();
     }
     protected override bool InputPressed()

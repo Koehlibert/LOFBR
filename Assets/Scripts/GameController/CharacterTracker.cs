@@ -20,6 +20,8 @@ public class CharacterTracker : MonoBehaviour
     private int LFCFriendly = -1;
     private List<GameObject> COrderedEnemies;
     private List<GameObject> COrderedFriendlies;
+    private GameObject MarkedEnemy = null;
+    private GameObject MarkedFriendly = null;
     private void Awake()
     {
         Instance = this;
@@ -53,6 +55,8 @@ public class CharacterTracker : MonoBehaviour
     {
         if (Mob.Team == CombatUtils.Team.Enemy)
         {
+            if (Mob == MarkedEnemy)
+                MarkedEnemy = null;
             rezPoolEnemy.Add(new Tombstone(Mob.transform.position));
             if (rezPoolEnemy.Count > 10)
             {
@@ -63,6 +67,8 @@ public class CharacterTracker : MonoBehaviour
         }
         else
         {
+            if (Mob == MarkedFriendly)
+                MarkedFriendly = null;
             rezPoolFriendly.Add(new Tombstone(Mob.transform.position));
             if (rezPoolFriendly.Count > 10)
             {
@@ -166,6 +172,32 @@ public class CharacterTracker : MonoBehaviour
         }
         count = Mathf.Min(count, damagedEnemies.Count);
         return damagedEnemies.GetRange(0, count);
+    }
+    public void SetMarkedEnemy(DamageableEntity damageableEntity)
+    {
+        if (damageableEntity.Team == CombatUtils.Team.Enemy)
+        {
+            MarkedEnemy = damageableEntity.gameObject;
+        }
+        else
+        {
+            MarkedFriendly = damageableEntity.gameObject;
+        }
+    }
+    public void UnSetMarkedEnemy(DamageableEntity damageableEntity)
+    {
+        if (MarkedEnemy == damageableEntity)
+        {
+            MarkedEnemy = null;
+        }
+        else if (MarkedFriendly == damageableEntity)
+        {
+            MarkedFriendly = null;
+        }
+    }
+    public GameObject GetMarkedEnemy(CombatUtils.Team enemyTeam)
+    {
+        return enemyTeam == CombatUtils.Team.Enemy ? MarkedEnemy : MarkedFriendly;
     }
 }
 public class ObjectWithDist

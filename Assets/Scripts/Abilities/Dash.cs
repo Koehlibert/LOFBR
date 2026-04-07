@@ -5,7 +5,6 @@ using UnityEngine.XR;
 
 public class Dash : Ability
 {
-    public GameObject shield;
     private float dashDistance = 12;
     private bool IsSubscribed = false;
     protected override AbilityInfo GetAbilityInfo()

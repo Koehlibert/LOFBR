@@ -21,9 +21,15 @@ public class DistanceHandler : AIModule
     {
         Handler.closestEnemy = Handler.ClosestFinder.FindClosest();
         Handler.closestEnemyNoTower = Handler.ClosestFinder.FindClosestNoTower();
+        GameObject markedEnemy = CharacterTracker.Instance.GetMarkedEnemy(CombatUtils.GetOpposingTeam(Handler.Owner.Team));
+        if (markedEnemy != null && CombatUtils.GetDistance(Handler.Owner.gameObject, markedEnemy) < CheckDistance)
+        {
+            Handler.closestEnemy = markedEnemy;
+        }
         if (Handler.closestEnemy == null)
         {
             Handler.closestEnemy = Handler.Owner.enemyBase;
+            Handler.closestEnemyNoTower = Handler.Owner.enemyBase;
         }
         Handler.distanceToClosest = CombatUtils.GetDistance(Handler.Owner.gameObject, Handler.closestEnemy);
         if (Handler.distanceToClosest < AttackDistance)
