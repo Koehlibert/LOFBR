@@ -14,7 +14,6 @@ public class UltBladeFlurry : DamagingAbility
     }
     private IEnumerator Flurry()
     {
-        Debug.Break();
         movementAI.LockMovementAI(duration * (flurryPos.Count + 1));
         Handler.DisableOtherAbilities(duration * (flurryPos.Count + 1), this);
         damage = gameObject.AddComponent<Damage>();

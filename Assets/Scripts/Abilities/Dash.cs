@@ -17,16 +17,24 @@ public class Dash : Ability
         Vector3 dir = movementAI.GetMovementDirection();
         if (dir.magnitude > 0)
         {
-            if (dir.magnitude > dashDistance || IsInteractive)
-                dir = dir.normalized * dashDistance;
-            Handler.Owner.transform.position += dir;
-            StartCoroutine("Reload");
-            base.AbilityAction();
-            if (!IsInteractive)
-            {
-                IsSubscribed = false;
-            }
+            StartCoroutine(DashAnim(dir));
         }
+    }
+    private IEnumerator DashAnim(Vector3 dir)
+    {
+        StartCoroutine(Reload());
+        Handler.LockMovementAI(0.2f);
+        Handler.Owner.animator.SetTrigger("Dash");
+        yield return new WaitForSeconds(0.1f);
+        if (dir.magnitude > dashDistance || IsInteractive)
+            dir = dir.normalized * dashDistance;
+        Handler.Owner.transform.position += dir;
+        base.AbilityAction();
+        if (!IsInteractive)
+        {
+            IsSubscribed = false;
+        }
+        yield return new WaitForSeconds(0.1f);
     }
     protected override bool InputPressed()
     {

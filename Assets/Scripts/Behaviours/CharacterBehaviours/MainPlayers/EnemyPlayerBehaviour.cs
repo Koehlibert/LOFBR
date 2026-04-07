@@ -10,7 +10,7 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
     public override void Init()
     {
         this.Team = CombatUtils.Team.Enemy;
-        base.Init(2);
+        base.Init(3);
         healthbar.fillAmount = hpsys.healthDisplay();
         manaBar.fillAmount = manasys.getPercent();
     }
