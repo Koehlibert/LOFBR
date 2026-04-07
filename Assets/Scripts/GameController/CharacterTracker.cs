@@ -198,11 +198,11 @@ public class CharacterTracker : MonoBehaviour
     }
     public void UnSetMarkedEnemy(DamageableEntity damageableEntity)
     {
-        if (MarkedEnemy == damageableEntity)
+        if (MarkedEnemy == damageableEntity.gameObject)
         {
             MarkedEnemy = null;
         }
-        else if (MarkedFriendly == damageableEntity)
+        else if (MarkedFriendly == damageableEntity.gameObject)
         {
             MarkedFriendly = null;
         }

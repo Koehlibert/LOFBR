@@ -44,7 +44,6 @@ public abstract class MainPlayerBehaviour : DamageableEntity
     }
     protected override void Die()
     {
-        MasterScript.Instance.DieAndRespawn(Team);
         if (EnemyPlayer != null && LastHit)
         {
             if (EnemyPlayer.gameObject.activeSelf)
@@ -53,6 +52,8 @@ public abstract class MainPlayerBehaviour : DamageableEntity
             }
         }
         LastHit = false;
+        CharacterTracker.Instance.UnSetMarkedEnemy(this);
+        MasterScript.Instance.DieAndRespawn(Team);
     }
     public void OnHealXP()
     {

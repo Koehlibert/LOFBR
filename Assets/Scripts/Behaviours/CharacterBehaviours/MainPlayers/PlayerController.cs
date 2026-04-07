@@ -20,7 +20,7 @@ public class PlayerController : MainPlayerBehaviour
         {
             hpsys.AddArmor(1000);
             Levelsys.GainExp(100);
-            EnemyPlayer.Levelsys.GainExp(100);
+            //EnemyPlayer.Levelsys.GainExp(100);
         }
     }
     private void OnTakeDamage()

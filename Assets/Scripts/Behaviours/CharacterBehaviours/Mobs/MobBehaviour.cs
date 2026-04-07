@@ -36,7 +36,6 @@ public class MobBehaviour : DamageableEntity
         {
             healthbar.gameObject.SetActive(true);
             healthbarbg.gameObject.SetActive(true);
-            healthbar.fillAmount = healthPercent;
         };
         if (Team == CombatUtils.Team.Enemy)
         {

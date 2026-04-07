@@ -23,6 +23,10 @@ public abstract class DamageableEntity : MonoBehaviour
         hpsys = this.gameObject.AddComponent<Health>();
         animator = GetComponentInChildren<Animator>();
         SetupCollisionHandler();
+        hpsys.OnHealthChanged += (healthPercent) =>
+        {
+            healthbar.fillAmount = healthPercent;
+        };
         enemyBase = MasterScript.Instance.GetOpponentBase(Team);
         yourbase = MasterScript.Instance.GetOpponentBase(CombatUtils.GetOpposingTeam(Team));
     }
@@ -54,6 +58,7 @@ public abstract class DamageableEntity : MonoBehaviour
     protected virtual IEnumerator ResetMark()
     {
         yield return new WaitForSeconds(4f);
+        ChangeOutlineAlpha(0);
         CharacterTracker.Instance.UnSetMarkedEnemy(this);
     }
     public virtual void MarkHealthbar()
