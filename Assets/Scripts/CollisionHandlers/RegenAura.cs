@@ -22,7 +22,7 @@ public class RegenAura : CollisionHandler
     protected override void HandleDamageCollision(Collider collider)
     {
         DamageableEntity damageableEntity = collider.gameObject.GetComponent<DamageableEntity>();
-        if (damageableEntity != null && damageableEntity.Team == Owner.Team)
+        if (damageableEntity != null && damageableEntity.Team == Owner.Team && !RegeningObjectList.Contains(damageableEntity))
         {
             ActivateSuperRegen(damageableEntity);
         }

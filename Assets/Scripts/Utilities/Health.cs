@@ -72,7 +72,7 @@ public class Health : MonoBehaviour
     }
     public void AddArmor(float armGain)
     {
-        armor = armor + armGain;
+        armor += armGain;
     }
     public bool TakeDamage(Damage damageObj)
     {
