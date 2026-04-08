@@ -1,0 +1,44 @@
+Full Back
+
+A backline bulwark, this player uses an array of abilities to shoot his shot from behind the frontlines or employ a mixture of defensive and offensive skills to dispatch multiple enemies at once when the attack seems overwhelming. His versatile skillset offers a balance between tactical finesse and fast paced action.
+
+Skills:
+	1) Shoot
+	2) Stomp
+	3) Shield
+	4) Second Shoot
+	5) Flip
+
+Captain
+
+This supporting player employs his abilities from behind the frontline. While his precise offensive plays bring fear to the opposing team; his true power lies in supporting his team and controlling the field from the second row. This player encourages a defensive playstyle to unravel his strength when his team is strongest.
+
+Skills:
+	1) Take Control + Heal
+	2) Armor Aura
+	3) Wall
+	4) Regen Aura
+	5) Resurrection
+	
+Striker
+
+A nimble and aggressive force on the field. This player weaves mobility and offensive abilities to weave in and out of combat, adept at striking behind enemy lines and exploiting every hole in the enemies defenses. This player encourages highly active gameplay and rewards precise timings and accurate plays with high damage to the enemies' spirit.
+
+Skills:
+	1) Melee + Parry
+	2) Dash
+	3) Mana Drain
+	4) Immolation
+	5) Blade Flurry
+
+Crowd Favorite
+
+His strong presence strikes fear into the enemy and inspires awe in his audience. This player knows how to please the crowd and does not refrain from using sneaky tactics and dirty tricks to dominate the field and win his fans' affection. His mixture of offensive skills and ability to crowd control enable a range of playstyles.
+
+Skills:
+	
+	1) Scare Enemies + Poison
+	2) Dodge (Stun close enemies)
+	3) Molotov
+	4) Convert
+	5) Flitzer

@@ -4268,6 +4268,8 @@ MonoBehaviour:
   AltReloader: {fileID: 1805395404}
   SkillReloader: {fileID: 1327135179}
   UltReloader: {fileID: 1988524061}
+  PlayerHealthImage: {fileID: 1546610302}
+  PlayerHealthOutline: {fileID: 1602238816}
   DamageImage: {fileID: 181606342}
 --- !u!1 &1398184973
 GameObject:
@@ -6977,7 +6979,7 @@ PrefabInstance:
         type: 3}
       propertyPath: healthbar
       value: 
-      objectReference: {fileID: 1546610302}
+      objectReference: {fileID: 0}
     - target: {fileID: 874059498112534147, guid: 19b6ea4c0c8e0a8468e61191a6c9bf78,
         type: 3}
       propertyPath: manaForAlt
@@ -7013,7 +7015,7 @@ PrefabInstance:
         type: 3}
       propertyPath: healthbarOutline
       value: 
-      objectReference: {fileID: 1602238816}
+      objectReference: {fileID: 0}
     - target: {fileID: 874059498112534148, guid: 19b6ea4c0c8e0a8468e61191a6c9bf78,
         type: 3}
       propertyPath: m_Enabled
