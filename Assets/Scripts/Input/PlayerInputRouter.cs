@@ -7,6 +7,9 @@ public class PlayerInputRouter : MonoBehaviour
     public Vector2 Move { get; private set; }
     public Vector2 Look { get; private set; }
     public bool CheatedPressed { get; private set; }
+    public bool CheatedToggledThisFrame { get; private set; }
+    public bool CheatedPressedThisFrame { get; private set; }
+    public bool CheatedReleasedThisFrame { get; private set; }
     public bool PrimaryPressed { get; private set; }
     public bool SecondaryPressed { get; private set; }
     public bool SecondaryToggledThisFrame { get; private set; }
@@ -47,8 +50,8 @@ public class PlayerInputRouter : MonoBehaviour
         Input.Player.Ult.performed += _ => UltPressed = true;
         Input.Player.Ult.canceled += _ => UltPressed = false;
 
-        Input.Player.Cheat.performed += _ => CheatedPressed = true;
-        Input.Player.Cheat.canceled += _ => CheatedPressed = false;
+        Input.Player.Cheat.performed += OnCheatPerformed;
+        Input.Player.Cheat.performed += OnCheatCancelled;
 
         Input.Player.AttackSecondary.performed += OnSecondaryPerformed;
         Input.Player.AttackSecondary.performed += OnSecondaryCancelled;
@@ -80,6 +83,17 @@ public class PlayerInputRouter : MonoBehaviour
         SkillPressed = false;
         SkillReleasedThisFrame = true;
     }
+    private void OnCheatPerformed(InputAction.CallbackContext ctx)
+    {
+        CheatedPressed = true;
+        CheatedPressedThisFrame = true;
+        CheatedToggledThisFrame = true;
+    }
+    private void OnCheatCancelled(InputAction.CallbackContext ctx)
+    {
+        CheatedPressed = false;
+        CheatedReleasedThisFrame = true;
+    }
     private void LateUpdate()
     {
         SkillPressedThisFrame = false;
@@ -88,6 +102,9 @@ public class PlayerInputRouter : MonoBehaviour
         SecondaryPressedThisFrame = false;
         SecondaryReleasedThisFrame = false;
         SecondaryToggledThisFrame = false;
+        CheatedPressedThisFrame = false;
+        CheatedReleasedThisFrame = false;
+        CheatedToggledThisFrame = false;
     }
     private void OnDisable()
     {

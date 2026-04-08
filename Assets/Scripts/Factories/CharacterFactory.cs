@@ -9,6 +9,7 @@ public class CharacterFactory : MonoBehaviour
     [SerializeField] GameObject Thrower;
     [SerializeField] GameObject Player;
     [SerializeField] GameObject EnemyPlayer;
+    [SerializeField] GameObject WallMember;
     private void Awake()
     {
         Instance = this;
@@ -40,5 +41,12 @@ public class CharacterFactory : MonoBehaviour
         GameObject playerToInst = team == CombatUtils.Team.Enemy ? EnemyPlayer : Player;
         GameObject player = InstantiateCharacter(playerToInst, pos, rot);
         return player;
+    }
+    public GameObject CreateWallMember(CombatUtils.Team team, Vector3 pos)
+    {
+        GameObject wallMember = InstantiateCharacter(WallMember, pos, Quaternion.identity);
+        wallMember.transform.LookAt(new Vector3(pos.x, 0, 0));
+        wallMember.AddComponent<WallMember>().Init(team);
+        return wallMember;
     }
 }

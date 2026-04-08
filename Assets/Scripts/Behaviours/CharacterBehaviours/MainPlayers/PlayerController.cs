@@ -15,10 +15,10 @@ public class PlayerController : MainPlayerBehaviour
         healthbar = HUD.Instance.PlayerHealthImage;
         healthbarOutline = HUD.Instance.PlayerHealthOutline;
     }
-    void FixedUpdate()
+    void Update()
     {
         StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
-        if (PlayerInputRouter.Instance.CheatedPressed)
+        if (PlayerInputRouter.Instance.CheatedPressedThisFrame)
         {
             hpsys.AddArmor(1000);
             Levelsys.GainExp(100);
