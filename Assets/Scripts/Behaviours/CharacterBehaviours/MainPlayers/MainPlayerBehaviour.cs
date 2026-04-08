@@ -35,8 +35,6 @@ public abstract class MainPlayerBehaviour : DamageableEntity
         aIHandler.Init(this, new List<Ability>(), new List<AIModule>(), skillSet.GetSpeed(), this is EnemyPlayerBehaviour);
         skillSet.LevelUnlock(1);
         hpsys.Initialize(skillSet.GetHPVals());
-        healthbar = HUD.Instance.PlayerHealthImage;
-        healthbarOutline = HUD.Instance.PlayerHealthOutline;
     }
     public virtual void LevelUp()
     {

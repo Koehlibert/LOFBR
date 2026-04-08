@@ -29,8 +29,10 @@ public class CharacterTracker : MonoBehaviour
     }
     public void Init()
     {
-        player = FindAnyObjectByType<PlayerController>();
-        enemyPlayer = FindAnyObjectByType<EnemyPlayerBehaviour>();
+        GameObject playerObject = CharacterFactory.Instance.CreateTeamPlayer(CombatUtils.Team.Player, MasterScript.Instance.respawnpointPlayer.transform.position, Quaternion.identity);
+        player = playerObject.GetComponent<PlayerController>();
+        GameObject enemyPlayerObject = CharacterFactory.Instance.CreateTeamPlayer(CombatUtils.Team.Enemy, MasterScript.Instance.respawnpointEnemyPlayer.transform.position, Quaternion.identity);
+        enemyPlayer = enemyPlayerObject.GetComponent<EnemyPlayerBehaviour>();
         allEnemiesTowers = new List<GameObject>();
         allFriendliesTowers = new List<GameObject>();
         foreach (Vector3 pos in MasterScript.Instance.TowerPos)

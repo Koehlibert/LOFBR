@@ -12,6 +12,8 @@ public class PlayerController : MainPlayerBehaviour
         ClassID = PlayerPrefs.GetInt("classID");
         base.Init(ClassID);
         EnableDamageFlash();
+        healthbar = HUD.Instance.PlayerHealthImage;
+        healthbarOutline = HUD.Instance.PlayerHealthOutline;
     }
     void FixedUpdate()
     {

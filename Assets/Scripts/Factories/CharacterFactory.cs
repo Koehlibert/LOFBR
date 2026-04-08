@@ -35,4 +35,10 @@ public class CharacterFactory : MonoBehaviour
         tower.GetComponent<TowerBehaviour>().Init(team);
         return tower;
     }
+    public GameObject CreateTeamPlayer(CombatUtils.Team team, Vector3 pos, Quaternion rot)
+    {
+        GameObject playerToInst = team == CombatUtils.Team.Enemy ? EnemyPlayer : Player;
+        GameObject player = InstantiateCharacter(playerToInst, pos, rot);
+        return player;
+    }
 }
