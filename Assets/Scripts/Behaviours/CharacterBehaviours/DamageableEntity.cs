@@ -23,10 +23,13 @@ public abstract class DamageableEntity : MonoBehaviour
         hpsys = this.gameObject.AddComponent<Health>();
         animator = GetComponentInChildren<Animator>();
         SetupCollisionHandler();
-        hpsys.OnHealthChanged += (healthPercent) =>
+        if (healthbar != null)
         {
-            healthbar.fillAmount = healthPercent;
-        };
+            hpsys.OnHealthChanged += (healthPercent) =>
+            {
+                healthbar.fillAmount = healthPercent;
+            };
+        }
         enemyBase = MasterScript.Instance.GetOpponentBase(Team);
         yourbase = MasterScript.Instance.GetOpponentBase(CombatUtils.GetOpposingTeam(Team));
     }

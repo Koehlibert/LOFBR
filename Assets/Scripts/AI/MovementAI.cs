@@ -17,7 +17,7 @@ public class MovementAI : AIModule
     private bool LookLock;
     public bool CaresAboutHealth;
     public float Movementspeed { get; set; }
-    public float Speedup;
+    public float Speedup = 1;
     private Vector3 MovementTarget;
     public event Action OnTargetReached;
     private float CircleDirection = 1;
@@ -182,8 +182,11 @@ public class MovementAI : AIModule
                 Vector3 worldMove = new(direction.normalized.x, 0f, direction.normalized.z);
                 worldMove = Vector3.ClampMagnitude(worldMove, 1f);
                 Vector3 localMove = transform.InverseTransformDirection(worldMove);
-                Handler.Owner.animator.SetFloat("moveX", localMove.x);
-                Handler.Owner.animator.SetFloat("moveZ", localMove.z);
+                if (Handler.Owner.animator != null)
+                {
+                    Handler.Owner.animator.SetFloat("moveX", localMove.x);
+                    Handler.Owner.animator.SetFloat("moveZ", localMove.z);
+                }
             }
         }
     }

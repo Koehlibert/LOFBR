@@ -111,4 +111,10 @@ public class BulletFactory : MonoBehaviour
         superRegenAura.AddComponent<RegenAura>().Init(owner);
         return superRegenAura;
     }
+    public GameObject CreateWall(DamageableEntity owner, int memberCount, float memberWidth)
+    {
+        GameObject wall = new GameObject();
+        wall.AddComponent<WallBehaviour>().Init(owner.Team, memberCount, memberWidth);
+        return wall;
+    }
 }

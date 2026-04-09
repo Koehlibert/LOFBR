@@ -24,6 +24,10 @@ public class CharacterFactory : MonoBehaviour
     {
         return Instantiate(mob, pos, rot);
     }
+    private GameObject InstantiateCharacter(GameObject mob)
+    {
+        return Instantiate(mob);
+    }
     public GameObject RezMob(CombatUtils.Team team, Vector3 pos, Quaternion rot)
     {
         GameObject mob = CreateTeamMob(team, pos, rot);
@@ -42,10 +46,11 @@ public class CharacterFactory : MonoBehaviour
         GameObject player = InstantiateCharacter(playerToInst, pos, rot);
         return player;
     }
-    public GameObject CreateWallMember(CombatUtils.Team team, Vector3 pos)
+    public GameObject CreateWallMember(CombatUtils.Team team, Vector3 localPos, GameObject parent)
     {
-        GameObject wallMember = InstantiateCharacter(WallMember, pos, Quaternion.identity);
-        wallMember.transform.LookAt(new Vector3(pos.x, 0, 0));
+        GameObject wallMember = InstantiateCharacter(WallMember);
+        wallMember.transform.SetParent(parent.transform);
+        wallMember.transform.position = localPos;
         wallMember.AddComponent<WallMember>().Init(team);
         return wallMember;
     }

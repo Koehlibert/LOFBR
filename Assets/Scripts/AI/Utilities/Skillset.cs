@@ -44,8 +44,10 @@ public class SkillsetFighter : Skillset
                 Handler.AddAbility(stomper, HUD.Instance.AltReloader);
                 break;
             case 3:
-                Ability shield = Handler.gameObject.AddComponent<UseShield>();
-                Handler.AddAbility(shield, HUD.Instance.SkillReloader);
+                Ability buildWall = Handler.gameObject.AddComponent<BuildWall>();
+                Handler.AddAbility(buildWall, HUD.Instance.SkillReloader);
+                /* Ability shield = Handler.gameObject.AddComponent<UseShield>();
+                Handler.AddAbility(shield, HUD.Instance.SkillReloader); */
                 break;
             case 4:
                 Ability secondShooter = Handler.gameObject.AddComponent<ShootLeftBasic>();

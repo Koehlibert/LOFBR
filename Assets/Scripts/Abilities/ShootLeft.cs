@@ -8,7 +8,7 @@ public class ShootLeftBasic : ShootBasic
     protected override HumanBodyBones Bone => HumanBodyBones.LeftLowerLeg;
     protected override bool InputPressed()
     {
-        return PlayerInputRouter.Instance.SecondaryPressed;
+        return PlayerInputRouter.Instance.SecondaryPressedThisFrame;
     }
     protected override DamageInfo GetDamageValues()
     {

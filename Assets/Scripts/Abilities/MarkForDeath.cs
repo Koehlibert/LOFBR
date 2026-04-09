@@ -49,7 +49,16 @@ public class MarkForDeath : Ability
     private void ToggleSelecting()
     {
         IsSelecting = !IsSelecting;
-        Time.timeScale = IsSelecting ? 0.35f : 1;
+        if (IsSelecting)
+        {
+            Handler.DisableOtherAbilities(this);
+            Time.timeScale = 0.35f;
+        }
+        else
+        {
+            Handler.ReenableOtherAbilities();
+            Time.timeScale = 1;
+        }
     }
     protected override void AbilityAction()
     {
