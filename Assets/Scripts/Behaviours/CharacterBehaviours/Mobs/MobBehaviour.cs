@@ -93,14 +93,6 @@ public class MobBehaviour : CharacterBehaviour
             ResetMarked = true;
         }
     }
-    protected void FixedUpdate()
-    {
-        StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
-        if (EnemyPlayer == null)
-        {
-            EnemyPlayer = CharacterTracker.Instance.GetOpponentPlayer(Team);
-        }
-    }
     public void getShanked(Damage damage)
     {
         LastHit = true;

@@ -23,6 +23,14 @@ public abstract class CharacterBehaviour : DamageableEntity
         InitializeAIHandler();
         InitializeHPSys();
     }
+    protected void FixedUpdate()
+    {
+        StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
+        if (EnemyPlayer == null)
+        {
+            EnemyPlayer = CharacterTracker.Instance.GetOpponentPlayer(Team);
+        }
+    }
     protected virtual void InitializeAIHandler()
     {
         aIHandler.Init(this, new List<Ability>(), new List<AIModule>(), 0, false);

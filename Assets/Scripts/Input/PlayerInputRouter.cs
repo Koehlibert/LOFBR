@@ -23,6 +23,10 @@ public class PlayerInputRouter : MonoBehaviour
     public bool SkillToggledThisFrame { get; private set; }
     public bool SkillPressedThisFrame { get; private set; }
     public bool SkillReleasedThisFrame { get; private set; }
+    public bool ThirdSkillPressed { get; private set; }
+    public bool ThirdSkillToggledThisFrame { get; private set; }
+    public bool ThirdSkillPressedThisFrame { get; private set; }
+    public bool ThirdSkillReleasedThisFrame { get; private set; }
     public bool UltPressed { get; private set; }
     public bool PausePressed { get; private set; }
     public PlayerInputActions Input { get; private set; }
@@ -62,6 +66,9 @@ public class PlayerInputRouter : MonoBehaviour
         Input.Player.SecondarySkill.performed += OnSkillPerformed;
         Input.Player.SecondarySkill.canceled += OnSkillCanceled;
 
+        Input.Player.ThirdSkill.performed += OnThirdSkillPerformed;
+        Input.Player.ThirdSkill.canceled += OnThirdSkillCanceled;
+
         Input.Player.Pause.started += _ => PauseGame.Instance.TogglePause();
     }
     private void OnPrimaryPerformed(InputAction.CallbackContext ctx)
@@ -97,6 +104,17 @@ public class PlayerInputRouter : MonoBehaviour
         SkillPressed = false;
         SkillReleasedThisFrame = true;
     }
+    private void OnThirdSkillPerformed(InputAction.CallbackContext ctx)
+    {
+        ThirdSkillPressed = true;
+        ThirdSkillPressedThisFrame = true;
+        ThirdSkillToggledThisFrame = true;
+    }
+    private void OnThirdSkillCanceled(InputAction.CallbackContext ctx)
+    {
+        ThirdSkillPressed = false;
+        ThirdSkillReleasedThisFrame = true;
+    }
     private void OnCheatPerformed(InputAction.CallbackContext ctx)
     {
         CheatedPressed = true;
@@ -119,6 +137,9 @@ public class PlayerInputRouter : MonoBehaviour
         SecondaryPressedThisFrame = false;
         SecondaryReleasedThisFrame = false;
         SecondaryToggledThisFrame = false;
+        ThirdSkillPressedThisFrame = false;
+        ThirdSkillReleasedThisFrame = false;
+        ThirdSkillToggledThisFrame = false;
         CheatedPressedThisFrame = false;
         CheatedReleasedThisFrame = false;
         CheatedToggledThisFrame = false;

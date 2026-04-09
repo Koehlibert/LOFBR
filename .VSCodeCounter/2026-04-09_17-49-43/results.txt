@@ -1,0 +1,265 @@
+Date : 2026-04-09 17:49:43
+Directory : d:\Unity\LOFBR
+Total : 193 files,  403592 codes, 478 comments, 1389 blanks, all 405459 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Log      |         14 |    308,122 |          0 |        653 |    308,775 |
+| XML      |         72 |     86,004 |         71 |         72 |     86,147 |
+| C#       |         85 |      6,631 |        407 |        175 |      7,213 |
+| Markdown |         10 |      2,135 |          0 |        487 |      2,622 |
+| JSON     |          8 |        540 |          0 |          2 |        542 |
+| CSV      |          4 |        160 |          0 |          0 |        160 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                     | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                        |        193 |    403,592 |        478 |      1,389 |    405,459 |
+| . (Files)                                                                                                |         72 |     86,004 |         71 |         72 |     86,147 |
+| .vs                                                                                                      |          3 |         30 |          0 |          0 |         30 |
+| .vs (Files)                                                                                              |          1 |          6 |          0 |          0 |          6 |
+| .vs\LoFBR.slnx                                                                                           |          2 |         24 |          0 |          0 |         24 |
+| .vs\LoFBR.slnx\v18                                                                                       |          2 |         24 |          0 |          0 |         24 |
+| Assets                                                                                                   |        102 |      8,929 |        407 |        662 |      9,998 |
+| Assets (Files)                                                                                           |          2 |      1,349 |        384 |         29 |      1,762 |
+| Assets\MobileDependencyResolver                                                                          |          2 |      1,895 |          0 |        435 |      2,330 |
+| Assets\MobileDependencyResolver\Editor                                                                   |          2 |      1,895 |          0 |        435 |      2,330 |
+| Assets\Resources                                                                                         |          1 |          1 |          0 |          0 |          1 |
+| Assets\Scripts                                                                                           |         97 |      5,684 |         23 |        198 |      5,905 |
+| Assets\Scripts\.VSCodeCounter                                                                            |         14 |        402 |          0 |         52 |        454 |
+| Assets\Scripts\.VSCodeCounter\2022-09-23_22-51-57                                                        |          7 |        201 |          0 |         26 |        227 |
+| Assets\Scripts\.VSCodeCounter\2022-09-23_22-52-37                                                        |          7 |        201 |          0 |         26 |        227 |
+| Assets\Scripts\AI                                                                                        |          9 |        936 |          6 |         12 |        954 |
+| Assets\Scripts\AI (Files)                                                                                |          6 |        573 |          2 |          8 |        583 |
+| Assets\Scripts\AI\Utilities                                                                              |          3 |        363 |          4 |          4 |        371 |
+| Assets\Scripts\Abilities                                                                                 |         21 |      1,485 |         11 |         43 |      1,539 |
+| Assets\Scripts\Audio                                                                                     |          1 |         79 |          0 |          2 |         81 |
+| Assets\Scripts\Behaviours                                                                                |         23 |        982 |          4 |         33 |      1,019 |
+| Assets\Scripts\Behaviours\CharacterBehaviours                                                            |         10 |        564 |          1 |          9 |        574 |
+| Assets\Scripts\Behaviours\CharacterBehaviours (Files)                                                    |          4 |        215 |          0 |          2 |        217 |
+| Assets\Scripts\Behaviours\CharacterBehaviours\MainPlayers                                                |          3 |        140 |          1 |          4 |        145 |
+| Assets\Scripts\Behaviours\CharacterBehaviours\Mobs                                                       |          2 |        160 |          0 |          1 |        161 |
+| Assets\Scripts\Behaviours\CharacterBehaviours\TowerBehaviours                                            |          1 |         49 |          0 |          2 |         51 |
+| Assets\Scripts\Behaviours\ObjectBehavious                                                                |         13 |        418 |          3 |         24 |        445 |
+| Assets\Scripts\Behaviours\ObjectBehavious (Files)                                                        |          5 |        119 |          3 |         10 |        132 |
+| Assets\Scripts\Behaviours\ObjectBehavious\Bases                                                          |          4 |         94 |          0 |          7 |        101 |
+| Assets\Scripts\Behaviours\ObjectBehavious\Bases (Files)                                                  |          1 |         28 |          0 |          1 |         29 |
+| Assets\Scripts\Behaviours\ObjectBehavious\Bases\Spawners                                                 |          3 |         66 |          0 |          6 |         72 |
+| Assets\Scripts\Behaviours\ObjectBehavious\BulletBehaviours                                               |          4 |        205 |          0 |          7 |        212 |
+| Assets\Scripts\CollisionHandlers                                                                         |          6 |        315 |          0 |          7 |        322 |
+| Assets\Scripts\Factories                                                                                 |          2 |        182 |          0 |          2 |        184 |
+| Assets\Scripts\GameController                                                                            |          4 |        512 |          0 |          5 |        517 |
+| Assets\Scripts\Input                                                                                     |          1 |        119 |          0 |         12 |        131 |
+| Assets\Scripts\MenuControls                                                                              |          3 |         94 |          2 |          7 |        103 |
+| Assets\Scripts\UI                                                                                        |          8 |        246 |          0 |         14 |        260 |
+| Assets\Scripts\UI (Files)                                                                                |          2 |         36 |          0 |          4 |         40 |
+| Assets\Scripts\UI\HUD                                                                                    |          6 |        210 |          0 |         10 |        220 |
+| Assets\Scripts\Utilities                                                                                 |          4 |        312 |          0 |          7 |        319 |
+| Assets\Scripts\Visuals                                                                                   |          1 |         20 |          0 |          2 |         22 |
+| Logs                                                                                                     |         14 |    308,122 |          0 |        653 |    308,775 |
+| Packages                                                                                                 |          2 |        507 |          0 |          2 |        509 |
++----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                                 | language | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| d:\Unity\LOFBR\.vs\LoFBR.slnx\v18\DocumentLayout.backup.json                                             | JSON     |         12 |          0 |          0 |         12 |
+| d:\Unity\LOFBR\.vs\LoFBR.slnx\v18\DocumentLayout.json                                                    | JSON     |         12 |          0 |          0 |         12 |
+| d:\Unity\LOFBR\.vs\VSWorkspaceState.json                                                                 | JSON     |          6 |          0 |          0 |          6 |
+| d:\Unity\LOFBR\Analytics.csproj                                                                          | XML      |      1,187 |          1 |          1 |      1,189 |
+| d:\Unity\LOFBR\Assembly-CSharp.csproj                                                                    | XML      |      1,238 |          1 |          1 |      1,240 |
+| d:\Unity\LOFBR\Assets\MobileDependencyResolver\Editor\CHANGELOG.md                                       | Markdown |      1,215 |          0 |        211 |      1,426 |
+| d:\Unity\LOFBR\Assets\MobileDependencyResolver\Editor\README.md                                          | Markdown |        680 |          0 |        224 |        904 |
+| d:\Unity\LOFBR\Assets\PlayerInputActions.cs                                                              | C#       |      1,340 |        384 |         27 |      1,751 |
+| d:\Unity\LOFBR\Assets\Resources\BillingMode.json                                                         | JSON     |          1 |          0 |          0 |          1 |
+| d:\Unity\LOFBR\Assets\Scripts\.VSCodeCounter\2022-09-23_22-51-57\details.md                              | Markdown |         85 |          0 |          6 |         91 |
+| d:\Unity\LOFBR\Assets\Scripts\.VSCodeCounter\2022-09-23_22-51-57\diff-details.md                         | Markdown |          9 |          0 |          6 |         15 |
+| d:\Unity\LOFBR\Assets\Scripts\.VSCodeCounter\2022-09-23_22-51-57\diff.csv                                | CSV      |          2 |          0 |          0 |          2 |
+| d:\Unity\LOFBR\Assets\Scripts\.VSCodeCounter\2022-09-23_22-51-57\diff.md                                 | Markdown |         12 |          0 |          7 |         19 |
+| d:\Unity\LOFBR\Assets\Scripts\.VSCodeCounter\2022-09-23_22-51-57\results.csv                             | CSV      |         78 |          0 |          0 |         78 |
+| d:\Unity\LOFBR\Assets\Scripts\.VSCodeCounter\2022-09-23_22-51-57\results.json                            | JSON     |          1 |          0 |          0 |          1 |
+| d:\Unity\LOFBR\Assets\Scripts\.VSCodeCounter\2022-09-23_22-51-57\results.md                              | Markdown |         14 |          0 |          7 |         21 |
+| d:\Unity\LOFBR\Assets\Scripts\.VSCodeCounter\2022-09-23_22-52-37\details.md                              | Markdown |         85 |          0 |          6 |         91 |
+| d:\Unity\LOFBR\Assets\Scripts\.VSCodeCounter\2022-09-23_22-52-37\diff-details.md                         | Markdown |          9 |          0 |          6 |         15 |
+| d:\Unity\LOFBR\Assets\Scripts\.VSCodeCounter\2022-09-23_22-52-37\diff.csv                                | CSV      |          2 |          0 |          0 |          2 |
+| d:\Unity\LOFBR\Assets\Scripts\.VSCodeCounter\2022-09-23_22-52-37\diff.md                                 | Markdown |         12 |          0 |          7 |         19 |
+| d:\Unity\LOFBR\Assets\Scripts\.VSCodeCounter\2022-09-23_22-52-37\results.csv                             | CSV      |         78 |          0 |          0 |         78 |
+| d:\Unity\LOFBR\Assets\Scripts\.VSCodeCounter\2022-09-23_22-52-37\results.json                            | JSON     |          1 |          0 |          0 |          1 |
+| d:\Unity\LOFBR\Assets\Scripts\.VSCodeCounter\2022-09-23_22-52-37\results.md                              | Markdown |         14 |          0 |          7 |         21 |
+| d:\Unity\LOFBR\Assets\Scripts\AI\AIHandler.cs                                                            | C#       |        165 |          0 |          3 |        168 |
+| d:\Unity\LOFBR\Assets\Scripts\AI\AIModule.cs                                                             | C#       |         16 |          0 |          1 |         17 |
+| d:\Unity\LOFBR\Assets\Scripts\AI\AIUtils.cs                                                              | C#       |         29 |          0 |          1 |         30 |
+| d:\Unity\LOFBR\Assets\Scripts\AI\DistanceHandler.cs                                                      | C#       |         60 |          0 |          1 |         61 |
+| d:\Unity\LOFBR\Assets\Scripts\AI\HealthChecker.cs                                                        | C#       |         43 |          0 |          1 |         44 |
+| d:\Unity\LOFBR\Assets\Scripts\AI\MovementAI.cs                                                           | C#       |        260 |          2 |          1 |        263 |
+| d:\Unity\LOFBR\Assets\Scripts\AI\Utilities\ClosestFinder.cs                                              | C#       |        165 |          0 |          1 |        166 |
+| d:\Unity\LOFBR\Assets\Scripts\AI\Utilities\CombatUtils.cs                                                | C#       |         57 |          0 |          2 |         59 |
+| d:\Unity\LOFBR\Assets\Scripts\AI\Utilities\Skillset.cs                                                   | C#       |        141 |          4 |          1 |        146 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\Ability.cs                                                       | C#       |        250 |          2 |          2 |        254 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\BuildWall.cs                                                     | C#       |         82 |          8 |          2 |         92 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\Dash.cs                                                          | C#       |         49 |          0 |          2 |         51 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\Immolate.cs                                                      | C#       |         92 |          0 |          2 |         94 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\ManaDrain.cs                                                     | C#       |         62 |          0 |          2 |         64 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\MarkForDeath.cs                                                  | C#       |         62 |          0 |          3 |         65 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\Melee.cs                                                         | C#       |        106 |          1 |          1 |        108 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\Parry.cs                                                         | C#       |         65 |          0 |          2 |         67 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\ShootBasic.cs                                                    | C#       |         99 |          0 |          1 |        100 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\ShootHeal.cs                                                     | C#       |         47 |          0 |          1 |         48 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\ShootLeft.cs                                                     | C#       |         23 |          0 |          1 |         24 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\ShootPoison.cs                                                   | C#       |         29 |          0 |          3 |         32 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\ShootRight.cs                                                    | C#       |         23 |          0 |          1 |         24 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\Stomp.cs                                                         | C#       |        110 |          0 |          5 |        115 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\ThrowBall.cs                                                     | C#       |         56 |          0 |          2 |         58 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\UltAttack.cs                                                     | C#       |         67 |          0 |          2 |         69 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\UltAttackHeal.cs                                                 | C#       |         34 |          0 |          2 |         36 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\UltBladeFlurry.cs                                                | C#       |         96 |          0 |          2 |         98 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\UltRez.cs                                                        | C#       |         47 |          0 |          2 |         49 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\UseArmorAura.cs                                                  | C#       |         28 |          0 |          2 |         30 |
+| d:\Unity\LOFBR\Assets\Scripts\Abilities\UseShield.cs                                                     | C#       |         58 |          0 |          3 |         61 |
+| d:\Unity\LOFBR\Assets\Scripts\Audio\AudioManager.cs                                                      | C#       |         79 |          0 |          2 |         81 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\CharacterBehaviours\CharacterBehaviour.cs                       | C#       |         37 |          0 |          1 |         38 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\CharacterBehaviours\DamageableEntity.cs                         | C#       |         77 |          0 |          1 |         78 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\CharacterBehaviours\MainPlayers\EnemyPlayerBehaviour.cs         | C#       |         35 |          0 |          2 |         37 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\CharacterBehaviours\MainPlayers\MainPlayerBehaviour.cs          | C#       |         66 |          0 |          0 |         66 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\CharacterBehaviours\MainPlayers\PlayerController.cs             | C#       |         39 |          1 |          2 |         42 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\CharacterBehaviours\Mobs\MirrorImageBehaviour.cs                | C#       |         42 |          0 |          0 |         42 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\CharacterBehaviours\Mobs\MobBehaviour.cs                        | C#       |        118 |          0 |          1 |        119 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\CharacterBehaviours\TowerBehaviours\TowerBehaviour.cs           | C#       |         49 |          0 |          2 |         51 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\CharacterBehaviours\WallBehaviour.cs                            | C#       |         79 |          0 |          0 |         79 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\CharacterBehaviours\WallMember.cs                               | C#       |         22 |          0 |          0 |         22 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\ObjectBehavious\Bases\Base.cs                                   | C#       |         28 |          0 |          1 |         29 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\ObjectBehavious\Bases\Spawners\EnemySpawner.cs                  | C#       |          7 |          0 |          2 |          9 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\ObjectBehavious\Bases\Spawners\FriendlySpawner.cs               | C#       |          7 |          0 |          2 |          9 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\ObjectBehavious\Bases\Spawners\SpawnerBehaviour.cs              | C#       |         52 |          0 |          2 |         54 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\ObjectBehavious\BulletBehaviours\BulletBehaviour.cs             | C#       |         69 |          0 |          2 |         71 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\ObjectBehavious\BulletBehaviours\BulletBehaviourFollowing.cs    | C#       |         86 |          0 |          1 |         87 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\ObjectBehavious\BulletBehaviours\BulletBehaviourFollowingUlt.cs | C#       |         23 |          0 |          2 |         25 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\ObjectBehavious\BulletBehaviours\Shock.cs                       | C#       |         27 |          0 |          2 |         29 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\ObjectBehavious\FireBehaviour.cs                                | C#       |         16 |          0 |          2 |         18 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\ObjectBehavious\ManaDrainerBehaviour.cs                         | C#       |         41 |          0 |          2 |         43 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\ObjectBehavious\MeleeColliderBehaviour.cs                       | C#       |         16 |          0 |          2 |         18 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\ObjectBehavious\ParryColliderBehaviour.cs                       | C#       |         31 |          3 |          2 |         36 |
+| d:\Unity\LOFBR\Assets\Scripts\Behaviours\ObjectBehavious\ShieldBehaviour.cs                              | C#       |         15 |          0 |          2 |         17 |
+| d:\Unity\LOFBR\Assets\Scripts\CollisionHandlers\ArmorAura.cs                                             | C#       |         76 |          0 |          1 |         77 |
+| d:\Unity\LOFBR\Assets\Scripts\CollisionHandlers\CollisionHandler.cs                                      | C#       |         42 |          0 |          1 |         43 |
+| d:\Unity\LOFBR\Assets\Scripts\CollisionHandlers\DamageCollisionHandler.cs                                | C#       |         68 |          0 |          1 |         69 |
+| d:\Unity\LOFBR\Assets\Scripts\CollisionHandlers\DetectBulletsCollisionHandler.cs                         | C#       |         44 |          0 |          1 |         45 |
+| d:\Unity\LOFBR\Assets\Scripts\CollisionHandlers\RegenAura.cs                                             | C#       |         64 |          0 |          2 |         66 |
+| d:\Unity\LOFBR\Assets\Scripts\CollisionHandlers\StackingHandler.cs                                       | C#       |         21 |          0 |          1 |         22 |
+| d:\Unity\LOFBR\Assets\Scripts\Factories\BulletFactory.cs                                                 | C#       |        119 |          0 |          1 |        120 |
+| d:\Unity\LOFBR\Assets\Scripts\Factories\CharacterFactory.cs                                              | C#       |         63 |          0 |          1 |         64 |
+| d:\Unity\LOFBR\Assets\Scripts\GameController\CharacterTracker.cs                                         | C#       |        267 |          0 |          1 |        268 |
+| d:\Unity\LOFBR\Assets\Scripts\GameController\MasterScript.cs                                             | C#       |        203 |          0 |          0 |        203 |
+| d:\Unity\LOFBR\Assets\Scripts\GameController\MoveAllEnemy.cs                                             | C#       |         21 |          0 |          2 |         23 |
+| d:\Unity\LOFBR\Assets\Scripts\GameController\MoveAllFriendly.cs                                          | C#       |         21 |          0 |          2 |         23 |
+| d:\Unity\LOFBR\Assets\Scripts\Input\PlayerInputRouter.cs                                                 | C#       |        119 |          0 |         12 |        131 |
+| d:\Unity\LOFBR\Assets\Scripts\MenuControls\PauseGame.cs                                                  | C#       |         55 |          0 |          2 |         57 |
+| d:\Unity\LOFBR\Assets\Scripts\MenuControls\SetSkillSet.cs                                                | C#       |         18 |          0 |          1 |         19 |
+| d:\Unity\LOFBR\Assets\Scripts\MenuControls\changeScene.cs                                                | C#       |         21 |          2 |          4 |         27 |
+| d:\Unity\LOFBR\Assets\Scripts\UI\CameraController.cs                                                     | C#       |         19 |          0 |          2 |         21 |
+| d:\Unity\LOFBR\Assets\Scripts\UI\CameraRotationMenu.cs                                                   | C#       |         17 |          0 |          2 |         19 |
+| d:\Unity\LOFBR\Assets\Scripts\UI\HUD\DisplayMana.cs                                                      | C#       |         24 |          0 |          2 |         26 |
+| d:\Unity\LOFBR\Assets\Scripts\UI\HUD\ExpDisplay.cs                                                       | C#       |         28 |          0 |          2 |         30 |
+| d:\Unity\LOFBR\Assets\Scripts\UI\HUD\HUD.cs                                                              | C#       |         43 |          0 |          2 |         45 |
+| d:\Unity\LOFBR\Assets\Scripts\UI\HUD\LookAtCamera.cs                                                     | C#       |         16 |          0 |          2 |         18 |
+| d:\Unity\LOFBR\Assets\Scripts\UI\HUD\Reload.cs                                                           | C#       |         70 |          0 |          1 |         71 |
+| d:\Unity\LOFBR\Assets\Scripts\UI\HUD\healthdisplay.cs                                                    | C#       |         29 |          0 |          1 |         30 |
+| d:\Unity\LOFBR\Assets\Scripts\Utilities\Damage.cs                                                        | C#       |         58 |          0 |          1 |         59 |
+| d:\Unity\LOFBR\Assets\Scripts\Utilities\Health.cs                                                        | C#       |        149 |          0 |          2 |        151 |
+| d:\Unity\LOFBR\Assets\Scripts\Utilities\Level.cs                                                         | C#       |         43 |          0 |          2 |         45 |
+| d:\Unity\LOFBR\Assets\Scripts\Utilities\Mana.cs                                                          | C#       |         62 |          0 |          2 |         64 |
+| d:\Unity\LOFBR\Assets\Scripts\Visuals\MaterialLibrary.cs                                                 | C#       |         20 |          0 |          2 |         22 |
+| d:\Unity\LOFBR\Assets\TeamMaterials.cs                                                                   | C#       |          9 |          0 |          2 |         11 |
+| d:\Unity\LOFBR\IAPResolver.csproj                                                                        | XML      |      1,188 |          1 |          1 |      1,190 |
+| d:\Unity\LOFBR\LoFBR.slnx                                                                                | XML      |         71 |          0 |          1 |         72 |
+| d:\Unity\LOFBR\Logs\AssetImportWorker0-prev.log                                                          | Log      |        277 |          0 |         13 |        290 |
+| d:\Unity\LOFBR\Logs\AssetImportWorker0.log                                                               | Log      |        234 |          0 |          6 |        240 |
+| d:\Unity\LOFBR\Logs\AssetImportWorker1-prev.log                                                          | Log      |        235 |          0 |          7 |        242 |
+| d:\Unity\LOFBR\Logs\AssetImportWorker1.log                                                               | Log      |        227 |          0 |          5 |        232 |
+| d:\Unity\LOFBR\Logs\AssetImportWorker2-prev.log                                                          | Log      |      2,043 |          0 |         61 |      2,104 |
+| d:\Unity\LOFBR\Logs\AssetImportWorker2.log                                                               | Log      |    151,548 |          0 |        154 |    151,702 |
+| d:\Unity\LOFBR\Logs\AssetImportWorker3-prev.log                                                          | Log      |      1,910 |          0 |         42 |      1,952 |
+| d:\Unity\LOFBR\Logs\AssetImportWorker3.log                                                               | Log      |    151,338 |          0 |        124 |    151,462 |
+| d:\Unity\LOFBR\Logs\Packages-Update.log                                                                  | Log      |         80 |          0 |         13 |         93 |
+| d:\Unity\LOFBR\Logs\shadercompiler-AssetImportWorker0-0.log                                              | Log      |          4 |          0 |          3 |          7 |
+| d:\Unity\LOFBR\Logs\shadercompiler-AssetImportWorker1-0.log                                              | Log      |          4 |          0 |          3 |          7 |
+| d:\Unity\LOFBR\Logs\shadercompiler-AssetImportWorker2-0.log                                              | Log      |        110 |          0 |        110 |        220 |
+| d:\Unity\LOFBR\Logs\shadercompiler-AssetImportWorker3-0.log                                              | Log      |        110 |          0 |        110 |        220 |
+| d:\Unity\LOFBR\Logs\shadercompiler-UnityShaderCompiler.exe-0.log                                         | Log      |          2 |          0 |          2 |          4 |
+| d:\Unity\LOFBR\NavMeshComponents.csproj                                                                  | XML      |      1,149 |          1 |          1 |      1,151 |
+| d:\Unity\LOFBR\NavMeshComponentsEditor.csproj                                                            | XML      |      1,184 |          1 |          1 |      1,186 |
+| d:\Unity\LOFBR\Packages\manifest.json                                                                    | JSON     |         53 |          0 |          1 |         54 |
+| d:\Unity\LOFBR\Packages\packages-lock.json                                                               | JSON     |        454 |          0 |          1 |        455 |
+| d:\Unity\LOFBR\Purchasing.Common.csproj                                                                  | XML      |      1,166 |          1 |          1 |      1,168 |
+| d:\Unity\LOFBR\Unity.2D.Sprite.AIIntegration.Editor.csproj                                               | XML      |      1,187 |          1 |          1 |      1,189 |
+| d:\Unity\LOFBR\Unity.2D.Sprite.Editor.csproj                                                             | XML      |      1,246 |          1 |          1 |      1,248 |
+| d:\Unity\LOFBR\Unity.2D.Tilemap.Editor.csproj                                                            | XML      |      1,308 |          1 |          1 |      1,310 |
+| d:\Unity\LOFBR\Unity.AI.Navigation.Editor.ConversionSystem.csproj                                        | XML      |      1,200 |          1 |          1 |      1,202 |
+| d:\Unity\LOFBR\Unity.AI.Navigation.Editor.csproj                                                         | XML      |      1,198 |          1 |          1 |      1,200 |
+| d:\Unity\LOFBR\Unity.AI.Navigation.Updater.csproj                                                        | XML      |      1,196 |          1 |          1 |      1,198 |
+| d:\Unity\LOFBR\Unity.AI.Navigation.csproj                                                                | XML      |      1,167 |          1 |          1 |      1,169 |
+| d:\Unity\LOFBR\Unity.Analytics.DataPrivacy.csproj                                                        | XML      |      1,163 |          1 |          1 |      1,165 |
+| d:\Unity\LOFBR\Unity.CollabProxy.Editor.csproj                                                           | XML      |      1,191 |          1 |          1 |      1,193 |
+| d:\Unity\LOFBR\Unity.InputSystem.DocCodeSamples.csproj                                                   | XML      |      1,138 |          1 |          1 |      1,140 |
+| d:\Unity\LOFBR\Unity.InputSystem.ForUI.csproj                                                            | XML      |      1,164 |          1 |          1 |      1,166 |
+| d:\Unity\LOFBR\Unity.InputSystem.TestFramework.csproj                                                    | XML      |      1,109 |          1 |          1 |      1,111 |
+| d:\Unity\LOFBR\Unity.InputSystem.csproj                                                                  | XML      |      1,573 |          1 |          1 |      1,575 |
+| d:\Unity\LOFBR\Unity.InternalAPIEngineBridge.004.csproj                                                  | XML      |      1,161 |          1 |          1 |      1,163 |
+| d:\Unity\LOFBR\Unity.Multiplayer.Center.Common.csproj                                                    | XML      |      1,166 |          1 |          1 |      1,168 |
+| d:\Unity\LOFBR\Unity.Multiplayer.Center.Editor.csproj                                                    | XML      |      1,230 |          1 |          1 |      1,232 |
+| d:\Unity\LOFBR\Unity.PlasticSCM.Editor.Entities.csproj                                                   | XML      |      1,189 |          1 |          1 |      1,191 |
+| d:\Unity\LOFBR\Unity.PlasticSCM.Editor.csproj                                                            | XML      |      1,648 |          1 |          1 |      1,650 |
+| d:\Unity\LOFBR\Unity.Rider.Editor.csproj                                                                 | XML      |      1,181 |          1 |          1 |      1,183 |
+| d:\Unity\LOFBR\Unity.Services.Analytics.Editor.csproj                                                    | XML      |      1,201 |          1 |          1 |      1,203 |
+| d:\Unity\LOFBR\Unity.Services.Analytics.csproj                                                           | XML      |      1,142 |          1 |          1 |      1,144 |
+| d:\Unity\LOFBR\Unity.Services.Core.Analytics.csproj                                                      | XML      |      1,163 |          1 |          1 |      1,165 |
+| d:\Unity\LOFBR\Unity.Services.Core.Components.csproj                                                     | XML      |      1,167 |          1 |          1 |      1,169 |
+| d:\Unity\LOFBR\Unity.Services.Core.Configuration.Editor.csproj                                           | XML      |      1,198 |          1 |          1 |      1,200 |
+| d:\Unity\LOFBR\Unity.Services.Core.Configuration.csproj                                                  | XML      |      1,174 |          1 |          1 |      1,176 |
+| d:\Unity\LOFBR\Unity.Services.Core.Device.csproj                                                         | XML      |      1,169 |          1 |          1 |      1,171 |
+| d:\Unity\LOFBR\Unity.Services.Core.Editor.csproj                                                         | XML      |      1,350 |          1 |          1 |      1,352 |
+| d:\Unity\LOFBR\Unity.Services.Core.Environments.Editor.csproj                                            | XML      |      1,283 |          1 |          1 |      1,285 |
+| d:\Unity\LOFBR\Unity.Services.Core.Environments.Internal.csproj                                          | XML      |      1,163 |          1 |          1 |      1,165 |
+| d:\Unity\LOFBR\Unity.Services.Core.Environments.csproj                                                   | XML      |      1,164 |          1 |          1 |      1,166 |
+| d:\Unity\LOFBR\Unity.Services.Core.Internal.csproj                                                       | XML      |      1,242 |          1 |          1 |      1,244 |
+| d:\Unity\LOFBR\Unity.Services.Core.Networking.csproj                                                     | XML      |      1,165 |          1 |          1 |      1,167 |
+| d:\Unity\LOFBR\Unity.Services.Core.Registration.csproj                                                   | XML      |      1,171 |          1 |          1 |      1,173 |
+| d:\Unity\LOFBR\Unity.Services.Core.Scheduler.csproj                                                      | XML      |      1,169 |          1 |          1 |      1,171 |
+| d:\Unity\LOFBR\Unity.Services.Core.Telemetry.csproj                                                      | XML      |      1,171 |          1 |          1 |      1,173 |
+| d:\Unity\LOFBR\Unity.Services.Core.Threading.csproj                                                      | XML      |      1,164 |          1 |          1 |      1,166 |
+| d:\Unity\LOFBR\Unity.Services.Core.csproj                                                                | XML      |      1,176 |          1 |          1 |      1,178 |
+| d:\Unity\LOFBR\Unity.TextMeshPro.Editor.csproj                                                           | XML      |      1,242 |          1 |          1 |      1,244 |
+| d:\Unity\LOFBR\Unity.TextMeshPro.csproj                                                                  | XML      |      1,222 |          1 |          1 |      1,224 |
+| d:\Unity\LOFBR\Unity.Timeline.Editor.csproj                                                              | XML      |      1,467 |          1 |          1 |      1,469 |
+| d:\Unity\LOFBR\Unity.Timeline.csproj                                                                     | XML      |      1,238 |          1 |          1 |      1,240 |
+| d:\Unity\LOFBR\Unity.VisualStudio.Editor.csproj                                                          | XML      |      1,185 |          1 |          1 |      1,187 |
+| d:\Unity\LOFBR\UnityEditor.Purchasing.csproj                                                             | XML      |      1,250 |          1 |          1 |      1,252 |
+| d:\Unity\LOFBR\UnityEditor.SpatialTracking.csproj                                                        | XML      |      1,188 |          1 |          1 |      1,190 |
+| d:\Unity\LOFBR\UnityEditor.TestRunner.csproj                                                             | XML      |      1,374 |          1 |          1 |      1,376 |
+| d:\Unity\LOFBR\UnityEditor.UI.Analytics.csproj                                                           | XML      |      1,190 |          1 |          1 |      1,192 |
+| d:\Unity\LOFBR\UnityEditor.UI.csproj                                                                     | XML      |      1,223 |          1 |          1 |      1,225 |
+| d:\Unity\LOFBR\UnityEditor.XR.LegacyInputHelpers.csproj                                                  | XML      |      1,195 |          1 |          1 |      1,197 |
+| d:\Unity\LOFBR\UnityEngine.Advertisements.DevX.Editor.csproj                                             | XML      |      1,153 |          1 |          1 |      1,155 |
+| d:\Unity\LOFBR\UnityEngine.Advertisements.Editor.csproj                                                  | XML      |      1,201 |          1 |          1 |      1,203 |
+| d:\Unity\LOFBR\UnityEngine.Advertisements.csproj                                                         | XML      |      1,215 |          1 |          1 |      1,217 |
+| d:\Unity\LOFBR\UnityEngine.Purchasing.AppleCore.csproj                                                   | XML      |      1,163 |          1 |          1 |      1,165 |
+| d:\Unity\LOFBR\UnityEngine.Purchasing.AppleMacosStub.csproj                                              | XML      |      1,164 |          1 |          1 |      1,166 |
+| d:\Unity\LOFBR\UnityEngine.Purchasing.AppleStub.csproj                                                   | XML      |      1,164 |          1 |          1 |      1,166 |
+| d:\Unity\LOFBR\UnityEngine.Purchasing.Codeless.csproj                                                    | XML      |      1,172 |          1 |          1 |      1,174 |
+| d:\Unity\LOFBR\UnityEngine.Purchasing.SecurityCore.csproj                                                | XML      |      1,164 |          1 |          1 |      1,166 |
+| d:\Unity\LOFBR\UnityEngine.Purchasing.SecurityStub.csproj                                                | XML      |      1,166 |          1 |          1 |      1,168 |
+| d:\Unity\LOFBR\UnityEngine.Purchasing.Stores.csproj                                                      | XML      |      1,260 |          1 |          1 |      1,262 |
+| d:\Unity\LOFBR\UnityEngine.Purchasing.WinRTCore.csproj                                                   | XML      |      1,163 |          1 |          1 |      1,165 |
+| d:\Unity\LOFBR\UnityEngine.Purchasing.WinRTStub.csproj                                                   | XML      |      1,163 |          1 |          1 |      1,165 |
+| d:\Unity\LOFBR\UnityEngine.Purchasing.csproj                                                             | XML      |      1,241 |          1 |          1 |      1,243 |
+| d:\Unity\LOFBR\UnityEngine.SpatialTracking.csproj                                                        | XML      |      1,163 |          1 |          1 |      1,165 |
+| d:\Unity\LOFBR\UnityEngine.TestRunner.csproj                                                             | XML      |      1,239 |          1 |          1 |      1,241 |
+| d:\Unity\LOFBR\UnityEngine.UI.csproj                                                                     | XML      |      1,244 |          1 |          1 |      1,246 |
+| d:\Unity\LOFBR\UnityEngine.XR.LegacyInputHelpers.csproj                                                  | XML      |      1,165 |          1 |          1 |      1,167 |
+| Total                                                                                                    |          |    403,592 |        478 |      1,389 |    405,459 |
++----------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

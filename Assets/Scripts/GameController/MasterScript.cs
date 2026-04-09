@@ -85,6 +85,13 @@ public class MasterScript : MonoBehaviour
                         target.y,
             Mathf.Clamp(target.z, friendlySpawn.GetZPos(), enemySpawn.GetZPos()));
     }
+    public Vector3 CorrectTarget(Vector3 target, float border)
+    {
+        return new Vector3(
+            Mathf.Clamp(target.x, lowerAreaLimitX + border, upperAreaLimitX - border),
+                        target.y,
+            Mathf.Clamp(target.z, friendlySpawn.GetZPos() + border, enemySpawn.GetZPos()) - border);
+    }
     public void DieAndRespawn(CombatUtils.Team team)
     {
         if (team == CombatUtils.Team.Player)

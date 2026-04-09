@@ -9,7 +9,7 @@ public abstract class MainPlayerBehaviour : CharacterBehaviour
 {
     public Level Levelsys;
     public Mana manasys;
-    protected int ClassID;
+    public int ClassID;
     protected Skillset skillSet;
     public void Init(int classID)
     {

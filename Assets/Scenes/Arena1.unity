@@ -5330,6 +5330,8 @@ MonoBehaviour:
     type: 3}
   WallMember: {fileID: 752268847723358216, guid: 3a288c12ce1ba544eb3d75aafeb41199,
     type: 3}
+  MirrorEntity: {fileID: 752268847723358216, guid: 54b02352cbe30854895cd0cb3b73d099,
+    type: 3}
 --- !u!114 &1772391478
 MonoBehaviour:
   m_ObjectHideFlags: 0

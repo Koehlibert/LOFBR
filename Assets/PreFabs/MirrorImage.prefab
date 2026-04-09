@@ -101,10 +101,11 @@ MonoBehaviour:
   animator: {fileID: 0}
   enemyBase: {fileID: 0}
   yourbase: {fileID: 0}
-  aIHandler: {fileID: 0}
-  healthbarOutline: {fileID: 0}
+  healthbarOutline: {fileID: 1971918150678553023}
   healthbar: {fileID: 6349946008277320679}
-  healthbarbg: {fileID: 5630666503110785088}
+  aIHandler: {fileID: 0}
+  manasys: {fileID: 0}
+  ClassID: 0
 --- !u!1 &5791503152538194715
 GameObject:
   m_ObjectHideFlags: 0

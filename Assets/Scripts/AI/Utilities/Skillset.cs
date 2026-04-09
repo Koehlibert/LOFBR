@@ -54,8 +54,10 @@ public class SkillsetFighter : Skillset
                 Handler.AddAbility(secondShooter, HUD.Instance.SecondaryReloader);
                 break;
             case 5:
-                Ability ultAttack = Handler.gameObject.AddComponent<UltAttack>();
-                Handler.AddAbility(ultAttack, HUD.Instance.UltReloader);
+                Ability mirrorImage = Handler.gameObject.AddComponent<MirrorImage>();
+                Handler.AddAbility(mirrorImage, HUD.Instance.UltReloader);
+                /* Ability ultAttack = Handler.gameObject.AddComponent<UltAttack>();
+                Handler.AddAbility(ultAttack, HUD.Instance.UltReloader); */
                 break;
             default:
                 break;
