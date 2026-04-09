@@ -14,16 +14,22 @@ public class TowerBehaviour : CharacterBehaviour
     public override void Init()
     {
         base.Init();
-        hpsys.Initialize(300, 0, 0, 20);
-        aIHandler = gameObject.AddComponent<AIHandler>();
-        ThrowBall throwBall = gameObject.AddComponent<ThrowBall>();
-        aIHandler.Init(this, new List<Ability> { throwBall }, new List<AIModule>(), 0, false);
-        aIHandler.LockMovement(Mathf.Infinity);
     }
     public void Init(CombatUtils.Team team)
     {
         this.Team = team;
         Init();
+    }
+    protected override void InitializeAIHandler()
+    {
+        base.InitializeAIHandler();
+        ThrowBall throwBall = gameObject.AddComponent<ThrowBall>();
+        aIHandler.Init(this, new List<Ability> { throwBall }, new List<AIModule>(), 0, false);
+        aIHandler.LockMovement(Mathf.Infinity);
+    }
+    protected override void InitializeHPSys()
+    {
+        hpsys.Initialize(300, 0, 0, 20);
     }
     protected override void Die()
     {
