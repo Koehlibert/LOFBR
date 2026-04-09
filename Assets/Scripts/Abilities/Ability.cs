@@ -180,6 +180,58 @@ public abstract class DamagingAbility : Ability
 {
     protected abstract DamageInfo GetDamageValues();
 }
+public abstract class SelectionAbility : Ability
+{
+    protected bool IsSelecting = false;
+    protected override void InteractiveCheck()
+    {
+        if (!IsSelecting)
+        {
+            if (InputPressed() && loaded && CheckManaCost())
+            {
+                ToggleSelecting();
+            }
+        }
+        else
+        {
+            if (CancelInputPressed())
+            {
+                DisableSelection();
+                return;
+            }
+            HandleSelection();
+        }
+    }
+    protected virtual void ToggleSelecting()
+    {
+        IsSelecting = !IsSelecting;
+        if (IsSelecting)
+        {
+            Handler.DisableOtherAbilities(this);
+            //movementAI.LockMovementAI();
+            Time.timeScale = 0.2f;
+        }
+        else
+        {
+            Handler.ReenableOtherAbilities();
+            //movementAI.UnlockMovementAI();
+            Time.timeScale = 1;
+        }
+    }
+    protected virtual void DisableSelection()
+    {
+        ToggleSelecting();
+    }
+    protected virtual bool ConfirmInputPressed()
+    {
+        return PlayerInputRouter.Instance.PrimaryPressedThisFrame;
+    }
+    protected virtual bool CancelInputPressed()
+    {
+        return PlayerInputRouter.Instance.SecondaryPressedThisFrame;
+    }
+    protected abstract void HandleSelection();
+}
 public class AbilityInfo
 {
     public float ManaCost;

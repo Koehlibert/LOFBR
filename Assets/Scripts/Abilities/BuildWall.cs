@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
-public class BuildWall : Ability
+public class BuildWall : SelectionAbility
 {
-    private bool IsSelecting = false;
     //private float MarkDistance = 30f;
     private float MemberWidth = 2f;
     private GameObject Wall = null;
@@ -17,56 +16,25 @@ public class BuildWall : Ability
     {
         reloadtime = 20;
     }
-    protected override void InteractiveCheck()
+    protected override void HandleSelection()
     {
-        if (!IsSelecting)
+        if (Wall == null)
+            Wall = CreateWall();
+        Ray ray = Camera.main.ScreenPointToRay(PlayerInputRouter.Instance.Look);
+        Plane groundPlane = new(Vector3.up, Vector3.zero);
+        if (groundPlane.Raycast(ray, out float distance))
         {
-            if (InputPressed() && loaded && CheckManaCost())
-            {
-                ToggleSelecting();
-            }
+            Vector3 worldPoint = ray.GetPoint(distance);
+            worldPoint.y = 0;
+            worldPoint.x = CorrectWallX(worldPoint.x, GetMemberCount());
+            Wall.transform.position = worldPoint;
         }
-        else
+        if (ConfirmInputPressed())
         {
-            if (Wall == null)
-                Wall = CreateWall();
-            Ray ray = Camera.main.ScreenPointToRay(PlayerInputRouter.Instance.Look);
-            Plane groundPlane = new(Vector3.up, Vector3.zero);
-            if (groundPlane.Raycast(ray, out float distance))
-            {
-                Vector3 worldPoint = ray.GetPoint(distance);
-                worldPoint.y = 0;
-                worldPoint.x = CorrectWallX(worldPoint.x, GetMemberCount());
-                Wall.transform.position = worldPoint;
-            }
-            if (ConfirmInputPressed())
-            {
-                ToggleSelecting();
-                AbilityAction();
-            }
+            ToggleSelecting();
+            AbilityAction();
         }
     }
-    private void ToggleSelecting()
-    {
-        IsSelecting = !IsSelecting;
-        if (IsSelecting)
-        {
-            Handler.DisableOtherAbilities(this);
-            Time.timeScale = 0.35f;
-        }
-        else
-        {
-            Handler.ReenableOtherAbilities();
-            Time.timeScale = 1;
-        }
-    }
-    /* protected override void AbilityAction()
-    {
-        if (!IsInteractive)
-        {
-            AbilityAction(Handler.closestEnemy.GetComponent<DamageableEntity>());
-        }
-    } */
     protected override void AbilityAction()
     {
         base.AbilityAction();
@@ -80,7 +48,6 @@ public class BuildWall : Ability
     protected override bool InputPressed()
     {
         return PlayerInputRouter.Instance.SkillPressedThisFrame;
-
     }
     /* protected override void AICheck()
     {
@@ -111,9 +78,11 @@ public class BuildWall : Ability
     {
         return Mathf.Clamp(x, MasterScript.Instance.lowerAreaLimitX + memberCount / 2 * MemberWidth, MasterScript.Instance.upperAreaLimitX - memberCount / 2 * MemberWidth);
     }
-    protected bool ConfirmInputPressed()
+    protected override void DisableSelection()
     {
-        return PlayerInputRouter.Instance.SkillPressedThisFrame;
+        if (Wall != null)
+            Destroy(Wall);
+        base.DisableSelection();
     }
     protected GameObject CreateWall()
     {

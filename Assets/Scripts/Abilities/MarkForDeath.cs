@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.XR;
 
-public class MarkForDeath : Ability
+public class MarkForDeath : SelectionAbility
 {
-    private bool IsSelecting = false;
     private float MarkDistance = 30f;
     protected override AbilityInfo GetAbilityInfo()
     {
@@ -15,49 +15,25 @@ public class MarkForDeath : Ability
     {
         reloadtime = 12;
     }
-    protected override void InteractiveCheck()
+    protected override void HandleSelection()
     {
-        if (!IsSelecting)
+        Ray ray = Camera.main.ScreenPointToRay(PlayerInputRouter.Instance.Look);
+        DamageableEntity damageableEntity = null;
+        if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            if (InputPressed() && loaded && CheckManaCost())
+            damageableEntity = hit.collider.gameObject.GetComponent<DamageableEntity>();
+            if (damageableEntity != null && damageableEntity.Team != Handler.Owner.Team)
             {
-                ToggleSelecting();
+                damageableEntity.MarkHealthbar();
             }
         }
-        else
+        if (InputPressed())
         {
-            Ray ray = Camera.main.ScreenPointToRay(PlayerInputRouter.Instance.Look);
-            DamageableEntity damageableEntity = null;
-            if (Physics.Raycast(ray, out RaycastHit hit))
+            ToggleSelecting();
+            if (damageableEntity != null && damageableEntity.Team != Handler.Owner.Team)
             {
-                damageableEntity = hit.collider.gameObject.GetComponent<DamageableEntity>();
-                if (damageableEntity != null && damageableEntity.Team != Handler.Owner.Team)
-                {
-                    damageableEntity.MarkHealthbar();
-                }
+                AbilityAction(damageableEntity);
             }
-            if (InputPressed())
-            {
-                ToggleSelecting();
-                if (damageableEntity != null && damageableEntity.Team != Handler.Owner.Team)
-                {
-                    AbilityAction(damageableEntity);
-                }
-            }
-        }
-    }
-    private void ToggleSelecting()
-    {
-        IsSelecting = !IsSelecting;
-        if (IsSelecting)
-        {
-            Handler.DisableOtherAbilities(this);
-            Time.timeScale = 0.35f;
-        }
-        else
-        {
-            Handler.ReenableOtherAbilities();
-            Time.timeScale = 1;
         }
     }
     protected override void AbilityAction()

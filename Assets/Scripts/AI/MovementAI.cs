@@ -2,6 +2,7 @@ using System;
 using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.XR;
@@ -219,6 +220,16 @@ public class MovementAI : AIModule
     {
         StartCoroutine(LockMovement(duration));
         StartCoroutine(LockView(duration));
+    }
+    public void LockMovementAI()
+    {
+        MoveLock = true;
+        LookLock = true;
+    }
+    public void UnlockMovementAI()
+    {
+        MoveLock = false;
+        LookLock = false;
     }
     private float FlatDistance(Vector3 pos1, Vector3 pos2)
     {

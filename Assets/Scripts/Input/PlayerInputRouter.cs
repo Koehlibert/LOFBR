@@ -11,6 +11,9 @@ public class PlayerInputRouter : MonoBehaviour
     public bool CheatedPressedThisFrame { get; private set; }
     public bool CheatedReleasedThisFrame { get; private set; }
     public bool PrimaryPressed { get; private set; }
+    public bool PrimaryToggledThisFrame { get; private set; }
+    public bool PrimaryPressedThisFrame { get; private set; }
+    public bool PrimaryReleasedThisFrame { get; private set; }
     public bool SecondaryPressed { get; private set; }
     public bool SecondaryToggledThisFrame { get; private set; }
     public bool SecondaryPressedThisFrame { get; private set; }
@@ -41,8 +44,8 @@ public class PlayerInputRouter : MonoBehaviour
             ctx => Look = ctx.ReadValue<Vector2>();
         Input.Player.Look.canceled += _ => Look = Vector2.zero;
 
-        Input.Player.AttackPrimary.performed += _ => PrimaryPressed = true;
-        Input.Player.AttackPrimary.canceled += _ => PrimaryPressed = false;
+        Input.Player.AttackPrimary.performed += OnPrimaryPerformed;
+        Input.Player.AttackPrimary.canceled += OnPrimaryCancelled;
 
         Input.Player.Alternative.performed += _ => AlternativePressed = true;
         Input.Player.Alternative.canceled += _ => AlternativePressed = false;
@@ -60,6 +63,17 @@ public class PlayerInputRouter : MonoBehaviour
         Input.Player.SecondarySkill.canceled += OnSkillCanceled;
 
         Input.Player.Pause.started += _ => PauseGame.Instance.TogglePause();
+    }
+    private void OnPrimaryPerformed(InputAction.CallbackContext ctx)
+    {
+        PrimaryPressed = true;
+        PrimaryPressedThisFrame = true;
+        PrimaryToggledThisFrame = true;
+    }
+    private void OnPrimaryCancelled(InputAction.CallbackContext ctx)
+    {
+        PrimaryPressed = false;
+        PrimaryReleasedThisFrame = true;
     }
     private void OnSecondaryPerformed(InputAction.CallbackContext ctx)
     {
@@ -96,6 +110,9 @@ public class PlayerInputRouter : MonoBehaviour
     }
     private void LateUpdate()
     {
+        PrimaryPressedThisFrame = false;
+        PrimaryReleasedThisFrame = false;
+        PrimaryToggledThisFrame = false;
         SkillPressedThisFrame = false;
         SkillReleasedThisFrame = false;
         SkillToggledThisFrame = false;
