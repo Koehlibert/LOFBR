@@ -23,8 +23,8 @@ public class WallBehaviour : DamageableEntity
             GameObject member = CharacterFactory.Instance.CreateWallMember(this.Team, new Vector3((i - midPoint) * MemberWidth, 0, 0), this.gameObject);
             Renderer rend = member.GetComponentInChildren<SkinnedMeshRenderer>();
             rend.material = Team == CombatUtils.Team.Player
-                ? MaterialLibrary.Instance.playerMaterial
-                : MaterialLibrary.Instance.enemyMaterial;
+                ? MaterialLibrary.Instance.transparentPlayerMaterial
+                : MaterialLibrary.Instance.transparentEnemyMaterial;
             Color color = rend.material.color;
             color.a = 0.5f;
             rend.material.color = color;
@@ -61,9 +61,9 @@ public class WallBehaviour : DamageableEntity
         foreach (GameObject member in Members)
         {
             Renderer rend = member.GetComponentInChildren<SkinnedMeshRenderer>();
-            Color color = rend.material.color;
-            color.a = 1f;
-            rend.material.color = color;
+            rend.material = Team == CombatUtils.Team.Player
+                ? MaterialLibrary.Instance.playerMaterial
+                : MaterialLibrary.Instance.enemyMaterial;
         }
         StartCoroutine(DelayedDestroy(5f));
     }

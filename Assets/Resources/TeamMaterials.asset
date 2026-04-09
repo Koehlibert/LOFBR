@@ -14,3 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TeamMaterials
   playerMaterial: {fileID: 2100000, guid: 9ec5bb514d21c0446ba7d188441dc54e, type: 2}
   enemyMaterial: {fileID: 2100000, guid: b0cdf9e23f3f7754199b97af33a07924, type: 2}
+  transparentPlayerMaterial: {fileID: 2100000, guid: 59950283130581a439c6085e0f5be763,
+    type: 2}
+  transparentEnemyMaterial: {fileID: 2100000, guid: d73ca96320cac2c4ebdf2dc1b851d9f7,
+    type: 2}

@@ -5,4 +5,6 @@ public class TeamMaterials : ScriptableObject
 {
     public Material playerMaterial;
     public Material enemyMaterial;
+    public Material transparentPlayerMaterial;
+    public Material transparentEnemyMaterial;
 }
