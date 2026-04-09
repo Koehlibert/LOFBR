@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using System;
 using TMPro;
 using Unity.Services.Analytics;
-public class WallBehaviour : DamageableEntity
+public class WallBehaviour : CharacterBehaviour
 {
     private int MemberCount;
     private List<GameObject> Members;
@@ -38,10 +38,14 @@ public class WallBehaviour : DamageableEntity
         col.center = transform.InverseTransformPoint(memberBounds.center);
         col.size = transform.InverseTransformVector(memberBounds.size);
         col.enabled = false;
-        LastHit = false;
+    }
+    protected override void InitializeHPSys()
+    {
         hpsys.Initialize(80 * MemberCount, 0, 0, 0);
-        aIHandler = gameObject.AddComponent<AIHandler>();
-        aIHandler.Init(this, new List<Ability>(), new List<AIModule>(), 0, false);
+    }
+    protected override void InitializeAIHandler()
+    {
+        base.InitializeAIHandler();
     }
     public void Init(CombatUtils.Team team, int memberCount, float memberWidth)
     {

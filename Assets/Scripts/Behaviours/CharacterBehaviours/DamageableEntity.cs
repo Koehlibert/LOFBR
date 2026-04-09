@@ -11,7 +11,6 @@ public abstract class DamageableEntity : MonoBehaviour
     public float AnimSpeed { get; set; }
     public GameObject enemyBase;
     public GameObject yourbase;
-    public AIHandler aIHandler;
     protected bool IsMarked = false;
     protected bool ResetMarked = false;
     protected DamageCollisionHandler CollisionHandler;

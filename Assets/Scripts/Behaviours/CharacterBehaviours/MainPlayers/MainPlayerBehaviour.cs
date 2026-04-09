@@ -5,22 +5,23 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 using System;
 using UnityEditor.SceneManagement;
-public abstract class MainPlayerBehaviour : DamageableEntity
+public abstract class MainPlayerBehaviour : CharacterBehaviour
 {
     public Level Levelsys;
     public Mana manasys;
-    protected MainPlayerBehaviour EnemyPlayer;
     protected int ClassID;
     protected Skillset skillSet;
     public void Init(int classID)
     {
-        base.Init();
-        EnemyPlayer = CharacterTracker.Instance.GetOpponentPlayer(Team);
+        this.ClassID = classID;
         manasys = this.gameObject.AddComponent<Mana>();
         Levelsys = new Level();
         Levelsys.Init(this);
-        aIHandler = gameObject.AddComponent<AIHandler>();
-        switch (classID)
+        base.Init();
+    }
+    protected override void InitializeAIHandler()
+    {
+        switch (ClassID)
         {
             case 1:
                 skillSet = new SkillsetFighter(aIHandler);
@@ -34,6 +35,9 @@ public abstract class MainPlayerBehaviour : DamageableEntity
         }
         aIHandler.Init(this, new List<Ability>(), new List<AIModule>(), skillSet.GetSpeed(), this is EnemyPlayerBehaviour);
         skillSet.LevelUnlock(1);
+    }
+    protected override void InitializeHPSys()
+    {
         hpsys.Initialize(skillSet.GetHPVals());
     }
     public virtual void LevelUp()

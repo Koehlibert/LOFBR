@@ -10,10 +10,10 @@ public class PlayerController : MainPlayerBehaviour
     {
         this.Team = CombatUtils.Team.Player;
         ClassID = PlayerPrefs.GetInt("classID");
-        base.Init(ClassID);
-        EnableDamageFlash();
         healthbar = HUD.Instance.PlayerHealthImage;
         healthbarOutline = HUD.Instance.PlayerHealthOutline;
+        base.Init(ClassID);
+        EnableDamageFlash();
     }
     void Update()
     {

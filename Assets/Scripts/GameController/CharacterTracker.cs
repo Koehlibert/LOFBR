@@ -52,7 +52,7 @@ public class CharacterTracker : MonoBehaviour
         rezPoolEnemy = new List<Tombstone>();
         MasterScript.Instance.InitializeCharacters();
     }
-    public void AddMob(MobBehaviour Mob)
+    public void AddMob(DamageableEntity Mob)
     {
         if (Mob.Team == CombatUtils.Team.Enemy)
         {
@@ -65,7 +65,7 @@ public class CharacterTracker : MonoBehaviour
             allFriendlies.Add(Mob.gameObject);
         }
     }
-    public void RemoveMob(MobBehaviour Mob)
+    public void RemoveMob(DamageableEntity Mob)
     {
         if (Mob.Team == CombatUtils.Team.Enemy)
         {

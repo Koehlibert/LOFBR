@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using UnityEngine;
 
-public class TowerBehaviour : DamageableEntity
+public class TowerBehaviour : CharacterBehaviour
 {
     protected float range;
     protected float lookRange;
@@ -11,18 +11,9 @@ public class TowerBehaviour : DamageableEntity
     protected float cooldown;
     protected GameObject bulletinstance;
     protected ClosestFinder closestFinder;
-    private Renderer rend;
     public override void Init()
     {
-        rend = GetComponentInChildren<SkinnedMeshRenderer>();
-        rend.material = Team == CombatUtils.Team.Player
-            ? MaterialLibrary.Instance.playerMaterial
-            : MaterialLibrary.Instance.enemyMaterial;
         base.Init();
-        rend = GetComponentInChildren<SkinnedMeshRenderer>();
-        rend.material = Team == CombatUtils.Team.Player
-            ? MaterialLibrary.Instance.playerMaterial
-            : MaterialLibrary.Instance.enemyMaterial;
         hpsys.Initialize(300, 0, 0, 20);
         aIHandler = gameObject.AddComponent<AIHandler>();
         ThrowBall throwBall = gameObject.AddComponent<ThrowBall>();

@@ -6,29 +6,22 @@ using UnityEngine.UI;
 using System;
 using TMPro;
 using Unity.Services.Analytics;
-public class MobBehaviour : DamageableEntity
+public class MobBehaviour : CharacterBehaviour
 {
     protected GameObject enemybase;
-    protected MainPlayerBehaviour player;
     protected float followdistance = 25;
     protected float attackdistance = 10;
-    private float movementSpeed = 12;
-    private Vector3 standarddirection = new Vector3(0f, 0f, 1f);
+    protected float movementSpeed = 12;
+    protected Vector3 standarddirection = new Vector3(0f, 0f, 1f);
     Vector3 offset = new Vector3(0f, 0f, 1f);
-    private Renderer rend;
     protected CombatUtils.Team EnemyTeam;
     [SerializeField] Image healthbarbg;
     public override void Init()
     {
         base.Init();
-        rend = GetComponentInChildren<SkinnedMeshRenderer>();
-        rend.material = Team == CombatUtils.Team.Player
-            ? MaterialLibrary.Instance.playerMaterial
-            : MaterialLibrary.Instance.enemyMaterial;
         LastHit = false;
         EnemyTeam = CombatUtils.GetOpposingTeam(Team);
         enemybase = MasterScript.Instance.GetOpponentBase(EnemyTeam);
-        hpsys.Initialize(100, 0, 0, 0);
         healthbar.gameObject.SetActive(false);
         healthbarbg.gameObject.SetActive(false);
         CharacterTracker.Instance.AddMob(this);
@@ -42,14 +35,17 @@ public class MobBehaviour : DamageableEntity
             offset.z *= -1;
             standarddirection.z *= -1;
         }
-        aIHandler = gameObject.AddComponent<AIHandler>();
-        ShootRightBasic shooter = gameObject.AddComponent<ShootRightBasic>();
-        aIHandler.Init(this, new List<Ability> { shooter }, new List<AIModule>(), movementSpeed, false);
     }
-    public void Init(CombatUtils.Team team)
+    protected override void InitializeAIHandler()
+    {
+        aIHandler.Init(this, new List<Ability>(), new List<AIModule>(), movementSpeed, false);
+    }
+    public virtual void Init(CombatUtils.Team team)
     {
         this.Team = team;
         Init();
+        ShootRightBasic shooter = gameObject.AddComponent<ShootRightBasic>();
+        aIHandler.AddAbility(shooter);
     }
     public void OnHealBulletHit(Damage damageComponent, GameObject bulletObject)
     {
@@ -62,11 +58,11 @@ public class MobBehaviour : DamageableEntity
     }
     protected override void Die()
     {
-        if ((player != null) && LastHit)
+        if ((EnemyPlayer != null) && LastHit)
         {
-            if (player.gameObject.activeSelf)
+            if (EnemyPlayer.gameObject.activeSelf)
             {
-                player.Levelsys.GainExp(5);
+                EnemyPlayer.Levelsys.GainExp(5);
             }
         }
         CharacterTracker.Instance.RemoveMob(this);
@@ -100,9 +96,9 @@ public class MobBehaviour : DamageableEntity
     protected void FixedUpdate()
     {
         StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
-        if (player == null)
+        if (EnemyPlayer == null)
         {
-            player = CharacterTracker.Instance.GetOpponentPlayer(Team);
+            EnemyPlayer = CharacterTracker.Instance.GetOpponentPlayer(Team);
         }
     }
     public void getShanked(Damage damage)

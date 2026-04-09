@@ -10,6 +10,7 @@ public class CharacterFactory : MonoBehaviour
     [SerializeField] GameObject Player;
     [SerializeField] GameObject EnemyPlayer;
     [SerializeField] GameObject WallMember;
+    [SerializeField] GameObject MirrorEntity;
     private void Awake()
     {
         Instance = this;
@@ -53,5 +54,11 @@ public class CharacterFactory : MonoBehaviour
         wallMember.transform.position = localPos;
         wallMember.AddComponent<WallMember>().Init(team);
         return wallMember;
+    }
+    public GameObject CreateMirrorEntity(CombatUtils.Team team, Vector3 pos, Quaternion rot, int classID, int level)
+    {
+        GameObject mirrorImage = InstantiateCharacter(MirrorEntity, pos, rot);
+        mirrorImage.GetComponent<MirrorImageBehaviour>().Init(team, classID, level);
+        return mirrorImage;
     }
 }
