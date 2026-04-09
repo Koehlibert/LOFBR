@@ -143,11 +143,12 @@ public class InDistanceTracker
     private int EnemiesInDistance { get; set; }
     private bool withPlayer;
     public CombatUtils.Team team;
+    public bool ShouldDebug;
     public InDistanceTracker(float distToCheck, bool withPlayer, CombatUtils.Team teamToCount)
     {
-        this.DistToCheck = distToCheck;
+        DistToCheck = distToCheck;
         this.withPlayer = withPlayer;
-        this.team = teamToCount;
+        team = teamToCount;
         EnemiesInDistance = 0;
     }
     public void ResetCounter()
@@ -162,5 +163,9 @@ public class InDistanceTracker
     {
         if (distance < DistToCheck && (!isPlayer || (withPlayer & isPlayer)))
             EnemiesInDistance++;
+    }
+    public int DebugCount()
+    {
+        return EnemiesInDistance;
     }
 }

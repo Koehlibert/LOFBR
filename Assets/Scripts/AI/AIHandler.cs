@@ -138,7 +138,7 @@ public class AIHandler : MonoBehaviour
     {
         foreach (Ability ability in Abilities)
         {
-            if (ability != abilityToKeep && (!ability.ShouldStayActive))
+            if (ability != abilityToKeep && (!ability.ShouldStayActive) && ability.IsActive)
             {
                 ability.Deactivate();
                 DisabledAbilities.Add(ability);

@@ -72,7 +72,7 @@ public class Stomp : DamagingAbility
                     inDistanceTracker = Handler.ClosestFinder.StartTrackingDist(ShockRadiusToCheck, true);
                     movementAI.SetMovementState(AIUtils.MovementState.IsGoingToPlace);
                     movementAI.SetMovementTarget(ShockPoint);
-                    Handler.DisableOtherAbilities(this);
+                    //Handler.DisableOtherAbilities(this);
                     movementAI.OnTargetReached += AbilityAction;
                 }
             }

@@ -5,16 +5,28 @@ using UnityEngine.XR;
 
 public class BuildWall : SelectionAbility
 {
-    //private float MarkDistance = 30f;
+    protected float DistanceToCheck = 40;
+    protected float DistanceToTrigger = 30;
+    private InDistanceTracker inDistanceTrackerEnemies;
+    private InDistanceTracker inDistanceTrackerFriendlies;
     private float MemberWidth = 2f;
     private GameObject Wall = null;
+    private int NEnemiesToTrigger = 2;
+    private int NFriendliesToTrigger = 2;
+    private ClosestFinder closestFriendlyFinder;
     protected override AbilityInfo GetAbilityInfo()
     {
-        return new AbilityInfo(15, 2f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills });
+        return new AbilityInfo(120, 20f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills, AIUtils.AIState.Retreating });
     }
     protected override void AdditionalInit()
     {
-        reloadtime = 20;
+        if (!IsInteractive)
+        {
+            closestFriendlyFinder = new(Handler.Owner.Team, Handler.Owner.Team, this.gameObject);
+            inDistanceTrackerFriendlies = closestFriendlyFinder.StartTrackingDist(DistanceToCheck, false);
+            inDistanceTrackerEnemies = Handler.ClosestFinder.StartTrackingDist(DistanceToCheck, true, CombatUtils.GetOpposingTeam(Handler.Owner.Team));
+            inDistanceTrackerEnemies.ShouldDebug = true;
+        }
     }
     protected override void HandleSelection()
     {
@@ -25,9 +37,7 @@ public class BuildWall : SelectionAbility
         if (groundPlane.Raycast(ray, out float distance))
         {
             Vector3 worldPoint = ray.GetPoint(distance);
-            worldPoint.y = 0;
-            worldPoint.x = CorrectWallX(worldPoint.x, GetMemberCount());
-            Wall.transform.position = worldPoint;
+            MoveWall(worldPoint);
         }
         if (ConfirmInputPressed())
         {
@@ -39,9 +49,11 @@ public class BuildWall : SelectionAbility
     {
         base.AbilityAction();
         StartCoroutine(Reload());
-        if (Wall == null)
+        if (!IsInteractive)
         {
             Wall = CreateWall();
+            Vector3 targetPos = (Handler.Owner.transform.position + Handler.closestEnemy.transform.position) / 2f;
+            MoveWall(targetPos);
         }
         Wall.GetComponent<WallBehaviour>().Activate();
     }
@@ -49,13 +61,28 @@ public class BuildWall : SelectionAbility
     {
         return PlayerInputRouter.Instance.SkillPressedThisFrame;
     }
-    /* protected override void AICheck()
+    protected override void AICheck()
     {
-        if (loaded && CheckManaCost() && Handler.distanceToClosest < MarkDistance)
+        if (loaded)
         {
-            SetFinalAction();
+            if (CheckManaCost())
+            {
+                float closestFriendlyDistance = CombatUtils.GetDistance(Handler.Owner.gameObject, closestFriendlyFinder.FindClosestNoTower(false));
+                if ((closestFriendlyDistance < DistanceToTrigger) &&
+                    inDistanceTrackerEnemies.GetOverCount(NEnemiesToTrigger) && inDistanceTrackerFriendlies.GetOverCount(NFriendliesToTrigger) &&
+                    Handler.distanceToClosest < DistanceToTrigger)
+                {
+                    SetFinalAction();
+                }
+            }
         }
-    } */
+    }
+    private void MoveWall(Vector3 targetPos)
+    {
+        targetPos.y = 0;
+        targetPos.x = CorrectWallX(targetPos.x, GetMemberCount());
+        Wall.transform.position = targetPos;
+    }
     protected int GetMemberCount()
     {
         int count = 1;

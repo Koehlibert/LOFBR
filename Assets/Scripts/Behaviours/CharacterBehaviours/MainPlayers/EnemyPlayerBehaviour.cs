@@ -8,13 +8,13 @@ public class EnemyPlayerBehaviour : MainPlayerBehaviour
     public override void Init()
     {
         this.Team = CombatUtils.Team.Enemy;
-        base.Init(3);
+        base.Init(1);
         healthbar.fillAmount = hpsys.healthDisplay();
         manaBar.fillAmount = manasys.getPercent();
     }
-    void FixedUpdate()
+    protected override void FixedUpdate()
     {
-        StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
+        base.FixedUpdate();
         UpdateBars();
     }
     private void UpdateBars()
