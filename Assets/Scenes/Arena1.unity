@@ -5333,6 +5333,7 @@ MonoBehaviour:
     type: 3}
   MirrorEntity: {fileID: 752268847723358216, guid: 54b02352cbe30854895cd0cb3b73d099,
     type: 3}
+  Referee: {fileID: 752268847723358216, guid: eb752e27a7d87c04c9dc4d3837b1dbc7, type: 3}
 --- !u!114 &1772391478
 MonoBehaviour:
   m_ObjectHideFlags: 0

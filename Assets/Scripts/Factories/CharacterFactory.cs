@@ -11,6 +11,7 @@ public class CharacterFactory : MonoBehaviour
     [SerializeField] GameObject EnemyPlayer;
     [SerializeField] GameObject WallMember;
     [SerializeField] GameObject MirrorEntity;
+    [SerializeField] GameObject Referee;
     private void Awake()
     {
         Instance = this;
@@ -60,5 +61,12 @@ public class CharacterFactory : MonoBehaviour
         GameObject mirrorImage = InstantiateCharacter(MirrorEntity, pos, rot);
         mirrorImage.GetComponent<MirrorImageBehaviour>().Init(team, classID, level, startingHealth);
         return mirrorImage;
+    }
+    public GameObject CreateReferee(float posZ)
+    {
+        GameObject referee = InstantiateCharacter(Referee, new(MasterScript.Instance.upperAreaLimitX, 0, posZ), Quaternion.identity);
+        referee.transform.LookAt(new Vector3(0,0,posZ));
+        referee.AddComponent<RefereeBehaviour>().Init();
+        return referee;
     }
 }
