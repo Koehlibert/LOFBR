@@ -9,7 +9,7 @@ public class MirrorImage : Ability
     private List<GameObject> Images;
     protected override AbilityInfo GetAbilityInfo()
     {
-        return new AbilityInfo(120, 25, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills });
+        return new AbilityInfo(120, 2, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills });
     }
     protected override bool InputPressed()
     {
@@ -24,7 +24,10 @@ public class MirrorImage : Ability
     {
         foreach (GameObject image in Images)
         {
-            image.GetComponent<MirrorImageBehaviour>().Deactivate();
+            if (image != null)
+            {
+                image.GetComponent<MirrorImageBehaviour>().Deactivate();
+            }
         }
         Images.Clear();
         StartCoroutine(MirrorAnimation());
