@@ -8,19 +8,17 @@ using TMPro;
 using Unity.Services.Analytics;
 public class MirrorImageBehaviour : MainPlayerBehaviour
 {
-    private float LifeTime = 15f;
+    private float LifeTime;
     public void Init(CombatUtils.Team team, int classID, int level, float startingHealth)
     {
         this.Team = team;
         base.Init(classID);
         Levelsys.SetLevel(level);
+        LifeTime = GetLifeTime(level);
         CharacterTracker.Instance.AddMob(this);
         if (level > 1)
         {
-            for (int i = 2; i <= level; i++)
-            {
-                skillSet.LevelUnlock(i);
-            }
+            StartCoroutine(DelayedLevels(level));
         }
         hpsys.SetHPPercent(startingHealth);
         StartCoroutine(DelayedDestroy(LifeTime));
@@ -29,6 +27,18 @@ public class MirrorImageBehaviour : MainPlayerBehaviour
     {
         yield return new WaitForSeconds(lifeTime);
         Deactivate();
+    }
+    private float GetLifeTime(int level)
+    {
+        return 8 + 2 * level;
+    }
+    private IEnumerator DelayedLevels(int level)
+    {
+        for (int i = 2; i <= level; i++)
+        {
+            yield return new WaitForSeconds(2f);
+            skillSet.LevelUnlock(i);
+        }
     }
     protected override void InitializeHPSys()
     {

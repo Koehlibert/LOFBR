@@ -57,6 +57,10 @@ public abstract class ShootBasic : DamagingAbility
             Destroy(bulletinstance);
         }
     }
+    void OnDestroy()
+    {
+        OnDisable();        
+    }
     public override void Activate()
     {
         base.Activate();

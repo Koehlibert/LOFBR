@@ -67,12 +67,16 @@ public class BuildWall : SelectionAbility
         {
             if (CheckManaCost())
             {
-                float closestFriendlyDistance = CombatUtils.GetDistance(Handler.Owner.gameObject, closestFriendlyFinder.FindClosestNoTower(false));
-                if ((closestFriendlyDistance < DistanceToTrigger) &&
-                    inDistanceTrackerEnemies.GetOverCount(NEnemiesToTrigger) && inDistanceTrackerFriendlies.GetOverCount(NFriendliesToTrigger) &&
-                    Handler.distanceToClosest < DistanceToTrigger)
+                GameObject closestFriendly = closestFriendlyFinder.FindClosestNoTower();
+                if (closestFriendly != null)
                 {
-                    SetFinalAction();
+                    float closestFriendlyDistance = CombatUtils.GetDistance(Handler.Owner.gameObject, closestFriendly);
+                    if ((closestFriendlyDistance < DistanceToTrigger) &&
+                        inDistanceTrackerEnemies.GetOverCount(NEnemiesToTrigger) && inDistanceTrackerFriendlies.GetOverCount(NFriendliesToTrigger) &&
+                        Handler.distanceToClosest < DistanceToTrigger)
+                    {
+                        SetFinalAction();
+                    }
                 }
             }
         }
@@ -114,7 +118,7 @@ public class BuildWall : SelectionAbility
                 return 80;
             }
         }
-        else 
+        else
         {
             return 60;
         }

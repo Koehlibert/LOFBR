@@ -37,7 +37,8 @@ public class DetectBulletsCollisionHandler : CollisionHandler
     }
     void Update()
     {
-        this.transform.SetPositionAndRotation(Owner.transform.position + new Vector3(0f,2f,0f), Owner.transform.rotation);
+        this.transform.SetLocalPositionAndRotation(new Vector3(0, 2f, 0), Quaternion.identity);
+        //this.transform.SetPositionAndRotation(Owner.transform.position + new Vector3(0f,2f,0f), Owner.transform.rotation);
         BulletList.RemoveAll(item => item == null);
         if (BulletList.Count >= NBulletsToTrigger)
             BulletsDetected?.Invoke();

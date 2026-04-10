@@ -40,6 +40,10 @@ public class BulletBehaviour : MonoBehaviour
             {
                 rb.transform.position = Owner.animator.GetBoneTransform(bone).position + Owner.transform.forward;
             }
+            else
+            {
+                DelayedDestroy();
+            }
         }
     }
     public virtual void Shoot(DamageInfo damageInfo)
