@@ -11,6 +11,7 @@ public abstract class MainPlayerBehaviour : CharacterBehaviour
     public Mana manasys;
     public int ClassID;
     protected Skillset skillSet;
+    [SerializeField] protected Image manaBar;
     public void Init(int classID)
     {
         this.ClassID = classID;
@@ -35,6 +36,27 @@ public abstract class MainPlayerBehaviour : CharacterBehaviour
         }
         aIHandler.Init(this, new List<Ability>(), new List<AIModule>(), skillSet.GetSpeed(), this is EnemyPlayerBehaviour);
         skillSet.LevelUnlock(1);
+    }
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        UpdateBars();
+    }
+    private void UpdateBars()
+    {
+        float hpval = hpsys.healthDisplay();
+        healthbar.fillAmount = Mathf.Lerp(healthbar.fillAmount, hpval, 5f * Time.deltaTime);
+        manaBar.fillAmount = manasys.getPercent();
+        if (ResetMarked)
+        {
+            ChangeOutlineAlpha(0);
+            ResetMarked = false;
+        }
+        if (IsMarked)
+        {
+            IsMarked = false;
+            ResetMarked = true;
+        }
     }
     protected override void InitializeHPSys()
     {

@@ -2361,7 +2361,7 @@ GameObject:
   - component: {fileID: 656898893}
   - component: {fileID: 656898892}
   m_Layer: 5
-  m_Name: ReloadCirclePrimary
+  m_Name: ManaCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4270,6 +4270,7 @@ MonoBehaviour:
   UltReloader: {fileID: 1988524061}
   PlayerHealthImage: {fileID: 1546610302}
   PlayerHealthOutline: {fileID: 1602238816}
+  PlayerManaImage: {fileID: 656898892}
   DamageImage: {fileID: 181606342}
 --- !u!1 &1398184973
 GameObject:

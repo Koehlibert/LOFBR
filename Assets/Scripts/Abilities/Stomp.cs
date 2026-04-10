@@ -53,7 +53,7 @@ public class Stomp : DamagingAbility
         yield return new WaitForSeconds(0.7f);
         GameObject wave = BulletFactory.Instance.CreateShockwave(Handler.Owner, false, Bone);
         wave.GetComponent<Damage>().SetProperties(GetDamageValues());
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.3f);
         Handler.ReenableOtherAbilities();
         IsShocking = false;
         PlaySound();

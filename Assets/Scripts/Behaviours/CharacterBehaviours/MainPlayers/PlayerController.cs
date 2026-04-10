@@ -12,6 +12,7 @@ public class PlayerController : MainPlayerBehaviour
         ClassID = PlayerPrefs.GetInt("classID");
         healthbar = HUD.Instance.PlayerHealthImage;
         healthbarOutline = HUD.Instance.PlayerHealthOutline;
+        manaBar = HUD.Instance.PlayerManaImage;
         base.Init(ClassID);
         EnableDamageFlash();
     }

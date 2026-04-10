@@ -11,6 +11,7 @@ public class HUD : MonoBehaviour
     public GameObject UltReloader;
     public Image PlayerHealthImage;
     public Outline PlayerHealthOutline;
+    public Image PlayerManaImage;
     public Image DamageImage;
     private Color flashcolor = new(1f, 0f, 0f, 0.1f);
     private float flashspeed;
