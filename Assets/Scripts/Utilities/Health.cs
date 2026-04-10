@@ -131,6 +131,7 @@ public class Health : MonoBehaviour
         if (isDamaged)
         {
             hp = Mathf.Min(maxhp, hp + damageComponent.GetDamage().damageValue);
+            poison = 0;
             OnHealthChanged?.Invoke(healthDisplay());
         }
         return isDamaged;

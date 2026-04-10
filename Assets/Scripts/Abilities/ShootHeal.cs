@@ -18,7 +18,21 @@ public class ShootHeal : ShootBasic
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(40 + 5 * OwnerLevelSys.GetLevel(), 0, Handler.Owner.Team, false, false);
+        if (Handler.Owner is MainPlayerBehaviour)
+        {
+            if (Handler.Owner is MirrorImageBehaviour)
+            {
+                return new DamageInfo(0.75f * (40 + 5 * OwnerLevelSys.GetLevel()), 0, Handler.Owner.Team, false, false);
+            }
+            else
+            {
+                return new DamageInfo(40 + 5 * OwnerLevelSys.GetLevel(), 0, Handler.Owner.Team, false, false);
+            }
+        }
+        else 
+        {
+            return new DamageInfo(40, 0, Handler.Owner.Team, false, false);
+        }
     }
     protected override GameObject CreateBullet()
     {

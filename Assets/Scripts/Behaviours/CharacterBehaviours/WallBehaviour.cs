@@ -12,6 +12,7 @@ public class WallBehaviour : CharacterBehaviour
     private List<GameObject> Members;
     private Bounds memberBounds;
     private float MemberWidth;
+    private float MemberHP;
     private BoxCollider col;
     public override void Init()
     {
@@ -41,17 +42,18 @@ public class WallBehaviour : CharacterBehaviour
     }
     protected override void InitializeHPSys()
     {
-        hpsys.Initialize(80 * MemberCount, 0, 0, 0);
+        hpsys.Initialize(MemberHP * MemberCount, 0, 0, 0);
     }
     protected override void InitializeAIHandler()
     {
         base.InitializeAIHandler();
     }
-    public void Init(CombatUtils.Team team, int memberCount, float memberWidth)
+    public void Init(CombatUtils.Team team, int memberCount, float memberWidth, float memberHP)
     {
         this.Team = team;
         this.MemberCount = memberCount;
         this.MemberWidth = memberWidth;
+        this.MemberHP = memberHP;
         Init();
     }
     protected override void Die()

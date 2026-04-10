@@ -12,6 +12,7 @@ public class MirrorImageBehaviour : MainPlayerBehaviour
     {
         this.Team = team;
         base.Init(classID);
+        Levelsys.SetLevel(level);
         CharacterTracker.Instance.AddMob(this);
         if (level > 1)
         {

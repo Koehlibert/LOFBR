@@ -42,7 +42,7 @@ public class ManaDrain : DamagingAbility
         if (distance <= 20)
         {
             base.AbilityAction();
-            ManaDrainer = BulletFactory.Instance.CreateManaDrainer(Handler.Owner);
+            ManaDrainer = BulletFactory.Instance.CreateManaDrainer(Handler.Owner, GetDamageValues());
             StartCoroutine(Reload());
             StartCoroutine(Duration());
         }
@@ -58,6 +58,20 @@ public class ManaDrain : DamagingAbility
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(0, 0, CombatUtils.Team.Player, true, true);
+        if (Handler.Owner is MainPlayerBehaviour)
+        {
+            if (Handler.Owner is MirrorImageBehaviour)
+            {
+                return new DamageInfo(0.5f * (15 + OwnerLevelSys.GetLevel() * 5), 0, Handler.Owner.Team, true);
+            }
+            else
+            {
+                return new DamageInfo(15 + OwnerLevelSys.GetLevel() * 5, 0, Handler.Owner.Team, true);
+            }
+        }
+        else 
+        {
+            return new DamageInfo(30, 0, Handler.Owner.Team, true);
+        }
     }
 }

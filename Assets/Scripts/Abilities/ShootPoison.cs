@@ -23,7 +23,21 @@ public class ShootPoison : ShootBasic
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(16 + 4 * OwnerLevelSys.GetLevel(), 4f + 4f + 1.5f * OwnerLevelSys.GetLevel(), Handler.Owner.Team, true, false);
+        if (Handler.Owner is MainPlayerBehaviour)
+        {
+            if (Handler.Owner is MirrorImageBehaviour)
+            {
+                return new DamageInfo(0.5f * (16 + 4 * OwnerLevelSys.GetLevel()), 0.5f * (8f + 1.5f * OwnerLevelSys.GetLevel()), Handler.Owner.Team, true, false);
+            }
+            else
+            {
+                return new DamageInfo(16 + 4 * OwnerLevelSys.GetLevel(), 8f + 1.5f * OwnerLevelSys.GetLevel(), Handler.Owner.Team, true, false);
+            }
+        }
+        else 
+        {
+            return new DamageInfo(25, 8, Handler.Owner.Team, true, false);
+        }
     }
     protected override GameObject CreateBullet()
     {

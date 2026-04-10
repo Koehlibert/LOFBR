@@ -81,7 +81,21 @@ public class Immolate : DamagingAbility
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(3.5f * OwnerLevelSys.GetLevel(), 0, Handler.Owner.Team, true, true);
+        if (Handler.Owner is MainPlayerBehaviour)
+        {
+            if (Handler.Owner is MirrorImageBehaviour)
+            {
+                return new DamageInfo(1.5f * OwnerLevelSys.GetLevel(), 0, Handler.Owner.Team, true, true);
+            }
+            else
+            {
+                return new DamageInfo(3.5f * OwnerLevelSys.GetLevel(), 0, Handler.Owner.Team, true, true);
+            }
+        }
+        else 
+        {
+            return new DamageInfo(4f, 0, Handler.Owner.Team, true, true);
+        }
     }
     protected override void AICheck()
     {

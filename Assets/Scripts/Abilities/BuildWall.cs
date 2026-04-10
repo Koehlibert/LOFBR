@@ -101,6 +101,24 @@ public class BuildWall : SelectionAbility
         }
         return count;
     }
+    protected float GetWallMemberHP()
+    {
+        if (Handler.Owner is MainPlayerBehaviour)
+        {
+            if (Handler.Owner is MirrorImageBehaviour)
+            {
+                return 45;
+            }
+            else
+            {
+                return 80;
+            }
+        }
+        else 
+        {
+            return 60;
+        }
+    }
     protected float CorrectWallX(float x, int memberCount)
     {
         return Mathf.Clamp(x, MasterScript.Instance.lowerAreaLimitX + memberCount / 2 * MemberWidth, MasterScript.Instance.upperAreaLimitX - memberCount / 2 * MemberWidth);
@@ -113,6 +131,6 @@ public class BuildWall : SelectionAbility
     }
     protected GameObject CreateWall()
     {
-        return BulletFactory.Instance.CreateWall(Handler.Owner, GetMemberCount(), MemberWidth);
+        return BulletFactory.Instance.CreateWall(Handler.Owner, GetMemberCount(), MemberWidth, GetWallMemberHP());
     }
 }

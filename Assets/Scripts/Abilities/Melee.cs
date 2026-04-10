@@ -73,14 +73,27 @@ public class Melee : DamagingAbility
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(35 + OwnerLevelSys.GetLevel() * 3, 0, Handler.Owner.Team, true, false, false);
+        if (Handler.Owner is MainPlayerBehaviour)
+        {
+            if (Handler.Owner is MirrorImageBehaviour)
+            {
+                return new DamageInfo(0.5f * (35 + OwnerLevelSys.GetLevel() * 3), 0, Handler.Owner.Team, true, false, false);
+            }
+            else
+            {
+                return new DamageInfo(35 + OwnerLevelSys.GetLevel() * 3, 0, Handler.Owner.Team, true, false, false);
+            }
+        }
+        else 
+        {
+            return new DamageInfo(40, 0, Handler.Owner.Team, true, false, false);
+        }
     }
     protected override void AICheck()
     {
         if (attacking)
         {
             movementAI.SetMovementDirection(dir);
-            //movementAI.SetMovementState(AIUtils.MovementState.IsFollowingTarget);
         }
         else
         {

@@ -81,7 +81,21 @@ public class UltBladeFlurry : DamagingAbility
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(25 + (OwnerLevelSys.GetLevel() - 0) * 10, 0, CombatUtils.Team.Player, true, false, false);
+        if (Handler.Owner is MainPlayerBehaviour)
+        {
+            if (Handler.Owner is MirrorImageBehaviour)
+            {
+                return new DamageInfo(0.3f * (25 + (OwnerLevelSys.GetLevel() - 0) * 10), 3, CombatUtils.Team.Player, true, false, false);
+            }
+            else
+            {
+                return new DamageInfo(25 + (OwnerLevelSys.GetLevel() - 0) * 10, 1, CombatUtils.Team.Player, true, false, false);
+            }
+        }
+        else 
+        {
+            return new DamageInfo(30, 0.5f, CombatUtils.Team.Player, true, false, false);
+        }
     }
     protected override void AICheck()
     {

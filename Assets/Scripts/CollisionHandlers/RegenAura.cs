@@ -58,7 +58,14 @@ public class RegenAura : CollisionHandler
     {
         if (Owner is MainPlayerBehaviour mainPlayerBehaviour)
         {
-            return mainPlayerBehaviour.Levelsys.GetLevel()*3 + 10;
+            if (Owner is MirrorImageBehaviour)
+            {
+                return mainPlayerBehaviour.Levelsys.GetLevel()*2 + 5;
+            }
+            else
+            {
+                return mainPlayerBehaviour.Levelsys.GetLevel()*3 + 10;
+            }
         }
         else return 10;
     }

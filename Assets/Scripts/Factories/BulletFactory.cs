@@ -87,10 +87,10 @@ public class BulletFactory : MonoBehaviour
         parryCollider.AddComponent<ParryColliderBehaviour>().Init(owner);
         return parryCollider;
     }
-    public GameObject CreateManaDrainer(DamageableEntity owner)
+    public GameObject CreateManaDrainer(DamageableEntity owner, DamageInfo damageInfo)
     {
         GameObject manaDrainer = Instantiate(ManaDrainer);
-        manaDrainer.AddComponent<ManaDrainerBehaviour>().Init(owner);
+        manaDrainer.AddComponent<ManaDrainerBehaviour>().Init(owner, damageInfo);
         return manaDrainer;
     }
     public GameObject CreateBulletDetector(DamageableEntity owner, int nBulletsToTrigger)
@@ -111,10 +111,10 @@ public class BulletFactory : MonoBehaviour
         superRegenAura.AddComponent<RegenAura>().Init(owner);
         return superRegenAura;
     }
-    public GameObject CreateWall(DamageableEntity owner, int memberCount, float memberWidth)
+    public GameObject CreateWall(DamageableEntity owner, int memberCount, float memberWidth, float memberHP)
     {
         GameObject wall = new GameObject();
-        wall.AddComponent<WallBehaviour>().Init(owner.Team, memberCount, memberWidth);
+        wall.AddComponent<WallBehaviour>().Init(owner.Team, memberCount, memberWidth, memberHP);
         return wall;
     }
 }

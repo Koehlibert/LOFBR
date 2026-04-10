@@ -16,6 +16,10 @@ public class Level
         maxlevel = 10;
         exp = 0;
     }
+    public void SetLevel(int levelToSet)
+    {
+        level = levelToSet;
+    }
     public int GetLevel()
     {
         return level;

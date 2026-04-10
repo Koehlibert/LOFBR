@@ -27,6 +27,24 @@ public class UltRez : Ability
             base.AbilityAction();
         }
     }
+    private int GetRezMobCount()
+    {
+        if (Handler.Owner is MainPlayerBehaviour)
+        {
+            if (Handler.Owner is MirrorImageBehaviour)
+            {
+                return 1 + ((OwnerLevelSys.GetLevel() > 5) ? 1 : 0);
+            }
+            else
+            {
+                return OwnerLevelSys.GetLevel() - 2;
+            }
+        }
+        else
+        {
+            return 1;
+        }
+    }
     private IEnumerator ShootAnim(List<Vector3> locations)
     {
         Handler.DisableOtherAbilities(this);

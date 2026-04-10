@@ -46,7 +46,21 @@ public class UltAttack : ShootBasic
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(50 + (OwnerLevelSys.GetLevel() - 5) * 6.5f, 0, Handler.Owner.Team, true, true, false);
+        if (Handler.Owner is MainPlayerBehaviour)
+        {
+            if (Handler.Owner is MirrorImageBehaviour)
+            {
+                return new DamageInfo(20 + (OwnerLevelSys.GetLevel() - 5) * 5f, 0, Handler.Owner.Team, true, true, false);
+            }
+            else
+            {
+                return new DamageInfo(50 + (OwnerLevelSys.GetLevel() - 5) * 6.5f, 0, Handler.Owner.Team, true, true, false);
+            }
+        }
+        else 
+        {
+            return new DamageInfo(20, 0, Handler.Owner.Team, true, true, false);
+        }
     }
     protected override GameObject CreateBullet()
     {

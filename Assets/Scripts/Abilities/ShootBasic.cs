@@ -12,6 +12,24 @@ public abstract class ShootBasic : DamagingAbility
     {
         return BulletFactory.Instance.CreateBullet(Handler.Owner, true, Bone);
     }
+    protected override DamageInfo GetDamageValues()
+    {
+        if (Handler.Owner is MainPlayerBehaviour)
+        {
+            if (Handler.Owner is MirrorImageBehaviour)
+            {
+                return new DamageInfo(0.5f * (34 + 7 * OwnerLevelSys.GetLevel()), 0, Handler.Owner.Team, true);
+            }
+            else
+            {
+                return new DamageInfo(34 + 7 * OwnerLevelSys.GetLevel(), 0, Handler.Owner.Team, true);
+            }
+        }
+        else 
+        {
+            return new DamageInfo(40, 0, Handler.Owner.Team, true);
+        }
+    }
     protected abstract HumanBodyBones Bone { get; }
     protected override AbilityInfo GetAbilityInfo()
     {

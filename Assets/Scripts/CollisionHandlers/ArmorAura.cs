@@ -60,9 +60,19 @@ public class ArmorAura : CollisionHandler
     {
         if (Owner is MainPlayerBehaviour mainPlayerBehaviour)
         {
-            return 10 + 3 * mainPlayerBehaviour.Levelsys.GetLevel();
+            if (Owner is MirrorImageBehaviour)
+            {
+                return 5 + 1 * mainPlayerBehaviour.Levelsys.GetLevel();
+            }
+            else
+            {
+                return 10 + 3 * mainPlayerBehaviour.Levelsys.GetLevel();
+            }
         }
-        else return 10;
+        else 
+        {
+            return 8;
+        }
     }
 }
 public class ObjectWithAddedArmor

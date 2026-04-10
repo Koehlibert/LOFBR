@@ -34,7 +34,21 @@ public class ThrowBall : DamagingAbility
     }
     protected override DamageInfo GetDamageValues()
     {
-        return new DamageInfo(45, 0, Handler.Owner.Team, false, false, true);
+        if (Handler.Owner is MainPlayerBehaviour)
+        {
+            if (Handler.Owner is MirrorImageBehaviour)
+            {
+                return new DamageInfo(0.5f * (50 + 5 * OwnerLevelSys.GetLevel()), 0, Handler.Owner.Team, false, false, true);
+            }
+            else
+            {
+                return new DamageInfo(50 + 5 * OwnerLevelSys.GetLevel(), 0, Handler.Owner.Team, false, false, true);
+            }
+        }
+        else 
+        {
+            return new DamageInfo(45, 0, Handler.Owner.Team, false, false, true);
+        }
     }
     protected override void AbilityAction()
     {
