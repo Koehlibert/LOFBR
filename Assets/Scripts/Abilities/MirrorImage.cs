@@ -10,7 +10,7 @@ public class MirrorImage : Ability
     private GameObject BulletDetector;
     protected override AbilityInfo GetAbilityInfo()
     {
-        return new AbilityInfo(120, 2, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills });
+        return new AbilityInfo(120, 20, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills });
     }
     protected override bool InputPressed()
     {

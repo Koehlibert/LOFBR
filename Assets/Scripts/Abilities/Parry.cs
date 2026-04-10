@@ -58,7 +58,7 @@ public class Parry : Ability
     }
     protected override bool InputPressed()
     {
-        return PlayerInputRouter.Instance.SecondaryPressed;
+        return PlayerInputRouter.Instance.SecondaryPressedThisFrame;
     }
     protected override void AICheck()
     {

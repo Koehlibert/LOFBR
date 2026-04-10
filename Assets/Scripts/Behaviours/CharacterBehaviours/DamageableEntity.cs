@@ -71,8 +71,11 @@ public abstract class DamageableEntity : MonoBehaviour
     }
     protected void ChangeOutlineAlpha(float alpha)
     {
-        var tmp = healthbarOutline.effectColor;
-        tmp.a = alpha;
-        healthbarOutline.effectColor = tmp;
+        if (healthbarOutline != null)
+        {
+            var tmp = healthbarOutline.effectColor;
+            tmp.a = alpha;
+            healthbarOutline.effectColor = tmp;
+        }
     }
 }

@@ -40,9 +40,9 @@ public class ArmorAura : CollisionHandler
     void OnDestroy()
     {
         ArmoredAllies.RemoveAll(item => item == null);
-        foreach (ObjectWithAddedArmor objectWithAddedArmor in ArmoredAllies)
+        while (ArmoredAllies.Count > 0)
         {
-            RemoveArmorFromTarget(objectWithAddedArmor);
+            RemoveArmorFromTarget(ArmoredAllies[0]);
         }
     }
     private void AddArmorToTarget(DamageableEntity damageableEntity)
