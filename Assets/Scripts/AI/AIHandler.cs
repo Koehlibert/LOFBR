@@ -140,7 +140,7 @@ public class AIHandler : MonoBehaviour
         {
             if (ability != abilityToKeep && (!ability.ShouldStayActive) && ability.IsActive)
             {
-                ability.Deactivate();
+                ability.Deactivate(abilityToKeep);
                 DisabledAbilities.Add(ability);
             }
         }

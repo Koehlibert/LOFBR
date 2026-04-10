@@ -7,7 +7,7 @@ public abstract class ShootBasic : DamagingAbility
     protected Vector3 offset = new Vector3(0, -0.5f, 1.5f);
     protected GameObject bulletinstance;
     protected Coroutine reloadCoroutine;
-    protected float AttackDistance = 10f;
+    protected float AttackDistance = 10f; 
     protected virtual GameObject CreateBullet()
     {
         return BulletFactory.Instance.CreateBullet(Handler.Owner, true, Bone);
@@ -40,6 +40,11 @@ public abstract class ShootBasic : DamagingAbility
         if (Handler.Owner is MainPlayerBehaviour)
             AttackDistance = 20f;
         soundType = AbilitySoundType.Shoot;
+        if (bulletinstance != null)
+        {
+            Debug.Log("init issue");
+            Debug.Break();
+        }
         bulletinstance = CreateBullet();
     }
     public void SetAttackDistance(float attackDistance)
@@ -53,48 +58,49 @@ public abstract class ShootBasic : DamagingAbility
     }
     void OnDisable()
     {
-        if (bulletinstance)
-        {
-            Destroy(bulletinstance);
-        }
+        OnDeactivate(this);
     }
     void OnDestroy()
     {
-        OnDisable();        
+        OnDeactivate(this);     
+    }
+    protected override void OnDeactivate(Ability callingAbility)
+    {
+        if (bulletinstance && (callingAbility is not ShootBasic))
+        {
+            Destroy(bulletinstance);
+            bulletinstance = null;
+        }
     }
     public override void Activate()
     {
         base.Activate();
-        bulletinstance = CreateBullet();
+        if (loaded && bulletinstance == null)
+        {
+            bulletinstance = CreateBullet();
+        }
         //StartCoroutine(Firstbullet());
     }
-    public override void Deactivate()
-    {
-        OnDisable();
-    }
-    /* protected virtual IEnumerator Firstbullet()
-    {
-        yield return new WaitForSeconds(.2f);
-        bulletinstance = CreateBullet();
-        loaded = true;
-    } */
     protected override IEnumerator Reload()
     {
         loaded = false;
         yield return new WaitForSeconds(reloadtime);
         yield return new WaitUntil(() => movementAI.MoveLock == false);
-        bulletinstance = CreateBullet();
+        if (IsActive)
+            bulletinstance = CreateBullet();
         loaded = true;
     }
     protected virtual IEnumerator Shootanim()
     {
         Handler.Owner.animator.SetTrigger("Shoot");
+        StartCoroutine(Handler.DisableOtherAbilities(0.3f, this));
         yield return new WaitForSeconds(0.15f);
         if (bulletinstance == null)
         {
             yield break;
         }
         bulletinstance.GetComponent<BulletBehaviour>().Shoot(GetDamageValues());
+        bulletinstance = null;
     }
     protected override void AbilityAction()
     {

@@ -18,10 +18,9 @@ public class ManaDrain : DamagingAbility
     {
         return new AbilityInfo(25, 10, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
     }
-    public override void Deactivate()
+    protected override void OnDeactivate(Ability callingAbility)
     {
-        base.Deactivate();
-        if (ManaDrainer != null)
+        if (ManaDrainer != null && (callingAbility is not ShootBasic))
             Destroy(ManaDrainer);
     }
     protected override void InteractiveCheck()

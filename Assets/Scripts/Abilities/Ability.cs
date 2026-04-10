@@ -36,9 +36,13 @@ public abstract class Ability : MonoBehaviour
             }
         }
     }
-    public virtual void Deactivate()
+    public void Deactivate(Ability callingAbility)
     {
+        OnDeactivate(callingAbility);
         IsActive = false;
+    }
+    protected virtual void OnDeactivate(Ability callingAbility)
+    {
     }
     public virtual void Activate()
     {

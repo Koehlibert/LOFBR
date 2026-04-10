@@ -24,9 +24,8 @@ public class Melee : DamagingAbility
         base.Activate();
         attacking = false;
     }
-    public override void Deactivate()
+    protected override void OnDeactivate(Ability callingAbility)
     {
-        base.Deactivate();
         if (MeleeCollider != null)
             Destroy(MeleeCollider);
     }

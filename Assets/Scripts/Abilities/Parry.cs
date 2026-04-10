@@ -40,9 +40,8 @@ public class Parry : Ability
     {
         base.Activate();
     }
-    public override void Deactivate()
+    protected override void OnDeactivate(Ability callingAbility)
     {
-        base.Deactivate();
         if (ParryCollider != null)
             Destroy(ParryCollider);
     }

@@ -64,7 +64,8 @@ public class MirrorImage : Ability
     }
     private IEnumerator MirrorAnimation()
     {
-        movementAI.LockMovementAI(0.5f);
+        movementAI.LockMovementAI(1);
+        Handler.Owner.animator.SetTrigger("Mirror");
         yield return new WaitForSeconds(0.5f);
         int nImages = GetImageCount() + 1;
         List<Vector3> positions = GetTargetPositions(nImages);
@@ -74,7 +75,10 @@ public class MirrorImage : Ability
         {
             if (i == playerLocIdx)
                 continue;
-            Images.Add(CharacterFactory.Instance.CreateMirrorEntity(Handler.Owner.Team, positions[i], Quaternion.identity, ClassID, GetLevelToGive(), Handler.Owner.hpsys.healthDisplay()));
+            GameObject mirrorImage = CharacterFactory.Instance.CreateMirrorEntity(Handler.Owner.Team, positions[i], Quaternion.identity, ClassID, GetLevelToGive(), Handler.Owner.hpsys.healthDisplay());
+            mirrorImage.GetComponent<MirrorImageBehaviour>().animator.Play("MirrorImagePose", 0, 0.4f);
+            mirrorImage.GetComponent<MirrorImageBehaviour>().aIHandler.LockMovementAI(0.5f);
+            Images.Add(mirrorImage);
         }
     }
     private int GetImageCount()
