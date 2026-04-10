@@ -8,6 +8,7 @@ using TMPro;
 using Unity.Services.Analytics;
 public class MirrorImageBehaviour : MainPlayerBehaviour
 {
+    private float LifeTime = 15f;
     public void Init(CombatUtils.Team team, int classID, int level)
     {
         this.Team = team;
@@ -21,6 +22,12 @@ public class MirrorImageBehaviour : MainPlayerBehaviour
                 skillSet.LevelUnlock(i);
             }
         }
+        StartCoroutine(DelayedDestroy(LifeTime));
+    }
+    private IEnumerator DelayedDestroy(float lifeTime)
+    {
+        yield return new WaitForSeconds(lifeTime);
+        Deactivate();
     }
     protected override void InitializeHPSys()
     {
@@ -38,7 +45,12 @@ public class MirrorImageBehaviour : MainPlayerBehaviour
                 EnemyPlayer.Levelsys.GainExp(5 + 5 * Levelsys.GetLevel());
             }
         }
-        LastHit = false;
         CharacterTracker.Instance.RemoveMob(this);
+        Destroy(this.gameObject);
+    }
+    public void Deactivate()
+    {
+        LastHit = false;
+        Die();
     }
 }

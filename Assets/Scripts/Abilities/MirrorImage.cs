@@ -2,9 +2,11 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.XR;
+using Microsoft.Unity.VisualStudio.Editor;
 public class MirrorImage : Ability
 {
     private int ClassID;
+    private List<GameObject> Images;
     protected override AbilityInfo GetAbilityInfo()
     {
         return new AbilityInfo(120, 25, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills });
@@ -15,13 +17,22 @@ public class MirrorImage : Ability
     }
     protected override void AdditionalInit()
     {
+        Images = new();
         ClassID = (Handler.Owner is MainPlayerBehaviour mainPlayerBehaviour) ? mainPlayerBehaviour.ClassID : 1;
     }
     protected override void AbilityAction()
     {
+        foreach (GameObject image in Images)
+        {
+            image.GetComponent<MirrorImageBehaviour>().Deactivate();
+        }
+        Images.Clear();
         StartCoroutine(MirrorAnimation());
         base.AbilityAction();
         StartCoroutine(Reload());
+    }
+    protected override void AICheck()
+    {
     }
     private IEnumerator MirrorAnimation()
     {
@@ -35,7 +46,7 @@ public class MirrorImage : Ability
         {
             if (i == playerLocIdx)
                 continue;
-            CharacterFactory.Instance.CreateMirrorEntity(Handler.Owner.Team, positions[i], Quaternion.identity, ClassID, GetLevelToGive());
+            Images.Add(CharacterFactory.Instance.CreateMirrorEntity(Handler.Owner.Team, positions[i], Quaternion.identity, ClassID, GetLevelToGive()));
         }
     }
     private int GetImageCount()
