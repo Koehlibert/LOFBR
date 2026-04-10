@@ -7,6 +7,7 @@ public class MirrorImage : Ability
 {
     private int ClassID;
     private List<GameObject> Images;
+    private GameObject BulletDetector;
     protected override AbilityInfo GetAbilityInfo()
     {
         return new AbilityInfo(120, 2, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills });
@@ -19,6 +20,20 @@ public class MirrorImage : Ability
     {
         Images = new();
         ClassID = (Handler.Owner is MainPlayerBehaviour mainPlayerBehaviour) ? mainPlayerBehaviour.ClassID : 1;
+        if (!IsInteractive)
+        {
+            if (Handler.Owner is MirrorImageBehaviour)
+                manaCost = Mathf.Infinity;
+            BulletDetector = BulletFactory.Instance.CreateBulletDetector(Handler.Owner, 5);
+            BulletDetector.GetComponent<DetectBulletsCollisionHandler>().BulletsDetected += TryMirrorImage;
+        }
+    }
+    public void TryMirrorImage()
+    {
+        if (loaded && Handler.Owner.isActiveAndEnabled && CheckManaCost())
+        {
+            SetFinalAction();
+        }
     }
     protected override void AbilityAction()
     {
@@ -36,6 +51,16 @@ public class MirrorImage : Ability
     }
     protected override void AICheck()
     {
+        if (loaded)
+        {
+            if (CheckManaCost())
+            {
+                if (Handler.Owner.hpsys.healthDisplay() < 0.4f)
+                {
+                    SetFinalAction();
+                }
+            }
+        }
     }
     private IEnumerator MirrorAnimation()
     {
@@ -49,7 +74,7 @@ public class MirrorImage : Ability
         {
             if (i == playerLocIdx)
                 continue;
-            Images.Add(CharacterFactory.Instance.CreateMirrorEntity(Handler.Owner.Team, positions[i], Quaternion.identity, ClassID, GetLevelToGive()));
+            Images.Add(CharacterFactory.Instance.CreateMirrorEntity(Handler.Owner.Team, positions[i], Quaternion.identity, ClassID, GetLevelToGive(), Handler.Owner.hpsys.healthDisplay()));
         }
     }
     private int GetImageCount()

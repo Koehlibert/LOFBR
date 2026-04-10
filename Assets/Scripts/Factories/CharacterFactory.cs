@@ -55,10 +55,10 @@ public class CharacterFactory : MonoBehaviour
         wallMember.AddComponent<WallMember>().Init(team);
         return wallMember;
     }
-    public GameObject CreateMirrorEntity(CombatUtils.Team team, Vector3 pos, Quaternion rot, int classID, int level)
+    public GameObject CreateMirrorEntity(CombatUtils.Team team, Vector3 pos, Quaternion rot, int classID, int level, float startingHealth)
     {
         GameObject mirrorImage = InstantiateCharacter(MirrorEntity, pos, rot);
-        mirrorImage.GetComponent<MirrorImageBehaviour>().Init(team, classID, level);
+        mirrorImage.GetComponent<MirrorImageBehaviour>().Init(team, classID, level, startingHealth);
         return mirrorImage;
     }
 }

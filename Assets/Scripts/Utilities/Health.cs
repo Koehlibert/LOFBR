@@ -148,4 +148,8 @@ public class Health : MonoBehaviour
     {
         return Mathf.Max(damageObject.GetDamage().damageValue * ((100 - armor) / 100), 0) * (damageObject.isEnduring ? Time.deltaTime : 1f);
     }
+    public void SetHPPercent(float healthPercent)
+    {
+        hp = maxhp * healthPercent;
+    }
 }

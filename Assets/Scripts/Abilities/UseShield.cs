@@ -22,7 +22,7 @@ public class UseShield : Ability
     }
     public void TryUseShield()
     {
-        if (loaded && Handler.Owner.isActiveAndEnabled)
+        if (loaded && Handler.Owner.isActiveAndEnabled && CheckManaCost())
         {
             AbilityAction();
         }

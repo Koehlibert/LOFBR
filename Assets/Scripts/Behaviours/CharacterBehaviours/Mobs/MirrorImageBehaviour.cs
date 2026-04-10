@@ -9,7 +9,7 @@ using Unity.Services.Analytics;
 public class MirrorImageBehaviour : MainPlayerBehaviour
 {
     private float LifeTime = 15f;
-    public void Init(CombatUtils.Team team, int classID, int level)
+    public void Init(CombatUtils.Team team, int classID, int level, float startingHealth)
     {
         this.Team = team;
         base.Init(classID);
@@ -22,6 +22,7 @@ public class MirrorImageBehaviour : MainPlayerBehaviour
                 skillSet.LevelUnlock(i);
             }
         }
+        hpsys.SetHPPercent(startingHealth);
         StartCoroutine(DelayedDestroy(LifeTime));
     }
     private IEnumerator DelayedDestroy(float lifeTime)
@@ -32,7 +33,6 @@ public class MirrorImageBehaviour : MainPlayerBehaviour
     protected override void InitializeHPSys()
     {
         (float hpval, float regenval, float delay, float armorval) hpVals = skillSet.GetHPVals();
-        hpVals.hpval *= 0.4f;
         hpVals.armorval *= -1.5f;
         hpsys.Initialize(hpVals);
     }
