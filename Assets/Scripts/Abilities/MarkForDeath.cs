@@ -27,7 +27,7 @@ public class MarkForDeath : SelectionAbility
                 damageableEntity.MarkHealthbar();
             }
         }
-        if (InputPressed())
+        if (ConfirmInputPressed())
         {
             ToggleSelecting();
             if (damageableEntity != null && damageableEntity.Team != Handler.Owner.Team)
@@ -52,7 +52,6 @@ public class MarkForDeath : SelectionAbility
     protected override bool InputPressed()
     {
         return PlayerInputRouter.Instance.SecondaryPressedThisFrame;
-
     }
     protected override void AICheck()
     {
