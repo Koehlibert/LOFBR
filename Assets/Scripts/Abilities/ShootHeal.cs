@@ -10,6 +10,7 @@ public class ShootHeal : ShootBasic
         if (Handler.Owner is MainPlayerBehaviour)
             AttackDistance = 15f;
         soundType = AbilitySoundType.Shoot;
+        bulletinstance = CreateBullet();
     }
     protected override HumanBodyBones Bone => HumanBodyBones.LeftLowerLeg;
     protected override bool InputPressed()

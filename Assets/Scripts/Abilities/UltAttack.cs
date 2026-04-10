@@ -15,10 +15,10 @@ public class UltAttack : ShootBasic
         if (!IsInteractive)
             inDistanceTracker = Handler.ClosestFinder.StartTrackingDist(DistanceToCheck, true);
     }
-    protected override IEnumerator Firstbullet()
+    /* protected override IEnumerator Firstbullet()
     {
         yield return new WaitForSeconds(.2f);
-    }
+    } */
     protected override IEnumerator Shootanim()
     {
         StartCoroutine(Handler.DisableOtherAbilities(1.6f, this));

@@ -40,6 +40,7 @@ public abstract class ShootBasic : DamagingAbility
         if (Handler.Owner is MainPlayerBehaviour)
             AttackDistance = 20f;
         soundType = AbilitySoundType.Shoot;
+        bulletinstance = CreateBullet();
     }
     public void SetAttackDistance(float attackDistance)
     {
@@ -48,7 +49,7 @@ public abstract class ShootBasic : DamagingAbility
     protected override void OnEnable()
     {
         base.OnEnable();
-        StartCoroutine(Firstbullet());
+        //StartCoroutine(Firstbullet());
     }
     void OnDisable()
     {
@@ -64,18 +65,19 @@ public abstract class ShootBasic : DamagingAbility
     public override void Activate()
     {
         base.Activate();
-        StartCoroutine(Firstbullet());
+        bulletinstance = CreateBullet();
+        //StartCoroutine(Firstbullet());
     }
     public override void Deactivate()
     {
         OnDisable();
     }
-    protected virtual IEnumerator Firstbullet()
+    /* protected virtual IEnumerator Firstbullet()
     {
         yield return new WaitForSeconds(.2f);
         bulletinstance = CreateBullet();
         loaded = true;
-    }
+    } */
     protected override IEnumerator Reload()
     {
         loaded = false;
