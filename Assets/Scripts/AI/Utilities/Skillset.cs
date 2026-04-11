@@ -59,6 +59,10 @@ public class SkillsetFighter : Skillset
                 /* Ability ultAttack = Handler.gameObject.AddComponent<UltAttack>();
                 Handler.AddAbility(ultAttack, HUD.Instance.UltReloader); */
                 break;
+            case 6:
+                Ability offside = Handler.gameObject.AddComponent<Offside>();
+                Handler.AddAbility(offside, HUD.Instance.UltReloader);
+                break;
             default:
                 break;
         }

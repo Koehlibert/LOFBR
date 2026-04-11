@@ -46,13 +46,13 @@ public class UseShield : Ability
     protected override void AbilityAction()
     {
         ShieldInstance = BulletFactory.Instance.CreateShield(Handler.Owner);
-        StartCoroutine("Reload");
-        StartCoroutine("DestroyShield");
+        StartCoroutine(Reload());
+        StartCoroutine(DestroyShield());
         base.AbilityAction();
     }
     protected override bool InputPressed()
     {
-        return PlayerInputRouter.Instance.SkillPressed;
+        return PlayerInputRouter.Instance.SkillPressedThisFrame;
     }
     protected override void AICheck()
     {

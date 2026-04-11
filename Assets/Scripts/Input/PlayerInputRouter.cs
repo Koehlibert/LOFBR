@@ -28,6 +28,9 @@ public class PlayerInputRouter : MonoBehaviour
     public bool ThirdSkillPressedThisFrame { get; private set; }
     public bool ThirdSkillReleasedThisFrame { get; private set; }
     public bool UltPressed { get; private set; }
+    public bool UltToggledThisFrame { get; private set; }
+    public bool UltPressedThisFrame { get; private set; }
+    public bool UltReleasedThisFrame { get; private set; }
     public bool PausePressed { get; private set; }
     public PlayerInputActions Input { get; private set; }
     public static PlayerInputRouter Instance;
@@ -54,8 +57,8 @@ public class PlayerInputRouter : MonoBehaviour
         Input.Player.Alternative.performed += _ => AlternativePressed = true;
         Input.Player.Alternative.canceled += _ => AlternativePressed = false;
 
-        Input.Player.Ult.performed += _ => UltPressed = true;
-        Input.Player.Ult.canceled += _ => UltPressed = false;
+        Input.Player.Ult.performed += OnUltPerformed;
+        Input.Player.Ult.canceled += OnUltCancelled;
 
         Input.Player.Cheat.performed += OnCheatPerformed;
         Input.Player.Cheat.performed += OnCheatCancelled;
@@ -115,6 +118,17 @@ public class PlayerInputRouter : MonoBehaviour
         ThirdSkillPressed = false;
         ThirdSkillReleasedThisFrame = true;
     }
+    private void OnUltPerformed(InputAction.CallbackContext ctx)
+    {
+        UltPressed = true;
+        UltPressedThisFrame = true;
+        UltToggledThisFrame = true;
+    }
+    private void OnUltCancelled(InputAction.CallbackContext ctx)
+    {
+        UltPressed = false;
+        UltReleasedThisFrame = true;
+    }
     private void OnCheatPerformed(InputAction.CallbackContext ctx)
     {
         CheatedPressed = true;
@@ -140,6 +154,9 @@ public class PlayerInputRouter : MonoBehaviour
         ThirdSkillPressedThisFrame = false;
         ThirdSkillReleasedThisFrame = false;
         ThirdSkillToggledThisFrame = false;
+        UltPressedThisFrame = false;
+        UltReleasedThisFrame = false;
+        UltToggledThisFrame = false;
         CheatedPressedThisFrame = false;
         CheatedReleasedThisFrame = false;
         CheatedToggledThisFrame = false;

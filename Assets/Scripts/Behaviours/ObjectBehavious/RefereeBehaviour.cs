@@ -6,6 +6,6 @@ public class RefereeBehaviour : MonoBehaviour
     {
         Animator animator = GetComponentInChildren<Animator>();
         animator.SetTrigger("Offside");
-        Destroy(this, 2f);
+        Destroy(this.gameObject, 3f);
     }
 }
