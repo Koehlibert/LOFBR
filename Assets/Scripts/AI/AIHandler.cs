@@ -65,6 +65,10 @@ public class AIHandler : MonoBehaviour
         ability.Init(IsInteractive, this, movementAI, reloadObject);
         Abilities.Add(ability);
     }
+    public void ResetAfterDeath()
+    {
+        movementAI.ResetAfterDeath();
+    }
     private void OnDisable()
     {
         ReenableOtherAbilities();

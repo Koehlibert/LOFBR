@@ -58,6 +58,10 @@ public abstract class MainPlayerBehaviour : CharacterBehaviour
             ResetMarked = true;
         }
     }
+    public void ResetAfterDeath()
+    {
+        aIHandler.ResetAfterDeath();
+    }
     protected override void InitializeHPSys()
     {
         hpsys.Initialize(skillSet.GetHPVals());
@@ -79,7 +83,7 @@ public abstract class MainPlayerBehaviour : CharacterBehaviour
         }
         LastHit = false;
         CharacterTracker.Instance.UnSetMarkedEnemy(this);
-        MasterScript.Instance.DieAndRespawn(Team);
+        MasterScript.Instance.DieAndRespawn(this);
     }
     public void OnHealXP()
     {

@@ -203,6 +203,12 @@ public class MovementAI : AIModule
             }
         }
     }
+    public void ResetAfterDeath()
+    {
+        LookLock = false;
+        MoveLock = false;
+        ForceMovement = false;
+    }
     public IEnumerator LockMovement(float duration)
     {
         MoveLock = true;

@@ -92,39 +92,32 @@ public class MasterScript : MonoBehaviour
                         target.y,
             Mathf.Clamp(target.z, friendlySpawn.GetZPos() + border, enemySpawn.GetZPos()) - border);
     }
-    public void DieAndRespawn(CombatUtils.Team team)
+    public void DieAndRespawn(MainPlayerBehaviour mainPlayer)
     {
-        if (team == CombatUtils.Team.Player)
+        StartCoroutine(RespawnCoroutine(mainPlayer));
+        if (mainPlayer.Team == CombatUtils.Team.Player)
         {
-            StartCoroutine(RespawnCoroutine());
             friendlySpawn.SpeedUpSpawner(1f);
         }
         else
         {
-            StartCoroutine(EnemyRespawnCoroutine());
             enemySpawn.SpeedUpSpawner(1f);
         }
-        MoveSpawner(team);
+        MoveSpawner(mainPlayer.Team);
     }
-    public IEnumerator RespawnCoroutine()
+    public IEnumerator RespawnCoroutine(MainPlayerBehaviour mainPlayer)
     {
-        AudioManager.Instance.PlayerDies();
-        CharacterTracker.Instance.player.gameObject.SetActive(false);
-        yield return new WaitForSeconds(respawntime);
-        if ((!gameOver) || GameOverContinue)
+        if (mainPlayer.Team == CombatUtils.Team.Player)
         {
-            CharacterTracker.Instance.player.transform.position = respawnpointPlayer.transform.position;
-            CharacterTracker.Instance.player.gameObject.SetActive(true);
+            AudioManager.Instance.PlayerDies();
         }
-    }
-    public IEnumerator EnemyRespawnCoroutine()
-    {
-        CharacterTracker.Instance.enemyPlayer.gameObject.SetActive(false);
+        mainPlayer.gameObject.SetActive(false);
         yield return new WaitForSeconds(respawntime);
         if ((!gameOver) || GameOverContinue)
         {
-            CharacterTracker.Instance.enemyPlayer.transform.position = respawnpointEnemyPlayer.transform.position;
-            CharacterTracker.Instance.enemyPlayer.gameObject.SetActive(true);
+            mainPlayer.transform.position = mainPlayer.Team == CombatUtils.Team.Player ? respawnpointPlayer.transform.position : respawnpointEnemyPlayer.transform.position;
+            mainPlayer.gameObject.SetActive(true);
+            mainPlayer.ResetAfterDeath();
         }
     }
     public void ToMenu()
