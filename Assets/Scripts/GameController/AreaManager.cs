@@ -20,6 +20,7 @@ public abstract class AreaManager : MonoBehaviour
     public abstract void Init();
     public void StartShrink()
     {
+        if (isShrinking == true) return;
         areaStartScale = Area.transform.localScale;
         previousScaleZ = areaStartScale.z;
         if (previousScaleZ <= 0.1f) return;
