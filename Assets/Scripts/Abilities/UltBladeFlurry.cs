@@ -58,7 +58,7 @@ public class UltBladeFlurry : DamagingAbility
         {
             dir.x = -dir.x;
         }
-        if ((temp.z <= MasterScript.Instance.friendlySpawn.GetZPos() + 1) || (temp.z >= MasterScript.Instance.enemySpawn.GetZPos() - 1))
+        if ((temp.z <= AreaManagerFriendly.Instance.Spawner.GetZPos() + 1) || (temp.z >= AreaManagerEnemy.Instance.Spawner.GetZPos() - 1))
         {
             dir.y = -dir.y;
         }

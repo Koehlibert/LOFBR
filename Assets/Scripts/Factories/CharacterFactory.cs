@@ -64,7 +64,7 @@ public class CharacterFactory : MonoBehaviour
     }
     public GameObject CreateReferee(float posZ)
     {
-        GameObject referee = InstantiateCharacter(Referee, new(MasterScript.Instance.lowerAreaLimitX, 0, posZ), Quaternion.identity);
+        GameObject referee = InstantiateCharacter(Referee, new(AreaManagerFriendly.Instance.lowerAreaLimitX, 0, posZ), Quaternion.identity);
         referee.transform.LookAt(new Vector3(0,0,posZ));
         referee.AddComponent<RefereeBehaviour>().Init();
         return referee;

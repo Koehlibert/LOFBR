@@ -125,7 +125,7 @@ public class BuildWall : SelectionAbility
     }
     protected float CorrectWallX(float x, int memberCount)
     {
-        return Mathf.Clamp(x, MasterScript.Instance.lowerAreaLimitX + memberCount / 2 * MemberWidth, MasterScript.Instance.upperAreaLimitX - memberCount / 2 * MemberWidth);
+        return Mathf.Clamp(x, AreaManagerFriendly.Instance.lowerAreaLimitX + memberCount / 2 * MemberWidth, AreaManagerFriendly.Instance.upperAreaLimitX - memberCount / 2 * MemberWidth);
     }
     protected override void DisableSelection()
     {

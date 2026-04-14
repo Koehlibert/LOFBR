@@ -37,10 +37,10 @@ public abstract class SpawnerBehaviour : MonoBehaviour
     {
         return pos1.z;
     }
-    public void MoveSpawner()
+    public void MoveSpawner(float scaleFactor)
     {
-        pos1.z -= Direction * 10;
-        pos2.z -= Direction * 10;
+        pos1.z *= scaleFactor;
+        pos2.z *= scaleFactor;
     }
     public void SetEnabled(bool val)
     {

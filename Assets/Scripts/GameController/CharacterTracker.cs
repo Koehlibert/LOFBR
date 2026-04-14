@@ -23,15 +23,19 @@ public class CharacterTracker : MonoBehaviour
     private List<GameObject> COrderedFriendlies;
     private GameObject MarkedEnemy = null;
     private GameObject MarkedFriendly = null;
+    public GameObject enemyBase;
+    public GameObject friendlyBase;
     private void Awake()
     {
         Instance = this;
     }
     public void Init()
     {
-        GameObject playerObject = CharacterFactory.Instance.CreateTeamPlayer(CombatUtils.Team.Player, MasterScript.Instance.respawnpointPlayer.transform.position, Quaternion.identity);
+        friendlyBase = GameObject.FindGameObjectWithTag("FriendlyBase");
+        enemyBase = GameObject.FindGameObjectWithTag("EnemyBase");
+        GameObject playerObject = CharacterFactory.Instance.CreateTeamPlayer(CombatUtils.Team.Player, AreaManagerFriendly.Instance.RespawnPoint.transform.position, Quaternion.identity);
         player = playerObject.GetComponent<PlayerController>();
-        GameObject enemyPlayerObject = CharacterFactory.Instance.CreateTeamPlayer(CombatUtils.Team.Enemy, MasterScript.Instance.respawnpointEnemyPlayer.transform.position, Quaternion.identity);
+        GameObject enemyPlayerObject = CharacterFactory.Instance.CreateTeamPlayer(CombatUtils.Team.Enemy, AreaManagerEnemy.Instance.RespawnPoint.transform.position, Quaternion.identity);
         enemyPlayer = enemyPlayerObject.GetComponent<EnemyPlayerBehaviour>();
         allEnemiesTowers = new List<GameObject>();
         allFriendliesTowers = new List<GameObject>();

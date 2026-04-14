@@ -21,6 +21,7 @@ public class PlayerController : MainPlayerBehaviour
         StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
         if (PlayerInputRouter.Instance.CheatedPressedThisFrame)
         {
+            AreaManagerFriendly.Instance.StartShrink();
             hpsys.AddArmor(1000);
             Levelsys.GainExp(100);
             EnemyPlayer.Levelsys.GainExp(100);

@@ -765,6 +765,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 173021276}
+  - component: {fileID: 173021277}
+  - component: {fileID: 173021278}
   m_Layer: 0
   m_Name: FriendlyArea
   m_TagString: FriendlyArea
@@ -793,6 +795,37 @@ Transform:
   - {fileID: 1797639384}
   m_Father: {fileID: 893995778}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &173021277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 173021275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83917e1313abd8f449f51976a8255993, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AreaManagerFriendly
+  upperAreaLimitX: 18
+  lowerAreaLimitX: -18
+  Area: {fileID: 0}
+  Floor: {fileID: 1797639383}
+  RespawnPoint: {fileID: 521114344}
+  Spawner: {fileID: 0}
+  duration: 3
+--- !u!114 &173021278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 173021275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c05231c7e513646a5e6b00f1b08365, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FriendlySpawner
 --- !u!1 &181606340
 GameObject:
   m_ObjectHideFlags: 0
@@ -868,12 +901,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 181606340}
   m_CullTransparentMesh: 0
---- !u!1 &191265542 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5661541220722964526, guid: d950ba161d90ab3448ae131f6675cbb3,
-    type: 3}
-  m_PrefabInstance: {fileID: 305762256}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &269801698
 GameObject:
   m_ObjectHideFlags: 0
@@ -1217,12 +1244,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 320398155}
   m_CullTransparentMesh: 0
---- !u!1 &327053439 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5661541220722964526, guid: d950ba161d90ab3448ae131f6675cbb3,
-    type: 3}
-  m_PrefabInstance: {fileID: 730501975}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &339031222 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400104, guid: 28aaab120bf28e248a972ef8f8c6b4d6,
@@ -2532,6 +2553,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 681399668}
+  - component: {fileID: 681399669}
+  - component: {fileID: 681399670}
   m_Layer: 0
   m_Name: EnemyArea
   m_TagString: EnemyArea
@@ -2560,6 +2583,37 @@ Transform:
   - {fileID: 1017717349}
   m_Father: {fileID: 893995778}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &681399669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681399667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddb112fb4ae0f624db1f486965f98527, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AreaManagerEnemy
+  upperAreaLimitX: 18
+  lowerAreaLimitX: -18
+  Area: {fileID: 0}
+  Floor: {fileID: 1017717348}
+  RespawnPoint: {fileID: 1307548045}
+  Spawner: {fileID: 0}
+  duration: 3
+--- !u!114 &681399670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681399667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba4e25558d5580543828b759bb336b58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &689418697
 GameObject:
   m_ObjectHideFlags: 0
@@ -5153,8 +5207,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1772391471}
   - component: {fileID: 1772391470}
-  - component: {fileID: 1772391468}
-  - component: {fileID: 1772391469}
   - component: {fileID: 1772391474}
   - component: {fileID: 1772391475}
   - component: {fileID: 1772391476}
@@ -5167,30 +5219,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1772391468
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1772391467}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba4e25558d5580543828b759bb336b58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1772391469
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1772391467}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7c05231c7e513646a5e6b00f1b08365, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1772391470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5203,22 +5231,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ea3fd84289558f4cb9f993d8b17d499, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemySpawn: {fileID: 0}
-  friendlySpawn: {fileID: 0}
   respawntime: 5
-  respawnpointPlayer: {fileID: 521114344}
-  respawnpointEnemyPlayer: {fileID: 1307548045}
   gameOver: 0
   victory: 0
   baseMaxHp: 1600
   defeatImage: {fileID: 647974827}
   victoryImage: {fileID: 1820571087}
-  friendlyArea: {fileID: 0}
-  enemyArea: {fileID: 0}
-  enemyBase: {fileID: 327053439}
-  friendlyBase: {fileID: 191265542}
-  friendlyFloor: {fileID: 1797639383}
-  enemyFloor: {fileID: 1017717348}
   moverFriendly: {fileID: 7835543102903678058, guid: ec26b6ed87291cc4b80c0d8b64985e31,
     type: 3}
   moverEnemy: {fileID: 7835543102903678058, guid: 50ee6ef313b6ca04a8017f5feca96dca,
@@ -5227,8 +5245,6 @@ MonoBehaviour:
   GameOverMenu: {fileID: 93099281}
   GameOverContinue: {fileID: 947494441}
   timeCounter: 0
-  upperAreaLimitX: 18
-  lowerAreaLimitX: -18
   TowerPos:
   - {x: 20, y: 0, z: 25}
   - {x: 20, y: 0, z: 50}
@@ -5312,6 +5328,7 @@ MonoBehaviour:
     type: 3}
   SuperRegenAura: {fileID: 6884554792350047658, guid: ddaa851987b90da4facd897601f61ce9,
     type: 3}
+  MoveCollider: {fileID: 0}
 --- !u!114 &1772391477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5352,6 +5369,8 @@ MonoBehaviour:
   allFriendlies: []
   allEnemiesTowers: []
   allFriendliesTowers: []
+  enemyBase: {fileID: 0}
+  friendlyBase: {fileID: 0}
 --- !u!1 &1797639383
 GameObject:
   m_ObjectHideFlags: 0

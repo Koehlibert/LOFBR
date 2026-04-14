@@ -15,6 +15,7 @@ public class BulletFactory : MonoBehaviour
     [SerializeField] GameObject BulletDetector;
     [SerializeField] GameObject ArmorAura;
     [SerializeField] GameObject SuperRegenAura;
+    [SerializeField] GameObject MoveCollider;
     private void Awake()
     {
         Instance = this;
@@ -117,4 +118,10 @@ public class BulletFactory : MonoBehaviour
         wall.AddComponent<WallBehaviour>().Init(owner.Team, memberCount, memberWidth, memberHP);
         return wall;
     }
+    /* public GameObject CreateMover(DamageableEntity owner)
+    {
+        GameObject Mover = Instantiate(MoveCollider);
+        Mover.AddComponent<OffsideMover>().Init(owner);
+        return Mover;
+    } */
 }
