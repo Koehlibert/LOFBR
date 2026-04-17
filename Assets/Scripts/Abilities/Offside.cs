@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class Offside : DamagingAbility
 {
     public GameObject Referee;
+    private InDistanceTracker inDistanceTracker;
+    float DistanceToCheck = 30;
+    int NEnemiesToTrigger = 5;
     protected override AbilityInfo GetAbilityInfo()
     {
         return new AbilityInfo(10, 2, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
     }
     protected override void AdditionalInit()
     {
-
+        if (!IsInteractive)
+            inDistanceTracker = Handler.ClosestFinder.StartTrackingDist(DistanceToCheck, true);
     }
     protected override void AbilityAction()
     {
@@ -34,6 +39,21 @@ public class Offside : DamagingAbility
     }
     protected override void AICheck()
     {
+        if (loaded)
+        {
+            if (CheckManaCost())
+            {
+                bool condition1 = CharacterTracker.Instance.GetFurthestEnemy(Handler.Owner.Team).transform.position.z >
+                                    MasterScript.Instance.GetOpponentSpawnZ(CombatUtils.GetOpposingTeam(Handler.Owner.Team)) * 0.75f;
+                bool condition2 = inDistanceTracker.GetOverCount(NEnemiesToTrigger);
+                bool condition3 = Handler.Owner.hpsys.healthDisplay() < 0.25;
+                float prob = Mathf.Clamp01(0 + (condition1 ? 0.4f : 0) + (condition2 ? 0.35f : 0) + (condition3 ? 0.2f : 0));
+                if (UnityEngine.Random.value < prob)
+                {
+                    SetFinalAction();
+                }
+            }
+        }
     }
     protected override DamageInfo GetDamageValues()
     {
@@ -48,7 +68,7 @@ public class Offside : DamagingAbility
                 return new DamageInfo(8 + OwnerLevelSys.GetLevel() * 2, OwnerLevelSys.GetLevel(), Handler.Owner.Team, true, true, false);
             }
         }
-        else 
+        else
         {
             return new DamageInfo(10, 1, Handler.Owner.Team, false, true, false);
         }
