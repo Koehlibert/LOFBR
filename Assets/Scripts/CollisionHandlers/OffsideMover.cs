@@ -25,7 +25,7 @@ public class OffsideMover : CollisionHandler
         transform.Translate(actualMovement);
         if (Mathf.Abs(transform.position.z - MasterScript.Instance.GetOpponentSpawnZ(Owner.Team)) < 2)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
         foreach (CharacterBehaviour characterBehaviour in ObjectsToMove)
         {

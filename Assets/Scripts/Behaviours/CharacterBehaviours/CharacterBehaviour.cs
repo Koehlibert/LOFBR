@@ -43,6 +43,7 @@ public abstract class CharacterBehaviour : DamageableEntity
     public void StartGetPushed()
     {
         aIHandler.LockAI(Mathf.Infinity);
+        aIHandler.transform.LookAt(MasterScript.Instance.GetOpponentBase(aIHandler.Owner.Team).transform);
         animator.SetBool("Pushed", true);
     }
     public void StopGetPushed()
