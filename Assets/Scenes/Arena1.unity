@@ -5328,7 +5328,8 @@ MonoBehaviour:
     type: 3}
   SuperRegenAura: {fileID: 6884554792350047658, guid: ddaa851987b90da4facd897601f61ce9,
     type: 3}
-  MoveCollider: {fileID: 0}
+  MoveCollider: {fileID: 5222630423216221301, guid: 033331a622490734f90947303443fb65,
+    type: 3}
 --- !u!114 &1772391477
 MonoBehaviour:
   m_ObjectHideFlags: 0

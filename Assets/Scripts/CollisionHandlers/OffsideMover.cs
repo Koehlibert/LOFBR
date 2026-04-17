@@ -1,74 +1,70 @@
-/* using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class OffsideMover : CollisionHandler
 {
-    private List<GameObject> ObjectsToMove;
-    private Vector3 MoveDirection;
-    public override void Init(DamageableEntity owner)
+    private List<CharacterBehaviour> ObjectsToMove;
+    protected Vector3 MoveDirection = new Vector3(0f, 0f, 10f);
+    public void Init(DamageableEntity owner, DamageInfo damageInfo)
     {
-        base.Init(owner);
-        Destroy(this.gameObject,4f);
-        ObjectsToMove = new List<GameObject>();
-        owner.GetHealth().ActivateSuperRegen(GetBuffValue());
+        Init(owner);
+        this.transform.position = new Vector3(0, 0, owner.transform.position.z);
+        Destroy(this.gameObject,2.5f);
+        ObjectsToMove = new List<CharacterBehaviour>();
+        if (owner.Team == CombatUtils.Team.Enemy)
+        {
+            MoveDirection.z *= -1;
+        }
+        gameObject.AddComponent<Damage>().SetProperties(damageInfo);
     }
     void Update()
     {
-        this.transform.SetPositionAndRotation(Owner.transform.position + new Vector3(0f,2f,0f), Owner.transform.rotation);
+        Vector3 actualMovement = MoveDirection * Time.deltaTime;
+        this.transform.Translate(actualMovement);
+        foreach (CharacterBehaviour characterBehaviour in ObjectsToMove)
+        {
+            if (characterBehaviour != null)
+            characterBehaviour.transform.position += actualMovement;
+        }
     }
     protected override void HandleEnduringDamage(Collider collider)
     {
     }
     protected override void HandleDamageCollision(Collider collider)
     {
-        DamageableEntity damageableEntity = collider.gameObject.GetComponent<DamageableEntity>();
-        if (damageableEntity != null && damageableEntity.Team == Owner.Team && !RegeningObjectList.Contains(damageableEntity))
+        CharacterBehaviour characterBehaviour = collider.gameObject.GetComponent<CharacterBehaviour>();
+        if (characterBehaviour != null && CombatUtils.CanDamage(Owner.Team, characterBehaviour.Team) && !ObjectsToMove.Contains(characterBehaviour) && characterBehaviour is not TowerBehaviour)
         {
-            ActivateSuperRegen(damageableEntity);
+            StartPushing(characterBehaviour);
         }
     }
-    private void ActivateSuperRegen(DamageableEntity damageableEntity)
+    private void StartPushing(CharacterBehaviour characterBehaviour)
     {
-        damageableEntity.GetComponent<Health>().ActivateSuperRegen(GetBuffValue());
-        RegeningObjectList.Add(damageableEntity);
+        characterBehaviour.StartGetPushed();
+        ObjectsToMove.Add(characterBehaviour);
     }
-    private void DeactivateSuperRegen(DamageableEntity damageableEntity)
+    private void StopPushing(CharacterBehaviour characterBehaviour)
     {
-        damageableEntity.GetComponent<Health>().DeactivateSuperRegen();
-        RegeningObjectList.Remove(damageableEntity);
+        characterBehaviour.StopGetPushed();
+        ObjectsToMove.Remove(characterBehaviour);
     }
-    void OnTriggerExit(Collider collider)
+    /* void OnTriggerExit(Collider collider)
     {
-        var item = RegeningObjectList.Find(x => x = collider.gameObject.GetComponent<DamageableEntity>());
+        var item = ObjectsToMove.Find(x => x = collider.gameObject.GetComponent<CharacterBehaviour>());
         if (item != null)
         {   
-            DeactivateSuperRegen(item.GetComponent<DamageableEntity>());
+            Debug.Log("huh");
+            StopPushing(item.GetComponent<CharacterBehaviour>());
         }
-    }
+    } */
     void OnDestroy()
     {
-        RegeningObjectList.RemoveAll(item => item == null);
-        foreach (DamageableEntity character in RegeningObjectList)
+        ObjectsToMove.RemoveAll(item => item == null);
+        foreach (CharacterBehaviour characterBehaviour in ObjectsToMove)
         {
-            character.GetComponent<Health>().DeactivateSuperRegen();
+            characterBehaviour.StopGetPushed();
         }
-        Owner.GetHealth().DeactivateSuperRegen();
-    }
-    public float GetBuffValue()
-    {
-        if (Owner is MainPlayerBehaviour mainPlayerBehaviour)
-        {
-            if (Owner is MirrorImageBehaviour)
-            {
-                return mainPlayerBehaviour.Levelsys.GetLevel()*2 + 5;
-            }
-            else
-            {
-                return mainPlayerBehaviour.Levelsys.GetLevel()*3 + 10;
-            }
-        }
-        else return 10;
     }
 }
- */

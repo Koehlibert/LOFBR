@@ -85,7 +85,7 @@ public class Melee : DamagingAbility
         }
         else 
         {
-            return new DamageInfo(40, 0, Handler.Owner.Team, true, false, false);
+            return new DamageInfo(40, 0, Handler.Owner.Team, false, false, false);
         }
     }
     protected override void AICheck()

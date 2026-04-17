@@ -165,6 +165,14 @@ public class AIHandler : MonoBehaviour
     {
         movementAI.LockMovementAI(duration);
     }
+    public void LockMovementAI()
+    {
+        movementAI.LockMovementAI();
+    }
+    public void UnlockMovementAI()
+    {
+        movementAI.UnlockMovementAI();
+    }
     public void LockMovement(float duration)
     {
         StartCoroutine(movementAI.LockMovement(duration));

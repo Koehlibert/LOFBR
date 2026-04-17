@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using Unity.Services.Analytics;
+using UnityEngine.Animations;
 
 public abstract class CharacterBehaviour : DamageableEntity
 {
@@ -38,5 +39,15 @@ public abstract class CharacterBehaviour : DamageableEntity
     protected virtual void InitializeHPSys()
     {
         hpsys.Initialize(100, 0, 0, 0);
+    }
+    public void StartGetPushed()
+    {
+        aIHandler.LockAI(Mathf.Infinity);
+        animator.SetBool("Pushed", true);
+    }
+    public void StopGetPushed()
+    {
+        aIHandler.UnlockAI();
+        animator.SetBool("Pushed", false);
     }
 }
