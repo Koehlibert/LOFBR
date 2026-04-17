@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class Offside : DamagingAbility
 {
-    public GameObject Referee;
     private InDistanceTracker inDistanceTracker;
     float DistanceToCheck = 30;
     int NEnemiesToTrigger = 5;
@@ -22,7 +21,6 @@ public class Offside : DamagingAbility
     protected override void AbilityAction()
     {
         StartCoroutine(Reload());
-        Referee = CharacterFactory.Instance.CreateReferee(Handler.Owner.transform.position.z);
         StartCoroutine(StartMover());
         Handler.LockMovementAI(1.5f);
         StartCoroutine(Handler.DisableOtherAbilities(1.5f, this));
@@ -30,7 +28,11 @@ public class Offside : DamagingAbility
     }
     private IEnumerator StartMover()
     {
-        yield return new WaitForSeconds(0.5f);
+        Handler.Owner.transform.LookAt(MasterScript.Instance.GetOpponentBase(Handler.Owner.Team).transform);
+        Handler.Owner.animator.SetTrigger("CallRef");
+        yield return new WaitForSeconds(0.25f);
+        CharacterFactory.Instance.CreateReferee(Handler.Owner.Team, Handler.Owner.transform.position.z);
+        yield return new WaitForSeconds(0.35f);
         BulletFactory.Instance.CreateMover(Handler.Owner, GetDamageValues());
     }
     protected override bool InputPressed()

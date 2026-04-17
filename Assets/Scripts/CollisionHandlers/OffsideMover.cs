@@ -22,7 +22,11 @@ public class OffsideMover : CollisionHandler
     void Update()
     {
         Vector3 actualMovement = MoveDirection * Time.deltaTime;
-        this.transform.Translate(actualMovement);
+        transform.Translate(actualMovement);
+        if (Mathf.Abs(transform.position.z - MasterScript.Instance.GetOpponentSpawnZ(Owner.Team)) < 2)
+        {
+            Destroy(this);
+        }
         foreach (CharacterBehaviour characterBehaviour in ObjectsToMove)
         {
             if (characterBehaviour != null)
@@ -50,15 +54,6 @@ public class OffsideMover : CollisionHandler
         characterBehaviour.StopGetPushed();
         ObjectsToMove.Remove(characterBehaviour);
     }
-    /* void OnTriggerExit(Collider collider)
-    {
-        var item = ObjectsToMove.Find(x => x = collider.gameObject.GetComponent<CharacterBehaviour>());
-        if (item != null)
-        {   
-            Debug.Log("huh");
-            StopPushing(item.GetComponent<CharacterBehaviour>());
-        }
-    } */
     void OnDestroy()
     {
         ObjectsToMove.RemoveAll(item => item == null);

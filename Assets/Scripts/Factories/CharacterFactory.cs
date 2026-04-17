@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Security.Cryptography.X509Certificates;
 
 public class CharacterFactory : MonoBehaviour
 {
@@ -62,9 +63,10 @@ public class CharacterFactory : MonoBehaviour
         mirrorImage.GetComponent<MirrorImageBehaviour>().Init(team, classID, level, startingHealth);
         return mirrorImage;
     }
-    public GameObject CreateReferee(float posZ)
+    public GameObject CreateReferee(CombatUtils.Team team, float posZ)
     {
-        GameObject referee = InstantiateCharacter(Referee, new(AreaManagerFriendly.Instance.lowerAreaLimitX, 0, posZ), Quaternion.identity);
+        float x = team == CombatUtils.Team.Player ? AreaManagerFriendly.Instance.lowerAreaLimitX : AreaManagerFriendly.Instance.upperAreaLimitX;
+        GameObject referee = InstantiateCharacter(Referee, new(x, 0, posZ), Quaternion.identity);
         referee.transform.LookAt(new Vector3(0,0,posZ));
         referee.AddComponent<RefereeBehaviour>().Init();
         return referee;
