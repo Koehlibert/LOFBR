@@ -5,12 +5,6 @@ using UnityEngine;
 
 public class TowerBehaviour : CharacterBehaviour
 {
-    protected float range;
-    protected float lookRange;
-    protected GameObject currentenemy;
-    protected float cooldown;
-    protected GameObject bulletinstance;
-    protected ClosestFinder closestFinder;
     public override void Init()
     {
         base.Init();
