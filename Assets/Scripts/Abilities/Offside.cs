@@ -11,7 +11,7 @@ public class Offside : DamagingAbility
     int NEnemiesToTrigger = 5;
     protected override AbilityInfo GetAbilityInfo()
     {
-        return new AbilityInfo(10, 2, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
+        return new AbilityInfo(225, 25, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot });
     }
     protected override void AdditionalInit()
     {
