@@ -37,6 +37,11 @@ public abstract class CollisionHandler : MonoBehaviour
             HandleEnduringDamage(collider);
         }
     }
+    private void OnTriggerExit(Collider collider)
+    {
+        GameObject colliderObject = collider.gameObject;
+        objectsEntered.Remove(colliderObject);
+    }
     void LateUpdate()
     {
         objectsInTrigger.Clear();

@@ -22,9 +22,11 @@ public class Dash : Ability
     private IEnumerator DashAnim(Vector3 dir)
     {
         StartCoroutine(Reload());
-        Handler.LockMovementAI(0.2f);
+        Handler.LockMovementAI(0.225f);
         Handler.Owner.animator.SetTrigger("Dash");
-        yield return new WaitForSeconds(0.1f);
+        movementAI.Speedup = 1.25f;
+        StartCoroutine(movementAI.SetForcemovement(0.15f));
+        yield return new WaitForSeconds(0.15f);
         if (dir.magnitude > dashDistance || IsInteractive)
             dir = dir.normalized * dashDistance;
         Handler.Owner.transform.position += dir;
@@ -33,7 +35,7 @@ public class Dash : Ability
         {
             IsSubscribed = false;
         }
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.15f);
     }
     protected override bool InputPressed()
     {
