@@ -5,10 +5,6 @@ using UnityEngine;
 
 public class TowerBehaviour : CharacterBehaviour
 {
-    public override void Init()
-    {
-        base.Init();
-    }
     public void Init(CombatUtils.Team team)
     {
         this.Team = team;
@@ -16,7 +12,6 @@ public class TowerBehaviour : CharacterBehaviour
     }
     protected override void InitializeAIHandler()
     {
-        base.InitializeAIHandler();
         ThrowBall throwBall = gameObject.AddComponent<ThrowBall>();
         aIHandler.Init(this, new List<Ability> { throwBall }, new List<AIModule>(), 0, false);
         aIHandler.LockMovement(Mathf.Infinity);
