@@ -56,7 +56,7 @@ public class DamageCollisionHandler : CollisionHandler
                     }
                     if (Owner.GetHealth().Heal(damageComponent))
                     {
-                        if(bulletOwner is MainPlayerBehaviour)
+                        if (bulletOwner is MainPlayerBehaviour)
                         {
                             CharacterTracker.Instance.GetPlayer(Owner.Team).OnHealXP();
                         }

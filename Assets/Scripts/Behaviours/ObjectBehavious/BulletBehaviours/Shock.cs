@@ -17,7 +17,7 @@ public class Shock : MonoBehaviour
     {
         if (col.radius<=maxRange)
         {
-            col.radius+=1.5f*Time.deltaTime;
+            col.radius+=1.35f*Time.deltaTime;
             gameObject.transform.localScale = fullV*(col.radius/maxRange);
         }
         else

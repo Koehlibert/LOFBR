@@ -57,7 +57,7 @@ public class BulletFactory : MonoBehaviour
     public GameObject CreateShockwave(DamageableEntity owner, bool destroyOnHit, HumanBodyBones bone)
     {
         GameObject Shockwave = InstantiateShockwave(owner, bone);
-        Shock shock = Shockwave.AddComponent<Shock>();
+        Shockwave.AddComponent<Shock>();
         return Shockwave;
     }
     private GameObject InstantiateShockwave(DamageableEntity owner, HumanBodyBones bone)
