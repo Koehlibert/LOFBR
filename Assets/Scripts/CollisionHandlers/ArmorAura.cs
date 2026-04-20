@@ -22,7 +22,7 @@ public class ArmorAura : CollisionHandler
     }
     protected override void HandleDamageCollision(Collider collider)
     {
-        DamageableEntity damageableEntity = collider.gameObject.GetComponent<DamageableEntity>();
+        DamageableEntity damageableEntity = collider.gameObject.GetComponentInParent<DamageableEntity>();
         var item = ArmoredAllies.Find(x => x.ArmoredEntity == damageableEntity);
         if (damageableEntity != null && damageableEntity.Team == Owner.Team && item == null)
         {

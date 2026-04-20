@@ -38,7 +38,7 @@ public class OffsideMover : CollisionHandler
     }
     protected override void HandleDamageCollision(Collider collider)
     {
-        CharacterBehaviour characterBehaviour = collider.gameObject.GetComponent<CharacterBehaviour>();
+        CharacterBehaviour characterBehaviour = collider.gameObject.GetComponentInParent<CharacterBehaviour>();
         if (characterBehaviour != null && CombatUtils.CanDamage(Owner.Team, characterBehaviour.Team) && !ObjectsToMove.Contains(characterBehaviour) && characterBehaviour is not TowerBehaviour)
         {
             StartPushing(characterBehaviour);
@@ -48,11 +48,6 @@ public class OffsideMover : CollisionHandler
     {
         characterBehaviour.StartGetPushed();
         ObjectsToMove.Add(characterBehaviour);
-    }
-    private void StopPushing(CharacterBehaviour characterBehaviour)
-    {
-        characterBehaviour.StopGetPushed();
-        ObjectsToMove.Remove(characterBehaviour);
     }
     void OnDestroy()
     {

@@ -5,17 +5,10 @@ using NUnit.Framework;
 
 public abstract class CollisionHandler : MonoBehaviour
 {
-    [System.Serializable]
-    public class CollisionRule
-    {
-        public List<string> tags = new List<string>();
-        public CollisionEventType eventType;
-        public bool destroyOnHit = false;
-        public bool setLastHit = false;
-    }
+    private HashSet<GameObject> objectsInTrigger = new HashSet<GameObject>();
+    private HashSet<GameObject> objectsEnteredThisFrame = new HashSet<GameObject>();
     public event Action OnHitCallback;
     public enum CollisionEventType { Enter, Stay, TriggerStay, TriggerEnter }
-    protected List<CollisionRule> collisionRules = new List<CollisionRule>();
     protected DamageableEntity Owner;
     protected void RaiseOnHitCallback()
     {
@@ -26,17 +19,28 @@ public abstract class CollisionHandler : MonoBehaviour
     {
         Owner = owner;
     }
-    public void AddRule(CollisionRule rule)
-    {
-        collisionRules.Add(rule);
-    }
     private void OnTriggerEnter(Collider collider)
     {
-        HandleDamageCollision(collider);
+        GameObject colliderObject = collider.gameObject;
+        if (!objectsEnteredThisFrame.Contains(colliderObject))
+        {
+            objectsEnteredThisFrame.Add(colliderObject);
+            HandleDamageCollision(collider);
+        }
     }
     private void OnTriggerStay(Collider collider)
     {
-        HandleEnduringDamage(collider);
+        GameObject colliderObject = collider.gameObject;
+        if (!objectsInTrigger.Contains(colliderObject))
+        {
+            objectsInTrigger.Add(colliderObject);
+            HandleEnduringDamage(collider);
+        }
+    }
+    void LateUpdate()
+    {
+        objectsInTrigger.Clear();
+        objectsEnteredThisFrame.Clear();
     }
     protected abstract void HandleEnduringDamage(Collider collider);
     protected abstract void HandleDamageCollision(Collider collider);

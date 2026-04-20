@@ -21,7 +21,7 @@ public class MarkForDeath : SelectionAbility
         DamageableEntity damageableEntity = null;
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            damageableEntity = hit.collider.gameObject.GetComponent<DamageableEntity>();
+            damageableEntity = hit.collider.gameObject.GetComponentInParent<DamageableEntity>();
             if (damageableEntity != null && damageableEntity.Team != Handler.Owner.Team)
             {
                 damageableEntity.MarkHealthbar();

@@ -96,7 +96,7 @@ public class BulletFactory : MonoBehaviour
     }
     public GameObject CreateBulletDetector(DamageableEntity owner, int nBulletsToTrigger)
     {
-        GameObject bulletDetector = Instantiate(BulletDetector, owner.gameObject.transform);
+        GameObject bulletDetector = Instantiate(BulletDetector, owner.gameObject.transform.position, owner.transform.rotation);
         bulletDetector.AddComponent<DetectBulletsCollisionHandler>().Init(owner, nBulletsToTrigger);
         return bulletDetector;
     }
