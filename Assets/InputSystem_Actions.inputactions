@@ -95,6 +95,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "FourthSkill",
+                    "type": "Button",
+                    "id": "79b8fe64-5b98-4beb-91e8-020f93c9c3e4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -403,6 +412,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "ThirdSkill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "781030bd-706a-4049-a7cc-a323b395d9b0",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FourthSkill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

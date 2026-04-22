@@ -27,6 +27,10 @@ public class PlayerInputRouter : MonoBehaviour
     public bool ThirdSkillToggledThisFrame { get; private set; }
     public bool ThirdSkillPressedThisFrame { get; private set; }
     public bool ThirdSkillReleasedThisFrame { get; private set; }
+    public bool FourthSkillPressed { get; private set; }
+    public bool FourthSkillToggledThisFrame { get; private set; }
+    public bool FourthSkillPressedThisFrame { get; private set; }
+    public bool FourthSkillReleasedThisFrame { get; private set; }
     public bool UltPressed { get; private set; }
     public bool UltToggledThisFrame { get; private set; }
     public bool UltPressedThisFrame { get; private set; }
@@ -71,6 +75,9 @@ public class PlayerInputRouter : MonoBehaviour
 
         Input.Player.ThirdSkill.performed += OnThirdSkillPerformed;
         Input.Player.ThirdSkill.canceled += OnThirdSkillCanceled;
+
+        Input.Player.FourthSkill.performed += OnFourthSkillPerformed;
+        Input.Player.FourthSkill.canceled += OnFourthSkillCanceled;
 
         Input.Player.Pause.started += _ => PauseGame.Instance.TogglePause();
     }
@@ -118,6 +125,17 @@ public class PlayerInputRouter : MonoBehaviour
         ThirdSkillPressed = false;
         ThirdSkillReleasedThisFrame = true;
     }
+    private void OnFourthSkillPerformed(InputAction.CallbackContext ctx)
+    {
+        FourthSkillPressed = true;
+        FourthSkillPressedThisFrame = true;
+        FourthSkillToggledThisFrame = true;
+    }
+    private void OnFourthSkillCanceled(InputAction.CallbackContext ctx)
+    {
+        FourthSkillPressed = false;
+        FourthSkillReleasedThisFrame = true;
+    }
     private void OnUltPerformed(InputAction.CallbackContext ctx)
     {
         UltPressed = true;
@@ -154,6 +172,9 @@ public class PlayerInputRouter : MonoBehaviour
         ThirdSkillPressedThisFrame = false;
         ThirdSkillReleasedThisFrame = false;
         ThirdSkillToggledThisFrame = false;
+        FourthSkillPressedThisFrame = false;
+        FourthSkillReleasedThisFrame = false;
+        FourthSkillToggledThisFrame = false;
         UltPressedThisFrame = false;
         UltReleasedThisFrame = false;
         UltToggledThisFrame = false;
