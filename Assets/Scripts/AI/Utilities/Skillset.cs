@@ -44,10 +44,8 @@ public class SkillsetFighter : Skillset
                 Handler.AddAbility(stomper, HUD.Instance.AltReloader);
                 break;
             case 3:
-                Ability buildWall = Handler.gameObject.AddComponent<BuildWall>();
-                Handler.AddAbility(buildWall, HUD.Instance.SkillReloader);
-                /* Ability shield = Handler.gameObject.AddComponent<UseShield>();
-                Handler.AddAbility(shield, HUD.Instance.SkillReloader); */
+                Ability shield = Handler.gameObject.AddComponent<UseShield>();
+                Handler.AddAbility(shield, HUD.Instance.SkillReloader);
                 break;
             case 4:
                 Ability secondShooter = Handler.gameObject.AddComponent<ShootLeftBasic>();
@@ -55,9 +53,7 @@ public class SkillsetFighter : Skillset
                 break;
             case 5:
                 Ability mirrorImage = Handler.gameObject.AddComponent<MirrorImage>();
-                Handler.AddAbility(mirrorImage, HUD.Instance.UltReloader);
-                /* Ability ultAttack = Handler.gameObject.AddComponent<UltAttack>();
-                Handler.AddAbility(ultAttack, HUD.Instance.UltReloader); */
+                Handler.AddAbility(mirrorImage, HUD.Instance.SuperReloader);
                 break;
             case 6:
                 Ability offside = Handler.gameObject.AddComponent<Offside>();
@@ -86,24 +82,25 @@ public class SkillsetSupport : Skillset
             case 1:
                 Ability shooterHeal = Handler.gameObject.AddComponent<ShootHeal>();
                 Handler.AddAbility(shooterHeal, HUD.Instance.PrimaryReloader);
-                Ability markForDeath = Handler.gameObject.AddComponent<MarkForDeath>();
-                Handler.AddAbility(markForDeath, HUD.Instance.SecondaryReloader);
-                /* Ability shooterPoison = Handler.gameObject.AddComponent<ShootPoison>();
-                Handler.AddAbility(shooterPoison, HUD.Instance.PrimaryReloader); */
+                //Something AOE poison, low damage
                 break;
             case 2:
                 Ability armorAura = Handler.gameObject.AddComponent<UseArmorAura>();
                 Handler.AddAbility(armorAura);
                 break;
             case 3:
-                Ability manaDrain = Handler.gameObject.AddComponent<ManaDrain>();
-                Handler.AddAbility(manaDrain, HUD.Instance.AltReloader);
+                Ability markForDeath = Handler.gameObject.AddComponent<MarkForDeath>();
+                Handler.AddAbility(markForDeath, HUD.Instance.ThirdReloader);
                 break;
             case 4:
-                Ability healAura = Handler.gameObject.AddComponent<UltAttackHeal>();
-                Handler.AddAbility(healAura, HUD.Instance.SkillReloader);
+                Ability buildWall = Handler.gameObject.AddComponent<BuildWall>();
+                Handler.AddAbility(buildWall, HUD.Instance.AltReloader);
                 break;
             case 5:
+                Ability healAura = Handler.gameObject.AddComponent<UltAttackHeal>();
+                Handler.AddAbility(healAura, HUD.Instance.SuperReloader);
+                break;
+            case 6:
                 Ability ultRes = Handler.gameObject.AddComponent<UltRez>();
                 Handler.AddAbility(ultRes, HUD.Instance.UltReloader);
                 break;
@@ -137,13 +134,62 @@ public class SkillsetMelee : Skillset
                 Ability dash = Handler.gameObject.AddComponent<Dash>();
                 Handler.AddAbility(dash, HUD.Instance.AltReloader);
                 break;
+            case 3:
+                //Taunt
+                break;
             case 4:
-                Ability immolate = Handler.gameObject.AddComponent<Immolate>();
-                Handler.AddAbility(immolate, HUD.Instance.SkillReloader);
+                Ability manaDrain = Handler.gameObject.AddComponent<ManaDrain>();
+                Handler.AddAbility(manaDrain, HUD.Instance.ThirdReloader);
                 break;
             case 5:
+                Ability immolate = Handler.gameObject.AddComponent<Immolate>();
+                Handler.AddAbility(immolate, HUD.Instance.SuperReloader);
+                break;
+            case 6:
                 Ability bladeFlurry = Handler.gameObject.AddComponent<UltBladeFlurry>();
                 Handler.AddAbility(bladeFlurry, HUD.Instance.UltReloader);
+                break;
+            default:
+                break;
+        }
+    }
+}
+public class SkillsetCrowdFavorite : Skillset
+{
+    public SkillsetCrowdFavorite(AIHandler handler)
+    {
+        Handler = handler;
+        startingLife = 350;
+        startingRegen = 18;
+        regenDelay = 3.5f;
+        startingArmor = 18;
+        startingSpeed = 17.5f;
+    }
+    public override void LevelUnlock(int lvl)
+    {
+        switch (lvl)
+        {
+            case 1:
+                Ability shooterPoison = Handler.gameObject.AddComponent<ShootPoison>();
+                Handler.AddAbility(shooterPoison, HUD.Instance.PrimaryReloader);
+                //Scare Enemies
+                break;
+            case 2:
+                //Spawn protective Fans
+                break;
+            case 3:
+                //Molotov
+                break;
+            case 4:
+                Ability flip = Handler.gameObject.AddComponent<UltAttack>();
+                Handler.AddAbility(flip, HUD.Instance.ThirdReloader);
+                //Convert
+                break;
+            case 5:
+                //Convert
+                break;
+            case 6:
+                //Flitzer
                 break;
             default:
                 break;

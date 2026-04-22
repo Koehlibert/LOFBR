@@ -53,7 +53,7 @@ public class ManaDrain : DamagingAbility
     }
     protected override bool InputPressed()
     {
-        return PlayerInputRouter.Instance.AlternativePressed;
+        return PlayerInputRouter.Instance.ThirdSkillPressedThisFrame;
     }
     protected override DamageInfo GetDamageValues()
     {

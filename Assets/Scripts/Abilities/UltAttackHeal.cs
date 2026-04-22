@@ -25,7 +25,7 @@ public class UltAttackHeal : Ability
     }
     protected override bool InputPressed()
     {
-        return PlayerInputRouter.Instance.SkillPressed;
+        return PlayerInputRouter.Instance.FourthSkillPressedThisFrame;
     }
     protected override void AICheck()
     {

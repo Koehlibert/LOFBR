@@ -19,6 +19,9 @@ public class PlayerInputRouter : MonoBehaviour
     public bool SecondaryPressedThisFrame { get; private set; }
     public bool SecondaryReleasedThisFrame { get; private set; }
     public bool AlternativePressed { get; private set; }
+    public bool AlternativeToggledThisFrame { get; private set; }
+    public bool AlternativePressedThisFrame { get; private set; }
+    public bool AlternativeReleasedThisFrame { get; private set; }
     public bool SkillPressed { get; private set; }
     public bool SkillToggledThisFrame { get; private set; }
     public bool SkillPressedThisFrame { get; private set; }
@@ -58,8 +61,8 @@ public class PlayerInputRouter : MonoBehaviour
         Input.Player.AttackPrimary.performed += OnPrimaryPerformed;
         Input.Player.AttackPrimary.canceled += OnPrimaryCancelled;
 
-        Input.Player.Alternative.performed += _ => AlternativePressed = true;
-        Input.Player.Alternative.canceled += _ => AlternativePressed = false;
+        Input.Player.Alternative.performed += OnAlternativePerformed;
+        Input.Player.Alternative.canceled += OnAlternativeCanceled;
 
         Input.Player.Ult.performed += OnUltPerformed;
         Input.Player.Ult.canceled += OnUltCancelled;
@@ -102,6 +105,17 @@ public class PlayerInputRouter : MonoBehaviour
     {
         SecondaryPressed = false;
         SecondaryReleasedThisFrame = true;
+    }
+    private void OnAlternativePerformed(InputAction.CallbackContext ctx)
+    {
+        AlternativePressed = true;
+        AlternativePressedThisFrame = true;
+        AlternativeToggledThisFrame = true;
+    }
+    private void OnAlternativeCanceled(InputAction.CallbackContext ctx)
+    {
+        AlternativePressed = false;
+        AlternativeReleasedThisFrame = true;
     }
     private void OnSkillPerformed(InputAction.CallbackContext ctx)
     {
@@ -163,6 +177,9 @@ public class PlayerInputRouter : MonoBehaviour
         PrimaryPressedThisFrame = false;
         PrimaryReleasedThisFrame = false;
         PrimaryToggledThisFrame = false;
+        AlternativePressedThisFrame = false;
+        AlternativeReleasedThisFrame = false;
+        AlternativeToggledThisFrame = false;
         SkillPressedThisFrame = false;
         SkillReleasedThisFrame = false;
         SkillToggledThisFrame = false;

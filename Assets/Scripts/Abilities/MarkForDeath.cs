@@ -69,7 +69,7 @@ public class MarkForDeath : SelectionAbility
     }
     protected override bool InputPressed()
     {
-        return PlayerInputRouter.Instance.SecondaryPressedThisFrame;
+        return PlayerInputRouter.Instance.ThirdSkillPressedThisFrame;
     }
     protected override void AICheck()
     {

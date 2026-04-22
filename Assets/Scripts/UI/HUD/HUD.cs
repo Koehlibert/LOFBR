@@ -8,6 +8,8 @@ public class HUD : MonoBehaviour
     public GameObject SecondaryReloader;
     public GameObject AltReloader;
     public GameObject SkillReloader;
+    public GameObject ThirdReloader;
+    public GameObject SuperReloader;
     public GameObject UltReloader;
     public Image PlayerHealthImage;
     public Outline PlayerHealthOutline;
@@ -21,7 +23,9 @@ public class HUD : MonoBehaviour
         PrimaryReloader.SetActive(false);
         SecondaryReloader.SetActive(false);
         AltReloader.SetActive(false);
+        ThirdReloader.SetActive(false);
         SkillReloader.SetActive(false);
+        SuperReloader.SetActive(false);
         UltReloader.SetActive(false);
         flashspeed = 2.5f;
     }

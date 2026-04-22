@@ -39,7 +39,7 @@ public class Dash : Ability
     }
     protected override bool InputPressed()
     {
-        return PlayerInputRouter.Instance.AlternativePressed;
+        return PlayerInputRouter.Instance.AlternativePressedThisFrame;
     }
     protected override void AICheck()
     {

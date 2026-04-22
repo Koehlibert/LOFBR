@@ -59,7 +59,7 @@ public class BuildWall : SelectionAbility
     }
     protected override bool InputPressed()
     {
-        return PlayerInputRouter.Instance.SkillPressedThisFrame;
+        return PlayerInputRouter.Instance.AlternativePressedThisFrame;
     }
     protected override void AICheck()
     {

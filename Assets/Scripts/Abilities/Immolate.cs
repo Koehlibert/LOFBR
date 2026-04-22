@@ -15,7 +15,7 @@ public class Immolate : DamagingAbility
     protected override void AdditionalInit()
     {
         isOnFire = false;
-        if(!IsInteractive)
+        if (!IsInteractive)
             inDistanceTracker = Handler.ClosestFinder.StartTrackingDist(DistanceToCheck, true);
     }
     protected override AbilityInfo GetAbilityInfo()
@@ -77,7 +77,7 @@ public class Immolate : DamagingAbility
     }
     protected override bool InputPressed()
     {
-        return PlayerInputRouter.Instance.SkillToggledThisFrame;
+        return PlayerInputRouter.Instance.FourthSkillToggledThisFrame;
     }
     protected override DamageInfo GetDamageValues()
     {
@@ -92,16 +92,32 @@ public class Immolate : DamagingAbility
                 return new DamageInfo(3.5f * OwnerLevelSys.GetLevel(), 0, Handler.Owner.Team, true, true);
             }
         }
-        else 
+        else
         {
             return new DamageInfo(4f, 0, Handler.Owner.Team, true, true);
         }
     }
     protected override void AICheck()
     {
-        if (loaded && inDistanceTracker.GetOverCount(NEnemiesToTrigger))
+        if (isOnFire)
         {
-            SetFinalAction();
+            if (!inDistanceTracker.GetOverCount(1))
+            {
+                SetFinalAction();
+            }
+        }
+        else
+        {
+            if (loaded)
+            {
+                if (CheckManaCost())
+                {
+                    if (inDistanceTracker.GetOverCount(NEnemiesToTrigger))
+                    {
+                        SetFinalAction();
+                    }
+                }
+            }
         }
     }
 }
