@@ -50,16 +50,20 @@ public abstract class DamageableEntity : MonoBehaviour
     {
         Die();
     }
-    public virtual void MarkThisForDeath()
+    public virtual void MarkThisForDeath(float duration)
     {
         CharacterTracker.Instance.SetMarkedEnemy(this);
         IsMarked = false;
         ChangeOutlineAlpha(1);
-        StartCoroutine(ResetMark());
+        StartCoroutine(ResetMark(duration));
     }
-    protected virtual IEnumerator ResetMark()
+    protected virtual IEnumerator ResetMark(float duration)
     {
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(duration);
+        UnMarkThisForDeath();
+    }
+    public virtual void UnMarkThisForDeath()
+    {
         ChangeOutlineAlpha(0);
         CharacterTracker.Instance.UnSetMarkedEnemy(this);
     }

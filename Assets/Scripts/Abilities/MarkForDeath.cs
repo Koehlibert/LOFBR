@@ -47,7 +47,25 @@ public class MarkForDeath : SelectionAbility
     {
         base.AbilityAction();
         StartCoroutine(Reload());
-        target.MarkThisForDeath();
+        target.MarkThisForDeath(GetMarkDuration());
+    }
+    private float GetMarkDuration()
+    {
+        if (Handler.Owner is MainPlayerBehaviour mainPlayerBehaviour)
+        {
+            if (Handler.Owner is MirrorImageBehaviour)
+            {
+                return 2 + 1 * mainPlayerBehaviour.Levelsys.GetLevel();
+            }
+            else
+            {
+                return 3 + 1.5f * mainPlayerBehaviour.Levelsys.GetLevel();
+            }
+        }
+        else
+        {
+            return 4;
+        }
     }
     protected override bool InputPressed()
     {

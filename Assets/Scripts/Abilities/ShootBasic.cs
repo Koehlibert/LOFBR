@@ -27,7 +27,7 @@ public abstract class ShootBasic : DamagingAbility
         }
         else
         {
-            return new DamageInfo(40, 0, Handler.Owner.Team, true);
+            return new DamageInfo(40, 0, Handler.Owner.Team, false);
         }
     }
     protected abstract HumanBodyBones Bone { get; }

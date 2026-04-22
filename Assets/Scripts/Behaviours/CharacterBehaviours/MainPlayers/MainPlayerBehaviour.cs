@@ -78,7 +78,7 @@ public abstract class MainPlayerBehaviour : CharacterBehaviour
             }
         }
         LastHit = false;
-        CharacterTracker.Instance.UnSetMarkedEnemy(this);
+        UnMarkThisForDeath();
         MasterScript.Instance.DieAndRespawn(this);
     }
     public void OnHealXP()
