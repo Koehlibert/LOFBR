@@ -82,7 +82,8 @@ public class SkillsetSupport : Skillset
             case 1:
                 Ability shooterHeal = Handler.gameObject.AddComponent<ShootHeal>();
                 Handler.AddAbility(shooterHeal, HUD.Instance.PrimaryReloader);
-                //Something AOE poison, low damage
+                Ability shootPass = Handler.gameObject.AddComponent<ShootPass>();
+                Handler.AddAbility(shootPass, HUD.Instance.SecondaryReloader);
                 break;
             case 2:
                 Ability armorAura = Handler.gameObject.AddComponent<UseArmorAura>();

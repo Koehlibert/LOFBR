@@ -13,6 +13,7 @@ public class CharacterFactory : MonoBehaviour
     [SerializeField] GameObject WallMember;
     [SerializeField] GameObject MirrorEntity;
     [SerializeField] GameObject Referee;
+    [SerializeField] GameObject Phantom;
     private void Awake()
     {
         Instance = this;
@@ -70,5 +71,12 @@ public class CharacterFactory : MonoBehaviour
         referee.transform.LookAt(new Vector3(0,0,posZ));
         referee.AddComponent<RefereeBehaviour>().Init();
         return referee;
+    }
+    public GameObject CreatePhantom(DamageableEntity caller, float duration, float stepSize)
+    {
+        GameObject phantom = InstantiateCharacter(Phantom,  caller.transform.position + caller.transform.forward * 2 * stepSize, Quaternion.identity);
+        phantom.transform.LookAt(caller.transform);
+        phantom.AddComponent<PhantomBehaviour>().Init(caller.Team, duration, stepSize);
+        return phantom;
     }
 }

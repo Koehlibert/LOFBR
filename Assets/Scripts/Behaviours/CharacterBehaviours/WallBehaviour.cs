@@ -1,11 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.UI;
-using System;
-using TMPro;
-using Unity.Services.Analytics;
 public class WallBehaviour : CharacterBehaviour
 {
     private int MemberCount;

@@ -46,29 +46,39 @@ public class BulletBehaviour : MonoBehaviour
             }
         }
     }
-    public virtual void Shoot(DamageInfo damageInfo)
+    public virtual void Activate(DamageInfo damageInfo, bool activateGravity = false)
     {
         damage.SetProperties(damageInfo);
-        rb?.AddForce(Owner.transform.forward * 2250);
-        DelayedDestroy();
-        rb = null;
+        if (activateGravity)
+            rb.useGravity = true;
+        col.enabled = true;
+    }
+    public virtual void Shoot(DamageInfo damageInfo)
+    {
+        Shoot(damageInfo, 2000);
     }
     public virtual void Shoot(DamageInfo damageInfo, float force)
     {
-        damage.SetProperties(damageInfo);
-        rb.useGravity = true;
+        Activate(damageInfo, true);
         rb?.AddForce(Owner.transform.forward * force);
+        rb = null;
         DelayedDestroy();
+    }
+    public void UnsetRB()
+    {
         rb = null;
     }
     protected virtual void DelayedDestroy(float delay)
     {
-        col.enabled = true;
         GetComponent<Rigidbody>().useGravity = true;
         Destroy(gameObject, delay);
     }
     public void DelayedDestroy()
     {
         DelayedDestroy(timer);
+    }
+    public void StartDebugging()
+    {
+        damage.DamageDealt += () => Debug.Log("huh");
     }
 }

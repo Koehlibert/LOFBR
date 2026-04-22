@@ -30,7 +30,7 @@ public class ThrowBall : DamagingAbility
         Handler.Owner.animator.Play("Throw", 0, 0f);
         yield return new WaitForSeconds(0.15f);
         GameObject bulletinstance = BulletFactory.Instance.CreateBullet(Handler.Owner, true, HumanBodyBones.RightHand);
-        bulletinstance.GetComponent<BulletBehaviour>().Shoot(GetDamageValues(), 1500);
+        bulletinstance.GetComponent<BulletBehaviour>().Shoot(GetDamageValues(), 1250);
     }
     protected override DamageInfo GetDamageValues()
     {
