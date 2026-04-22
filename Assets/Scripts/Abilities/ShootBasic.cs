@@ -7,7 +7,7 @@ public abstract class ShootBasic : DamagingAbility
     protected Vector3 offset = new Vector3(0, -0.5f, 1.5f);
     protected GameObject bulletinstance;
     protected Coroutine reloadCoroutine;
-    protected float AttackDistance = 10f; 
+    protected float AttackDistance = 10f;
     protected virtual GameObject CreateBullet()
     {
         return BulletFactory.Instance.CreateBullet(Handler.Owner, true, Bone);
@@ -25,7 +25,7 @@ public abstract class ShootBasic : DamagingAbility
                 return new DamageInfo(34 + 7 * OwnerLevelSys.GetLevel(), 0, Handler.Owner.Team, true);
             }
         }
-        else 
+        else
         {
             return new DamageInfo(40, 0, Handler.Owner.Team, true);
         }
@@ -62,7 +62,7 @@ public abstract class ShootBasic : DamagingAbility
     }
     void OnDestroy()
     {
-        OnDeactivate(this);     
+        OnDeactivate(this);
     }
     protected override void OnDeactivate(Ability callingAbility)
     {
@@ -118,6 +118,15 @@ public abstract class ShootBasic : DamagingAbility
             if (loaded)
             {
                 SetFinalAction();
+            }
+            else
+            {
+                if (Handler.Owner is MainPlayerBehaviour)
+                {
+                    movementAI.SetCircleBehaviour(AttackDistance * 0.9f, 0.35f);
+                    movementAI.SetMovementState(AIUtils.MovementState.IsCircling);
+                    movementAI.Speedup = 0.6f;
+                }
             }
         }
         else

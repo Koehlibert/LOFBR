@@ -261,4 +261,9 @@ public class MovementAI : AIModule
         yield return new WaitForSeconds(duration);
         ForceMovement = false;
     }
+    public void SetCircleBehaviour(float newRadius, float newSpeed)
+    {
+        CircleRadius = newRadius;
+        CircleSpeed = newSpeed;
+    }
 }
