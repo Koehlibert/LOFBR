@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.XR;
-using Microsoft.Unity.VisualStudio.Editor;
 public class MirrorImage : Ability
 {
     private int ClassID;

@@ -1,10 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.UI;
-using System;
-using UnityEditor.SceneManagement;
 public abstract class MainPlayerBehaviour : CharacterBehaviour
 {
     public Level Levelsys;
