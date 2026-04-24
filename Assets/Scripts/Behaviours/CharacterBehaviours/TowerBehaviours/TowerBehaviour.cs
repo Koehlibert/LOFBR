@@ -22,6 +22,7 @@ public class TowerBehaviour : CharacterBehaviour
     }
     protected override void Die()
     {
+        base.Die();
         if (Team == CombatUtils.Team.Enemy)
         {
             CharacterTracker.Instance.allEnemiesTowers.Remove(this.gameObject);

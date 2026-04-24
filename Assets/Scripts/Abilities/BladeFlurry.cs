@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
-public class UltBladeFlurry : DamagingAbility
+public class BladeFlurry : DamagingAbility
 {
     private float duration = .4f;
     private List<ObjectWithDist> flurryPos;

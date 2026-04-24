@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class UseArmorAura : Ability
 {
+    public ArmorAura armorAura;
     protected override void AdditionalInit()
     {
-        BulletFactory.Instance.CreateArmorAura(Handler.Owner);
+        armorAura = BulletFactory.Instance.CreateArmorAura(Handler.Owner).GetComponent<ArmorAura>();
     }
     protected override AbilityInfo GetAbilityInfo()
     {

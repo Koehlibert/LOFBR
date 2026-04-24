@@ -15,6 +15,7 @@ public class Base : DamageableEntity
     }
     protected override void Die()
     {
+        base.Die();
         MasterScript.Instance.gameOver = true;
         if (Team == CombatUtils.Team.Enemy)
         {

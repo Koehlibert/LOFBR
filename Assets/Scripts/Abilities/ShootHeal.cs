@@ -23,7 +23,7 @@ public class ShootHeal : ShootBasic
         {
             if (Handler.Owner is MirrorImageBehaviour)
             {
-                return new DamageInfo(0.75f * (40 + 5 * OwnerLevelSys.GetLevel()), 0, Handler.Owner.Team, false, false);
+                return new DamageInfo(0.6f * (40 + 5 * OwnerLevelSys.GetLevel()), 0, Handler.Owner.Team, false, false);
             }
             else
             {

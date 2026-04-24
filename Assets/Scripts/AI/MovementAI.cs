@@ -161,10 +161,8 @@ public class MovementAI : AIModule
     }
     public void MoveCharacter(Vector3 direction, bool bypass = false, float speedup = 1)
     {
-        Handler.Owner.AnimSpeed = 0; //still necessary?
         if (!MoveLock || bypass)
         {
-            Handler.Owner.AnimSpeed = direction.normalized.magnitude;//still necessary?
             direction = Movementspeed * speedup * Time.deltaTime * direction;
             Vector3 newPos = MasterScript.Instance.CorrectTarget(transform.position + direction);
             Handler.Owner.transform.position = newPos;

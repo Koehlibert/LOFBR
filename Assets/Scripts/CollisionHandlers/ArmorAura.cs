@@ -1,61 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using UnityEngine;
 
-public class ArmorAura : CollisionHandler
+public class ArmorAura : Aura
 {
-    private List<ObjectWithAddedArmor> ArmoredAllies;
-    public override void Init(DamageableEntity owner)
-    {
-        Owner = owner;
-        base.Init(owner);
-        ArmoredAllies = new List<ObjectWithAddedArmor>();
-    }
-    void Update()
-    {
-        transform.position = Owner.transform.position;
-        this.transform.SetPositionAndRotation(Owner.transform.position + new Vector3(0f,2f,0f), Owner.transform.rotation);
-        ArmoredAllies.RemoveAll(item => item.ArmoredEntity == null);
-    }
-    protected override void HandleEnduringDamage(Collider collider)
-    {
-    }
-    protected override void HandleDamageCollision(Collider collider)
-    {
-        DamageableEntity damageableEntity = collider.gameObject.GetComponentInParent<DamageableEntity>();
-        var item = ArmoredAllies.Find(x => x.ArmoredEntity == damageableEntity);
-        if (damageableEntity != null && damageableEntity.Team == Owner.Team && item == null)
-        {
-            AddArmorToTarget(damageableEntity);
-        }
-    }
-    void OnTriggerExit(Collider collider)
-    {
-        var item = ArmoredAllies.Find(x => x.ArmoredEntity == collider.gameObject.GetComponent<DamageableEntity>());
-        if (item != null)
-        {
-            RemoveArmorFromTarget(item);
-        }
-    }
-    void OnDestroy()
-    {
-        ArmoredAllies.RemoveAll(item => item == null);
-        while (ArmoredAllies.Count > 0)
-        {
-            RemoveArmorFromTarget(ArmoredAllies[0]);
-        }
-    }
-    private void AddArmorToTarget(DamageableEntity damageableEntity)
-    {
-        float addedArmor = GetArmorToAdd();
-        damageableEntity.hpsys.AddArmor(addedArmor);
-        ArmoredAllies.Add(new ObjectWithAddedArmor(damageableEntity, addedArmor));
-    }
-    private void RemoveArmorFromTarget(ObjectWithAddedArmor objectWithAddedArmor)
-    {
-        objectWithAddedArmor.ArmoredEntity.hpsys.AddArmor(-objectWithAddedArmor.AddedArmor);
-        ArmoredAllies.Remove(objectWithAddedArmor);
-    }
     private float GetArmorToAdd()
     {
         if (Owner is MainPlayerBehaviour mainPlayerBehaviour)
@@ -74,14 +24,18 @@ public class ArmorAura : CollisionHandler
             return 8;
         }
     }
-}
-public class ObjectWithAddedArmor
-{
-    public DamageableEntity ArmoredEntity;
-    public float AddedArmor;
-    public ObjectWithAddedArmor(DamageableEntity armoredEntity, float addedArmor)
+    protected override bool AdditionalCheckToAdd(CharacterBehaviour characterBehaviour)
     {
-        ArmoredEntity = armoredEntity;
-        AddedArmor = addedArmor;
+        return characterBehaviour.Team == Owner.Team;
+    }
+    protected override StatusEffect CreateStatusEffect(CharacterBehaviour characterBehaviour)
+    {
+        ArmorEffect armorStatus = characterBehaviour.gameObject.AddComponent<ArmorEffect>();
+        armorStatus.Init(GetArmorToAdd());
+        return armorStatus;
+    }
+    protected override void HandleUpdate(KeyValuePair<CharacterBehaviour, StatusEffect> entry)
+    {
+        (entry.Value as ArmorEffect).UpdateAction(entry.Key, GetArmorToAdd());
     }
 }

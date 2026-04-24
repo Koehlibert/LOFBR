@@ -26,7 +26,7 @@ public class BulletBehaviourFollowing : BulletBehaviour
     }
     public override void Shoot(DamageInfo damageInfo)
     {
-        damage.SetProperties(damageInfo);
+        Activate(damageInfo);
         SetFired();
         DelayedDestroy();
     }

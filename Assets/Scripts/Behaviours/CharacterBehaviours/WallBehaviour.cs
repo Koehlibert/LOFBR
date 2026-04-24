@@ -53,6 +53,7 @@ public class WallBehaviour : CharacterBehaviour
     }
     protected override void Die()
     {
+        base.Die();
         Destroy(this.gameObject);
     }
     public void Activate()

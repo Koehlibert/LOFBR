@@ -3,12 +3,14 @@ using UnityEngine.UI;
 using UnityEngine;
 using Unity.Services.Analytics;
 using UnityEngine.Animations;
+using NUnit.Framework.Interfaces;
 
 public abstract class CharacterBehaviour : DamageableEntity
 {
     protected Renderer rend;
     public AIHandler aIHandler;
     protected MainPlayerBehaviour EnemyPlayer;
+    private List<StatusEffect> StatusEffects = new();
     public override void Init()
     {
         base.Init();
@@ -27,6 +29,22 @@ public abstract class CharacterBehaviour : DamageableEntity
     protected virtual void FixedUpdate()
     {
         StackingHandler.PushAwayFromNearbyObjects(this.gameObject);
+    }
+    public void AddStatusEffect(StatusEffect statusEffect)
+    {
+        if (StatusEffects.Contains(statusEffect) && !statusEffect.CanStack)
+            return;
+        StatusEffects.Add(statusEffect);
+        statusEffect.ActivateAction(this);
+    }
+    public void RemoveStatusEffect(StatusEffect statusEffect)
+    {
+        if (StatusEffects.Contains(statusEffect))
+        {
+            StatusEffects.Remove(statusEffect);
+            statusEffect.DeactivateAction(this);
+            Destroy(statusEffect);
+        }
     }
     protected virtual void InitializeAIHandler()
     {

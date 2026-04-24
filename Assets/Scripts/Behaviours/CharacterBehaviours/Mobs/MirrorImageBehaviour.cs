@@ -48,6 +48,7 @@ public class MirrorImageBehaviour : MainPlayerBehaviour
     }
     protected override void Die()
     {
+        InvokeDeathEvent();
         if (EnemyPlayer != null && LastHit)
         {
             if (EnemyPlayer.gameObject.activeSelf)

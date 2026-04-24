@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine;
+using System.Collections.Generic;
+using System;
 
 public abstract class DamageableEntity : MonoBehaviour
 {
@@ -8,7 +10,6 @@ public abstract class DamageableEntity : MonoBehaviour
     protected bool LastHit;
     public CombatUtils.Team Team;
     public Animator animator;
-    public float AnimSpeed { get; set; }
     public GameObject enemyBase;
     public GameObject yourbase;
     protected bool IsMarked = false;
@@ -16,6 +17,7 @@ public abstract class DamageableEntity : MonoBehaviour
     protected DamageCollisionHandler CollisionHandler;
     [SerializeField] protected Outline healthbarOutline;
     [SerializeField] protected Image healthbar;
+    public event Action DeathEvent;
     public virtual void Init()
     {
         LastHit = false;
@@ -41,7 +43,10 @@ public abstract class DamageableEntity : MonoBehaviour
     {
         LastHit = value;
     }
-    protected abstract void Die();
+    protected virtual void Die()
+    {
+        InvokeDeathEvent();
+    }
     public virtual Health GetHealth()
     {
         return hpsys;
@@ -81,5 +86,9 @@ public abstract class DamageableEntity : MonoBehaviour
             tmp.a = alpha;
             healthbarOutline.effectColor = tmp;
         }
+    }
+    protected void InvokeDeathEvent()
+    {
+        DeathEvent?.Invoke();
     }
 }

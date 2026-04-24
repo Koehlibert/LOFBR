@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class UltAttackHeal : Ability
+public class ActivateRegenAura : Ability
 {
     private int HurtFriendliesToTrigger = 3;
     private float HealRadiusToCheck = 15;

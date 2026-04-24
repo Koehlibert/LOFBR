@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 
-public class ShootPass : ShootBasic
+public class ShootDoublePass : ShootBasic
 {
     protected override HumanBodyBones Bone => HumanBodyBones.RightLowerLeg;
     private bool IsPassing = false;

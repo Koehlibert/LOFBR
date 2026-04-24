@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +9,7 @@ public abstract class MainPlayerBehaviour : CharacterBehaviour
     public int ClassID;
     protected Skillset skillSet;
     [SerializeField] protected Image manaBar;
+    public event Action HasLeveledUp;
     public void Init(int classID)
     {
         this.ClassID = classID;
@@ -67,9 +69,11 @@ public abstract class MainPlayerBehaviour : CharacterBehaviour
         skillSet.LevelUnlock(Levelsys.GetLevel());
         hpsys.UpdateValues((Levelsys.GetLevel() - 1) * 25, Levelsys.GetLevel());
         manasys.UpdateValues(50, Levelsys.GetLevel() * 0.25f);
+        HasLeveledUp?.Invoke();
     }
     protected override void Die()
     {
+        base.Die();
         if (EnemyPlayer != null && LastHit)
         {
             if (EnemyPlayer.gameObject.activeSelf)

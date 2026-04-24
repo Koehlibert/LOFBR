@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UltAttack : ShootBasic
+public class ShootFlip : ShootBasic
 {
     public GameObject ultBullet;
     protected override HumanBodyBones Bone => HumanBodyBones.LeftLowerLeg;

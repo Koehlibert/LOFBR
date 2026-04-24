@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UltRez : Ability
+public class Resurrect : Ability
 {
     private Quaternion spawndirection = new Quaternion(0, 0, 0, 0);
     private int TombsToTrigger = 4;

@@ -50,6 +50,9 @@ public class SkillsetFighter : Skillset
             case 4:
                 Ability secondShooter = Handler.gameObject.AddComponent<ShootLeftBasic>();
                 Handler.AddAbility(secondShooter, HUD.Instance.SecondaryReloader);
+                UseArmorAura useArmorAura = Handler.gameObject.AddComponent<UseArmorAura>();
+                Handler.AddAbility(useArmorAura);
+                (Handler.Owner as MainPlayerBehaviour).HasLeveledUp += useArmorAura.armorAura.UpdateVals;
                 break;
             case 5:
                 Ability mirrorImage = Handler.gameObject.AddComponent<MirrorImage>();
@@ -82,12 +85,11 @@ public class SkillsetSupport : Skillset
             case 1:
                 Ability shooterHeal = Handler.gameObject.AddComponent<ShootHeal>();
                 Handler.AddAbility(shooterHeal, HUD.Instance.PrimaryReloader);
-                Ability shootPass = Handler.gameObject.AddComponent<ShootPass>();
-                Handler.AddAbility(shootPass, HUD.Instance.SecondaryReloader);
+                Ability shootDoublePass = Handler.gameObject.AddComponent<ShootDoublePass>();
+                Handler.AddAbility(shootDoublePass, HUD.Instance.SecondaryReloader);
                 break;
             case 2:
-                Ability armorAura = Handler.gameObject.AddComponent<UseArmorAura>();
-                Handler.AddAbility(armorAura);
+                
                 break;
             case 3:
                 Ability markForDeath = Handler.gameObject.AddComponent<MarkForDeath>();
@@ -98,11 +100,11 @@ public class SkillsetSupport : Skillset
                 Handler.AddAbility(buildWall, HUD.Instance.AltReloader);
                 break;
             case 5:
-                Ability healAura = Handler.gameObject.AddComponent<UltAttackHeal>();
+                Ability healAura = Handler.gameObject.AddComponent<ActivateRegenAura>();
                 Handler.AddAbility(healAura, HUD.Instance.SuperReloader);
                 break;
             case 6:
-                Ability ultRes = Handler.gameObject.AddComponent<UltRez>();
+                Ability ultRes = Handler.gameObject.AddComponent<Resurrect>();
                 Handler.AddAbility(ultRes, HUD.Instance.UltReloader);
                 break;
             default:
@@ -147,7 +149,7 @@ public class SkillsetMelee : Skillset
                 Handler.AddAbility(immolate, HUD.Instance.SuperReloader);
                 break;
             case 6:
-                Ability bladeFlurry = Handler.gameObject.AddComponent<UltBladeFlurry>();
+                Ability bladeFlurry = Handler.gameObject.AddComponent<BladeFlurry>();
                 Handler.AddAbility(bladeFlurry, HUD.Instance.UltReloader);
                 break;
             default:
@@ -182,7 +184,7 @@ public class SkillsetCrowdFavorite : Skillset
                 //Molotov
                 break;
             case 4:
-                Ability flip = Handler.gameObject.AddComponent<UltAttack>();
+                Ability flip = Handler.gameObject.AddComponent<ShootFlip>();
                 Handler.AddAbility(flip, HUD.Instance.ThirdReloader);
                 //Convert
                 break;

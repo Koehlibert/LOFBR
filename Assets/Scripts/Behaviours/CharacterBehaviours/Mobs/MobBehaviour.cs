@@ -58,6 +58,7 @@ public class MobBehaviour : CharacterBehaviour
     }
     protected override void Die()
     {
+        base.Die();
         if ((EnemyPlayer != null) && LastHit)
         {
             if (EnemyPlayer.gameObject.activeSelf)
