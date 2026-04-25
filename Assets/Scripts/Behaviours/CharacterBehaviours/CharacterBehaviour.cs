@@ -4,13 +4,14 @@ using UnityEngine;
 using Unity.Services.Analytics;
 using UnityEngine.Animations;
 using NUnit.Framework.Interfaces;
+using System;
 
 public abstract class CharacterBehaviour : DamageableEntity
 {
     protected Renderer rend;
     public AIHandler aIHandler;
     protected MainPlayerBehaviour EnemyPlayer;
-    private List<StatusEffect> StatusEffects = new();
+    private Dictionary<Type, List<StatusEffect>> activeEffects = new();
     public override void Init()
     {
         base.Init();
@@ -32,19 +33,35 @@ public abstract class CharacterBehaviour : DamageableEntity
     }
     public void AddStatusEffect(StatusEffect statusEffect)
     {
-        if (StatusEffects.Contains(statusEffect) && !statusEffect.CanStack)
-            return;
-        StatusEffects.Add(statusEffect);
+        Type type = statusEffect.GetType();
+        if (!activeEffects.TryGetValue(type, out var list))
+        {
+            list = new List<StatusEffect>();
+            activeEffects[type] = list;
+        }
+        if (!statusEffect.CanStack && list.Count > 0)
+        {
+            list[0].DeactivateAction(this);
+            Destroy(list[0]);
+            list[0] = statusEffect;
+        }
+        else
+        {
+            list.Add(statusEffect);
+        }
         statusEffect.ActivateAction(this);
     }
     public void RemoveStatusEffect(StatusEffect statusEffect)
     {
-        if (StatusEffects.Contains(statusEffect))
+        Type type = statusEffect.GetType();
+        if (!activeEffects.TryGetValue(type, out var list)) return;
+        statusEffect.DeactivateAction(this);
+        list.Remove(statusEffect);
+        if (list.Count == 0)
         {
-            StatusEffects.Remove(statusEffect);
-            statusEffect.DeactivateAction(this);
-            Destroy(statusEffect);
+            activeEffects.Remove(type);
         }
+        Destroy(statusEffect);
     }
     protected virtual void InitializeAIHandler()
     {
@@ -56,7 +73,7 @@ public abstract class CharacterBehaviour : DamageableEntity
     }
     protected virtual void InitializeHPSys()
     {
-        hpsys.Initialize(100, 0, 0, 0);
+        hpsys.Initialize(100, 0, 0, 80);
     }
     public void StartGetPushed()
     {

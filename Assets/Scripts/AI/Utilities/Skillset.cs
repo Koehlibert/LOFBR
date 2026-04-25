@@ -52,7 +52,6 @@ public class SkillsetFighter : Skillset
                 Handler.AddAbility(secondShooter, HUD.Instance.SecondaryReloader);
                 UseArmorAura useArmorAura = Handler.gameObject.AddComponent<UseArmorAura>();
                 Handler.AddAbility(useArmorAura);
-                (Handler.Owner as MainPlayerBehaviour).HasLeveledUp += useArmorAura.armorAura.UpdateVals;
                 break;
             case 5:
                 Ability mirrorImage = Handler.gameObject.AddComponent<MirrorImage>();

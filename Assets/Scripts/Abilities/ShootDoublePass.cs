@@ -53,7 +53,6 @@ public class ShootDoublePass : ShootBasic
         SetBallTarget();
         bulletinstance.GetComponent<BulletBehaviour>().Activate(GetDamageValues());
         bulletinstance.GetComponent<BulletBehaviour>().UnsetRB();
-        bulletinstance.GetComponent<BulletBehaviour>().StartDebugging();
     }
     protected override void InteractiveCheck()
     {

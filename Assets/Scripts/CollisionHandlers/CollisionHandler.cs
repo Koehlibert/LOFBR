@@ -5,8 +5,8 @@ using NUnit.Framework;
 
 public abstract class CollisionHandler : MonoBehaviour
 {
-    private HashSet<GameObject> objectsInTrigger = new HashSet<GameObject>();
-    private HashSet<GameObject> objectsEntered = new HashSet<GameObject>();
+    protected HashSet<GameObject> objectsInTrigger = new HashSet<GameObject>();
+    protected HashSet<GameObject> objectsEntered = new HashSet<GameObject>();
     public event Action OnHitCallback;
     public enum CollisionEventType { Enter, Stay, TriggerStay, TriggerEnter }
     protected DamageableEntity Owner;
@@ -42,7 +42,7 @@ public abstract class CollisionHandler : MonoBehaviour
         GameObject colliderObject = collider.gameObject;
         objectsEntered.Remove(colliderObject);
     }
-    void LateUpdate()
+    protected virtual void LateUpdate()
     {
         objectsInTrigger.Clear();
         objectsEntered.RemoveWhere(obj => obj == null);

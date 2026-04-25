@@ -78,6 +78,18 @@ public abstract class DamageableEntity : MonoBehaviour
         ResetMarked = false;
         ChangeOutlineAlpha(0.5f);
     }
+    public virtual void MarkHealthbarDebug1()
+    {
+        IsMarked = true;
+        ResetMarked = false;
+        ChangeOutlineAlpha(0.25f);
+    }
+    public virtual void MarkHealthbarDebug2()
+    {
+        IsMarked = true;
+        ResetMarked = false;
+        ChangeOutlineAlpha(0.75f);
+    }
     protected void ChangeOutlineAlpha(float alpha)
     {
         if (healthbarOutline != null)

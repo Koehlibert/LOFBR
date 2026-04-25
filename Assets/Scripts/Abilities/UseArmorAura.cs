@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class UseArmorAura : Ability
 {
-    public ArmorAura armorAura;
+    private ArmorAura armorAura;
     protected override void AdditionalInit()
     {
         armorAura = BulletFactory.Instance.CreateArmorAura(Handler.Owner).GetComponent<ArmorAura>();
+        (Handler.Owner as MainPlayerBehaviour).HasLeveledUp += armorAura.UpdateVals;
     }
     protected override AbilityInfo GetAbilityInfo()
     {

@@ -17,7 +17,7 @@ public abstract class Aura : CollisionHandler
     }
     void Update()
     {
-        this.transform.SetPositionAndRotation(Owner.transform.position + new Vector3(0f,2f,0f), 
+        this.transform.SetPositionAndRotation(Owner.transform.position + new Vector3(0f, 2f, 0f),
                                               Owner.transform.rotation);
         AffectedCharacters.RemoveAll(item => item == null);
     }
@@ -26,19 +26,24 @@ public abstract class Aura : CollisionHandler
     }
     protected override void HandleDamageCollision(Collider collider)
     {
-        bool isValid = CheckIfValidColliderToAdd(collider);
-        if (isValid)
+        CharacterBehaviour characterBehaviour = CheckIfValidColliderToAdd(collider);
+        if (characterBehaviour)
         {
-            ApplyStatus(collider);
+            ApplyStatus(characterBehaviour);
         }
     }
     void OnTriggerExit(Collider collider)
     {
-        bool isValid = CheckIfValidColliderToRemove(collider);
-        if (isValid)
+        CharacterBehaviour characterBehaviour = CheckIfValidColliderToRemove(collider);
+        if (characterBehaviour)
         {
-            UnApplyStatus(collider);
+            UnApplyStatus(characterBehaviour);
         }
+    }
+    protected override void LateUpdate()
+    {
+        base.LateUpdate();
+        objectsEntered.Clear();
     }
     void OnDestroy()
     {
@@ -48,10 +53,6 @@ public abstract class Aura : CollisionHandler
             UnApplyStatus(AffectedCharacters[0]);
         }
     }
-    protected virtual void ApplyStatus(Collider collider)
-    {
-        ApplyStatus(collider.gameObject.GetComponentInParent<CharacterBehaviour>());
-    }
     protected virtual void ApplyStatus(CharacterBehaviour characterBehaviour)
     {
         StatusEffect instance = CreateStatusEffect(characterBehaviour);
@@ -59,39 +60,40 @@ public abstract class Aura : CollisionHandler
         activeEffects[characterBehaviour] = instance;
         AffectedCharacters.Add(characterBehaviour);
     }
-    protected void UnApplyStatus(Collider collider)
-    {
-        UnApplyStatus(collider.gameObject.GetComponentInParent<CharacterBehaviour>());
-    }
     protected void UnApplyStatus(CharacterBehaviour characterBehaviour)
     {
         if (!activeEffects.TryGetValue(characterBehaviour, out var effect)) return;
         characterBehaviour.RemoveStatusEffect(effect);
+        activeEffects.Remove(characterBehaviour);
         AffectedCharacters.Remove(characterBehaviour);
     }
     public virtual void UpdateVals()
     {
-        foreach(KeyValuePair<CharacterBehaviour, StatusEffect> entry in activeEffects)
+        foreach (KeyValuePair<CharacterBehaviour, StatusEffect> entry in activeEffects)
         {
             HandleUpdate(entry);
         }
     }
     protected abstract void HandleUpdate(KeyValuePair<CharacterBehaviour, StatusEffect> entry);
-    protected bool CheckIfValidColliderToAdd(Collider collider)
+    protected CharacterBehaviour CheckIfValidColliderToAdd(Collider collider)
     {
         CharacterBehaviour tmp = collider.gameObject.GetComponentInParent<CharacterBehaviour>();
         if (tmp == null)
-            return false;
+            return null;
         if (!AdditionalCheckToAdd(tmp))
-            return false;
-        return !AffectedCharacters.Contains(tmp);
+            return null;
+        if (AffectedCharacters.Contains(tmp))
+            return null;
+        return tmp;
     }
-    protected bool CheckIfValidColliderToRemove(Collider collider)
+    protected CharacterBehaviour CheckIfValidColliderToRemove(Collider collider)
     {
         CharacterBehaviour tmp = collider.gameObject.GetComponentInParent<CharacterBehaviour>();
         if (!AdditionalCheckToRemove(tmp))
-            return false;
-        return AffectedCharacters.Contains(tmp);
+            return null;
+        if (!AffectedCharacters.Contains(tmp))
+            return null;
+        return tmp;
     }
     protected virtual bool AdditionalCheckToAdd(CharacterBehaviour characterBehaviour)
     {

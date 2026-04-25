@@ -11,19 +11,11 @@ public class Health : MonoBehaviour
     private float timer;
     private float regenTime;
     private float armor;
-    private bool superRegen;
-    private float superRegenValue;
     private float poison;
     private float poisonTime;
     public System.Action<float> OnHealthChanged;
     void Update()
     {
-        if (superRegen)
-        {
-            hp = Mathf.Min(hp + superRegenValue * Time.deltaTime, maxhp);
-            OnHealthChanged?.Invoke(healthDisplay());
-            poison = 0;
-        }
         if (poison > 0)
         {
             hp = Mathf.Max(0, hp - poison * Time.deltaTime);
@@ -116,15 +108,6 @@ public class Health : MonoBehaviour
     {
         return hp / maxhp;
     }
-    public void ActivateSuperRegen(float val)
-    {
-        superRegen = true;
-        superRegenValue = val;
-    }
-    public void DeactivateSuperRegen()
-    {
-        superRegen = false;
-    }
     public bool Heal(Damage damageComponent)
     {
         bool isDamaged = !this.FullHP();
@@ -151,5 +134,11 @@ public class Health : MonoBehaviour
     public void SetHPPercent(float healthPercent)
     {
         hp = maxhp * healthPercent;
+    }
+    public void superRegen(float superRegenValue)
+    {
+        hp = Mathf.Min(hp + superRegenValue * Time.deltaTime, maxhp);
+        OnHealthChanged?.Invoke(healthDisplay());
+        poison = 0;
     }
 }

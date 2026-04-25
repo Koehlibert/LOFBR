@@ -19,7 +19,7 @@ public class ArmorAura : Aura
                 return 10 + 3 * mainPlayerBehaviour.Levelsys.GetLevel();
             }
         }
-        else 
+        else
         {
             return 8;
         }
