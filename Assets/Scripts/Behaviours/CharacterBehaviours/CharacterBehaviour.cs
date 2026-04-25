@@ -73,7 +73,7 @@ public abstract class CharacterBehaviour : DamageableEntity
     }
     protected virtual void InitializeHPSys()
     {
-        hpsys.Initialize(100, 0, 0, 80);
+        hpsys.Initialize(100, 0, 0, 0);
     }
     public void StartGetPushed()
     {

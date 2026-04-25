@@ -7,7 +7,7 @@ public class RegenAura : Aura
     public override void Init(DamageableEntity owner)
     {
         base.Init(owner);
-        //Destroy(this.gameObject, 6f);
+        Destroy(this.gameObject, 6f);
     }
     public float GetBuffValue()
     {
