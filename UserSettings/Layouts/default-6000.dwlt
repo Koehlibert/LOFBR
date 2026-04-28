@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 989
   m_ShowMode: 4
-  m_Title: Console
+  m_Title: Scene
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 112}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 41
+  controlID: 273
   draggingID: 0
 --- !u!114 &6
 MonoBehaviour:
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 112}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 42
+  controlID: 234
   draggingID: 0
 --- !u!114 &7
 MonoBehaviour:
@@ -171,7 +171,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 56}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 43
+  controlID: 235
   draggingID: 0
 --- !u!114 &8
 MonoBehaviour:
@@ -209,7 +209,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: GameView
+  m_Name: SceneView
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -220,14 +220,14 @@ MonoBehaviour:
     height: 562
   m_MinSize: {x: 202, y: 226}
   m_MaxSize: {x: 4002, y: 4026}
-  m_ActualView: {fileID: 13}
+  m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
   - {fileID: 16}
   - {fileID: 17}
   - {fileID: 13}
-  m_Selected: 3
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 3
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -274,8 +274,8 @@ MonoBehaviour:
     y: 0
     width: 460
     height: 933
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 76}
+  m_MaxSize: {x: 4001, y: 4026}
   m_ActualView: {fileID: 20}
   m_Panes:
   - {fileID: 20}
@@ -303,7 +303,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 43
+    y: 0
     width: 1920
     height: 36
   m_SerializedDataModeController:
@@ -690,7 +690,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 79
+    y: 24
     width: 350
     height: 536
   m_SerializedDataModeController:
@@ -713,17 +713,8 @@ MonoBehaviour:
       m_LastClickedID:
         m_Data: 0
       m_ExpandedIDs:
-      - m_Data: -12084
-      - m_Data: -10820
-      - m_Data: -9720
-      - m_Data: -8792
-      - m_Data: -7872
-      - m_Data: -6952
-      - m_Data: -5614
-      - m_Data: -5506
-      - m_Data: -3862
-      - m_Data: -3010
       - m_Data: -1296
+      - m_Data: 34004
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -771,8 +762,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Scene\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 351
-    y: 79
+    x: 352
+    y: 24
     width: 1107
     height: 536
   m_SerializedDataModeController:
@@ -1353,15 +1344,15 @@ MonoBehaviour:
   m_OverrideSceneCullingMask: 6917529027641081856
   m_SceneIsLit: 0
   m_SceneLighting: 1
-  m_2DMode: 0
+  m_2DMode: 1
   m_isRotationLocked: 0
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 3.8911328, y: 2.5993037, z: -4.892653}
+    m_Target: {x: 475.52274, y: 227.04027, z: 3.4513333}
     speed: 2
-    m_Value: {x: 3.8911328, y: 2.5993037, z: -4.892653}
+    m_Value: {x: 529.071, y: 177.13158, z: 4.1409593}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1389,17 +1380,17 @@ MonoBehaviour:
       m_Size: {x: 0, y: 0}
     yGrid:
       m_Fade:
-        m_Target: 1
+        m_Target: 0
         speed: 2
-        m_Value: 1
+        m_Value: 0
       m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
       m_Pivot: {x: 0, y: 0, z: 0}
       m_Size: {x: 1, y: 1}
     zGrid:
       m_Fade:
-        m_Target: 0
+        m_Target: 1
         speed: 2
-        m_Value: 0
+        m_Value: 1
       m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
       m_Pivot: {x: 0, y: 0, z: 0}
       m_Size: {x: 1, y: 1}
@@ -1407,17 +1398,17 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.20303464, y: 0.74417377, z: -0.26015595, w: -0.5807819}
+    m_Target: {x: 0, y: 0, z: 0, w: 1}
     speed: 2
-    m_Value: {x: -0.20303398, y: 0.7441714, z: -0.2601551, w: -0.58078}
+    m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 8.96889
+    m_Target: 265.3331
     speed: 2
-    m_Value: 8.96889
+    m_Value: 196.37114
   m_Ortho:
-    m_Target: 0
+    m_Target: 1
     speed: 2
-    m_Value: 0
+    m_Value: 1
   m_CameraSettings:
     m_Speed: 0.9805109
     m_SpeedNormalized: 0.49000046
@@ -1431,7 +1422,7 @@ MonoBehaviour:
     m_FarClip: 10000
     m_DynamicClip: 1
     m_OcclusionCulling: 0
-  m_LastSceneViewRotation: {x: -0.00205433, y: 0.9794561, z: -0.2014117, w: -0.009989323}
+  m_LastSceneViewRotation: {x: -0.08717229, y: 0.89959055, z: -0.21045254, w: -0.3726226}
   m_LastSceneViewOrtho: 0
   m_Viewpoint:
     m_SceneView: {fileID: 15}
@@ -1654,14 +1645,12 @@ MonoBehaviour:
       m_Data: 37220
     m_ExpandedIDs:
     - m_Data: 0
-    - m_Data: 37210
-    - m_Data: 37212
-    - m_Data: 37214
-    - m_Data: 37216
-    - m_Data: 37218
-    - m_Data: 37220
-    - m_Data: 40364
-    - m_Data: 1000000000
+    - m_Data: 34984
+    - m_Data: 34986
+    - m_Data: 34988
+    - m_Data: 34990
+    - m_Data: 34992
+    - m_Data: 34994
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1694,12 +1683,12 @@ MonoBehaviour:
       m_Data: 0
     m_ExpandedIDs:
     - m_Data: 0
-    - m_Data: 37210
-    - m_Data: 37212
-    - m_Data: 37214
-    - m_Data: 37216
-    - m_Data: 37218
-    - m_Data: 37220
+    - m_Data: 34984
+    - m_Data: 34986
+    - m_Data: 34988
+    - m_Data: 34990
+    - m_Data: 34992
+    - m_Data: 34994
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1799,7 +1788,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 641
+    y: 586
     width: 1459
     height: 345
   m_SerializedDataModeController:
@@ -1837,8 +1826,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Inspector\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 1460
-    y: 79
+    x: 1461
+    y: 24
     width: 459
     height: 907
   m_SerializedDataModeController:
