@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    public static CameraController Instance;
     public GameObject ObjectToFollow;
     private Vector3 offset;
     private float smooth = 0.15f;
     private Vector3 velocity = Vector3.zero;
+    void Awake()
+    {
+        Instance = this;
+    }
     void Start()
     {
         SetTargetToDefault();

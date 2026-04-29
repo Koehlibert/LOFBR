@@ -88,4 +88,8 @@ public abstract class CharacterBehaviour : DamageableEntity
         aIHandler.UnlockAI();
         animator.SetBool("Pushed", false);
     }
+    public void ToggleInteractive()
+    {
+        aIHandler.ToggleInteractive();
+    }
 }

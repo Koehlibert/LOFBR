@@ -14,10 +14,6 @@ public class UseArmorAura : Ability
     {
         return new AbilityInfo(20, 2, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills });
     }
-    void OnDisable()
-    {
-        Reset();
-    }
     protected override void AbilityAction()
     {
     }

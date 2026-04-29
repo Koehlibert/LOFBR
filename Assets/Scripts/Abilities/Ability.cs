@@ -111,7 +111,7 @@ public abstract class Ability : MonoBehaviour
     }
     protected virtual void InteractiveCheck()
     {
-        if (InputPressed() && (loaded) && OwnerManaSys.checkCost(manaCost))
+        if (InputPressed() && (loaded) && CheckManaCost())
         {
             AbilityAction();
         }
@@ -126,7 +126,7 @@ public abstract class Ability : MonoBehaviour
     {
         if (IsInteractive)
         {
-            reloader.Shoot();
+            reloader?.Shoot();
         }
         if (OwnerManaSys != null)
         {
@@ -157,7 +157,7 @@ public abstract class Ability : MonoBehaviour
     {
         reloader.Activate();
     }
-    public void Reset()
+    public virtual void Reset()
     {
         loaded = true;
     }

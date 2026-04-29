@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class AIHandler : MonoBehaviour
 {
     protected List<Ability> Abilities;
     protected List<AIModule> AIModules;
-    public DamageableEntity Owner { get; set; }
+    public CharacterBehaviour Owner { get; set; }
     public ClosestFinder ClosestFinder { get; set; }
     public AIUtils.AIState AIState;
     public AIUtils.HealthState HealthState { get; set; }
@@ -25,7 +26,7 @@ public class AIHandler : MonoBehaviour
     protected List<Ability> DisabledAbilities;
     internal GameObject closestHurtFriendly;
 
-    public virtual void Init(DamageableEntity owner, List<Ability> abilities, List<AIModule> aIModules, float movementSpeed, bool caresAboutHealth = false)
+    public virtual void Init(CharacterBehaviour owner, List<Ability> abilities, List<AIModule> aIModules, float movementSpeed, bool caresAboutHealth = false)
     {
         Owner = owner;
         IsInteractive = Owner is PlayerController;
@@ -174,5 +175,14 @@ public class AIHandler : MonoBehaviour
     public void LockMovement(float duration)
     {
         StartCoroutine(movementAI.LockMovement(duration));
+    }
+    public void ToggleInteractive()
+    {
+        IsInteractive = !IsInteractive;
+        movementAI.IsInteractive = !movementAI.IsInteractive;
+        foreach (Ability ability in Abilities)
+        {
+            ability.IsInteractive = !ability.IsInteractive;
+        }
     }
 }
