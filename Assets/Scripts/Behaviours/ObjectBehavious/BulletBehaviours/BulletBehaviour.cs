@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -16,6 +17,7 @@ public class BulletBehaviour : MonoBehaviour
     private SphereCollider col;
     protected Rigidbody rb;
     private HumanBodyBones bone;
+    public event Action<DamageableEntity> OnBulletHit;
     public virtual void Init(DamageableEntity owner, bool destroyOnHit, HumanBodyBones bone, float timer = 1.5f)
     {
         this.col = GetComponent<SphereCollider>();
@@ -27,9 +29,10 @@ public class BulletBehaviour : MonoBehaviour
         this.team = owner.Team;
         this.timer = timer;
         this.bone = bone;
+        damage.DamageDealt += (DamageableEntity tmp) => OnBulletHit?.Invoke(tmp);
         if (destroyOnHit)
         {
-            damage.DamageDealt += () => Destroy(this.gameObject);
+            damage.DamageDealt += (DamageableEntity tmp) => Destroy(this.gameObject);
         }
     }
     protected virtual void FixedUpdate()
@@ -79,6 +82,6 @@ public class BulletBehaviour : MonoBehaviour
     }
     public void StartDebugging()
     {
-        damage.DamageDealt += () => Debug.Log("huh");
+        damage.DamageDealt += (DamageableEntity tmp) => Debug.Log("huh");
     }
 }

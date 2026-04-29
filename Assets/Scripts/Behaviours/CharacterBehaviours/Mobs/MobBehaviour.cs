@@ -94,13 +94,13 @@ public class MobBehaviour : CharacterBehaviour
             ResetMarked = true;
         }
     }
-    public void getShanked(Damage damage)
+    public void getShanked(Damage damage, float bleedDamage)
     {
         LastHit = true;
-        if (CombatUtils.DealDamage(damage, this))
-        {
-            Die();
-        }
+        CombatUtils.DealDamage(damage, this);
+        BleedEffect bleedEffect = gameObject.AddComponent<BleedEffect>();
+        bleedEffect.Init(4, bleedDamage);
+        AddStatusEffect(bleedEffect);
     }
     public override void MarkHealthbar()
     {

@@ -43,10 +43,7 @@ public class DamageCollisionHandler : CollisionHandler
             Owner.SetLastHit(true);
         }
         RaiseOnHitCallback();
-        if (CombatUtils.DealDamage(damageComponent, Owner))
-        {
-            Owner.Kill();
-        }
+        CombatUtils.DealDamage(damageComponent, Owner);
     }
     private void HandleHealing(Damage damageComponent, Collider collider)
     {
@@ -77,10 +74,7 @@ public class DamageCollisionHandler : CollisionHandler
                     Owner.SetLastHit(true);
                 }
                 RaiseOnHitCallback();
-                if (CombatUtils.DealDamage(damageComponent, Owner))
-                {
-                    Owner.Kill();
-                }
+                CombatUtils.DealDamage(damageComponent, Owner);
             }
     }
     private void HandlePossessionBullet(BulletBehaviourPossessing bulletBehaviourPossessing)

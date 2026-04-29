@@ -32,7 +32,7 @@ public class BladeFlurry : DamagingAbility
                 Handler.Owner.transform.rotation = lookDir;
                 Handler.Owner.animator.Play("Melee", 0, 0f);
                 MobBehaviour enemyBehaviour = target?.GetComponent<MobBehaviour>();
-                enemyBehaviour?.getShanked(damage);
+                enemyBehaviour?.getShanked(damage, GetBleedDamage());
                 yield return new WaitForSeconds(duration);
             }
             else
@@ -85,16 +85,34 @@ public class BladeFlurry : DamagingAbility
         {
             if (Handler.Owner is MirrorImageBehaviour)
             {
-                return new DamageInfo(0.3f * (25 + (OwnerLevelSys.GetLevel() - 0) * 10), 3, CombatUtils.Team.Player, true, false, false);
+                return new DamageInfo(0.3f * (25 + (OwnerLevelSys.GetLevel() - 0) * 10), CombatUtils.Team.Player, true, false, false);
             }
             else
             {
-                return new DamageInfo(25 + (OwnerLevelSys.GetLevel() - 0) * 10, 1, CombatUtils.Team.Player, true, false, false);
+                return new DamageInfo(25 + (OwnerLevelSys.GetLevel() - 0) * 10, CombatUtils.Team.Player, true, false, false);
             }
         }
         else 
         {
-            return new DamageInfo(30, 0.5f, CombatUtils.Team.Player, true, false, false);
+            return new DamageInfo(30, CombatUtils.Team.Player, true, false, false);
+        }
+    }
+    private float GetBleedDamage()
+    {
+        if (Handler.Owner is MainPlayerBehaviour)
+        {
+            if (Handler.Owner is MirrorImageBehaviour)
+            {
+                return OwnerLevelSys.GetLevel() * 4;
+            }
+            else
+            {
+                return OwnerLevelSys.GetLevel() * 2.5f;
+            }
+        }
+        else 
+        {
+            return 2f;
         }
     }
     protected override void AICheck()

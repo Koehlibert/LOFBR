@@ -38,6 +38,7 @@ public class WallBehaviour : CharacterBehaviour
     protected override void InitializeHPSys()
     {
         hpsys.Initialize(MemberHP * MemberCount, 0, 0, 0);
+        hpsys.Death += Die;
     }
     protected override void InitializeAIHandler()
     {

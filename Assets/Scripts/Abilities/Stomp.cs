@@ -33,16 +33,16 @@ public class Stomp : DamagingAbility
         {
             if (Handler.Owner is MirrorImageBehaviour)
             {
-                return new DamageInfo(40 + (OwnerLevelSys.GetLevel() - 2) * 6, 0, Handler.Owner.Team, true, false, false);
+                return new DamageInfo(40 + (OwnerLevelSys.GetLevel() - 2) * 6, Handler.Owner.Team, true, false, false);
             }
             else
             {
-                return new DamageInfo(70 + (OwnerLevelSys.GetLevel() - 2) * 6, 0, Handler.Owner.Team, true, false, false);
+                return new DamageInfo(70 + (OwnerLevelSys.GetLevel() - 2) * 6, Handler.Owner.Team, true, false, false);
             }
         }
         else 
         {
-            return new DamageInfo(40, 0, Handler.Owner.Team, true, false, false);
+            return new DamageInfo(40, Handler.Owner.Team, true, false, false);
         }
     }
     private IEnumerator Shootanim()

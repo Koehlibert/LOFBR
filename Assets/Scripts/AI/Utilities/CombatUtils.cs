@@ -20,23 +20,23 @@ public static class CombatUtils
     {
         return CanDamage(sourceDamage.sourceTeam, targetObject.Team);
     }
-    public static bool DealDamage(GameObject damageObject, DamageableEntity target)
+    public static void DealDamage(GameObject damageObject, DamageableEntity target)
     {
-        return damageObject
+        damageObject
             .GetComponent<Damage>()
             .DealDamage(target);
     }
-    public static bool DealDamage(Collision collision, DamageableEntity target)
+    public static void DealDamage(Collision collision, DamageableEntity target)
     {
-        return DealDamage(collision.gameObject, target);
+        DealDamage(collision.gameObject, target);
     }
-    public static bool DealDamage(Collider collider, DamageableEntity target)
+    public static void DealDamage(Collider collider, DamageableEntity target)
     {
-        return DealDamage(collider.gameObject, target);
+        DealDamage(collider.gameObject, target);
     }
-    public static bool DealDamage(Damage damage, DamageableEntity target)
+    public static void DealDamage(Damage damage, DamageableEntity target)
     {
-        return damage.DealDamage(target);
+        damage.DealDamage(target);
     }
     public static float GetDistance(GameObject object1, GameObject object2)
     {

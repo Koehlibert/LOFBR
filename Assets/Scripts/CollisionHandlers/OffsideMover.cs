@@ -5,9 +5,10 @@ using UnityEngine.TextCore.Text;
 
 public class OffsideMover : CollisionHandler
 {
+    private float PoisonDamage;
     private List<CharacterBehaviour> ObjectsToMove;
     protected Vector3 MoveDirection = new Vector3(0f, 0f, 10f);
-    public void Init(DamageableEntity owner, DamageInfo damageInfo)
+    public void Init(DamageableEntity owner, DamageInfo damageInfo, float poisonDamage)
     {
         Init(owner);
         this.transform.position = new Vector3(0, 0, owner.transform.position.z);
@@ -18,6 +19,7 @@ public class OffsideMover : CollisionHandler
             MoveDirection.z *= -1;
         }
         gameObject.AddComponent<Damage>().SetProperties(damageInfo);
+        PoisonDamage = poisonDamage;
     }
     void Update()
     {
@@ -42,6 +44,9 @@ public class OffsideMover : CollisionHandler
         if (characterBehaviour != null && CombatUtils.CanDamage(Owner.Team, characterBehaviour.Team) && !ObjectsToMove.Contains(characterBehaviour) && characterBehaviour is not TowerBehaviour)
         {
             StartPushing(characterBehaviour);
+            DoTEffect doTEffect = characterBehaviour.gameObject.AddComponent<DoTEffect>();
+            doTEffect.Init(5f, PoisonDamage);
+            characterBehaviour.AddStatusEffect(doTEffect);
         }
     }
     private void StartPushing(CharacterBehaviour characterBehaviour)

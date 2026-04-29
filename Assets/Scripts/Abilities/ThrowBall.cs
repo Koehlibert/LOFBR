@@ -38,16 +38,16 @@ public class ThrowBall : DamagingAbility
         {
             if (Handler.Owner is MirrorImageBehaviour)
             {
-                return new DamageInfo(0.5f * (50 + 5 * OwnerLevelSys.GetLevel()), 0, Handler.Owner.Team, false, false, true);
+                return new DamageInfo(0.5f * (50 + 5 * OwnerLevelSys.GetLevel()), Handler.Owner.Team, false, false, true);
             }
             else
             {
-                return new DamageInfo(50 + 5 * OwnerLevelSys.GetLevel(), 0, Handler.Owner.Team, false, false, true);
+                return new DamageInfo(50 + 5 * OwnerLevelSys.GetLevel(), Handler.Owner.Team, false, false, true);
             }
         }
         else 
         {
-            return new DamageInfo(45, 0, Handler.Owner.Team, false, false, true);
+            return new DamageInfo(45, Handler.Owner.Team, false, false, true);
         }
     }
     protected override void AbilityAction()

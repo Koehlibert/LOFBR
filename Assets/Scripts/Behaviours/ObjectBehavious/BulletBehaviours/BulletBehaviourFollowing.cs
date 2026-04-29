@@ -1,18 +1,19 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletBehaviourFollowing : BulletBehaviour
 {
     protected float speed;
-    private float focusDistance = 17.5f;
-    private float rotationSpeed = 2.75f;
-    private bool isFollowingTarget;
-    private GameObject target;
-    private ClosestFinder closestFinder;
-    private bool WasFired;
+    protected float focusDistance = 17.5f;
+    protected float rotationSpeed = 2.75f;
+    protected bool isFollowingTarget;
+    protected GameObject target;
+    protected ClosestFinder closestFinder;
+    protected bool WasFired;
     protected bool OnlyHurt;
     protected bool ChasePlayer;
     public void Init(DamageableEntity owner, bool destroyOnHit, HumanBodyBones bone, bool onlyHurt, bool chasePlayer,
-                     CombatUtils.Team targetTeam, float speed = 35f, float focusDistance = 15, 
+                     CombatUtils.Team targetTeam, float speed = 35f, float focusDistance = 15,
                      float rotationSpeed = 2.75f, float timer = 1.2F)
     {
         OnlyHurt = onlyHurt;

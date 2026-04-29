@@ -75,16 +75,16 @@ public class Melee : DamagingAbility
         {
             if (Handler.Owner is MirrorImageBehaviour)
             {
-                return new DamageInfo(0.5f * (35 + OwnerLevelSys.GetLevel() * 3), 0, Handler.Owner.Team, true, false, false);
+                return new DamageInfo(0.5f * (35 + OwnerLevelSys.GetLevel() * 3), Handler.Owner.Team, true, false, false);
             }
             else
             {
-                return new DamageInfo(35 + OwnerLevelSys.GetLevel() * 3, 0, Handler.Owner.Team, true, false, false);
+                return new DamageInfo(35 + OwnerLevelSys.GetLevel() * 3, Handler.Owner.Team, true, false, false);
             }
         }
         else 
         {
-            return new DamageInfo(40, 0, Handler.Owner.Team, false, false, false);
+            return new DamageInfo(40, Handler.Owner.Team, false, false, false);
         }
     }
     protected override void AICheck()

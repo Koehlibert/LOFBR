@@ -50,6 +50,8 @@ public abstract class CharacterBehaviour : DamageableEntity
             list.Add(statusEffect);
         }
         statusEffect.ActivateAction(this);
+        if (statusEffect is StatusEffectTimer statusEffectTimer)
+            statusEffectTimer.StartTimer();
     }
     public void RemoveStatusEffect(StatusEffect statusEffect)
     {

@@ -24,7 +24,9 @@ public class ShootDoublePass : ShootBasic
     }
     protected override GameObject CreateBullet()
     {
-        return BulletFactory.Instance.CreateBullet(Handler.Owner, false, Bone);
+        GameObject bullet = BulletFactory.Instance.CreateBullet(Handler.Owner, false, Bone);
+        bullet.GetComponent<BulletBehaviour>().OnBulletHit += (DamageableEntity tmp) => CreatePoisonStatus(tmp);
+        return bullet;
     }
     protected override void AbilityAction()
     {
@@ -106,16 +108,16 @@ public class ShootDoublePass : ShootBasic
         {
             if (Handler.Owner is MirrorImageBehaviour)
             {
-                return new DamageInfo(PassStagePercent() * 0.5f * (15 + 3 * OwnerLevelSys.GetLevel()), PassStagePercent() * 0.5f * (8f + 1f * OwnerLevelSys.GetLevel()), Handler.Owner.Team, true, false);
+                return new DamageInfo(PassStagePercent() * 0.5f * (15 + 3 * OwnerLevelSys.GetLevel()), Handler.Owner.Team, true, false);
             }
             else
             {
-                return new DamageInfo(PassStagePercent() * 15 + 3 * OwnerLevelSys.GetLevel(), PassStagePercent() * 8f + 1f * OwnerLevelSys.GetLevel(), Handler.Owner.Team, true, false);
+                return new DamageInfo(PassStagePercent() * 15 + 3 * OwnerLevelSys.GetLevel(), Handler.Owner.Team, true, false);
             }
         }
         else
         {
-            return new DamageInfo(PassStagePercent() * 20, PassStagePercent() * 6, Handler.Owner.Team, true, false);
+            return new DamageInfo(PassStagePercent() * 20, Handler.Owner.Team, true, false);
         }
     }
     protected override void OnDeactivate(Ability callingAbility)
@@ -126,5 +128,32 @@ public class ShootDoublePass : ShootBasic
     private void SetBallTarget()
     {
         ballTarget = StartPosition + (StepSize * (PassStage + 2) + 2.5f) * Handler.Owner.transform.forward;
+    }
+    private float GetPoisonDamage()
+    {
+        if (Handler.Owner is MainPlayerBehaviour)
+        {
+            if (Handler.Owner is MirrorImageBehaviour)
+            {
+                return PassStagePercent() * 0.5f * (8f + 1f * OwnerLevelSys.GetLevel());
+            }
+            else
+            {
+                return PassStagePercent() * 8f + 1f * OwnerLevelSys.GetLevel();
+            }
+        }
+        else
+        {
+            return PassStagePercent() * 6;
+        }
+    }
+    private void CreatePoisonStatus(DamageableEntity tmp)
+    {
+        if (tmp is CharacterBehaviour characterBehaviour)
+        {
+            PoisonEffect poisonEffect = characterBehaviour.gameObject.AddComponent<PoisonEffect>();
+            poisonEffect.Init(5, GetPoisonDamage());
+            characterBehaviour.AddStatusEffect(poisonEffect);
+        }
     }
 }

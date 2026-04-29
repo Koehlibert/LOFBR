@@ -85,16 +85,16 @@ public class Immolate : DamagingAbility
         {
             if (Handler.Owner is MirrorImageBehaviour)
             {
-                return new DamageInfo(1.5f * OwnerLevelSys.GetLevel(), 0, Handler.Owner.Team, true, true);
+                return new DamageInfo(1.5f * OwnerLevelSys.GetLevel(), Handler.Owner.Team, true, true);
             }
             else
             {
-                return new DamageInfo(3.5f * OwnerLevelSys.GetLevel(), 0, Handler.Owner.Team, true, true);
+                return new DamageInfo(3.5f * OwnerLevelSys.GetLevel(), Handler.Owner.Team, true, true);
             }
         }
         else
         {
-            return new DamageInfo(4f, 0, Handler.Owner.Team, true, true);
+            return new DamageInfo(4f, Handler.Owner.Team, true, true);
         }
     }
     protected override void AICheck()

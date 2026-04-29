@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,26 +12,15 @@ public class Health : MonoBehaviour
     private float timer;
     private float regenTime;
     private float armor;
-    private float poison;
-    private float poisonTime;
     public System.Action<float> OnHealthChanged;
+    public event Action Death;
     void Update()
     {
-        if (poison > 0)
-        {
-            hp = Mathf.Max(0, hp - poison * Time.deltaTime);
-            poisonTime -= Time.deltaTime;
-            OnHealthChanged?.Invoke(healthDisplay());
-            if (poisonTime <= 0f)
-            {
-                poison = 0;
-            }
-        }
         if (timer <= regenTime)
         {
             timer += Time.deltaTime;
         }
-        else if ((hp < maxhp) && (poison == 0))
+        else if (hp < maxhp)
         {
             hp = Mathf.Min(hp + healthRegen * Time.deltaTime, maxhp);
             OnHealthChanged?.Invoke(healthDisplay());
@@ -66,29 +56,13 @@ public class Health : MonoBehaviour
     {
         armor += armGain;
     }
-    public bool TakeDamage(Damage damageObj)
+    public void TakeDamage(Damage damageObj)
     {
-        (float damageValue, float poisonValue) val = damageObj.GetDamage();
-        if (val.poisonValue > 0)
-        {
-            poisonTime = poisonDuration;
-            poison = Mathf.Max(val.poisonValue, poison);
-        }
-        float damage = computeDamage(damageObj);
-        hp -= damage;
-        timer = 0;
-        OnHealthChanged?.Invoke(healthDisplay());
-        if (hp <= 0)
-        {
-            hp = maxhp;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        float damageValue = damageObj.GetDamage();
+        TakeDamage(damageValue);
+        
     }
-    public bool TakeDamage(float damageValue)
+    public void TakeDamage(float damageValue)
     {
         float damage = computeDamage(damageValue);
         hp -= damage;
@@ -96,12 +70,7 @@ public class Health : MonoBehaviour
         OnHealthChanged?.Invoke(healthDisplay());
         if (hp <= 0)
         {
-            hp = maxhp;
-            return true;
-        }
-        else
-        {
-            return false;
+            Death?.Invoke();
         }
     }
     public float healthDisplay()
@@ -113,8 +82,7 @@ public class Health : MonoBehaviour
         bool isDamaged = !this.FullHP();
         if (isDamaged)
         {
-            hp = Mathf.Min(maxhp, hp + damageComponent.GetDamage().damageValue);
-            poison = 0;
+            hp = Mathf.Min(maxhp, hp + damageComponent.GetDamage());
             OnHealthChanged?.Invoke(healthDisplay());
         }
         return isDamaged;
@@ -129,7 +97,7 @@ public class Health : MonoBehaviour
     }
     float computeDamage(Damage damageObject)
     {
-        return Mathf.Max(damageObject.GetDamage().damageValue * ((100 - armor) / 100), 0) * (damageObject.isEnduring ? Time.deltaTime : 1f);
+        return Mathf.Max(damageObject.GetDamage() * ((100 - armor) / 100), 0) * (damageObject.isEnduring ? Time.deltaTime : 1f);
     }
     public void SetHPPercent(float healthPercent)
     {
@@ -139,6 +107,5 @@ public class Health : MonoBehaviour
     {
         hp = Mathf.Min(hp + superRegenValue * Time.deltaTime, maxhp);
         OnHealthChanged?.Invoke(healthDisplay());
-        poison = 0;
     }
 }

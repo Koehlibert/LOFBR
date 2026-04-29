@@ -18,16 +18,16 @@ public abstract class ShootBasic : DamagingAbility
         {
             if (Handler.Owner is MirrorImageBehaviour)
             {
-                return new DamageInfo(0.5f * (34 + 7 * OwnerLevelSys.GetLevel()), 0, Handler.Owner.Team, true);
+                return new DamageInfo(0.5f * (34 + 7 * OwnerLevelSys.GetLevel()), Handler.Owner.Team, true);
             }
             else
             {
-                return new DamageInfo(34 + 7 * OwnerLevelSys.GetLevel(), 0, Handler.Owner.Team, true);
+                return new DamageInfo(34 + 7 * OwnerLevelSys.GetLevel(), Handler.Owner.Team, true);
             }
         }
         else
         {
-            return new DamageInfo(40, 0, Handler.Owner.Team, false);
+            return new DamageInfo(40, Handler.Owner.Team, false);
         }
     }
     protected abstract HumanBodyBones Bone { get; }

@@ -106,16 +106,16 @@ public class ShootPass : ShootBasic
         {
             if (Handler.Owner is MirrorImageBehaviour)
             {
-                return new DamageInfo(PassStagePercent() * 0.5f * (15 + 3 * OwnerLevelSys.GetLevel()), PassStagePercent() * 0.5f * (8f + 1f * OwnerLevelSys.GetLevel()), Handler.Owner.Team, true, false);
+                return new DamageInfo(PassStagePercent() * 0.5f * (15 + 3 * OwnerLevelSys.GetLevel()), Handler.Owner.Team, true, false);
             }
             else
             {
-                return new DamageInfo(PassStagePercent() * 15 + 3 * OwnerLevelSys.GetLevel(), PassStagePercent() * 8f + 1f * OwnerLevelSys.GetLevel(), Handler.Owner.Team, true, false);
+                return new DamageInfo(PassStagePercent() * 15 + 3 * OwnerLevelSys.GetLevel(), Handler.Owner.Team, true, false);
             }
         }
         else
         {
-            return new DamageInfo(PassStagePercent() * 20, PassStagePercent() * 6, Handler.Owner.Team, true, false);
+            return new DamageInfo(PassStagePercent() * 20, Handler.Owner.Team, true, false);
         }
     }
     protected override void OnDeactivate(Ability callingAbility)

@@ -22,6 +22,7 @@ public abstract class DamageableEntity : MonoBehaviour
     {
         LastHit = false;
         hpsys = this.gameObject.AddComponent<Health>();
+        hpsys.Death += Die;
         animator = GetComponentInChildren<Animator>();
         SetupCollisionHandler();
         if (healthbar != null)

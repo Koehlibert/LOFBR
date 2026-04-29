@@ -32,7 +32,7 @@ public class Offside : DamagingAbility
         yield return new WaitForSeconds(0.25f);
         CharacterFactory.Instance.CreateReferee(Handler.Owner.Team, Handler.Owner.transform.position.z);
         yield return new WaitForSeconds(0.35f);
-        BulletFactory.Instance.CreateMover(Handler.Owner, GetDamageValues());
+        BulletFactory.Instance.CreateMover(Handler.Owner, GetDamageValues(), GetPoisonValue());
     }
     protected override bool InputPressed()
     {
@@ -62,16 +62,34 @@ public class Offside : DamagingAbility
         {
             if (Handler.Owner is MirrorImageBehaviour)
             {
-                return new DamageInfo(0.5f * (8 + OwnerLevelSys.GetLevel() * 2), OwnerLevelSys.GetLevel(), Handler.Owner.Team, true, true, false);
+                return new DamageInfo(0.5f * (8 + OwnerLevelSys.GetLevel() * 2), Handler.Owner.Team, true, true, false);
             }
             else
             {
-                return new DamageInfo(8 + OwnerLevelSys.GetLevel() * 2, OwnerLevelSys.GetLevel(), Handler.Owner.Team, true, true, false);
+                return new DamageInfo(8 + OwnerLevelSys.GetLevel() * 2, Handler.Owner.Team, true, true, false);
             }
         }
         else
         {
-            return new DamageInfo(10, 1, Handler.Owner.Team, false, true, false);
+            return new DamageInfo(10, Handler.Owner.Team, false, true, false);
+        }
+    }
+    protected float GetPoisonValue()
+    {
+        if (Handler.Owner is MainPlayerBehaviour)
+        {
+            if (Handler.Owner is MirrorImageBehaviour)
+            {
+                return OwnerLevelSys.GetLevel();
+            }
+            else
+            {
+                return OwnerLevelSys.GetLevel();
+            }
+        }
+        else
+        {
+            return 1;
         }
     }
 }

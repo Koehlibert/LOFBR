@@ -23,16 +23,16 @@ public class ShootHeal : ShootBasic
         {
             if (Handler.Owner is MirrorImageBehaviour)
             {
-                return new DamageInfo(0.6f * (40 + 5 * OwnerLevelSys.GetLevel()), 0, Handler.Owner.Team, false, false);
+                return new DamageInfo(0.6f * (40 + 5 * OwnerLevelSys.GetLevel()), Handler.Owner.Team, false, false);
             }
             else
             {
-                return new DamageInfo(40 + 5 * OwnerLevelSys.GetLevel(), 0, Handler.Owner.Team, false, false);
+                return new DamageInfo(40 + 5 * OwnerLevelSys.GetLevel(), Handler.Owner.Team, false, false);
             }
         }
         else 
         {
-            return new DamageInfo(40, 0, Handler.Owner.Team, false, false);
+            return new DamageInfo(40, Handler.Owner.Team, false, false);
         }
     }
     protected override GameObject CreateBullet()

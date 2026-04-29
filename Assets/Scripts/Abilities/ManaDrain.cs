@@ -61,16 +61,16 @@ public class ManaDrain : DamagingAbility
         {
             if (Handler.Owner is MirrorImageBehaviour)
             {
-                return new DamageInfo(0.5f * (15 + OwnerLevelSys.GetLevel() * 5), 0, Handler.Owner.Team, true);
+                return new DamageInfo(0.5f * (15 + OwnerLevelSys.GetLevel() * 5), Handler.Owner.Team, true);
             }
             else
             {
-                return new DamageInfo(15 + OwnerLevelSys.GetLevel() * 5, 0, Handler.Owner.Team, true);
+                return new DamageInfo(15 + OwnerLevelSys.GetLevel() * 5, Handler.Owner.Team, true);
             }
         }
         else 
         {
-            return new DamageInfo(30, 0, Handler.Owner.Team, true);
+            return new DamageInfo(30, Handler.Owner.Team, true);
         }
     }
 }

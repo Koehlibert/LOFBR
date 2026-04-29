@@ -118,10 +118,10 @@ public class BulletFactory : MonoBehaviour
         wall.AddComponent<WallBehaviour>().Init(owner.Team, memberCount, memberWidth, memberHP);
         return wall;
     }
-    public GameObject CreateMover(DamageableEntity owner, DamageInfo damageInfo)
+    public GameObject CreateMover(DamageableEntity owner, DamageInfo damageInfo, float poisonDamage)
     {
         GameObject Mover = Instantiate(MoveCollider);
-        Mover.AddComponent<OffsideMover>().Init(owner, damageInfo);
+        Mover.AddComponent<OffsideMover>().Init(owner, damageInfo, poisonDamage);
         return Mover;
     }
 }

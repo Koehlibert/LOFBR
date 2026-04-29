@@ -46,16 +46,16 @@ public class ShootFlip : ShootBasic
         {
             if (Handler.Owner is MirrorImageBehaviour)
             {
-                return new DamageInfo(20 + (OwnerLevelSys.GetLevel() - 5) * 5f, 0, Handler.Owner.Team, true, true, false);
+                return new DamageInfo(20 + (OwnerLevelSys.GetLevel() - 5) * 5f, Handler.Owner.Team, true, true, false);
             }
             else
             {
-                return new DamageInfo(50 + (OwnerLevelSys.GetLevel() - 5) * 6.5f, 0, Handler.Owner.Team, true, true, false);
+                return new DamageInfo(50 + (OwnerLevelSys.GetLevel() - 5) * 6.5f, Handler.Owner.Team, true, true, false);
             }
         }
         else 
         {
-            return new DamageInfo(20, 0, Handler.Owner.Team, true, true, false);
+            return new DamageInfo(20, Handler.Owner.Team, true, true, false);
         }
     }
     protected override GameObject CreateBullet()

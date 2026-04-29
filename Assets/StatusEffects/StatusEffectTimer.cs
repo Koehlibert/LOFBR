@@ -2,9 +2,13 @@ using UnityEngine;
 
 public abstract class StatusEffectTimer : StatusEffect
 {
-    private float timer;
-    private void Init()
+    private float Timer;
+    public void Init(float timer)
     {
-        Destroy(this, timer);
+        Timer = timer;
+    }
+    public void StartTimer()
+    {
+        Destroy(this, Timer);
     }
 }

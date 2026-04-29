@@ -8,10 +8,9 @@ public class DamageInfo
     public bool lastHit = false;
     public bool enduring = false;
     public bool CanBeParried = false;
-    public DamageInfo(float damageValue, float poisonValue, CombatUtils.Team sourceTeamValue, bool lastHit = false, bool enduring = false, bool canBeParried = true)
+    public DamageInfo(float damageValue, CombatUtils.Team sourceTeamValue, bool lastHit = false, bool enduring = false, bool canBeParried = true)
     {
         this.damageValue = damageValue;
-        this.poisonValue = poisonValue;
         this.sourceTeamValue = sourceTeamValue;
         this.lastHit = lastHit;
         this.enduring = enduring;
@@ -21,31 +20,28 @@ public class DamageInfo
 public class Damage : MonoBehaviour
 {
     private float damage;
-    private float poison;
     public CombatUtils.Team sourceTeam;
     public bool givesXP;
     public bool isEnduring;
-    public event Action DamageDealt;
+    public event Action<DamageableEntity> DamageDealt;
     public bool isHealing = false;
     public bool CanBeParried = false;
     public void SetDamage(float damageValue)
     {
         damage = damageValue;
-        poison = 0;
     }
-    public (float damageValue, float poisonValue) GetDamage()
+    public float GetDamage()
     {
-        return (damage, poison);
+        return damage;
     }
-    public bool DealDamage(DamageableEntity mortalObject)
+    public void DealDamage(DamageableEntity mortalObject)
     {
-        DamageDealt?.Invoke();
-        return mortalObject.GetHealth().TakeDamage(this);
+        DamageDealt?.Invoke(mortalObject);
+        mortalObject.GetHealth().TakeDamage(this);
     }
     public void SetProperties(DamageInfo damageInfo)
     {
         damage = damageInfo.damageValue;
-        poison = damageInfo.poisonValue;
         sourceTeam = damageInfo.sourceTeamValue;
         givesXP = damageInfo.lastHit;
         isEnduring = damageInfo.enduring;
