@@ -34,7 +34,7 @@ public abstract class CollisionHandler : MonoBehaviour
         if (!objectsInTrigger.Contains(colliderObject))
         {
             objectsInTrigger.Add(colliderObject);
-            HandleEnduringDamage(collider);
+            HandleDamageStay(collider);
         }
     }
     private void OnTriggerExit(Collider collider)
@@ -47,6 +47,6 @@ public abstract class CollisionHandler : MonoBehaviour
         objectsInTrigger.Clear();
         objectsEntered.RemoveWhere(obj => obj == null);
     }
-    protected abstract void HandleEnduringDamage(Collider collider);
+    protected abstract void HandleDamageStay(Collider collider);
     protected abstract void HandleDamageCollision(Collider collider);
 }

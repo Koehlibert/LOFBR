@@ -14,7 +14,7 @@ public class DetectBulletsCollisionHandler : CollisionHandler
         BulletList = new List<GameObject>();
         NBulletsToTrigger = bulletstoTrigger;
     }
-    protected override void HandleEnduringDamage(Collider collider)
+    protected override void HandleDamageStay(Collider collider)
     {
     }
     protected override void HandleDamageCollision(Collider collider)

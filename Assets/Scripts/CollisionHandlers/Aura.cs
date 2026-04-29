@@ -21,7 +21,7 @@ public abstract class Aura : CollisionHandler
                                               Owner.transform.rotation);
         AffectedCharacters.RemoveAll(item => item == null);
     }
-    protected override void HandleEnduringDamage(Collider collider)
+    protected override void HandleDamageStay(Collider collider)
     {
     }
     protected override void HandleDamageCollision(Collider collider)

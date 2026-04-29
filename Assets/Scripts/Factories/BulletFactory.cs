@@ -54,10 +54,10 @@ public class BulletFactory : MonoBehaviour
     {
         return Instantiate(BulletPrefab, owner.animator.GetBoneTransform(bone).position, owner.transform.rotation);
     }
-    public GameObject CreateShockwave(DamageableEntity owner, bool destroyOnHit, HumanBodyBones bone)
+    public GameObject CreateShockwave(DamageableEntity owner, bool destroyOnHit, HumanBodyBones bone, float maxRadius = 14f)
     {
         GameObject Shockwave = InstantiateShockwave(owner, bone);
-        Shockwave.AddComponent<Shock>();
+        Shockwave.AddComponent<Shock>().Init(maxRadius);
         return Shockwave;
     }
     private GameObject InstantiateShockwave(DamageableEntity owner, HumanBodyBones bone)

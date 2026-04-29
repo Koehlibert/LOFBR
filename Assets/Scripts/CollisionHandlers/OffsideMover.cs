@@ -33,7 +33,7 @@ public class OffsideMover : CollisionHandler
             characterBehaviour.transform.position += actualMovement;
         }
     }
-    protected override void HandleEnduringDamage(Collider collider)
+    protected override void HandleDamageStay(Collider collider)
     {
     }
     protected override void HandleDamageCollision(Collider collider)

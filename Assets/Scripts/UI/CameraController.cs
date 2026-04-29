@@ -4,17 +4,25 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public GameObject player;
+    public GameObject ObjectToFollow;
     private Vector3 offset;
     private float smooth = 0.15f;
     private Vector3 velocity = Vector3.zero;
     void Start()
     {
-        player = CharacterTracker.Instance.player.gameObject;
-        offset = transform.position - player.transform.position;
+        SetTargetToDefault();
+        offset = transform.position - ObjectToFollow.transform.position;
     }
     void LateUpdate()
     {
-        transform.position = Vector3.SmoothDamp(transform.position, player.transform.position + offset, ref velocity, smooth);
+        transform.position = Vector3.SmoothDamp(transform.position, ObjectToFollow.transform.position + offset, ref velocity, smooth);
+    }
+    public void SetNewTarget(GameObject newTarget)
+    {
+        ObjectToFollow = newTarget;
+    }
+    public void SetTargetToDefault()
+    {
+        ObjectToFollow = CharacterTracker.Instance.player.gameObject;
     }
 }

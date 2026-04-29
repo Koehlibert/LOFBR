@@ -37,7 +37,7 @@ public class BulletBehaviourFollowing : BulletBehaviour
             target = closestFinder.FindClosestNoTower(ChasePlayer, OnlyHurt);
             if (!target)
             {
-                return;
+                MoveForward();
             }
             if (target)
             {
@@ -50,7 +50,7 @@ public class BulletBehaviourFollowing : BulletBehaviour
                     isFollowingTarget = false;
                 }
                 Vector3 newDirection = Vector3.RotateTowards(transform.forward, target.transform.position - transform.position, rotationSpeed * Time.deltaTime, 0.0F);
-                MoveForward(Time.deltaTime);
+                MoveForward();
                 if (isFollowingTarget)
                 {
                     transform.rotation = Quaternion.LookRotation(newDirection);
@@ -58,7 +58,7 @@ public class BulletBehaviourFollowing : BulletBehaviour
             }
             else
             {
-                MoveForward(Time.deltaTime);
+                MoveForward();
             }
         }
         else

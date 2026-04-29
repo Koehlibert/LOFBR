@@ -5,12 +5,68 @@ using NUnit.Framework;
 
 public class DamageCollisionHandler : CollisionHandler
 {
-    protected override void HandleEnduringDamage(Collider collider)
+    protected override void HandleDamageStay(Collider collider)
     {
         Damage damageComponent = collider.gameObject.GetComponent<Damage>();
         if (damageComponent?.isEnduring == true)
         {
-            if (CombatUtils.CanDamage(damageComponent, Owner))
+            HandleEnduringDamage(damageComponent, collider);
+        }
+    }
+    protected override void HandleDamageCollision(Collider collider)
+    {
+        BulletBehaviourPossessing bulletBehaviourPossessing = collider.GetComponent<BulletBehaviourPossessing>();
+        if (bulletBehaviourPossessing != null)
+        {
+            HandlePossessionBullet(bulletBehaviourPossessing);
+        }
+        Damage damageComponent = collider.gameObject.GetComponent<Damage>();
+        if (damageComponent != null && !damageComponent.isEnduring)
+        {
+            if (CombatUtils.CanDamage(damageComponent, Owner) != damageComponent.isHealing)
+            {
+                if (!damageComponent.isHealing)
+                {
+                    HandleOneTimeDamage(damageComponent);
+                }
+                else
+                {
+                    HandleHealing(damageComponent, collider);
+                }
+            }
+        }
+    }
+    private void HandleOneTimeDamage(Damage damageComponent)
+    {
+        if (damageComponent.givesXP)
+        {
+            Owner.SetLastHit(true);
+        }
+        RaiseOnHitCallback();
+        if (CombatUtils.DealDamage(damageComponent, Owner))
+        {
+            Owner.Kill();
+        }
+    }
+    private void HandleHealing(Damage damageComponent, Collider collider)
+    {
+        DamageableEntity bulletOwner = collider.GetComponent<BulletBehaviourFollowing>()?.Owner;
+        if (Owner == bulletOwner)
+        {
+            return;
+        }
+        if (Owner.GetHealth().Heal(damageComponent))
+        {
+            if (bulletOwner is MainPlayerBehaviour)
+            {
+                CharacterTracker.Instance.GetPlayer(Owner.Team).OnHealXP();
+            }
+            Destroy(collider.gameObject);
+        }
+    }
+    private void HandleEnduringDamage(Damage damageComponent, Collider collider)
+    {
+        if (CombatUtils.CanDamage(damageComponent, Owner))
             {
                 if (collider.gameObject.GetComponent<BulletBehaviourFollowingUlt>() != null)
                 {
@@ -26,44 +82,16 @@ public class DamageCollisionHandler : CollisionHandler
                     Owner.Kill();
                 }
             }
-        }
     }
-    protected override void HandleDamageCollision(Collider collider)
+    private void HandlePossessionBullet(BulletBehaviourPossessing bulletBehaviourPossessing)
     {
-        Damage damageComponent = collider.gameObject.GetComponent<Damage>();
-        if (damageComponent != null && !damageComponent.isEnduring)
+        if (CombatUtils.CanDamage(bulletBehaviourPossessing.team, Owner.Team))
         {
-            if (CombatUtils.CanDamage(damageComponent, Owner) != damageComponent.isHealing)
-            {
-                if (!damageComponent.isHealing)
-                {
-                    if (damageComponent.givesXP)
-                    {
-                        Owner.SetLastHit(true);
-                    }
-                    RaiseOnHitCallback();
-                    if (CombatUtils.DealDamage(damageComponent, Owner))
-                    {
-                        Owner.Kill();
-                    }
-                }
-                else
-                {
-                    DamageableEntity bulletOwner = collider.GetComponent<BulletBehaviourFollowing>()?.Owner;
-                    if (Owner == bulletOwner)
-                    {
-                        return;
-                    }
-                    if (Owner.GetHealth().Heal(damageComponent))
-                    {
-                        if (bulletOwner is MainPlayerBehaviour)
-                        {
-                            CharacterTracker.Instance.GetPlayer(Owner.Team).OnHealXP();
-                        }
-                        Destroy(collider.gameObject);
-                    }
-                }
-            }
+            
+        }
+        else
+        {
+            
         }
     }
 }
