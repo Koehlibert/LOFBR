@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
@@ -50,7 +51,11 @@ public class PossessDebug : SelectionAbility
         StartCoroutine(Reload());
         target.ToggleInteractive();
         Handler.Owner.ToggleInteractive();
+        Handler.Owner.animator.SetFloat("moveX", 0);
+        Handler.Owner.animator.SetFloat("moveZ", 0);
+        Debug.Log("Animator float set");
         Handler.LockAI(Mathf.Infinity);
+        movementAI.LockMovementAI();
         CameraController.Instance.SetNewTarget(target.gameObject);
         target.DeathEvent += Reset;
     }
@@ -73,6 +78,7 @@ public class PossessDebug : SelectionAbility
     {
         Handler.Owner.ToggleInteractive();
         Handler.UnlockAI();
+        movementAI.UnlockMovementAI();
         CameraController.Instance.SetTargetToDefault();
     }
 }

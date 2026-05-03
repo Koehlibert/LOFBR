@@ -16,6 +16,9 @@ public class TowerBehaviour : CharacterBehaviour
         aIHandler.Init(this, new List<Ability> { throwBall }, new List<AIModule>(), 0, false);
         aIHandler.LockMovement(Mathf.Infinity);
     }
+    protected override void FixedUpdate()
+    {
+    }
     protected override void InitializeHPSys()
     {
         hpsys.Initialize(300, 0, 0, 20);

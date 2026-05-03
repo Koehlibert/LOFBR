@@ -13,7 +13,7 @@ public class BulletBehaviourFollowing : BulletBehaviour
     protected bool OnlyHurt;
     protected bool ChasePlayer;
     public void Init(DamageableEntity owner, bool destroyOnHit, HumanBodyBones bone, bool onlyHurt, bool chasePlayer,
-                     CombatUtils.Team targetTeam, float speed = 35f, float focusDistance = 15,
+                     CombatUtils.Team targetTeam, float speed = 25f, float focusDistance = 15,
                      float rotationSpeed = 2.75f, float timer = 1.2F)
     {
         OnlyHurt = onlyHurt;
@@ -57,10 +57,10 @@ public class BulletBehaviourFollowing : BulletBehaviour
                     transform.rotation = Quaternion.LookRotation(newDirection);
                 }
             }
-            else
+            /* else
             {
                 MoveForward();
-            }
+            } */
         }
         else
         {
