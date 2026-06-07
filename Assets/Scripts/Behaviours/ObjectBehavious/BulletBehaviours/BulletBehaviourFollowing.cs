@@ -12,7 +12,7 @@ public class BulletBehaviourFollowing : BulletBehaviour
     protected bool WasFired;
     protected bool OnlyHurt;
     protected bool ChasePlayer;
-    public void Init(DamageableEntity owner, bool destroyOnHit, HumanBodyBones bone, bool onlyHurt, bool chasePlayer,
+    public void Init(CharacterBehaviour owner, bool destroyOnHit, HumanBodyBones bone, bool onlyHurt, bool chasePlayer,
                      CombatUtils.Team targetTeam, float speed = 25f, float focusDistance = 15,
                      float rotationSpeed = 2.75f, float timer = 1.2F)
     {

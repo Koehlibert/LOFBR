@@ -8,7 +8,6 @@ using UnityEngine.XR;
 
 public class PossessDebug : SelectionAbility
 {
-    private float MarkDistance = 30f;
     protected override AbilityInfo GetAbilityInfo()
     {
         return new AbilityInfo(15, 2f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.CheckDistSkills, AIUtils.AIState.Retreating });
@@ -24,7 +23,7 @@ public class PossessDebug : SelectionAbility
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             characterBehaviour = hit.collider.gameObject.GetComponentInParent<CharacterBehaviour>();
-            if (characterBehaviour != null && characterBehaviour.Team == Handler.Owner.Team)
+            if (IsValidTarget(characterBehaviour))
             {
                 characterBehaviour.MarkHealthbar();
             }
@@ -32,11 +31,15 @@ public class PossessDebug : SelectionAbility
         if (ConfirmInputPressed())
         {
             ToggleSelecting();
-            if (characterBehaviour != null && characterBehaviour.Team == Handler.Owner.Team)
+            if (IsValidTarget(characterBehaviour))
             {
                 AbilityAction(characterBehaviour);
             }
         }
+    }
+    public bool IsValidTarget(CharacterBehaviour characterBehaviour)
+    {
+        return characterBehaviour != null && characterBehaviour.Team == Handler.Owner.Team && !(characterBehaviour is TowerBehaviour);
     }
     protected override void AbilityAction()
     {
@@ -49,15 +52,8 @@ public class PossessDebug : SelectionAbility
     {
         base.AbilityAction();
         StartCoroutine(Reload());
-        target.ToggleInteractive();
-        Handler.Owner.ToggleInteractive();
-        Handler.Owner.animator.SetFloat("moveX", 0);
-        Handler.Owner.animator.SetFloat("moveZ", 0);
-        Debug.Log("Animator float set");
-        Handler.LockAI(Mathf.Infinity);
-        movementAI.LockMovementAI();
-        CameraController.Instance.SetNewTarget(target.gameObject);
-        target.DeathEvent += Reset;
+        ActiveCharacterManager.Instance.ChangeActiveCharacter(target);
+        target.DeathEvent += ActiveCharacterManager.Instance.ResetActiveCharacter;
     }
     protected override bool InputPressed()
     {
@@ -74,11 +70,8 @@ public class PossessDebug : SelectionAbility
     {
         base.Reset();
     }
-    public override void Reset()
+/*     public override void Reset()
     {
-        Handler.Owner.ToggleInteractive();
-        Handler.UnlockAI();
-        movementAI.UnlockMovementAI();
-        CameraController.Instance.SetTargetToDefault();
-    }
+        ActiveCharacterManager.Instance.ResetActiveCharacter();
+    } */
 }

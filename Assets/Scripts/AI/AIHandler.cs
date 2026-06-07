@@ -13,7 +13,7 @@ public class AIHandler : MonoBehaviour
     public AIUtils.AIState AIState;
     public AIUtils.HealthState HealthState { get; set; }
     public float LockAITimer;
-    private MovementAI movementAI;
+    public MovementAI movementAI;
     private bool IsAILocked = false;
     protected HealthChecker healthChecker;
     protected DistanceHandler distanceHandler;

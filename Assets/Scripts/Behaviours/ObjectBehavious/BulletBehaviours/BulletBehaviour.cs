@@ -10,7 +10,7 @@ using UnityEngine.PlayerLoop;
 [RequireComponent(typeof(Damage))]
 public class BulletBehaviour : MonoBehaviour
 {
-    public DamageableEntity Owner { get; private set; }
+    public CharacterBehaviour Owner { get; private set; }
     protected Damage damage;
     public CombatUtils.Team team;
     protected float timer;
@@ -18,7 +18,7 @@ public class BulletBehaviour : MonoBehaviour
     protected Rigidbody rb;
     private HumanBodyBones bone;
     public event Action<DamageableEntity> OnBulletHit;
-    public virtual void Init(DamageableEntity owner, bool destroyOnHit, HumanBodyBones bone, float timer = 1.5f)
+    public virtual void Init(CharacterBehaviour owner, bool destroyOnHit, HumanBodyBones bone, float timer = 1.5f)
     {
         this.col = GetComponent<SphereCollider>();
         this.rb = GetComponent<Rigidbody>();

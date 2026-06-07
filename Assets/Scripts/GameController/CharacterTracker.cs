@@ -55,6 +55,7 @@ public class CharacterTracker : MonoBehaviour
         rezPoolFriendly = new List<Tombstone>();
         rezPoolEnemy = new List<Tombstone>();
         MasterScript.Instance.InitializeCharacters();
+        ActiveCharacterManager.Instance.Init(player);
     }
     public void AddMob(DamageableEntity Mob)
     {
