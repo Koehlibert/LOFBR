@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -22,15 +23,7 @@ public class BulletBehaviourPossessing : BulletBehaviour
     {
         NumberOfHits++;
     }
-    public Damage GetDamage()
-    {
-        return DamagingDamage;
-    }
-    public Damage GetHealing()
-    {
-        return HealingDamage;
-    }
-    public void HitAction(CharacterBehaviour hitCharacter)
+    public void HitAction(DamageableEntity hitCharacter)
     {
         if (hitCharacter.Team == Owner.Team)
         {
@@ -38,26 +31,25 @@ public class BulletBehaviourPossessing : BulletBehaviour
         }
         else
         {
-            //DamagingAction
+            DamagingAction(hitCharacter);
         }
         IncreaseCounter();
     }
-    public void HealingAction(CharacterBehaviour hitCharacter)
+    private void DamagingAction(DamageableEntity hitCharacter)
     {
-        hitCharacter.hpsys.Heal(GetHealing());
-        Owner.ToggleInteractive();
-        Owner.animator.SetFloat("moveX", 0);
-        Owner.animator.SetFloat("moveZ", 0);
-        Owner.aIHandler.LockAI(Mathf.Infinity);
-        Owner.aIHandler.movementAI.LockMovementAI();
-        CameraController.Instance.SetNewTarget(hitCharacter.gameObject);
-        hitCharacter.DeathEvent += Reset;
+        damage = DamagingDamage;
     }
-    public void Reset()
+    public Damage GetActiveDamage()
     {
-        Owner.ToggleInteractive();
-        Owner.aIHandler.UnlockAI();
-        Owner.aIHandler.movementAI.UnlockMovementAI();
-        CameraController.Instance.SetTargetToDefault();
+        return damage;
+    }
+    public void HealingAction(DamageableEntity hitCharacter)
+    {
+        damage = HealingDamage;
+        if (hitCharacter is CharacterBehaviour characterBehaviour)
+        {
+           ActiveCharacterManager.Instance.ChangeActiveCharacter(characterBehaviour);
+        }
+        hitCharacter.DeathEvent += ActiveCharacterManager.Instance.ResetActiveCharacter;
     }
 }

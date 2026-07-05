@@ -18,7 +18,7 @@ public class DamageCollisionHandler : CollisionHandler
         BulletBehaviourPossessing bulletBehaviourPossessing = collider.GetComponent<BulletBehaviourPossessing>();
         if (bulletBehaviourPossessing != null)
         {
-            HandlePossessionBullet(bulletBehaviourPossessing);
+            HandlePossessionBullet(bulletBehaviourPossessing, collider);
         }
         Damage damageComponent = collider.gameObject.GetComponent<Damage>();
         if (damageComponent != null && !damageComponent.isEnduring)
@@ -77,15 +77,16 @@ public class DamageCollisionHandler : CollisionHandler
                 CombatUtils.DealDamage(damageComponent, Owner);
             }
     }
-    private void HandlePossessionBullet(BulletBehaviourPossessing bulletBehaviourPossessing)
+    private void HandlePossessionBullet(BulletBehaviourPossessing bulletBehaviourPossessing, Collider collider)
     {
+        bulletBehaviourPossessing.HitAction(Owner);
         if (CombatUtils.CanDamage(bulletBehaviourPossessing.team, Owner.Team))
         {
-            
+            HandleOneTimeDamage(bulletBehaviourPossessing.GetComponent<Damage>());
         }
         else
         {
-            
+            HandleHealing(bulletBehaviourPossessing.GetComponent<Damage>(), collider);
         }
     }
 }
