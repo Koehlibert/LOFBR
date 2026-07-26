@@ -43,7 +43,7 @@ public class ShootPass : ShootBasic
         PassStage = 0;
         startTime = Time.time;
         IsPassing = true;
-        Handler.DisableOtherAbilities(Duration, this);
+        StartCoroutine(Handler.DisableOtherAbilities(Duration, this));
         Handler.Owner.animator.SetFloat("moveX", 0);
         Handler.Owner.animator.SetFloat("moveZ", 0);
         movementAI.LockMovementAI(Duration);

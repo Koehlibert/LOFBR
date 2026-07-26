@@ -84,10 +84,10 @@ public class SkillsetSupport : Skillset
             case 1:
                 Ability shooterHeal = Handler.gameObject.AddComponent<ShootHeal>();
                 Handler.AddAbility(shooterHeal, HUD.Instance.PrimaryReloader);
-                /* Ability shootDoublePass = Handler.gameObject.AddComponent<ShootDoublePass>();
-                Handler.AddAbility(shootDoublePass, HUD.Instance.SecondaryReloader); */
-                Ability possessDebug = Handler.gameObject.AddComponent<PossessDebug>();
-                Handler.AddAbility(possessDebug, HUD.Instance.SecondaryReloader);
+                Ability shootDoublePass = Handler.gameObject.AddComponent<ShootDoublePass>();
+                Handler.AddAbility(shootDoublePass, HUD.Instance.SecondaryReloader);
+                /* Ability possessDebug = Handler.gameObject.AddComponent<PossessDebug>();
+                Handler.AddAbility(possessDebug, HUD.Instance.SecondaryReloader); */
                 break;
             case 2:
                 

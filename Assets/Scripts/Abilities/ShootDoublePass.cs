@@ -6,10 +6,8 @@ using UnityEngine.InputSystem.XR;
 public class ShootDoublePass : ShootBasic
 {
     protected override HumanBodyBones Bone => HumanBodyBones.RightLowerLeg;
-    private float Duration = 3.5f;
+    private float Duration = 0.35f;
     private int PassStage;
-    private Vector3 StartPosition;
-    private float StepSize = 5f;
     protected override AbilityInfo GetAbilityInfo()
     {
         return new AbilityInfo(10f, 7.5f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.Retreating });
@@ -20,7 +18,7 @@ public class ShootDoublePass : ShootBasic
     }
     protected override GameObject CreateBullet()
     {
-        GameObject bullet = BulletFactory.Instance.CreateBullet(Handler.Owner, false, Bone);
+        GameObject bullet = BulletFactory.Instance.CreatePossessingBullet(Handler.Owner, GetDamageValues(), GetHealingValues(), true, Bone);
         bullet.GetComponent<BulletBehaviour>().OnBulletHit += (DamageableEntity tmp) => CreatePoisonStatus(tmp);
         return bullet;
     }
@@ -30,6 +28,7 @@ public class ShootDoublePass : ShootBasic
     }
     protected override void AdditionalInit()
     {
+        PassStage = 0;
         soundType = AbilitySoundType.Shoot;
         bulletinstance = CreateBullet();
     }
@@ -38,15 +37,14 @@ public class ShootDoublePass : ShootBasic
         Handler.Owner.animator.SetTrigger("Shoot");
         yield return new WaitForSeconds(0.15f);
         PassStage = 0;
-        Handler.DisableOtherAbilities(Duration, this);
+        StartCoroutine(Handler.DisableOtherAbilities(Duration, this));
         Handler.Owner.animator.SetFloat("moveX", 0);
         Handler.Owner.animator.SetFloat("moveZ", 0);
         movementAI.LockMovementAI(Duration);
-        CharacterFactory.Instance.CreatePhantom(Handler.Owner, Duration, StepSize);
-        StartPosition = Handler.Owner.animator.GetBoneTransform(Bone).position + Handler.Owner.transform.forward * 0.1f;
-        StartPosition.y += 0.15f;
-        bulletinstance.GetComponent<BulletBehaviour>().Activate(GetDamageValues());
-        bulletinstance.GetComponent<BulletBehaviour>().UnsetRB();
+        bulletinstance.GetComponent<BulletBehaviourPossessing>().Shoot(GetDamageValues());
+        bulletinstance = null;
+        /* bulletinstance.GetComponent<BulletBehaviourPossessing>().Activate(GetDamageValues());
+        bulletinstance.GetComponent<BulletBehaviourPossessing>().UnsetRB(); */
     }
     private float PassStagePercent()
     {
@@ -68,6 +66,24 @@ public class ShootDoublePass : ShootBasic
         else
         {
             return new DamageInfo(PassStagePercent() * 20, Handler.Owner.Team, true, false);
+        }
+    }
+    protected DamageInfo GetHealingValues()
+    {
+        if (Handler.Owner is MainPlayerBehaviour)
+        {
+            if (Handler.Owner is MirrorImageBehaviour)
+            {
+                return new DamageInfo(PassStagePercent() * 0.5f * (20 + 2 * OwnerLevelSys.GetLevel()), Handler.Owner.Team, true, false);
+            }
+            else
+            {
+                return new DamageInfo(PassStagePercent() * 20 + 2.5f * OwnerLevelSys.GetLevel(), Handler.Owner.Team, true, false);
+            }
+        }
+        else
+        {
+            return new DamageInfo(PassStagePercent() * 15, Handler.Owner.Team, true, false);
         }
     }
     protected override void OnDeactivate(Ability callingAbility)

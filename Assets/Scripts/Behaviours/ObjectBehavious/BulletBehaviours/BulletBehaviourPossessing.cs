@@ -4,20 +4,22 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using UnityEngine.TextCore.Text;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(SphereCollider))]
-[RequireComponent(typeof(Damage))]
 public class BulletBehaviourPossessing : BulletBehaviour
 {
     public int NumberOfHits = 0;
     private Damage DamagingDamage;
     private Damage HealingDamage;
-    public void Init(Damage damagingDamage, Damage healing, CharacterBehaviour owner, bool destroyOnHit, HumanBodyBones bone, float timer = 1.5f)
+    public void Init(DamageInfo damagingInfo, DamageInfo healingInfo, CharacterBehaviour owner, bool destroyOnHit, HumanBodyBones bone, float timer = 1.5f)
     {
         base.Init(owner, destroyOnHit, bone, timer);
-        DamagingDamage = damagingDamage;
-        HealingDamage = healing;
+        DamagingDamage = this.gameObject.AddComponent<Damage>();
+        DamagingDamage.SetProperties(damagingInfo);
+        HealingDamage = this.gameObject.AddComponent<Damage>();
+        DamagingDamage.SetProperties(healingInfo);
     }
     public void IncreaseCounter()
     {
@@ -25,15 +27,22 @@ public class BulletBehaviourPossessing : BulletBehaviour
     }
     public void HitAction(DamageableEntity hitCharacter)
     {
-        if (hitCharacter.Team == Owner.Team)
+        if (hitCharacter == Owner)
         {
-            HealingAction(hitCharacter);
+            return;
         }
-        else
+        if (hitCharacter is CharacterBehaviour)
         {
-            DamagingAction(hitCharacter);
+            if (hitCharacter.Team == Owner.Team)
+            {
+                HealingAction(hitCharacter);
+            }
+            else
+            {
+                DamagingAction(hitCharacter);
+            }
+            IncreaseCounter();
         }
-        IncreaseCounter();
     }
     private void DamagingAction(DamageableEntity hitCharacter)
     {
@@ -48,8 +57,12 @@ public class BulletBehaviourPossessing : BulletBehaviour
         damage = HealingDamage;
         if (hitCharacter is CharacterBehaviour characterBehaviour)
         {
-           ActiveCharacterManager.Instance.ChangeActiveCharacter(characterBehaviour);
+            if (characterBehaviour is TowerBehaviour)
+                return;
+            ActiveCharacterManager.Instance.ChangeActiveCharacter(characterBehaviour);
+            hitCharacter.DeathEvent += ActiveCharacterManager.Instance.ResetActiveCharacter;
+            Ability shootDoublePass = characterBehaviour.gameObject.AddComponent<ShootDoublePass>();
+            characterBehaviour.aIHandler.AddAbility(shootDoublePass, HUD.Instance.SecondaryReloader);
         }
-        hitCharacter.DeathEvent += ActiveCharacterManager.Instance.ResetActiveCharacter;
     }
 }

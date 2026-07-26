@@ -124,11 +124,11 @@ public class BulletFactory : MonoBehaviour
         Mover.AddComponent<OffsideMover>().Init(owner, damageInfo, poisonDamage);
         return Mover;
     }
-    public GameObject CreatePossessingBullet(CharacterBehaviour owner, bool destroyOnHit, HumanBodyBones bone, float timer = 1.5f)
+    public GameObject CreatePossessingBullet(CharacterBehaviour owner, DamageInfo damagingInfo, DamageInfo healingInfo, bool destroyOnHit, HumanBodyBones bone, float timer = 1.5f)
     {
         GameObject BulletInstance = InstantiateBullet(owner, bone);
-        BulletBehaviour bulletBehaviour = BulletInstance.AddComponent<BulletBehaviourPossessing>();
-        bulletBehaviour.Init(owner, destroyOnHit, bone, timer);
+        BulletBehaviourPossessing bulletBehaviour = BulletInstance.AddComponent<BulletBehaviourPossessing>();
+        bulletBehaviour.Init(damagingInfo, healingInfo, owner, destroyOnHit, bone, timer);
         return BulletInstance;
     }
 }

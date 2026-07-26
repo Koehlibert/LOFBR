@@ -20,18 +20,21 @@ public class DamageCollisionHandler : CollisionHandler
         {
             HandlePossessionBullet(bulletBehaviourPossessing, collider);
         }
-        Damage damageComponent = collider.gameObject.GetComponent<Damage>();
-        if (damageComponent != null && !damageComponent.isEnduring)
+        else
         {
-            if (CombatUtils.CanDamage(damageComponent, Owner) != damageComponent.isHealing)
+            Damage damageComponent = collider.gameObject.GetComponent<Damage>();
+            if (damageComponent != null && !damageComponent.isEnduring)
             {
-                if (!damageComponent.isHealing)
+                if (CombatUtils.CanDamage(damageComponent, Owner) != damageComponent.isHealing)
                 {
-                    HandleOneTimeDamage(damageComponent);
-                }
-                else
-                {
-                    HandleHealing(damageComponent, collider);
+                    if (!damageComponent.isHealing)
+                    {
+                        HandleOneTimeDamage(damageComponent);
+                    }
+                    else
+                    {
+                        HandleHealing(damageComponent, collider);
+                    }
                 }
             }
         }
@@ -64,18 +67,18 @@ public class DamageCollisionHandler : CollisionHandler
     private void HandleEnduringDamage(Damage damageComponent, Collider collider)
     {
         if (CombatUtils.CanDamage(damageComponent, Owner))
+        {
+            if (collider.gameObject.GetComponent<BulletBehaviourFollowingUlt>() != null)
             {
-                if (collider.gameObject.GetComponent<BulletBehaviourFollowingUlt>() != null)
-                {
-                    collider.gameObject.GetComponent<BulletBehaviourFollowingUlt>().count -= Time.deltaTime;
-                }
-                if (damageComponent.givesXP)
-                {
-                    Owner.SetLastHit(true);
-                }
-                RaiseOnHitCallback();
-                CombatUtils.DealDamage(damageComponent, Owner);
+                collider.gameObject.GetComponent<BulletBehaviourFollowingUlt>().count -= Time.deltaTime;
             }
+            if (damageComponent.givesXP)
+            {
+                Owner.SetLastHit(true);
+            }
+            RaiseOnHitCallback();
+            CombatUtils.DealDamage(damageComponent, Owner);
+        }
     }
     private void HandlePossessionBullet(BulletBehaviourPossessing bulletBehaviourPossessing, Collider collider)
     {
