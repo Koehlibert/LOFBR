@@ -37,7 +37,7 @@ public class ActiveCharacterManager : MonoBehaviour
     }
     public void ResetActiveCharacter()
     {
-        ActiveCharacter?.ToggleInteractive();
+        ActiveCharacter.ToggleInteractive();
         ActiveCharacter = DefaultActiveCharacter;
         ActiveCharacter.ToggleInteractive();
         ActiveCharacter.aIHandler.UnlockAI();

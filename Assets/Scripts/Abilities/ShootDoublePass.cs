@@ -8,9 +8,11 @@ public class ShootDoublePass : ShootBasic
     protected override HumanBodyBones Bone => HumanBodyBones.RightLowerLeg;
     private float Duration = 0.35f;
     private int PassStage;
+    public bool IsPossessionGranted;
+    public int PossessionChainCount;
     protected override AbilityInfo GetAbilityInfo()
     {
-        return new AbilityInfo(10f, 7.5f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.Retreating });
+        return new AbilityInfo(10f, 2.5f, new List<AIUtils.AIState> { AIUtils.AIState.Attacking, AIUtils.AIState.CheckShoot, AIUtils.AIState.Retreating });
     }
     protected override bool InputPressed()
     {
@@ -89,6 +91,24 @@ public class ShootDoublePass : ShootBasic
     protected override void OnDeactivate(Ability callingAbility)
     {
         base.OnDeactivate(callingAbility);
+    }
+    public void EndPossession(bool resetPlayer = false)
+    {
+        if (!IsPossessionGranted)
+        {
+            return;
+        }
+        IsPossessionGranted = false;
+        Handler.Owner.DeathEvent -= ActiveCharacterManager.Instance.ResetActiveCharacter;
+        if (reloader != null)
+        {
+            reloader.gameObject.SetActive(false);
+        }
+        Handler.RemoveAbility(this);
+        if (resetPlayer)
+        {
+            ActiveCharacterManager.Instance.ResetActiveCharacter();
+        }
     }
     private float GetPoisonDamage()
     {

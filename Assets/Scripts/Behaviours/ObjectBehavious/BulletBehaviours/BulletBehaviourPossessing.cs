@@ -19,7 +19,7 @@ public class BulletBehaviourPossessing : BulletBehaviour
         DamagingDamage = this.gameObject.AddComponent<Damage>();
         DamagingDamage.SetProperties(damagingInfo);
         HealingDamage = this.gameObject.AddComponent<Damage>();
-        DamagingDamage.SetProperties(healingInfo);
+        HealingDamage.SetProperties(healingInfo);
     }
     public void IncreaseCounter()
     {
@@ -44,9 +44,11 @@ public class BulletBehaviourPossessing : BulletBehaviour
             IncreaseCounter();
         }
     }
+    private const int MaxPossessionChainLength = 3;
     private void DamagingAction(DamageableEntity hitCharacter)
     {
         damage = DamagingDamage;
+        Owner.GetComponent<ShootDoublePass>()?.EndPossession();
     }
     public Damage GetActiveDamage()
     {
@@ -59,10 +61,27 @@ public class BulletBehaviourPossessing : BulletBehaviour
         {
             if (characterBehaviour is TowerBehaviour)
                 return;
-            ActiveCharacterManager.Instance.ChangeActiveCharacter(characterBehaviour);
-            hitCharacter.DeathEvent += ActiveCharacterManager.Instance.ResetActiveCharacter;
-            Ability shootDoublePass = characterBehaviour.gameObject.AddComponent<ShootDoublePass>();
-            characterBehaviour.aIHandler.AddAbility(shootDoublePass, HUD.Instance.SecondaryReloader);
+            ShootDoublePass firingAbility = Owner.GetComponent<ShootDoublePass>();
+            int chainCount = (firingAbility != null ? firingAbility.PossessionChainCount : 0) + 1;
+            if (chainCount >= MaxPossessionChainLength)
+            {
+                ApplyFinalChainEffect(characterBehaviour);
+            }
+            else
+            {
+                ActiveCharacterManager.Instance.ChangeActiveCharacter(characterBehaviour);
+                hitCharacter.DeathEvent += ActiveCharacterManager.Instance.ResetActiveCharacter;
+                ShootDoublePass shootDoublePass = characterBehaviour.gameObject.AddComponent<ShootDoublePass>();
+                shootDoublePass.IsPossessionGranted = true;
+                shootDoublePass.PossessionChainCount = chainCount;
+                characterBehaviour.aIHandler.AddAbility(shootDoublePass, HUD.Instance.SecondaryReloader);
+            }
+            firingAbility.EndPossession();
+            Destroy(this.gameObject);
         }
+    }
+    private void ApplyFinalChainEffect(CharacterBehaviour target)
+    {
+        Debug.Log("yay");
     }
 }
